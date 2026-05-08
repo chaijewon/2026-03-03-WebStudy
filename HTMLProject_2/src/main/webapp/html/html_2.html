@@ -1,0 +1,123 @@
+<!-- 
+   목록 
+    <ul> unorder list : 순서가 없이 출력 
+          <ul> 
+           |
+          <li> => 여러개 사용이 가능 
+    <ol> order list : 순서가 가지고 있다
+          <ol> 
+           |
+          <li> 실제 출력물  
+    <dl> data list : 제목 / 내용
+          <dl>
+            |
+         -------
+         |     |
+        <dt>  <dd>  
+    <table> : row / column 
+         <table>
+           |
+          <tr>
+           |
+        ---------
+        |       |
+       <th>    <td>  => rowspan / colspan 
+                        --------  --------
+                        세로 통합    가로 통합 
+      => 입력창 <input> <textarea> <select>
+              <fieldset> <label>  
+      => 분할 <div> <span> 
+      => 이미지 관련 : <map> , <figcaption> 
+    => CSS 
+    
+    public void insert()
+    {
+       try
+       {
+          conn.setAutoCommit(false)
+          getConnection()
+          Sql ....
+          Sql ....
+          conn.commit()
+       }catch(Exception e)
+       {
+           conn.rollback()
+       }
+       finally
+       {
+          conn.setAutoCommit(true)
+          disConnection()
+       }
+    }
+    @Transactional
+    public void insert()
+    {
+       sql...
+       sql...
+    }
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+  <!-- ul  메뉴 / 목록 
+       형식 
+         <ul>
+           <li></li>
+           <li></li>
+           <li></li>
+         </ul
+  -->
+  <ul style="list-style-type:lower-alpha;">
+   <li>자바</li>
+   <li>오라클</li>
+   <li>HTML/CSS</li>
+   <li>JavaScript</li>
+   <li>JSP</li><!-- MyBatis -->
+   <li>1차 프로젝트</li><!-- MyBatis / Spring -->
+   <li>SpringFramework</li><!-- Rest API / Open API -->
+   <li>Ubuntu : 리눅스 : CI/CD</li>
+   <li>Spring-Boot</li> <!-- MyBatis+JPA : WebScoket+Kafka -->
+   <li>AWS</li>
+   <li>Vue / React</li>
+  </ul>
+  <hr>
+  <ol> <!-- 요리 순서 / 설명 단계 -->
+   <li>자바</li>
+   <li>오라클</li>
+   <li>HTML/CSS</li>
+   <li>JavaScript</li>
+   <li>JSP</li><!-- MyBatis -->
+   <li>1차 프로젝트</li><!-- MyBatis / Spring -->
+   <li>SpringFramework</li><!-- Rest API / Open API -->
+   <li>Ubuntu : 리눅스 : CI/CD</li>
+   <li>Spring-Boot</li> <!-- MyBatis+JPA : WebScoket+Kafka -->
+   <li>AWS</li>
+   <li>Vue / React</li>
+  </ol>
+  <hr>
+  <dl>
+    <dt>자바</dt><!-- 제목 설정 -->
+    <dd>데이터 관리(오라클 / 브라우저 연동)</dd> <!-- 제목에 대한 설명 : 상세보기-->
+    <dt>오라클</dt>
+    <dd>데이터 저장(SQL:DML/DDL/TCL)</dd>
+    <dt>HTML/CSS</dt>
+    <dd>화면 UI</dd>
+    <dt>JavaScript</dt>
+    <dd>브라우저 자체에서 사용자 요청 처리</dd>
+    <dt>JSP</dt>
+    <dd>브라우저와 연동</dd>
+    <dt>MyBatis</dt>
+    <dd>데이터베이스 연결하는 라이브러리</dd>
+    <dt>Spring</dt>
+    <dd>전체 통합 툴</dd>
+    <dt>CI / CD</dt>
+    <dd>지속적인 배포</dd>
+    <dt>AWS</dt>
+    <dd>서버 컴퓨터</dd>
+  </dl>
+</body>
+</html>

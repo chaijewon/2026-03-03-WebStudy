@@ -1,0 +1,68 @@
+<!-- 
+    <table> : 2차원 => row / column
+    형식) 
+         <table>
+           |
+          <tr>
+           |
+       ------------
+       |          |
+     <th>        <td> 
+     ---- 제목    ---- 실제 데이터 첨부 
+     react / vue 
+     -----------
+      | <thead> <tbody> <tfoot>
+        ------- ------- -------
+                        | 통계 
+        | 한번만  | 여러번 실행
+        
+     <table>
+       <thead>
+         => 제목 
+       </thead>
+       <tbody>
+         => 실제 데이터 
+       <tbody>
+       <tfoot>
+         => 통계 
+       <tfoot>
+     </table>
+  -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+  <table border="1" bordercolor="black" width="500">
+   <thead><!-- 한번만 수행이 가능 -->
+   <tr>
+     <th>이름</th>
+     <th>국어</th>
+     <th>영어</th>
+     <th>수학</th>
+   </tr>
+   </thead>
+   <tbody>
+   <tr>
+     <td>홍길동</td>
+     <td>90</td>
+     <td>80</td>
+     <td>75</td>
+   </tr>
+   <tr>
+     <td>홍길동</td>
+     <td>90</td>
+     <td>80</td>
+     <td>7</td>
+   </tr>
+   </tbody>
+   <tfoot>
+     <tr>
+      <td colspan="4" align="right">총인원:3</td>
+     </tr>
+   </tfoot>
+  </table>
+</body>
+</html>

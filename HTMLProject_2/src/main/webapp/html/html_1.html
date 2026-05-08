@@ -1,0 +1,99 @@
+
+
+
+<!-- 
+     1. 구조 
+     <!DOCTYPE html>
+     <html>
+       <head>
+         <script> : 자바스크립트 => Jquery / axios / vue ....
+                    => CDN 
+         <style> : 내부  css  => 자체 파일만 제어 
+         <link> : 외부 css => 모든 파일에 적용 (css파일) 
+       </head>
+       <body>
+         화면에 출력하는 태그 
+       </body>
+     </html>
+         => 화면 태그 
+            1. 텍스트 관련 
+               <h1> ~ <h6> 
+               <hx>출력물</hx> : 여는 태그 + 닫는 태그 
+               사용처 
+                 = 뉴스 제목 
+                 = 게시판 제목 
+                 = 사이트 제목 
+                 = 주로 사용 : <h1>,<h3> 
+               <p> : 단락을 나눠서 처리 
+                 <p> : 단독 사용이 가능 
+                 <p>출력물</p>
+               사용처 
+                 = 소개글 , 기사내용 , 줄거리 
+               <br> : 다음줄에 출력 
+                 = 단독 태그로 사용이 가능 
+               <sup> : 위첨자 
+                 <sup>출력물</sup> 
+               사용처 
+                 새글 => 이미지 
+               <b><strong> : 강조 : bold체 출력 
+                 <b>출력물</b> <strong>출력물</strong> 
+               <font> : 글자 설정 => 색상 , 글꼴 , 크기 
+                 => 사용 안하는 것을 권장 (CSS) 
+                 <font color="" face="" size="">출력물</font>
+                 사용처 
+                  게시물 목록 : 구분 
+                  상세보기 : 색상처리 
+             2. 멀티미디어 
+                <img> : 이미지 출력  => 시각화 
+                ==> 속도의 문제 
+                단독태그로 사용 
+                <img src="" title="">
+                     ------ --------
+                            | 풍선 도움말 
+                     | 이미지 파일 : gif , png , jpg
+                     | URL로 설정이 가능  
+                => 축소 / 확대 => width/height 
+                <embed src="" width="" height=""> : 동영상 실행
+                <iframe src="" width="" height="">
+                 ------ 동영상 / 다른 HTML을 추가 
+            3. <a> : 링크 => 화면 이동 
+               목록 => 상세보기 이동 
+               <a href="이동할 URL" target="_blank">
+                                  ----------------- 
+                                   없는 경우 : 현재 페이지 
+                                   있는 경우 : 새로운 창 
+               => 목록 / 이미지 클릭 
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+a {
+  text-decoration: none;
+  color: black;
+}
+a:hover{
+  text-decoration: underline;
+  color:green;
+}
+img:hover{
+  opacity: 0.3;
+  border-radius: 30px;
+}
+</style>
+<!-- 
+  https://www.megabox.co.kr/movie-detail?rpstMovieNo=25095100
+ -->
+</head>
+<body>
+  <a href="http://naver.com" target="_blank">네이버</a>
+  <!-- inline : print()  -->
+  <a href="http://daum.net">다음</a> <!-- _self -->
+  <p>
+  <a href="https://www.megabox.co.kr/movie-detail?rpstMovieNo=25095100" target="_blank">
+   <img src="../images/m1.jpg" width="300" height="350">
+  </a>
+</body>
+</html>
