@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>상품 카드 UI</title>
+
+<style>
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Pretendard', sans-serif;
+  }
+
+  body{
+    background:#f4f6fb;
+    padding:50px;
+  }
+
+  .product-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:28px;
+  }
+
+  .product-card{
+    background:#fff;
+    border-radius:24px;
+    overflow:hidden;
+    position:relative;
+    transition:0.35s ease;
+    box-shadow:
+      0 10px 30px rgba(0,0,0,0.06),
+      0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  .product-card:hover{
+    transform:translateY(-10px);
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.12),
+      0 8px 18px rgba(0,0,0,0.08);
+  }
+
+  .product-image{
+    position:relative;
+    overflow:hidden;
+    height:280px;
+    background:#eee;
+  }
+
+  .product-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:0.5s ease;
+  }
+
+  .product-card:hover .product-image img{
+    transform:scale(1.08);
+  }
+
+  .badge{
+    position:absolute;
+    top:16px;
+    left:16px;
+    background:linear-gradient(135deg,#ff416c,#ff4b2b);
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
+    padding:8px 14px;
+    border-radius:999px;
+    box-shadow:0 4px 12px rgba(255,75,43,0.35);
+  }
+
+  .wishlist{
+    position:absolute;
+    top:16px;
+    right:16px;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.95);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    backdrop-filter:blur(10px);
+    cursor:pointer;
+    transition:0.3s;
+    font-size:18px;
+  }
+
+  .wishlist:hover{
+    background:#111;
+    color:#fff;
+    transform:scale(1.1);
+  }
+
+  .product-info{
+    padding:24px;
+  }
+
+  .category{
+    color:#8b8fa3;
+    font-size:13px;
+    margin-bottom:10px;
+    letter-spacing:0.5px;
+  }
+
+  .title{
+    font-size:20px;
+    font-weight:700;
+    color:#1b1d28;
+    margin-bottom:14px;
+    line-height:1.4;
+  }
+
+  .desc{
+    color:#777;
+    font-size:14px;
+    line-height:1.6;
+    margin-bottom:20px;
+  }
+
+  .bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .price{
+    display:flex;
+    flex-direction:column;
+  }
+
+  .old-price{
+    color:#aaa;
+    text-decoration:line-through;
+    font-size:13px;
+  }
+
+  .new-price{
+    color:#111;
+    font-size:24px;
+    font-weight:800;
+    margin-top:2px;
+  }
+
+  .cart-btn{
+    border:none;
+    background:linear-gradient(135deg,#6a11cb,#2575fc);
+    color:#fff;
+    padding:14px 18px;
+    border-radius:16px;
+    cursor:pointer;
+    font-weight:700;
+    transition:0.3s;
+    box-shadow:0 8px 18px rgba(37,117,252,0.28);
+  }
+
+  .cart-btn:hover{
+    transform:translateY(-3px);
+    opacity:0.92;
+  }
+</style>
+</head>
+<body>
+
+<div class="product-grid">
+
+  <div class="product-card">
+    <div class="product-image">
+      <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1200" alt="">
+      <div class="badge">BEST</div>
+      <div class="wishlist">♡</div>
+    </div>
+
+    <div class="product-info">
+      <div class="category">SMART WATCH</div>
+
+      <div class="title">
+        프리미엄 스마트 워치
+      </div>
+
+      <div class="desc">
+        세련된 디자인과 강력한 퍼포먼스를 갖춘 스마트 워치
+      </div>
+
+      <div class="bottom">
+        <div class="price">
+          <span class="old-price">₩329,000</span>
+          <span class="new-price">₩259,000</span>
+        </div>
+
+        <button class="cart-btn">
+          담기
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

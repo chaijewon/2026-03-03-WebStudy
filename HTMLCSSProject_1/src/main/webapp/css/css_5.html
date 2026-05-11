@@ -1,0 +1,70 @@
+<!-- 
+     속성 선택자 
+     ---------
+     id / class => div , span , h1 , h3...
+     input , select , textarea , table , ul , dl
+     => id,class를 설정하지 않는다 
+     => 속성 선택자 , 구조 선택자 
+     
+     선택자[속성=값]  => 같은 값 
+     선택자[속성^=값] => 시작 
+     선택자[속성$=값] => 끝 
+     선택자[속성*=값] => 포함 
+     
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+/* 공통 적용 ,는 모든 */
+a,input {
+    display: block; /*print() => println()*/
+}
+a[href='http://www.java.com'] {
+   color: red;
+}
+a[href^='http']{
+   color:orange;
+}
+a[href$='net']{
+   color:magenta;
+}
+a[href*="www"]{
+  color:black;
+}
+/*
+   <img> => png,jpg,gif ...
+   <input> 
+     | => type 
+   <img>
+     | src
+   <a> 
+     | href  
+   
+*/
+input[type='text']{
+  border-radius: 20px;
+}
+input[type='password']{
+  background-color: yellow;
+}
+</style>
+</head>
+<body>
+  <a href="http://www.java.com">자바</a>
+  <a href="https://www.oracle.net">오라클</a>
+  <a href="www.html.com">HTML</a>
+  <a href="http://www.css.net">CSS</a>
+  <a href="http://www.javascript.co.kr">자바스크립트</a>
+  
+  <input type=text size=20>
+  <input type=password size=20>
+  <input type=file size=20>
+  <input type=submit size=20><!-- red -->
+  <input type=button size=20><!-- blue -->
+  <input type=number min="1" max=10>
+  
+</body>
+</html>

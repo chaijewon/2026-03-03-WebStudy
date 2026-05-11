@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+#orange {
+  color:orange;
+}
+#pink {
+  color:pink;
+}
+.yellow{
+  color:yellow;
+}
+/*
+    같은 선택자 => 마지막에 있는 설정이 적용 
+*/
+.red{
+  color:red;
+}
+.red{
+  color:magenta;
+}
+</style>
+</head>
+<body>
+  <!-- 
+     모든(li) 색상이 동일 => 태그  
+     li {
+        color:색상
+     } 
+     
+     동일한 색상 : class 
+     독립된 색상 : id 
+     
+     기본 
+       태그 선택자 ==> 태그명 {}
+       id 선택자  ==> #아이디명 {}
+       class 선택자 : 가장 많이 사용되는 구분자 ==> .class명 {}
+       --------------------- 태그를 구분해서 사용 
+       CSS : 디자인 / JavaScript에서 이벤트 처리 / Jsoup (크롤링) 
+   -->
+  <ul>
+    <li class="red">수박</li> <!-- red -->
+    <li class="yellow">배</li> <!-- yellow -->
+    <li class="red">사과</li> <!-- red -->
+    <li id="orange">오렌지</li> <!-- orange -->
+    <li class="yellow">메론</li> <!-- yellow -->
+    <li id="pink">포도</li> <!-- pink -->
+  </ul>
+</body>
+</html>

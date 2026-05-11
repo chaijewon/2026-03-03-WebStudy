@@ -1,0 +1,123 @@
+<!-- 
+    ***1. 내부 CSS
+       : 파일 한개 제어
+         <head>
+           <style>
+           </style> 
+         </head>   
+    2. 인라인 CSS
+       : 태그 한개 제어
+         <a href="" style=""> 
+    ***3. 외부 CSS
+       : 여러개 파일 제어 => .css 파일을 만든다
+         => <link>
+         
+    태그 선택자 : 구분 
+        ----- Jsoup / JavaScript / Jquery / Ajax 
+        
+    125page 
+    CSS (Cascading Style Sheets)
+                         -------- 스타일 규칙 모음 
+                   ----- 화면 UI 
+         --------- 우선순위에 따라 적용 
+     ** 웹 페이지 디자인 규칙에 따라 우선 순위에 적용하는 언어 
+                -------- 이미 제작되어 있다 
+        *** 약간 수정이 가능한 정도 
+        *** 무료 웹 템플릿 => 수정해서 사용 
+     우선순위 
+       전체(*) < 태그 < 클래스 < 아이디 < 인라인 < !important
+     1. 선택자 (태그) => 해당 태그에 디자인 
+        1) 종류 
+        = 전체 선택자 
+          * 
+          => 간격조절 (margin/padding) 
+          => 글꼴 => 사이트는 글꼴이 동일 / google 폰트 
+          형식)
+                * {
+                    속성:값 
+                        --
+                    --- 이미 만들어져 있다 
+                }
+                
+                예)
+                    *(all) 모든 태그에 적용 {
+                        font-family: 맑은 고딕 -> 반드시 시스템에 등록된 폰트
+                        -----------  -------
+                          속성          값
+                        => import를 사용해서 읽어 올 수 있다 
+                    }
+        = 태그 선택자 
+          => 태그를 선택 => 자주 사용하지 않는다 
+             -------- 중복이 되는 태그가 많이 있다 
+             태그 {
+               속성:값;
+               속성:값; ....
+             }
+        = 아이디 선택자 => 중복이 없는 구분자 생성 => 속성
+          <p id="a"></p>
+          <p id="b"></p>
+          <a id="a"></a>
+          
+           ==> #a ==> p#a , a#a => 선택자 : 태그명#아이디명 
+           ==> 남발 방지 => #
+           ==> 해당 태그를 읽어와서 디자인 
+           ==> 단점 같은 태그를 많이 사용한다 
+        = 클래스 선택자 : 같은 형식의 디자인 적용 => 중복이 있는 속성 
+           <a href="" class="a"></a>
+           <a href="" class="a"></a>
+           <a href="" class="a"></a>
+           <a href="" class="a"></a>
+           <a href="" class="a"></a>
+           
+           ==> 태그명.클래스명 => . => 가장 많이 사용 
+        = 속성 선택자 
+        = 후손 / 자손 선택자 
+        = 반응 선택자 
+        = 상태 선택자 
+        = 구조 선택자 
+        = 단위 (글자/간격) => px 
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+/* 구조 선택자 */
+p:nth-child(1) {
+    color:red;
+    /*
+       color => 글자 색상
+    */
+}
+p:nth-child(2) {
+    color:blue;
+    /*
+       color => 글자 색상
+    */
+}
+a {
+    color:black;
+    text-decoration: none; /* underline을 지울때 사용*/
+}
+b {
+    color:red;
+    display: block; /* block = inline , inline = block */
+}
+/* 여러개의 태그를 동시에 적용 (,) */
+p,a,b {
+    background-color: yellow;
+}
+/*
+    속성은 사용자 정의가 없다 
+    => 라이브러리도 많이 있다 
+*/
+</style>
+</head>
+<body>
+  <p>자바</p>
+  <p>HTML</p>
+  <a href="#">Spring</a>
+  <b>CI/CD</b>
+</body>
+</html>
