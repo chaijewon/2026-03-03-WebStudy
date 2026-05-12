@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+.card {
+  display: inline-block;
+  width: 19%;
+  margin-right: 1%;
+  margin-bottom: 16px;
+  vertical-align: top;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* 5개 맞추기 위해 마지막 margin 제거 */
+.card:nth-child(5n) {
+  margin-right: 0;
+}
+
+.card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+}
+
+.card .content {
+  padding: 10px;
+  font-size: 14px;
+}
+</style>
+
+</head>
+<body>
+<div class="card">
+  <img src="https://picsum.photos/200/120?1">
+  <div class="content">이미지 1</div>
+</div>
+
+<div class="card">
+  <img src="https://picsum.photos/200/120?2">
+  <div class="content">이미지 2</div>
+</div>
+
+<div class="card">
+  <img src="https://picsum.photos/200/120?3">
+  <div class="content">이미지 3</div>
+</div>
+
+<div class="card">
+  <img src="https://picsum.photos/200/120?4">
+  <div class="content">이미지 4</div>
+</div>
+
+<div class="card">
+  <img src="https://picsum.photos/200/120?5">
+  <div class="content">이미지 5</div>
+</div>
+
+</body>
+</html>

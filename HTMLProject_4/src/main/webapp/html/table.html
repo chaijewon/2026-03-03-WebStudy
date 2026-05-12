@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+table {
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  margin: 50px auto;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  /*overflow: hidden;*/
+  
+}
+
+/* 헤더 */
+thead {
+  background-color: #4F46E5;
+  color: white;
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+}
+
+/* 줄 구분 */
+tbody tr {
+  border-bottom: 1px solid #eee;
+}
+
+/* 호버 효과 */
+tbody tr:hover {
+  background-color: #f5f7ff;
+}
+
+/* 짝수 줄 배경 */
+tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* 마지막 줄 */
+tbody tr:last-child {
+  border-bottom: none;
+}
+</style>
+
+</head>
+<body>
+  <table style="width:800px">
+  <thead>
+    <tr>
+      <th>이름</th>
+      <th>나이</th>
+      <th>직업</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>김철수</td>
+      <td>28</td>
+      <td>개발자</td>
+    </tr>
+    <tr>
+      <td>이영희</td>
+      <td>32</td>
+      <td>디자이너</td>
+    </tr>
+  </tbody>
+</table>
+  
+</body>
+</html>
