@@ -1,0 +1,137 @@
+<!-- 
+     129page ~ 160page 
+     129page 
+      선택자 (기본 선택자) 
+      ---------------- 
+      1. 태그에 CSS적용 (태그의 우선순위를 적용해서 디자인)
+      2. 기본 선택자 
+         *  : 전체 선택자 => 글꼴 / margin / padding 
+         * {
+             속성 : 값;
+         }
+         <a href="" id="aaa"> => 의미부여 => #aaa , a#aaa
+           => 중복이 된 경우에는 자바스크립트에서는 오류 발생 
+         id : 중복없는 태그 제어 => #
+         #아이디명 {
+             속성:값;
+         }
+         class : 중복이 있는 태그 (여러개 동시에 적용) => .
+         태그 : 태그마다 공통으로 적용 
+         
+      => 순서 
+         인라인 스타일 
+            |
+           ID
+            |
+          CLASS
+            |
+          태그 
+          
+     => 특별한 경우가 아니면 => 구분자로 class를 주로 사용 
+     => 화면 => for
+               --- 구분할 수 없다 (목록 / 이미지...)
+     *** HTML의 모든 태그 : id , class , style , name
+     135page 속성 선택자  ===> 태그의 구분자가 없는 경우
+             input / img / a (보통 => id,class를 가지고 있지 않는다)
+     태그[속성=값] ==> 같은 값인 경우 
+                     input => type 
+                     img => src 
+                     a => href 
+     태그[속성*=값] ==> 포함 
+     태그[속성^=값] ==> 시작 
+     태그[속성$=값] ==> 끝 
+     
+     1) input 
+          => name , size , type 
+     2) a 
+          => href , target 
+     3) img 
+          => src , width , height 
+     4) table => <style>에서 제어 
+     ------------------------------
+     
+     136page 후손 자손 동위 => 들여쓰기 
+     후손 : 태그 태그 태그 ....
+     자손 : 태그 > 태그 > 태그 
+     동위 : 태그 + 태그 , 태그 ~ 태그 
+     
+     141page 반응 / 상태 
+     :hover , :checked 
+     
+     144page 구조 
+       :first-child 
+       :last-child 
+       :nth-child(수열) 
+     -----------------------------------------
+     1. 단위 (148~154page) 
+        = 크기단위 => 글자 크기 
+          font-size => 16px 
+          % => 100%(16px) , 50%(8px) , 150px(24px) 
+          em : 배수단위 
+               0.2em ==> 16*0.2
+               2em => 2*16
+          px : 기본 디폴트 
+        = 색상 
+          color:시스템 색상 => red , blue ...
+          color:rgb(255,255,255) => 그림판 참조 
+          16진법 => #CCCCCC , HTML 색상표 
+     ===> CSS 속성시에 주로 사용 
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+#click{
+  background: pink;
+}
+</style>
+<script type="text/javascript">
+window.onload=function(){
+	// 자바스크립트 메인 ==> $(function(){})
+	let btn=document.getElementById("click");
+	btn.addEventListener("click",function(){
+		alert("클릭 완료!!")
+	})
+}
+</script>
+<style type="text/css">
+li{
+ list-style: none;
+ float: left;
+ padding: 15px;
+}
+li:first-child {
+	border-radius: 20px 0px 0px 20px;
+	/* top right bottom left */
+}
+li:last-child {
+	border-radius: 0px 20px 20px 0px;
+}
+li:nth-child(2n) {
+	background: #FF0003;
+}
+li:nth-child(2n+1) {
+	background: #800000;
+}
+</style>
+</head>
+<body>
+  <button id="click">클릭 1</button>
+  <button id="click">클릭 2</button>
+  <button id="click">클릭 3</button>
+  <button id="click">클릭 4</button>
+  <button id="click">클릭 5</button>
+  <hr>
+  <ul>
+    <li>홈</li>
+    <li>회원가입</li>
+    <li>맛집</li>
+    <li>레시피</li>
+    <li>여행</li>
+    <li>커뮤니티</li>
+    <li>마이페이지</li>
+  </ul>
+</body>
+</html>

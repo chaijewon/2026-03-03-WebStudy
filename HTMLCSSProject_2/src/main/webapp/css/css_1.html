@@ -1,0 +1,113 @@
+<!-- 
+      126page / 127page (선택자 종류) 
+      ------------------
+      => HTML 태그를 제어 => 태그 읽기 => 디자인 (CSS) , JavaScript
+                                                  ------------
+                                                  | DOM Script (태그 제어 프로그램)
+         CSS
+         body {
+            속성 : 값;
+         }
+         
+         let body=doucment.getElementByTagName("body")
+         => 바닐라 JS
+         $('body').click(function(){}) => JQuery 
+         Elements body=doc.select("body")
+         VueJS /   React => 별로 
+         | NuxtJS  | NextJS
+         <body v-for=""> 
+         let a=body.map(m->{})
+         
+         ======> CSS의 선택자 
+         1) CSS는 HTML내용과는 상관없이 디자인 변경이 가능
+         2) CSS의 종류 
+            1. 내부 CSS
+               : 파일 1개 제어 
+               <head>
+                 <style>
+                   선택자 {
+                      속성 : 값;
+                      주석 => /* */
+                   }
+                   선택자 {
+                      속성 : 값;
+                      주석 => /* */
+                   }
+                 </style>
+               </head>
+            2. 인라인 CSS
+               : 태그 1개 제어 
+               <a style="속성:값;"> => 우선순위가 높다 
+            3. 외부 CSS 
+               : .css 파일 => 전체 프로젝트에서 사용 (공통적으로 적용) 
+                ------
+                
+       태그 선택 : 어떤 태그를 디자인 
+                 --------------
+       1) * : 전체 선택자 
+              --------- margin / padding / font-family 
+              웹 => 글꼴이 동일하게 
+              형식) 
+                   * {
+                       margin:0px;
+                       padding:0px;
+                       font-family: "맑은 고딕"
+                   }
+       2) 태그 선택자 : 구분이 잘 안된다 
+          형식) 태그명(모든태그) {
+               ------------
+                  body안에 있는 태그 
+                  속성 : 값 ;
+                  속성 : 값 ;
+               }
+       3) ID 선택자 : 중복이 없는 구분자  => #아이디명 
+          <img id="img"> 
+          #img(아이디명) {
+              속성 처리 
+              
+          }
+       4) class 선택자 : 중복이 가능한 구분자 => .class명 
+          <img class="img">
+          <img class="img">
+          <img class="img">
+          ===> <img class="img1 img2"> : 한개의 태그에 클래스명을 여러개 사용이 가능 
+                               --   
+                           | 태그에 해당 | 공통 적용
+      ------------------------- 기본 선택자
+      
+           
+      
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.img {
+  border: 3px solid green;
+  border-radius: 20px;
+}
+.img1 {
+  width: 150px;
+  height: 200px;
+}
+.img2 {
+  width: 200px;
+  height: 300px;
+}
+/* ID는 여러개 사용이 불가능 1개만 사용이 가능*/
+</style>
+</head>
+<body>
+  <img src="../images/m1.jpg" class="img img1">
+  <img src="../images/m2.jpg" class="img img1">
+  <img src="../images/m3.jpg" class="img img1">
+  <img src="../images/m4.jpg" class="img img2">
+  <img src="../images/m5.jpg" class="img img2">
+  <img src="../images/m6.jpg" class="img img2">
+  <img src="../images/m7.jpg" class="img img2">
+</body>
+</html>
+
+

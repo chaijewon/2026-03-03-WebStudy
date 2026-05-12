@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+table thead tr:first-child {
+	background: orange;
+}
+/* 1 2 3... 2 4 6 */
+table tbody tr:nth-child(2n) {
+  	background: rgb(255,255,220)
+}
+/* 2 6 10 ...  n은 0부터 대입*/
+table tbody tr:nth-child(4n+2) {
+  	background: cyan
+}
+/* 3 7 11 */
+table tbody tr:nth-child(4n+3) {
+  	background: green
+}
+/* 4 8 12*/
+table tbody tr:nth-child(4n+4) {
+  	background: magenta
+}
+</style>
+</head>
+<body>
+  <table width=500 border=1 bordercolor=black>
+    <thead>
+     <tr>
+       <th>이름</th>
+       <th>주소</th>
+       <th>전화</th>
+     </tr>
+    </thead>
+    <tbody>
+      <tr>
+       <td>홍길동</td>
+       <td>서울</td>
+       <td>010-1111-1111</td>
+      </tr>
+      <tr>
+       <td>홍길동</td>
+       <td>서울</td>
+       <td>010-1111-1111</td>
+      </tr>
+      <tr>
+       <td>홍길동</td>
+       <td>서울</td>
+       <td>010-1111-1111</td>
+      </tr>
+      <tr>
+       <td>홍길동</td>
+       <td>서울</td>
+       <td>010-1111-1111</td>
+      </tr>
+      <tr>
+       <td>홍길동</td>
+       <td>서울</td>
+       <td>010-1111-1111</td>
+      </tr>
+      <tr>
+       <td>홍길동</td>
+       <td>서울</td>
+       <td>010-1111-1111</td>
+      </tr>
+      <tr>
+       <td>홍길동</td>
+       <td>서울</td>
+       <td>010-1111-1111</td>
+      </tr>
+      <tr>
+       <td>홍길동</td>
+       <td>서울</td>
+       <td>010-1111-1111</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!-- 
+   상태 선택자 / *** 구조 선택자
+   ***문자 선택자 / 부정 선택자  
+   
+   상태 선택자 : 태그를 가지고 온다 
+              --------------
+    ***:checked : 선택된 경우 
+        => checkbox 
+        => 자동 로그인 / ID 저장
+        => ------------------ JSP에서 제작 (cookie)
+        => Front : JavaScript (localStroge,Session) 
+    :focus 
+    :enabled : 활성화
+    :disabled : 비활성화
+   반응 선택자 
+    :hover 
+    :active 
+    
+   
+ -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+/* :active => 클릭 */
+#a:active , #b:active , #c:active {
+  color: red;
+}
+/* :hover => a / img / button / table = mouseover*/
+#a:hover , #b:hover , #c:hover {
+  color: gray;
+}
+/* :focus , :endabled , : disabled , :checked(상태 선택자) : input*/
+input:enabled{
+  background: yellow
+}
+input:disabled{
+  background: black
+}
+input:focus{
+  background: white
+}
+/* JavaScript : 가장 많이 등장 */
+input[type="checkbox"]:checked{
+  box-shadow: 0 0 0 3px hotpink;
+}
+</style>
+</head>
+<body>
+  <h1>:active, :hover (반응 선택자)</h1>
+  <h3 id="a">HTML / CSS</h3>
+  <h3 id="b">HTML5 / CSS3</h3>
+  <h3 id="c">JavaScript ES6.0</h3>
+  <h1>:focus , :endabled , : disabled , :checked(상태 선택자):input </h1>
+  <input type=text size=30><p>
+  <input type=text size=30 disabled><p>
+  <input type="checkbox" checked>취미<p>
+  
+</body>
+</html>
