@@ -144,6 +144,65 @@ public class FoodDAO {
 	   return total;
    }
    // 4-2. 상세보기 
+   /*
+    *      private int no;
+		   private double score;
+		   private String name,type,phone,address,parking,
+		           poster,time,content,theme,price;
+    */
+   /*
+    *   1. 코딩 
+    *   2. 에러 
+    *   3. GIT 
+    *   ==========> web은 로직이 없다 : SQL 
+    *               web 흐름 : 이동하는 파일 
+    *   HTML / CSS / JavaScript => 웹 개발 
+    */
+   public FoodVO foodDetailData(int no)
+   {
+	   FoodVO vo=new FoodVO();
+	   try
+	   {
+		   // 1. 연결
+		   getConnection();
+		   // 2. SQL
+		   String sql="SELECT no,name,poster,score,"
+				     +"type,phone,address,parking,time,"
+				     +"content,theme,price "
+				     +"FROM food "
+				     +"WHERE no=?"; // no => primary key (중복없음)
+		   // 3. 오라클 전송 
+		   ps=conn.prepareStatement(sql);
+		   // 4. ?에 값을 채운다 
+		   ps.setInt(1, no);
+		   // 5. 실행후에 결과값 읽기
+		   ResultSet rs=ps.executeQuery();
+		   // 6. 메모리에 저장된 데이터를 읽기 
+		   rs.next();
+		   vo.setNo(rs.getInt(1));
+		   vo.setName(rs.getString(2));
+		   vo.setPoster(rs.getString(3));
+		   vo.setScore(rs.getDouble(4));
+		   vo.setType(rs.getString(5));
+		   vo.setPhone(rs.getString(6));
+		   vo.setAddress(rs.getString(7));
+		   vo.setParking(rs.getString(8));
+		   vo.setTime(rs.getString(9));
+		   vo.setContent(rs.getString(10));
+		   vo.setTheme(rs.getString(11));
+		   vo.setPrice(rs.getString(12));
+		   
+		   rs.close();
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		   disConnection();
+	   }
+	   return vo;
+   }
 }
 
 

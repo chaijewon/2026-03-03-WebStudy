@@ -77,7 +77,7 @@
     %>
       <div class="col-md-3"> <!-- 숫자합 12가 되면 자동으로 다음줄로 내려간다 -->
 	    <div class="thumbnail">
-	      <a href="#">
+	      <a href="detail.jsp?no=<%=vo.getNo()%>">
 	        <img src="<%=vo.getPoster() %>" alt="" style="width:240px;height: 150px">
 	        <div class="caption">
 	          <p><%=vo.getName() %></p>
