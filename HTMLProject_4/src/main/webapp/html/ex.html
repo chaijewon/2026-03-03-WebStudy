@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Beautiful Table Design</title>
+
+<style>
+    body{
+        background:#f4f7fb;
+        font-family:'Pretendard', sans-serif;
+        padding:40px;
+    }
+
+    .table-wrap{
+        max-width:900px;
+        margin:auto;
+        background:white;
+        padding:20px;
+        border-radius:20px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+        overflow:hidden;
+        border-radius:16px;
+    }
+
+    thead{
+        background:linear-gradient(135deg,#4f46e5,#7c3aed);
+        color:white;
+    }
+
+    thead th{
+        padding:18px;
+        text-align:left;
+        font-size:15px;
+        font-weight:600;
+        letter-spacing:0.5px;
+    }
+
+    tbody tr{
+        transition:all 0.25s ease;
+        border-bottom:1px solid #eef2f7;
+    }
+
+    tbody tr:hover{
+        background:#f8f9ff;
+        transform:scale(1.01);
+    }
+
+    tbody td{
+        padding:18px;
+        color:#374151;
+        font-size:14px;
+    }
+
+    tbody tr:nth-child(even){
+        background:#fcfcfd;
+    }
+
+    .status{
+        display:inline-block;
+        padding:6px 12px;
+        border-radius:999px;
+        font-size:12px;
+        font-weight:600;
+    }
+
+    .active{
+        background:#dcfce7;
+        color:#15803d;
+    }
+
+    .pending{
+        background:#fef3c7;
+        color:#b45309;
+    }
+
+    .danger{
+        background:#fee2e2;
+        color:#b91c1c;
+    }
+
+    @media(max-width:768px){
+        table{
+            font-size:13px;
+        }
+
+        thead{
+            display:none;
+        }
+
+        table, tbody, tr, td{
+            display:block;
+            width:100%;
+        }
+
+        tbody tr{
+            margin-bottom:15px;
+            border-radius:12px;
+            background:white;
+            box-shadow:0 4px 12px rgba(0,0,0,0.05);
+            padding:10px;
+        }
+
+        tbody td{
+            text-align:right;
+            position:relative;
+            padding-left:50%;
+        }
+
+        tbody td::before{
+            content:attr(data-label);
+            position:absolute;
+            left:15px;
+            font-weight:600;
+            color:#6b7280;
+            text-align:left;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>직책</th>
+                <th>상태</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td data-label="이름">김민수</td>
+                <td data-label="이메일">minsu@example.com</td>
+                <td data-label="직책">Frontend Developer</td>
+                <td data-label="상태">
+                    <span class="status active">활성</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td data-label="이름">이지은</td>
+                <td data-label="이메일">jieun@example.com</td>
+                <td data-label="직책">UI Designer</td>
+                <td data-label="상태">
+                    <span class="status pending">대기중</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td data-label="이름">박서준</td>
+                <td data-label="이메일">seojun@example.com</td>
+                <td data-label="직책">Backend Developer</td>
+                <td data-label="상태">
+                    <span class="status danger">비활성</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
