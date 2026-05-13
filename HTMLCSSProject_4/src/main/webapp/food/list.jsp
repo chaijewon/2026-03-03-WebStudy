@@ -9,9 +9,25 @@
  --%> 
 <%
    //1. 자바에서 화면에 출력할 데이터를 가지고 온다 
+   //1-1. 사용자가 전송한 값을 받는다 (page를 보내준다)
+   //웹은 모든 데이터가 String으로 들어온다 => Wrapper => 정수로 변경 
+   // list.jsp?page=1 => URL뒤에 데이터를 전송 ?
+   String strPage=request.getParameter("page");
+   if(strPage==null) // 첫페이지 => 페이지를 선택 못하는 경우 
+		 strPage="1"; // default page 
+   int curpage=Integer.parseInt(strPage);
    FoodDAO dao=new FoodDAO();
-   List<FoodVO> list=dao.foodListData(1);
+   List<FoodVO> list=dao.foodListData(curpage);
    int totalpage=dao.foodTotalPage();
+   
+   final int BLOCK=10;
+   int startPage=((curpage-1)/BLOCK*BLOCK)+1;
+   // 1 11 21....
+   int endPage=((curpage-1)/BLOCK*BLOCK)+BLOCK;
+   // 10 20 30...
+   if(endPage>totalpage)
+	   endPage=totalpage;
+   
 %>
 <!DOCTYPE html>
 <html>
@@ -75,13 +91,31 @@
     </div>
     <div class="row text-center">
      <ul class="pagination">
-       <li><a href="#">&laquo;</a></li>
-       <li><a href="#">1</a></li>
-       <li><a href="#">2</a></li>
-       <li><a href="#">3</a></li>
-       <li><a href="#">4</a></li>
-       <li><a href="#">5</a></li>
-       <li><a href="#">&raquo;</a></li>
+       <%
+          if(startPage>1) // 1 11 21 31 ....
+          {
+       %>
+            <li><a href="list.jsp?page=<%=startPage-1%>">&laquo;</a></li>
+       <%
+          }
+       %>
+       <%
+          for(int i=startPage;i<=endPage;i++)
+          {
+       %>
+       <li <%=i==curpage?"class=active":"" %>><a href="list.jsp?page=<%=i %>"><%=i %></a></li>
+       <%
+          }
+       %>
+       
+       <%
+          if(endPage<totalpage)
+          {
+       %>
+       <li><a href="list.jsp?page=<%=endPage+1%>">&raquo;</a></li>
+       <%
+          }
+       %>
      </ul>
     </div>
   </div>
