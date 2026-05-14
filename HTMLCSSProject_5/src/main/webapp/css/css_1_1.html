@@ -5,6 +5,7 @@
 <title>Insert title here</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
 <script type="text/javascript">
+let json;
 $(function(){
 	loadData(1);
 	$('.btn-danger').click(function(){
@@ -16,6 +17,7 @@ $(function(){
 	$('.btn-warning').click(function(){
 		loadData(3)
 	})
+	
 })
 function loadData(no)
 {
@@ -26,10 +28,10 @@ function loadData(no)
 		success:function(res){
 		   	//$('.table tbody').text(res);
 		   	let html='';
-		   	let json=JSON.parse(res);
+		   	json=JSON.parse(res);
 		   	for(let i=0;i<json.length;i++)
 		   	{
-		   		html+='<tr>'
+		   		html+='<tr onmouseover="detail('+json[i].rank+')">'
 		   		    +'<td>'+json[i].rank+'</td>'
 		   		    +'<td><img src="https://www.kobis.or.kr'+json[i].thumbUrl+'" width=30 height=30></td>'
 		   		    +'<td>'+json[i].movieNm+'</td>'
@@ -37,9 +39,16 @@ function loadData(no)
 		   		    +'<td>'+json[i].genre+'</td>'
 		   		    +'</tr>'
 		   	}
-		   	$('.table tbody').html(html)
+		   	$('.list tbody').html(html)
 		}
 	})
+}
+function detail(no)
+{
+	$('.detail').show()
+	$('#img').attr("src",
+			"https://www.kobis.or.kr"+json[no-1].thumbUrl)
+	$('#title').text(json[no-1].movieNm)
 }
 </script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -63,7 +72,7 @@ function loadData(no)
    </div>
    <div class="row">
        <div class="col-sm-8">
-         <table class="table">
+         <table class="table list">
            <thead>
              <tr>
                <th class="text-center">순위</th>
@@ -79,7 +88,20 @@ function loadData(no)
          </table>
 	   </div>
 	   <div class="col-sm-4">
-	   
+	      <table class="table detail" style="display:none">
+	        <tbody>
+	          <tr>
+	            <td class="text-center" colspan="2">
+	             <img src="" style="width: 100%" id="img">
+	            </td>
+	          </tr>
+	          <tr>
+	            <td colspan="2">
+	              <h1 id="title"></h1>
+	            </td>
+	          </tr>
+	        </tbody>
+	      </table>
 	   </div>
    </div>
    
