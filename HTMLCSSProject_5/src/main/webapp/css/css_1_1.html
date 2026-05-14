@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript">
+$(function(){
+	loadData(1);
+	$('.btn-danger').click(function(){
+		loadData(1)
+	})
+	$('.btn-info').click(function(){
+		loadData(2)
+	})
+	$('.btn-warning').click(function(){
+		loadData(3)
+	})
+})
+function loadData(no)
+{
+	$.ajax({
+		type:"get",
+		url:"result.jsp",
+		data:{"no":no},
+		success:function(res){
+		   	//$('.table tbody').text(res);
+		   	let html='';
+		   	let json=JSON.parse(res);
+		   	for(let i=0;i<json.length;i++)
+		   	{
+		   		html+='<tr>'
+		   		    +'<td>'+json[i].rank+'</td>'
+		   		    +'<td><img src="https://www.kobis.or.kr'+json[i].thumbUrl+'" width=30 height=30></td>'
+		   		    +'<td>'+json[i].movieNm+'</td>'
+		   		    +'<td>'+json[i].director+'</td>'
+		   		    +'<td>'+json[i].genre+'</td>'
+		   		    +'</tr>'
+		   	}
+		   	$('.table tbody').html(html)
+		}
+	})
+}
+</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<style type="text/css">
+.container {
+  margin-top: 50px;
+  
+}
+.row {
+  margin: 0px auto; /* 가운데 정렬 */
+  width: 960px;
+}
+</style>
+</head>
+<body>
+  <div class="container">
+   <div class="row text-center">
+      <button class="btn-sm btn-danger">박스오피스</button>
+      <button class="btn-sm btn-info">실시간 예매율</button>
+      <button class="btn-sm btn-warning">좌석 점유율</button>
+   </div>
+   <div class="row">
+       <div class="col-sm-8">
+         <table class="table">
+           <thead>
+             <tr>
+               <th class="text-center">순위</th>
+               <th class="text-center"></th>
+               <th class="text-center">영화명</th>
+               <th class="text-center">감독</th>
+               <th class="text-center">장르</th>
+             </tr>
+           </thead>
+           <tbody>
+            
+           </tbody>
+         </table>
+	   </div>
+	   <div class="col-sm-4">
+	   
+	   </div>
+   </div>
+   
+  </div>
+</body>
+</html>

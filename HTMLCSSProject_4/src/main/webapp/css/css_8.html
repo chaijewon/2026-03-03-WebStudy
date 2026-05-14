@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>position 예제</title>
+
+<style>
+
+/* =========================
+   기본 스타일
+========================= */
+
+body {
+  font-family: sans-serif, "맑은 고딕";
+  margin: 20px;
+}
+
+h2 {
+  margin-top: 40px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 5px;
+}
+
+.box {
+  width: 200px;
+  height: 130px;
+  margin: 15px;
+  padding: 10px;
+  border: 2px solid gray;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
+  position: relative; /* 기준점 */
+  overflow: hidden;
+}
+
+/* =========================
+   absolute용 배지
+========================= */
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: crimson;
+  color: white;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>position 속성 예제</h1>
+
+<!-- =====================================================
+     1. static (기본값)
+===================================================== -->
+<h2>position: static (기본값)</h2>
+<div class="box" style="position: static; background: #eee;">
+  static<br>
+  기본 흐름
+</div>
+
+<div class="box" style="position: static; background: #ddd;">
+  static<br>
+  기본 흐름
+</div>
+
+
+<!-- =====================================================
+     2. relative
+===================================================== -->
+<h2>position: relative (자기 기준 이동)</h2>
+
+<div class="box" style="position: relative; top: 20px; left: 20px; background: lightblue;">
+  relative<br>
+  top:20px<br>
+  left:20px
+</div>
+
+<div class="box" style="position: relative; background: lightgreen;">
+  relative<br>
+  기준 유지
+</div>
+
+
+<!-- =====================================================
+     3. absolute
+===================================================== -->
+<h2>position: absolute (부모 기준 배치)</h2>
+
+<div class="box">
+
+  absolute box
+
+  <span class="badge">NEW</span>
+
+</div>
+
+<div class="box">
+
+  absolute box
+
+  <span class="badge">HOT</span>
+
+</div>
+
+
+<!-- =====================================================
+     4. fixed
+===================================================== -->
+<h2>position: fixed (화면 고정)</h2>
+
+<div style="
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: black;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+">
+  FIXED MENU
+</div>
+
+<div class="box" style="background: lightyellow;">
+  fixed는 화면에 고정됨
+</div>
+
+<div class="box" style="background: lightyellow;">
+  스크롤해도 안 움직임
+</div>
+
+
+<!-- =====================================================
+     5. sticky
+===================================================== -->
+<h2>position: sticky (스크롤 따라 고정)</h2>
+
+<div style="height: 200px; overflow: auto; border: 2px solid #aaa;">
+
+  <div style="
+    position: sticky;
+    top: 0;
+    background: purple;
+    color: white;
+    padding: 10px;
+  ">
+    STICKY HEADER
+  </div>
+
+  <p>스크롤 영역</p>
+  <p>스크롤 영역</p>
+  <p>스크롤 영역</p>
+  <p>스크롤 영역</p>
+  <p>스크롤 영역</p>
+  <p>스크롤 영역</p>
+  <p>스크롤 영역</p>
+  <p>스크롤 영역</p>
+
+</div>
+
+
+<!-- =====================================================
+     6. center (실무 핵심 패턴)
+===================================================== -->
+<h2>가운데 정렬 (absolute + transform)</h2>
+
+<div class="box" style="position: relative; height: 150px;">
+
+  <div style="
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: black;
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+  ">
+    CENTER
+  </div>
+
+</div>
+
+
+</body>
+</html>
