@@ -195,6 +195,51 @@ public class BoardDAO {
 	   return count;
    }
    // 상세보기 => WHERE 
+   public BoardVO boardDetailData(int no)
+   {
+	   BoardVO vo=new BoardVO();
+	   try
+	   {
+		   getConnection();
+		   String sql="UPDATE jspBoard SET "
+				     +"hit=hit+1 "
+				     +"WHERE no=?";
+		   ps=conn.prepareStatement(sql);
+		   ps.setInt(1, no);
+		   ps.executeUpdate();
+		   // 조회수 증가 
+		   
+		   // 게시물 읽기 
+		   sql="SELECT no,name,subject,content,hit,"
+			  +"TO_CHAR(regdate,'yyyy-mm-dd hh24:mi:ss') "
+			  +"FROM jspBoard "
+			  +"WHERE no=?";
+		   
+		   ps=conn.prepareStatement(sql);
+		   ps.setInt(1, no);
+		   ResultSet rs=ps.executeQuery();
+		   // 커서를 데이터 있는 위치로 이동 
+		   rs.next();
+		   
+		   vo.setNo(rs.getInt(1));
+		   vo.setName(rs.getString(2));
+		   vo.setSubject(rs.getString(3));
+		   vo.setContent(rs.getString(4));
+		   vo.setHit(rs.getInt(5));
+		   vo.setDbday(rs.getString(6));
+		   
+		   rs.close();
+		   // 기능 수행 => SQL문장이 한개가 아닌 경우도 있다 
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		   disConnection();
+	   }
+	   return vo;
+   }
    // 추가 => INSERT ==> 자바는 AutoCommit
    public void boardInsert(BoardVO vo)
    {
@@ -222,6 +267,42 @@ public class BoardDAO {
    }
    // 수정 => UPDATE
    // 삭제 => DELETE
+   public boolean boardDelete(int no,String pwd)
+   {
+	   boolean bCheck=false;
+	   try
+	   {
+		   getConnection();
+		   // 1. 비밀번호 검색 
+		   String sql="SELECT pwd FROM jspBoard "
+				     +"WHERE no=?";
+		   ps=conn.prepareStatement(sql);
+		   ps.setInt(1, no);
+		   ResultSet rs=ps.executeQuery();
+		   rs.next();
+		   String db_pwd=rs.getString(1);
+		   rs.close();
+		   
+		   if(db_pwd.equals(pwd))
+		   {
+			   bCheck=true;
+			   sql="DELETE FROM jspBoard "
+				  +"WHERE no=?";
+			   ps=conn.prepareStatement(sql);
+			   ps.setInt(1, no);
+			   ps.executeUpdate();
+		   }
+		   // 2. 맞으면 => 삭제 
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		   disConnection();
+	   }
+	   return bCheck;
+   }
    // JOIN / SUBQUERY / VIEW / INDEX / PROCEDURE / TRIGGER 
    
 }

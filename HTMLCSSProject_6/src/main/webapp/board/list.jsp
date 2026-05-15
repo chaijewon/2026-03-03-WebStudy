@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.util.*,com.sist.dao.*"%>
+<%@ page import="java.text.*" %>
 <%
     // 출력할 데이터 
     // 1. 사용자가 요청한 데이터 받기 => page => 한파일안에서 데이터 변경 => 동적 페이지
@@ -35,6 +36,13 @@
     int count=dao.boardRowCount();
     int totalpage=(int)(Math.ceil(count/10.0));
     count=count-((curpage*10)-10);
+    
+    String today=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    /*
+        숫자 : DecimalForamt / 날짜 : SimpleDateFormat
+        ==> TO_CHAR(regdate,'yyyy-mm-dd')
+        ==> TO_CHAR(10000,'#,###,###')
+    */
     
 %>
 <!DOCTYPE html>
@@ -80,6 +88,11 @@ h3 {
   background: #f1f5ff;
   transform:scale(1.01);
 }
+.sub {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 </style>
 </head>
 <body>
@@ -124,7 +137,23 @@ h3 {
 	         %>
 	                 <tr class="a">
 			           <td width=10% class="text-center"><%=count-- %></td>
-			           <td width=45%><%= vo.getSubject() %></td>
+			           <td width=45%>
+			             <%-- 화면 이동 --%>
+			             <a href="detail.jsp?no=<%=vo.getNo()%>" class="sub"><%= vo.getSubject() %></a>
+			             &nbsp;
+			             <%
+			                // 오늘 날짜
+			                if(today.equals(vo.getDbday()))
+			                {
+			             %>
+			                   <sup><img src="new.gif"></sup>
+			             <%
+			                }
+			             %>
+			           
+			           </td>
+			           
+			           
 			           <td width=15% class="text-center"><%= vo.getName()%></td>
 			           <td width=20% class="text-center"><%=vo.getDbday() %></td>
 			           <td width=10% class="text-center"><%=vo.getHit() %></td>
