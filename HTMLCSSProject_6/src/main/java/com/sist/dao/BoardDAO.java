@@ -266,6 +266,75 @@ public class BoardDAO {
 	   }
    }
    // 수정 => UPDATE
+   public BoardVO boardUpdateData(int no)
+   {
+	   BoardVO vo=new BoardVO();
+	   try
+	   {
+		   getConnection();
+		   String sql="SELECT no,name,subject,content "
+				     +"FROM jspBoard "
+				     +"WHERE no=?";
+		   ps=conn.prepareStatement(sql);
+		   ps.setInt(1, no);
+		   ResultSet rs=ps.executeQuery();
+		   rs.next();
+		   vo.setNo(rs.getInt(1));
+		   vo.setName(rs.getString(2));
+		   vo.setSubject(rs.getString(3));
+		   vo.setContent(rs.getString(4));
+		   rs.close();
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		   disConnection();
+	   }
+	   return vo;
+   }
+   // 실제 수정 
+   public boolean boardUpdate(BoardVO vo)
+   {
+	   boolean bCheck=false;
+	   try
+	   {
+		   // 비밀번호 검색 => 맞는 경우에 수정 
+		   getConnection();
+		   String sql="SELECT pwd FROM jspBoard "
+				     +"WHERE no=?";
+		   ps=conn.prepareStatement(sql);
+		   ps.setInt(1, vo.getNo());
+		   ResultSet rs=ps.executeQuery();
+		   rs.next();
+		   String db_pwd=rs.getString(1);
+		   rs.close();
+		   
+		   if(db_pwd.equals(vo.getPwd()))
+		   {
+			   bCheck=true;
+			   sql="UPDATE jspBoard SET "
+				  +"name=?,subject=?,content=? "
+				  +"WHERE no=?";
+			   ps=conn.prepareStatement(sql);
+			   // ?에 값을 채운다 
+			   ps.setString(1, vo.getName());
+			   ps.setString(2, vo.getSubject());
+			   ps.setString(3, vo.getContent());
+			   ps.setInt(4, vo.getNo());
+			   ps.executeUpdate();
+		   }
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		   disConnection();
+	   }
+	   return bCheck;
+   }
    // 삭제 => DELETE
    public boolean boardDelete(int no,String pwd)
    {
