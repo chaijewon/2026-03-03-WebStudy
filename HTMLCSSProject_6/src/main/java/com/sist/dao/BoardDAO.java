@@ -373,7 +373,112 @@ public class BoardDAO {
 	   return bCheck;
    }
    // JOIN / SUBQUERY / VIEW / INDEX / PROCEDURE / TRIGGER 
-   
+   public List<EmpVO> empListData(int page)
+   {
+	   // 사용자가 원하는 페이지 전송 => 해당 페이지를 오라클에서 가지고 와서 전송 
+	   // => 출력에 필요한 내용 : 리턴형 
+	   // => 사용자부터 받는 값 : 매개변수 
+	   List<EmpVO> list=new ArrayList<EmpVO>();
+	   // java.sql / java.io / java.net => 예외처리가 필요 (CheckException)
+	   try
+	   {
+		   // 정상 수행 문장 
+		   // 1. 오라클 연결 
+		   getConnection();
+		   // 2. SQL문장 : String 
+		   String sql="SELECT empno,ename,job,TO_CHAR(hiredate,'yyyy-mm-dd'),TO_CHAR(sal,'99,999') "
+				     +"FROM emp2 "
+				     +"ORDER BY empno ASC "
+				     +"OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"; //12C
+		   //          LIMIT ? , 10 
+		   /*
+		    *     SELECT no,subject,name,TO_CHAR(regdate,'yyyy-mm-dd'),hit,num
+		    *     FROM (SELECT no,subject,name,regdate,hit,rownum as num
+		    *     FROM (SELECT no,subject,name,regdate,hit
+		    *     FROM jspBoard ORDER BY no DESC))
+		    *     WHERE num BETWEEN ? AND ? => 인라인 뷰 
+		    */
+				   
+		   // 3. SQL문장 전송 
+		   ps=conn.prepareStatement(sql);
+		   // 4. ?에 값을 채운다 
+		   ps.setInt(1, (page*10)-10);  // 0번 0 10 20...
+		   // 정수 setInt() / 실수 setDouble() / 문자 setString() 
+		   // 날짜 => 예약일  setDate()
+		   // 날짜 , 문자 => 자동으로 ''
+		   // 5. 오라클에 명령 => SQL실행한 결과 읽기 
+		   ResultSet rs=ps.executeQuery();
+		   // 6. List/VO에 값을 채운다 
+		   /*
+		    *       ------------------------------------
+		    *         no   subject  name  regdate   hit
+		    *       ------------------------------------
+		    *         1      ...    ...   ...       ...  | => next
+		    *       ------------------------------------
+		    *         2      ...    ...   ...       ...
+		    *       ------------------------------------
+		    *         3      ...    ...   ...       ...  | => previous
+		    *       ------------------------------------
+		    *        정수 : getInt()
+		    *        실수 : getDouble()
+		    *        문자 : getString()
+		    *        날짜 : getDate()
+		    *        
+		    *        getInt(String) getInt(int) 
+		    *                       ----------- index 
+		    *        --------------
+		    *          컬럼명도 가능   => rs.getInt(1) , rs.getInt("no")
+		    *       메모리 => 커서 |
+		    *       
+		    *       ResultSet => 단위가 Record 단위 => 한줄 전체를 읽어 온다 
+		    */
+		   while(rs.next()) // 출력물 처음부터 => 한줄씩 내려가면서 값을 읽어 온다 
+		   {
+			   EmpVO vo=new EmpVO();
+			   vo.setEmpno(rs.getInt(1));
+			   vo.setEname(rs.getString(2));
+			   vo.setJob(rs.getString(3));
+			   vo.setDbday(rs.getString(4));
+			   vo.setSal2(rs.getString(5));
+			   
+			   // 10개씩 저장 => VO을 저장하는 클래스 => List / 배열 
+			   list.add(vo);
+		   }
+		   // 7. ResultSet 닫기 
+		   rs.close();
+	   }catch(Exception ex)
+	   {
+		   // 에러 복구 => 에러 확인 => 소스 수정 
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		   disConnection(); // 닫기 (무조건) => IO / Server
+	   }
+	   return list;
+   }
+   public int empTotalPage()
+   {
+	   int count=0;
+	   try
+	   {
+		   getConnection();
+		   String sql="SELECT CEIL(COUNT(*)/10.0) FROM emp2";
+		   ps=conn.prepareStatement(sql);
+		   ResultSet rs=ps.executeQuery();
+		   rs.next();
+		   count=rs.getInt(1);
+		   rs.close();
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		   disConnection();
+	   }
+	   return count;
+   }
 }
 
 
