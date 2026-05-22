@@ -58,9 +58,21 @@ p{
          }
       %>
     </div>
+    <%--
+        1. 목록 / 상세보기 
+        2. 페이징 
+        3. CRUD(게시판 , 댓글) => JSP / Spring / SpringBoot
+     --%>
     <div class="row text-center" style="margin-top: 10px">
       <ul class="pagination">
-        <li><a href="#">&laquo;</a></li>
+       <%
+         if(startPage>1) // 1 11-1 => 10
+         {
+       %>
+        <li><a href="main.jsp?page=<%=startPage-1%>">&laquo;</a></li>
+      <%
+         }
+      %>
         <%
            for(int i=startPage;i<=endPage;i++)
            {
@@ -69,7 +81,14 @@ p{
         <%
            }
         %>
-        <li><a href="#">&raquo;</a></li>
+        <%
+          if(endPage<totalpage)
+          {
+        %>
+        <li><a href="main.jsp?page=<%=endPage+1%>">&raquo;</a></li>
+        <%
+          }
+        %>
       </ul>
     </div>
   </div>
