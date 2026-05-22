@@ -19,6 +19,26 @@
    int endPage=(((curpage-1)/10*10))+10;// 10(curpage:1~10) 20 30
    if(endPage>totalpage)
 	   endPage=totalpage;
+   
+   // 쿠키를 읽어서 출력 
+   List<FoodVO> cList=new ArrayList();
+   
+   Cookie[] cookies=request.getCookies();
+   if(cookies!=null)
+   {
+	   for(int i=cookies.length-1;i>=0;i--)
+	   {
+		   // 최신순으로 
+		   if(cookies[i].getName().startsWith("food_"))
+		   {
+			   String value=cookies[i].getValue();
+			   // value ==> no
+			   FoodVO vo=dao.foodDetailData(Integer.parseInt(value));
+			   cList.add(vo);
+		   }
+		   
+	   }
+   }
 %>
 <!DOCTYPE html>
 <html>
@@ -91,6 +111,28 @@ p{
           }
         %>
       </ul>
+    </div>
+    <div class="row" style="margin-top: 20px">
+      <div class="recent-container">
+        <h3>최근 방문 맛집</h3>
+        <div class="recent-list">
+          <%
+            for(FoodVO vo:cList)
+            {
+          %>
+                <a class="recent-card" href="../main/main.jsp?mode=2&no=<%=vo.getNo()%>">
+                 <div class="thumb">
+                   <img src="<%=vo.getPoster()%>">
+                 </div>
+                 <div class="meta">
+                   <div class="title"><%=vo.getName() %></div>
+                 </div>
+                </a>
+          <%
+            }
+          %>
+        </div>
+      </div>
     </div>
   </div>
 </body>
