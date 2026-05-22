@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Connection -->
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <!-- VO 등록 -->
+  <typeAliases>
+    <typeAlias type="com.sist.vo.DataBoardVO" alias="DataBoard"/>
+  </typeAliases>
+  
+  <!-- Connection 생성  -->
+  <environments default="development">
+    <environment id="development">
+      <!-- 일괄처리 : JDBC (AutoCommit) -->
+      <transactionManager type="JDBC"/>
+      <!-- DBCP이용 = 오라클 정보 전송 -->
+      <dataSource type="POOLED">
+        <property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+        <property name="username" value="hr"/>
+        <property name="password" value="happy"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <!-- Mapper : PreparedStatement , ResultSet -->
+    <mapper resource="com/sist/dao/databoard.xml"/>
+  </mappers>
+</configuration>

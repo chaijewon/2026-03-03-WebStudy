@@ -17,7 +17,7 @@
       <a class="navbar-brand" href="#">JSP Basic</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="#">Home</a></li>
+      <li class="active"><a href="main.jsp">Home</a></li>
       <%--
           Cookie / Session (12장)
        --%>
@@ -27,7 +27,7 @@
           = commons-fileupload.jar = Apache => Spring-Boot
           
        --%>
-      <li><a href="#">자료실</a></li>
+      <li><a href="main.jsp?mode=3">자료실</a></li>
       <%
          if(id!=null)// 로그인이 되었다면 
          {

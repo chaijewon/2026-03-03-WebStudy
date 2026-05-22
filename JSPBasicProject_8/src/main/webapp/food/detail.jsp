@@ -14,7 +14,7 @@
 <style type="text/css">
 .detail {
   margin: 0px auto;
-  width: 700px;
+  width: 800px;
 }
 #image {
   width: 100%;
