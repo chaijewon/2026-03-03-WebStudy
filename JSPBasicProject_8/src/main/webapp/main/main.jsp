@@ -1,3 +1,4 @@
+<%@page import="com.sist.jsp.JspChange"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%--
@@ -147,9 +148,32 @@
        1. 메인 페이지 => 조원 공동 
        2. 회원 => 로그인 => 메뉴 조절 
        3. 메뉴별 => 역할 
+       
+       session의 주요 메소드 
+       -------- 브라우저별로 구분
+       -------- jquery : 3.0 => IE , jquery : 4.0 => IE제외
+       1. 저장 => setAttribute(key,value)
+                            key가 중복되면 덮어쓴다 
+                 key => 문자열 , value => Object
+       2. 읽기 => getAttribute(key)
+       3. 전체 삭제 => invalidate() => 로그아웃 
+       4. 장바구니 => removeAttribute(key)
+       ---------------------------------------
+       덮어쓰는 경우 : 회원 수정 
+       5. getId() => 사용자별 구분 => webSocket 
+       6. isNew() => 처음 저장된 상태 
+       ----> 서버에 저장 (보안이 좋다)
    */
    
+   String mode=request.getParameter("mode");
+   if(mode==null)
+	   mode="1";
+   int index=Integer.parseInt(mode);
+   String jsp=JspChange.change(index);
 %>
+<%--
+    CSS / JS => main에 존재 
+ --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -163,6 +187,7 @@
    width:960px;
 }
 </style>
+<link rel="stylesheet" href="../css/cookie.css">
 </head>
 <body>
   <jsp:include page="header.jsp"></jsp:include>
@@ -199,5 +224,6 @@
       %>
     </div>
   </div>
+  <jsp:include page="<%=jsp %>"></jsp:include>
 </body>
 </html>
