@@ -17,6 +17,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+   <%=
+     application.getRealPath("")
+   %>
   <div class="container" style="margin-top: 20px">
     <div class="row" style="width: 800px;margin: 0px auto">
       <table class="table">

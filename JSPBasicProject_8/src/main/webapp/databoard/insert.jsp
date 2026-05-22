@@ -7,9 +7,19 @@
 <title>Insert title here</title>
 </head>
 <body>
+   <%--
+        multipart/form-data
+        
+        => 서버로 전송 
+        Part 1: file(파일 데이터)
+        Part 2: 문자 데이터 
+   --%>
   <div class="container" style="margin-top: 20px">
     <h3 class="text-center">글쓰기</h3>
     <div class="row" style="width: 800px;margin: 0px auto">
+      <form method="post" action="../UploadServlet" 
+        enctype="multipart/form-data"
+      >
        <table class="table">
          <tr>
            <th class="text-right" width=10%>이름</th>
@@ -54,7 +64,8 @@
              >취소</button>
            </td>
          </tr>
-       </table>    
+       </table>  
+       </form>  
     </div>
   </div>
 </body>
