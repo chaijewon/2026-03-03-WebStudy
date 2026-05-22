@@ -9,6 +9,14 @@
     List<DataBoardVO> list=dao.databoardListData(curpage);
     int totalpage=dao.databoardTotalPage();
     // 이전 / 다음
+    /*
+       cos.jar : upload라이브러리 
+         => 파일명 갱신이 된다 
+         => tomcat 9.0
+            ------------- javax.http 
+         => tomcat 10 
+            ------------- jakarata.http
+    */
 %>
 <!DOCTYPE html>
 <html>
@@ -17,9 +25,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-   <%=
-     application.getRealPath("")
-   %>
   <div class="container" style="margin-top: 20px">
     <div class="row" style="width: 800px;margin: 0px auto">
       <table class="table">
