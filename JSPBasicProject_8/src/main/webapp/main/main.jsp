@@ -174,9 +174,9 @@
      %>
       <form method=post action="../member/login.jsp">
 	      <div class="logform text-right">
-	        ID:<input type=text name=id class="input-sm" size=15>
+	        ID:<input type=text name=id class="input-sm" size=15 required>
 	        &nbsp;
-	        PW:<input type=password name=pwd class="input-sm" size=15>
+	        PW:<input type=password name=pwd class="input-sm" size=15 required>
 	        &nbsp;
 	        <button class="btn-sm btn-primary">로그인</button>
 	      </div>
@@ -188,7 +188,8 @@
       %>
       <form method="post" action="../member/logout.jsp">
 	      <div class="logform text-right">
-	        <%= session.getAttribute("name") %>님 로그인 되었습니다 
+	        <%= session.getAttribute("name")%>
+	        (<%=((String)session.getAttribute("admin")).equals("y")?"관리자":"일반사용자" %>)님 로그인 되었습니다 
 	        &nbsp;
 	        <button class="btn-sm btn-primary">로그아웃</button>
 	      </div>
