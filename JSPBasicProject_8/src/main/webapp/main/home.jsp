@@ -46,7 +46,8 @@ p{
       %>
              <div class="col-md-3">
 			    <div class="thumbnail">
-			      <a href="#">
+			      <%-- 이동 => 쿠키 전송 --%>
+			      <a href="../food/detail_before.jsp?no=<%=vo.getNo()%>">
 			        <img src="<%=vo.getPoster() %>" style="width:240px;height: 150px;object-fit:cover">
 			        <div class="caption">
 			          <p><%=vo.getName()%></p>

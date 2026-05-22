@@ -164,7 +164,19 @@
        6. isNew() => 처음 저장된 상태 
        ----> 서버에 저장 (보안이 좋다)
    */
-   
+   /*
+       데이터 전송 받는 경우 
+       => 포함하고 있는 JSP에서 데이터 공유 => include 
+       => 나눠서 사용 
+       => main.jsp : mode => 화면 변경  
+       => *.jsp : 해당 데이터를 받아서 화면 출력 
+       
+       ** request를 공유 
+          = include가 된 경우 
+          = forward가 된 경우 
+          
+          <a> , <form> , sendRedirect => request 초기화
+   */
    String mode=request.getParameter("mode");
    if(mode==null)
 	   mode="1";
