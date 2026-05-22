@@ -46,6 +46,14 @@
              required>
            </td>
          </tr>
+         <tr>
+           <td colspan="2" class="text-center">
+             <button class="btn-sm btn-warning">글쓰기</button>
+             <button type="button" class="btn-sm btn-warning"
+               onclick="javascript:history.back()"
+             >취소</button>
+           </td>
+         </tr>
        </table>    
     </div>
   </div>
