@@ -70,7 +70,7 @@ h3 {
            <tr>
             <td width=10% class="text-center">${vo.no }</td>
             <td width=45%>
-              ${vo.subject }
+              <a href="detail.jsp?no=${vo.no }">${vo.subject }</a>
               <c:if test="${today==vo.dbday }">
                 <sup><img src="new.gif"></sup>
               </c:if>

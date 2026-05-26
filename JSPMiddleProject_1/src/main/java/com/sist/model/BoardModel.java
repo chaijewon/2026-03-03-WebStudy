@@ -51,4 +51,13 @@ public class BoardModel {
 		}
 	      
    }
+   // 상세보기 
+   public void boardDetailData(HttpServletRequest request)
+   {
+	   String no=request.getParameter("no");
+	   BoardDAO dao=BoardDAO.newInstance();
+	   BoardVO vo=dao.boardDetailData(Integer.parseInt(no));
+	   // detail.jsp로 값 전송 => MVC / Spring / SpringBoot
+	   request.setAttribute("vo", vo); // ${request.getAttribute(vo)}
+   }
 }
