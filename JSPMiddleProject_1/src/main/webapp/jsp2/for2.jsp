@@ -8,8 +8,17 @@
    names.add("박문수");
    names.add("춘향이");
    names.add("이순신");
+   
+   List<String> sexs=new ArrayList<String>();
+   sexs.add("남자");
+   sexs.add("여자");
+   sexs.add("남자");
+   sexs.add("여자");
+   sexs.add("남자");
+   
 %>
 <c:set var="list" value="<%=names %>"/>
+<c:set var="sexs" value="<%=sexs %>"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,6 +99,21 @@
     </c:forEach>
   </ul>
   <h1>Java 이용한 컬렉션 출력 (두개일 경우)</h1>
+  <ul>
+    <%
+       for(i=0;i<names.size();i++)
+       {
+    %>
+         <li><%=names.get(i) %>(<%=sexs.get(i) %>)</li>
+    <%
+       }
+    %>
+  </ul>
   <h1>JSTL 이용한 컬렉션 출력 (두개일 경우)</h1>
+  <ul>
+    <c:forEach var="name" items="${list }" varStatus="s">
+      <li>${name }(${sexs[s.index] })</li>
+    </c:forEach>
+  </ul>
 </body>
 </html>
