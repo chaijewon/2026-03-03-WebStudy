@@ -1,4 +1,6 @@
 package com.sist.model;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import com.sist.dao.*;
 import com.sist.vo.*;
@@ -20,5 +22,33 @@ public class BoardModel {
 	   request.setAttribute("list", list);// ${}
 	   request.setAttribute("curpage", curpage);
 	   request.setAttribute("totalpage", totalpage);
+	   SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+	   String today=sdf.format(new Date());
+	   request.setAttribute("today", today);
+   }
+   public void boardInsert(HttpServletRequest request,
+		     HttpServletResponse response)
+   {
+	   String name=request.getParameter("name");
+	   String subject=request.getParameter("subject");
+	   String content=request.getParameter("content");
+	   String pwd=request.getParameter("pwd");
+	   BoardVO vo=new BoardVO();
+	   vo.setContent(content);
+	   vo.setName(name);
+	   vo.setSubject(subject);
+	   vo.setPwd(pwd);
+	   
+	   BoardDAO dao=BoardDAO.newInstance();
+	   dao.boardInsert(vo);
+	   
+	   
+		try {
+			response.sendRedirect("list.jsp");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	      
    }
 }

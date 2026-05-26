@@ -65,9 +65,9 @@ public class BoardDAO {
 	   {
 		   // 1. 미리 만들어진 Connection 주소 얻기
 		   getConnection();
-		   String sql="SELECT no,subject,name,regdate,hit "
-				     +"FROM board "
-				     +"ORDER BY no ASC "
+		   String sql="SELECT no,subject,name,TO_CHAR(regdate,'yyyy-mm-dd'),hit "
+				     +"FROM jspBoard "
+				     +"ORDER BY no DESC "
 				     +"OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY";
 		   // 2. SQL문장 전송 
 		   ps=conn.prepareStatement(sql);
@@ -82,7 +82,7 @@ public class BoardDAO {
 			   vo.setNo(rs.getInt(1));
 			   vo.setSubject(rs.getString(2));
 			   vo.setName(rs.getString(3));
-			   vo.setRegdate(rs.getDate(4));
+			   vo.setDbday(rs.getString(4));
 			   vo.setHit(rs.getInt(5));
 			    
 			   list.add(vo);
@@ -106,7 +106,7 @@ public class BoardDAO {
 	   try
 	   {
 		   getConnection();
-		   String sql="SELECT CEIL(COUNT(*)/10.0) FROM board";
+		   String sql="SELECT CEIL(COUNT(*)/10.0) FROM jspboard";
 		   ps=conn.prepareStatement(sql);
 		   ResultSet rs=ps.executeQuery();
 		   rs.next();
@@ -121,6 +121,30 @@ public class BoardDAO {
 		   disConnection();
 	   }
 	   return total;
+   }
+   // 데이터 추가 
+   public void boardInsert(BoardVO vo)
+   {
+	   try
+	   {
+		   getConnection();
+		   String sql="INSERT INTO jspboard(name,subject,content,pwd) "
+				     +"VALUES(?,?,?,?)";
+		   // no => auto_increment
+		   ps=conn.prepareStatement(sql);
+		   ps.setString(1, vo.getName());
+		   ps.setString(2, vo.getSubject());
+		   ps.setString(3, vo.getContent());
+		   ps.setString(4, vo.getPwd());
+		   ps.executeUpdate();
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		   disConnection();
+	   }
    }
    
 }
