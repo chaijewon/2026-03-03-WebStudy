@@ -6,6 +6,8 @@ import com.sist.dao.*;
 // 데이터 관리 
 // 데이터 관리 => JSP안에서 처리 => 유지보수/확장성/분업 => 자바로 변경
 // Model => DAO , VO포함 
+// 일반 JSP ====> MV (분리) : 메소드 ====> MVC 
+// MVC ==> Spring형식 
 public class MusicModel {
    public void musicList(HttpServletRequest request)
    {
