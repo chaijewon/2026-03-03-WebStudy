@@ -119,7 +119,8 @@ public class BoardModel {
 		String content=request.getParameter("content");
 		String pwd=request.getParameter("pwd");
 		String no=request.getParameter("no");//hidden
-		
+		System.out.println("pwd:"+pwd);
+		System.out.println("no:"+no);
 		BoardVO vo=new BoardVO();
 		vo.setName(name);
 		vo.setSubject(subject);
@@ -132,20 +133,32 @@ public class BoardModel {
 		
 	  try
 	  {
-			if(bCheck==true) // 비밀번호가 맞아서 수정 
+		    response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out=response.getWriter();
+			if(bCheck==true)
+			{
+				out.write("yes");
+			}
+			else
+			{
+				out.write("no");
+			}
+			/*if(bCheck==true) // 비밀번호가 맞아서 수정 
 			{
 			   
 				response.sendRedirect("detail.jsp?no="+no);
 			}
 			else
 			{
+				
 				response.setContentType("text/html;charset=UTF-8");
 				PrintWriter out=response.getWriter();
 				out.write("<script>");
 				out.write("alert(\"비밀번호가 틀립니다!!\");");
 				out.write("history.back();");
 				out.write("</script>");
-			}
+			}*/
+		    
 	  }catch(Exception ex){}
 	}
 }
