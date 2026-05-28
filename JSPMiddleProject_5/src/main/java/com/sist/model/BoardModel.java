@@ -1,4 +1,5 @@
 package com.sist.model;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 /*
  *    Controller : 처리된 데이터를 JSP 전송 : Servlet => 이미 생성 
@@ -86,6 +87,66 @@ public class BoardModel {
 		{
 		   response.sendRedirect("list.jsp");
 		}catch(Exception ex) {}
+	}
+	
+	public void boardDetail(HttpServletRequest request)
+	{
+		String no=request.getParameter("no");
+		BoardDAO dao=BoardDAO.newInstance();
+		BoardVO vo=dao.baordDetail(Integer.parseInt(no));
+		
+		// JSP로 전송 
+		request.setAttribute("vo", vo); // detail.jsp
+	}
+	
+	// 수정 데이터 읽기
+	public void boardUpdateData(HttpServletRequest request)
+	{
+		String no=request.getParameter("no");
+		BoardDAO dao=BoardDAO.newInstance();
+		BoardVO vo=dao.baordUpdateData(Integer.parseInt(no));
+		
+		// JSP 전송 
+		request.setAttribute("vo", vo);
+	}
+	
+	// 실제 수정 
+	public void boardUpdate(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		String name=request.getParameter("name");
+		String subject=request.getParameter("subject");
+		String content=request.getParameter("content");
+		String pwd=request.getParameter("pwd");
+		String no=request.getParameter("no");//hidden
+		
+		BoardVO vo=new BoardVO();
+		vo.setName(name);
+		vo.setSubject(subject);
+		vo.setContent(content);
+		vo.setPwd(pwd);
+		vo.setNo(Integer.parseInt(no));
+		
+		BoardDAO dao=BoardDAO.newInstance();
+		boolean bCheck=dao.boardUpdate(vo);
+		
+	  try
+	  {
+			if(bCheck==true) // 비밀번호가 맞아서 수정 
+			{
+			   
+				response.sendRedirect("detail.jsp?no="+no);
+			}
+			else
+			{
+				response.setContentType("text/html;charset=UTF-8");
+				PrintWriter out=response.getWriter();
+				out.write("<script>");
+				out.write("alert(\"비밀번호가 틀립니다!!\");");
+				out.write("history.back();");
+				out.write("</script>");
+			}
+	  }catch(Exception ex){}
 	}
 }
 

@@ -169,7 +169,124 @@ public class BoardDAO {
 	   }
    }
    // 4-3. 상세보기 = 조회수 증가 / 실제 데이터 
+   public BoardVO baordDetail(int no)
+   {
+	   BoardVO vo=new BoardVO();
+	   try
+	   {
+		   getConnection();
+		   String sql="UPDATE jspReplyBoard SET "
+				     +"hit=hit+1 "
+				     +"WHERE no=?";
+		   ps=conn.prepareStatement(sql);
+		   ps.setInt(1, no);
+		   ps.executeUpdate();
+		   
+		   // 실제 데이터 읽기 
+		   sql="SELECT no,name,subject,content,hit,"
+			  +"TO_CHAR(regdate,'yyyy-MM-dd hh24:mi:ss') "
+			  +"FROM jspReplyBoard "
+			  +"WHERE no=?";
+		   ps=conn.prepareStatement(sql);
+		   ps.setInt(1, no);
+		   
+		   // 결과값 
+		   ResultSet rs=ps.executeQuery();
+		   rs.next();
+		   vo.setNo(rs.getInt(1));
+		   vo.setName(rs.getString(2));
+		   vo.setSubject(rs.getString(3));
+		   vo.setContent(rs.getString(4));
+		   vo.setHit(rs.getInt(5));
+		   vo.setDbday(rs.getString(6));
+		   rs.close();
+		   // Model => 요청 처리하는 메소드 => 해당 데이터 전송 : request/session
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		   disConnection();
+	   }
+	   return vo;
+   }
    // 4-4. 수정하기 
+   public BoardVO baordUpdateData(int no)
+   {
+	   BoardVO vo=new BoardVO();
+	   try
+	   {
+		   getConnection();
+		   String sql="SELECT no,name,subject,content "
+			  +"FROM jspReplyBoard "
+			  +"WHERE no=?";
+		   ps=conn.prepareStatement(sql);
+		   ps.setInt(1, no);
+		   
+		   // 결과값 
+		   ResultSet rs=ps.executeQuery();
+		   rs.next();
+		   vo.setNo(rs.getInt(1));
+		   vo.setName(rs.getString(2));
+		   vo.setSubject(rs.getString(3));
+		   vo.setContent(rs.getString(4));
+		  
+		   rs.close();
+		   // Model => 요청 처리하는 메소드 => 해당 데이터 전송 : request/session
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		   disConnection();
+	   }
+	   return vo;
+   }
+   
+   public boolean boardUpdate(BoardVO vo)
+   {
+	   boolean bCheck=false;
+	   try
+	   {
+		   getConnection();
+		   String sql="SELECT pwd FROM jspReplyBoard "
+				     +"WHERE no=?";
+		   ps=conn.prepareStatement(sql);
+		   ps.setInt(1, vo.getNo());
+		   ResultSet rs=ps.executeQuery();
+		   rs.next();
+		   String db_pwd=rs.getString(1);
+		   rs.close();
+		   
+		   // 본인 여부 확인 
+		   if(db_pwd.equals(vo.getPwd()))
+		   {
+			   bCheck=true;
+			   
+			   // 수정
+			   sql="UPDATE jspReplyBoard SET "
+				  +"name=?,subject=?,content=? "
+				  +"WHERE no=?";
+			   ps=conn.prepareStatement(sql);
+			   ps.setString(1, vo.getName());
+			   ps.setString(2, vo.getSubject());
+			   ps.setString(3, vo.getContent());
+			   ps.setInt(4, vo.getNo());
+			   ps.executeUpdate();
+		   }
+		   
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		   disConnection();//반환
+	   }
+	   return bCheck;
+   }
    /////////////////////////
    // 4-5. 답변 올리기 => SQL 4개 수행 
    // 4-6. 삭제하기   => 4개 수행 

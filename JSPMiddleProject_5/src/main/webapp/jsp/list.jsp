@@ -55,7 +55,8 @@
                </c:forEach>
                <img src="re_icon.png">
              </c:if>
-             ${vo.subject } <%-- vo.getSubject() --%>
+             <%-- 상세보기는 1개만 실행 => primary key 컬럼을 넘겨준다 --%>
+             <a href="detail.jsp?no=${vo.no }">${vo.subject }</a> <%-- vo.getSubject() --%>
              <c:if test="${vo.dbday==today }">
               &nbsp;<sup><img src="new.gif"></sup>
              </c:if>
