@@ -41,7 +41,7 @@
         </tr>
         <tr>
           <td colspan="4" class="text-right">
-            <a href="#" class="btn btn-xs btn-success">답변</a>
+            <a href="reply.jsp?no=${vo.no }" class="btn btn-xs btn-success">답변</a>
             <a href="update.jsp?no=${vo.no }" class="btn btn-xs btn-info">수정</a>
             <a href="#" class="btn btn-xs btn-warning">삭제</a>
             <a href="list.jsp" class="btn btn-xs btn-danger">목록</a>
