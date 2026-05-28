@@ -1,0 +1,13 @@
+@charset "UTF-8";
+/* 화면 출력 영역 */
+.container {
+  margin-top: 50px;
+}
+/* 실제 화면 출력 */
+.row {
+  margin: 0px auto;
+  width:800px;
+}
+h3 {
+   text-align: center;
+}
