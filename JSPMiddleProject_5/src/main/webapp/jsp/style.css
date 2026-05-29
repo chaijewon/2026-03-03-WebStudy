@@ -6,8 +6,148 @@
 /* 실제 화면 출력 */
 .row {
   margin: 0px auto;
-  width:800px;
+  width:960px;
 }
 h3 {
    text-align: center;
+}
+
+
+/* 전체 배경 */
+body{
+    background:#f4f6f9;
+    font-family: 'Noto Sans KR', sans-serif;
+    color:#333;
+}
+
+/* 컨테이너 */
+.container{
+    margin-top:40px;
+}
+
+/* 게시판 박스 */
+.row{
+    background:white;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* 제목 */
+h3{
+    font-weight:700;
+    margin-bottom:25px;
+    color:#222;
+    border-left:6px solid #dc3545;
+    padding-left:12px;
+}
+
+/* 테이블 */
+.table{
+    background:white;
+    margin-bottom:20px;
+}
+
+/* 헤더 */
+.table .success{
+    background:linear-gradient(135deg,#5b86e5,#36d1dc);
+    color:white;
+}
+
+.table .success th{
+    border:none !important;
+    padding:14px 8px;
+    font-size:14px;
+}
+
+/* 테이블 내용 */
+.table td{
+    vertical-align:middle !important;
+    padding:14px 10px !important;
+    border-top:1px solid #eee !important;
+}
+
+/* hover 효과 */
+.table tr:hover{
+    background:#f8fbff;
+    transition:0.2s;
+}
+
+/* 링크 */
+.table a{
+    color:#222;
+    text-decoration:none;
+    font-weight:500;
+}
+
+.table a:hover{
+    color:#0d6efd;
+    text-decoration:none;
+}
+
+/* 버튼 공통 */
+.btn{
+    border-radius:8px !important;
+    font-weight:600;
+    border:none;
+    transition:all 0.2s ease;
+}
+
+/* 버튼 hover */
+.btn:hover{
+    transform:translateY(-2px);
+    opacity:0.9;
+}
+
+/* 새글 버튼 */
+.btn-danger{
+    background:#ff5f6d;
+    background:linear-gradient(135deg,#ff5f6d,#ffc371);
+}
+
+/* 이전 버튼 */
+.btn-info{
+    background:linear-gradient(135deg,#36d1dc,#5b86e5);
+}
+
+/* 다음 버튼 */
+.btn-warning{
+    background:linear-gradient(135deg,#f7971e,#ffd200);
+    color:white;
+}
+
+/* 검색 버튼 */
+.btn-primary{
+    background:linear-gradient(135deg,#667eea,#764ba2);
+}
+
+/* 입력창 */
+input[type=text],
+select{
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:6px 10px;
+    outline:none;
+}
+
+input[type=text]:focus,
+select:focus{
+    border-color:#5b86e5;
+    box-shadow:0 0 5px rgba(91,134,229,0.4);
+}
+
+/* 페이지 표시 */
+.text-right{
+    font-weight:600;
+    color:#555;
+}
+
+/* new 아이콘 */
+sup img{
+    vertical-align:middle;
+}
+
+/* 답변 아이콘 */
+td img{
+    vertical-align:middle;
 }
