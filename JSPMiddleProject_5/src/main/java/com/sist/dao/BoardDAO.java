@@ -319,7 +319,7 @@ public class BoardDAO {
 		    *     
 		    *     
 		    */
-		   // 답변 => 핵심 
+		   // 답변 => 핵심 (새 답변의 위치 => 최신 답변을 가장 위로 위치)
 		   sql="UPDATE jspReplyBoard SET "
 			  +"group_step=group_step+1 "
 			  +"WHERE group_id=? AND group_step>?";
@@ -328,7 +328,7 @@ public class BoardDAO {
 		   ps.setInt(2, gs);
 		   ps.executeUpdate();
 		   
-		   // insert 
+		   // insert => 답변 추가 
 		   sql="INSERT INTO jspReplyBoard(no,name,subject,content,pwd,group_id,group_step,group_tab,root) "
 			  +"VALUES(jrb_no_seq.nextval,?,?,?,?,?,?,?,?)";
 		   ps=conn.prepareStatement(sql);
@@ -341,16 +341,40 @@ public class BoardDAO {
 		   ps.setInt(7, gt+1);
 		   ps.setInt(8, pno);
 		   ps.executeUpdate();
-		   // update
-		   sql="";
-		   
-		   conn.commit();
+		   // update => 답변의 갯수 체크 => depth증가 
+		   sql="UPDATE jspReplyBoard SET "
+			  +"depth=depth+1 "
+			  +"WHERE no=?";
+		   ps=conn.prepareStatement(sql);
+		   ps.setInt(1, pno);
+		   ps.executeUpdate();
+		   conn.commit(); // 모든 명령을 정상 수행 => 일괄처리 
+		   // SQL문장이 한개로 수행하는 것이 아니라 => 한개 수행 
+		   // => 여러개 SQL문장이 필요할 수 있다 
+		   // 여러개 SQL문장이 나오면 => 순서확인 
+		   /*
+		    *   1. 상위 게시물의 정보 (답변정보 : group_id , group_step , group_tab)
+		    *                              | 같은 답변을 모아준다 
+		    *                                                       | 간격 설정
+		    *                                         | 답변안에 출력하는 순서 
+		    *                     root => 상위 게시물 
+		    *                     depth => 답변 갯수
+		    *                     1) 비밀번호 확인 
+		    *                     2) depth가 0일 경우에만 삭제 가능 
+		    *                     3) depth가 0이 아니면 => 제목 / 내용 변경 
+		    *                                           관리자가 삭제한 게시물입니다 
+		    *                                           ---------------------
+		    *                                           => 관리자 : 비활성 
+		    *                     -----------------> 삭제시에 사용 
+		    *       ==> MVC 응용 : 대댓글 / 실시간 채팅 , 실시간 상담 
+		    *       ==> SpringAI => 챗봇
+		    */
 	   }catch(Exception ex)
 	   {
 		   ex.printStackTrace();
 		   try
 		   {
-			   conn.rollback();
+			   conn.rollback();// 모든 명령을 취소 
 		   }catch(Exception e) {}
 	   }
 	   finally
@@ -363,5 +387,85 @@ public class BoardDAO {
 	   }
    }
    // 4-6. 삭제하기   => 4개 수행 
+   public boolean boardDelete(int no,String pwd)
+   {
+	   // 1. 비밀번호 검색 
+	   // 2. 삭제할 수 있는 게시물인지 확인 => depth=0
+	   // 2-1 depth=0 => delete 
+	   // 2-2 depth!=0 => update (제목/내용 변경) => 게시물 유지
+	   boolean bCheck=false; // hsistory.back() => delete.jsp
+	   try
+	   {
+		   getConnection();
+		   conn.setAutoCommit(false);
+		   // 1. sql 
+		   String sql="SELECT pwd,root,depth "
+				     +"FROM jspReplyBoard "
+				     +"WHERE no=?";
+		   ps=conn.prepareStatement(sql);
+		   // ?에 값을 채운다 
+		   ps.setInt(1, no);
+		   // 결과값 받기 
+		   ResultSet rs=ps.executeQuery();
+		   rs.next();
+		   String db_pwd=rs.getString(1);
+		   int root=rs.getInt(2);
+		   int depth=rs.getInt(3);
+		   rs.close();
+		   
+		   // 비밀번호 체크
+		   if(db_pwd.equals(pwd))
+		   {
+			   bCheck=true; // 이동 => list.jsp 
+			   if(depth==0) // 답변이 없는 경우 
+			   {
+				   sql="DELETE FROM jspReplyBoard "
+					  +"WHERE no=?";
+				   ps=conn.prepareStatement(sql);
+				   ps.setInt(1, no);
+				   ps.executeUpdate();//autoCommit => rollback불가능
+			   }
+			   else // 답변이 있는 경우 
+			   {
+				   String msg="관리자가 삭제한 게시물입니다";
+				   sql="UPDATE jspReplyBoard SET "
+					  +"subject=? , content=? "
+					  +"WHERE no=?";
+				   ps=conn.prepareStatement(sql);
+				   ps.setString(1, msg);
+				   ps.setString(2, msg);
+				   ps.setInt(3, no);
+				   ps.executeUpdate();
+			   }
+			   
+			   sql="UPDATE jspReplyBoard SET "
+				  +"depth=depth-1 "
+				  +"WHERE no=?";
+			   ps=conn.prepareStatement(sql);
+			   ps.setInt(1, root);
+			   ps.executeUpdate();
+		   }
+		   conn.commit();
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+		   // 에러발생시에 => SQL문장 전체 취소
+		   try
+		   {
+			   conn.rollback();
+		   }catch(Exception e) {}
+	   }
+	   finally
+	   {
+		   // 사용후에 POOL에 반환 (POOL=>Connection 저장 공간)
+		   // 원상복귀 
+		   try
+		   {
+			   conn.setAutoCommit(true);
+		   }catch(Exception ex) {}
+		   disConnection();
+	   }
+	   return bCheck;
+   }
    ///////////////////////// 트랙젝션 처리 => INSERT / UPDATE / DELETE
 }

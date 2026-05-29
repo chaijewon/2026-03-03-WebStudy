@@ -16,7 +16,21 @@
       <table class="table">
        <tr>
         <th width=10% class="text-center">이름</th>
-        <td width=90%><input type=text name=name size=20 class="input-sm" required></td>
+        <td width=90%>
+          <input type=text name=name size=20 class="input-sm" required>
+          <input type="hidden" name=pno value="${param.no }">  
+          <%--
+              ${param.no} request.getParameter("no")
+              reply.jsp?no=${vo.no }
+              
+              ${requestScope.키}
+              ${sessionScope.키}
+              ${param.no }
+              ${pageContext.키}
+              
+              => 비교연산자 / 삼항연산자 / +=
+           --%>
+        </td>
        </tr>
        <tr>
         <th width=10% class="text-center">제목</th>

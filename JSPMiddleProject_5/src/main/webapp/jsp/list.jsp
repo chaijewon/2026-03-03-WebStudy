@@ -56,7 +56,12 @@
                <img src="re_icon.png">
              </c:if>
              <%-- 상세보기는 1개만 실행 => primary key 컬럼을 넘겨준다 --%>
-             <a href="detail.jsp?no=${vo.no }">${vo.subject }</a> <%-- vo.getSubject() --%>
+             <c:if test="${vo.subject!=msg }">
+              <a href="detail.jsp?no=${vo.no }">${vo.subject }</a> <%-- vo.getSubject() --%>
+             </c:if>
+             <c:if test="${vo.subject==msg }">
+              <span style="color:gray">${vo.subject }</span>
+             </c:if>
              <c:if test="${vo.dbday==today }">
               &nbsp;<sup><img src="new.gif"></sup>
              </c:if>
@@ -83,9 +88,9 @@
           <button class="btn-sm btn-primary">검색</button>
          </td>
          <td class="text-right">
-           <a href="#" class="btn btn-sm btn-info">이전</a>
+           <a href="list.jsp?page=${curpage>1?curpage-1:curpage }" class="btn btn-sm btn-info">이전</a>
             ${curpage } page / ${totalpage } pages
-           <a href="#" class="btn btn-sm btn-warning">다음</a>
+           <a href="list.jsp?page=${curpage<totalpage?curpage+1:curpage }" class="btn btn-sm btn-warning">다음</a>
          </td>
        </tr>
      </table>

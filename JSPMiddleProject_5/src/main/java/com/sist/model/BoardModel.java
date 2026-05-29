@@ -61,6 +61,7 @@ public class BoardModel {
 		request.setAttribute("totalpage", totalpage);
 		request.setAttribute("count", count);
 		request.setAttribute("today", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		request.setAttribute("msg", "관리자가 삭제한 게시물입니다");
 		// => 가공이 없다 => JSP는 받은 데이터만 출력만 한다 
 	}
 	// => 보통 : update / delete / insert
@@ -160,6 +161,60 @@ public class BoardModel {
 			}*/
 		    
 	  }catch(Exception ex){}
+	}
+	// 답변 
+	public void boardReply(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		String pno=request.getParameter("pno");
+		String name=request.getParameter("name");
+		String subject=request.getParameter("subject");
+		String content=request.getParameter("content");
+		String pwd=request.getParameter("pwd");
+		
+		BoardVO vo=new BoardVO();
+		vo.setName(name);
+		vo.setSubject(subject);
+		vo.setContent(content);
+		vo.setPwd(pwd);
+		
+		BoardDAO dao=BoardDAO.newInstance();
+		dao.boardreply(Integer.parseInt(pno), vo);
+		
+		// 화면 이동 
+		try
+		{
+		 response.sendRedirect("list.jsp");
+		}catch(Exception ex) {}
+	}
+	// 삭제
+	public void boardDelete(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		String no=request.getParameter("no");
+		String pwd=request.getParameter("pwd");
+		
+		BoardDAO dao=BoardDAO.newInstance();
+		boolean bCheck=dao.boardDelete(Integer.parseInt(no), pwd);
+		
+		try
+		{
+		 // 화면 이동 
+		 if(bCheck==true)
+		 {
+			response.sendRedirect("list.jsp");
+		 }
+		 else
+		 {
+			 response.setContentType("text/html;charset=UTF-8");
+			 PrintWriter out=response.getWriter();
+			 out.write("<script>");
+			 out.write("alert(\"비밀번호가 틀립니다\");");
+			 out.write("history.back();");
+			 out.write("</script>");
+		 }
+		}catch(Exception ex) {}
+		
 	}
 }
 
