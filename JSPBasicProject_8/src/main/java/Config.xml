@@ -23,6 +23,7 @@
       </dataSource>
     </environment>
   </environments>
+
   <mappers>
     <!-- Mapper : PreparedStatement , ResultSet -->
     <mapper resource="com/sist/dao/databoard.xml"/>
