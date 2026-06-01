@@ -8,6 +8,10 @@
    namespace는 XML에서 사용하는 package => 반드시 사용 
  -->
 <mapper namespace="com.sist.dao.databoard-mapper">
+  <!--  중복 코딩 제거 -->
+  <sql id="where-no">
+   WHERE no=#{no}
+  </sql>
   <!-- 
     (
      resultMap* => 조인시에 주로 사용 (VO+VO)
@@ -79,4 +83,24 @@
          #{filesize}
        )
      </insert>
+     <!-- 
+          상세보기 
+      -->
+      <update id="hitIncrement" parameterType="int">
+        UPDATE mvcDataBoard SET 
+        hit=hit+1
+        <include refid="where-no"/>
+      </update>
+     <!-- 
+         실제 데이터 읽기
+      -->
+     <select id="databoardDetailData" parameterType="int"
+      resultType="DataBoardVO"
+     >
+       SELECT no,name,subject,content,hit,
+              TO_CHAR(regdate,'YYYY-MM-DD') as dbday,
+              filesize,filename
+       FROM mvcDataBoard
+       <include refid="where-no"/>
+     </select>
 </mapper>

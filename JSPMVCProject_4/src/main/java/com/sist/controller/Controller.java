@@ -34,11 +34,15 @@ public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String[] cls={
 		"com.sist.model.ListModel",
-		"com.sist.model.InsertModel"
+		"com.sist.model.InsertModel",
+		"com.sist.model.DetailModel",
+		"com.sist.model.DeleteModel"
 	};
 	private String[] keys= {
 		"databoard/list.do",
-		"databoard/insert.do"
+		"databoard/insert.do",
+		"databoard/detail.do",
+		"databoard/delete.do"
 	};
 	private Map<String,Model> clsMap=
 			  new HashMap<String,Model>();

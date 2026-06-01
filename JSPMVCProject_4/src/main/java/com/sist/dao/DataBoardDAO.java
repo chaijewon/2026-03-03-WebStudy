@@ -139,13 +139,78 @@ public class DataBoardDAO {
 	         #{filesize}
 	       )
 	     </insert>
+	     
+	     // 1. 파일명 중복 
+	     // 2. 여러개 동시에 올리는 방법 
+	     // 3. 보완 
     */
    public static void databoardInsert(DataBoardVO vo)
    {
 	   // ssf.openSession() => conn.setAutomit(false)
-	   SqlSession session=ssf.openSession(true);
-	   session.insert("databoardInsert",vo);
-	   session.close();
+	   SqlSession session=null;
+	   try
+	   {
+		  session=ssf.openSession(true);
+	      session.insert("databoardInsert",vo);
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		  if(session!=null)
+	        session.close();
+	   }
+   }
+   /*
+    * 
+    *   <update id="hitIncrement" parameterType="int">
+        UPDATE mvcDataBoard SET 
+        hit=hit+1
+        <include refid="where-no"/>
+      </update>
+     <!-- 
+         실제 데이터 읽기
+      -->
+     <select id="databoardDetailData" parameterType="int"
+      resultType="DataBoardVO"
+     >
+       SELECT no,name,subject,content,hit,
+              TO_CHAR(regdate,'YYYY-MM-DD') as dbday,
+              filesize,filename
+       FROM mvcDataBoard
+       <include refid="where-no"/>
+     </select>
+     
+      상세보기
+      
+      => selectOne() => 1 ROW => 상세보기 , 총페이지 ...
+      => selectList() => 다중 ROW : 목록 / 검색 
+      => insert(),update(),delete()
+    */
+   public static DataBoardVO databoardDetailData(int no)
+   {
+	   DataBoardVO vo=new DataBoardVO();
+	   SqlSession session=null;// PreparedStatement / ResultSet
+	   try
+	   {
+		   session=ssf.openSession();
+		   // 조회수 증가 
+		   session.update("hitIncrement",no);
+		   session.commit();
+		   vo=session.selectOne("databoardDetailData",no);
+		   // 자동 형변환 => 제네릭를 이용한 형변환 
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		   if(session!=null)
+			   session.close(); // 반환
+	   }
+	   
+	   return vo;
    }
 }
 
