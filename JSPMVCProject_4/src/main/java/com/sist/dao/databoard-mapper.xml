@@ -59,4 +59,24 @@
      <select id="databoardTotalPage" resultType="int">
        SELECT CEIL(COUNT(*)/10.0) FROM mvcDataBoard
      </select>
+     <!-- 
+        데이터 추가 
+         #{name}, => 'vo.getName()'
+         #{subject}, => vo.getSubject()
+         #{content}, => vo.getContent()
+         #{pwd} => vo.getPwd()
+      -->
+     <insert id="databoardInsert" parameterType="DataBoardVO">
+       INSERT INTO mvcDataBoard VALUES(
+         mdb_no_seq.nextval,
+         #{name},
+         #{subject},
+         #{content},
+         #{pwd},
+         SYSDATE,
+         0,
+         #{filename},
+         #{filesize}
+       )
+     </insert>
 </mapper>

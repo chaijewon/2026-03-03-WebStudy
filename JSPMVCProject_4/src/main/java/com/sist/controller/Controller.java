@@ -33,10 +33,12 @@ import com.sist.model.*;
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String[] cls={
-		"com.sist.model.ListModel"
+		"com.sist.model.ListModel",
+		"com.sist.model.InsertModel"
 	};
 	private String[] keys= {
-		"databoard/list.do"	
+		"databoard/list.do",
+		"databoard/insert.do"
 	};
 	private Map<String,Model> clsMap=
 			  new HashMap<String,Model>();
@@ -76,9 +78,20 @@ public class Controller extends HttpServlet {
 			Model model=clsMap.get(key);
 			// 3. 메소드 호출 => JSP받는다 
 			String jsp=model.requestHandler(request, response);
+			// 이동 => request를 유지 하지 않고 이동 => sendRedirect()
+			if(jsp.startsWith("redirect:"))
+			{
+			     
+				 response.sendRedirect(jsp.substring(jsp.indexOf(":")+1));
+			}
+			else
+			{
+				// request를 유지 
+				RequestDispatcher rd=request.getRequestDispatcher(jsp);
+				rd.forward(request, response);
+			}
 			// 4. JSP => request 전송 
-			RequestDispatcher rd=request.getRequestDispatcher(jsp);
-			rd.forward(request, response);
+			
 		}catch(Exception ex) {}
 	}
 

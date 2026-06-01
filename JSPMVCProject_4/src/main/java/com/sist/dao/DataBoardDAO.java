@@ -124,6 +124,29 @@ public class DataBoardDAO {
 	   
 	   return total;
    }*/
+   // 추가 
+   /*
+    *   <insert id="databoardInsert" parameterType="DataBoardVO">
+	       INSERT INTO mvcDataBoard VALUES(
+	         mdb_no_seq.nextval,
+	         #{name},
+	         #{subject},
+	         #{content},
+	         #{pwd},
+	         SYSDATE,
+	         0,
+	         #{filename},
+	         #{filesize}
+	       )
+	     </insert>
+    */
+   public static void databoardInsert(DataBoardVO vo)
+   {
+	   // ssf.openSession() => conn.setAutomit(false)
+	   SqlSession session=ssf.openSession(true);
+	   session.insert("databoardInsert",vo);
+	   session.close();
+   }
 }
 
 

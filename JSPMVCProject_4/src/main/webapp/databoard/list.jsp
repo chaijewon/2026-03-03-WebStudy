@@ -25,6 +25,13 @@ h3 {
     <div class="row">
       <h3>자료실</h3>
       <table class="table">
+        <tr>
+         <td>
+          <a href="insert.do" class="btn btn-sm btn-warning">새글</a>
+         </td>
+        </tr>
+      </table>
+      <table class="table">
         <tr class="success">
           <th width=10% class="text-center">번호</th>
           <th width=45% class="text-center">제목</th>
