@@ -29,7 +29,7 @@ public class Controller extends HttpServlet {
 		try
 		{
 			// RealPath 
-			String path="C:\\webDev\\webStudy\\JSPMVCProject_3\\src\\main\\webapp\\WEB-INF\\application.xml";
+			String path="C:\\Users\\sist\\git\\webstudy\\JSPMVCProject_3\\src\\main\\webapp\\WEB-INF\\application.xml";
 			// 파싱 
 			DocumentBuilderFactory dbf=DocumentBuilderFactory.newInstance();
 			// 파서기 생성 => HTML / WML / XML 
