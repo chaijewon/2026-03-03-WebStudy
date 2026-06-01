@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+   PreparedStatement / ResultSet
+   SQL문장 작성되는 부분 
+   namespace는 XML에서 사용하는 package => 반드시 사용 
+ -->
+<mapper namespace="com.sist.dao.databoard-mapper">
+  <!-- 
+    (
+     resultMap* => 조인시에 주로 사용 (VO+VO)
+     parameterMap* => PROCEDURE 
+     sql* | => 공통으로 사용되는 SQL이 있는 경우 (반복 제거)
+     insert* | 
+     update* | 
+     delete* | 
+     select*)+
+   -->
+   <!-- 
+     1) SQL 문장 2) 어떤 VO인지 3) ?에 어떤값
+                   resultType   parameterType
+        <select>SQL</select>
+     1. 목록 출력 
+     
+        <select id="">SQL문장</select>
+        id:
+        resultType : 결과값 받기 
+        ResultSet rs=ps.executeQuery()
+        while(rs.next())
+        {
+           BoardVO vo=new BoardVO(); ==> VO클래스가 ?
+        }
+        parameterType
+    -->
+    <!-- 
+        resultType ==> 리턴형 
+        parameterType ==> 매개변수
+        ?를 사용하면 안된다 
+     -->
+    <select id="databoardListData" resultType="DataBoardVO"
+     parameterType="int"
+    >
+      SELECT no,subject,name,TO_CHAR(regdate,'YYYY-MM-DD') as dbday,hit 
+      FROM mvcDataBoard
+      ORDER BY no DESC
+      OFFSET #{start} ROWS FETCH NEXT 10 ROWS ONLY
+    </select>
+    <!-- 
+         public List<DataBoardVO> databoardListData(int start)
+                ================= selectList()
+                DataBoardVO    
+                ================= selectOne()    
+     -->
+     <!-- 
+        총페이지 구하기 
+      -->
+     <select id="databoardTotalPage" resultType="int">
+       SELECT CEIL(COUNT(*)/10.0) FROM mvcDataBoard
+     </select>
+</mapper>

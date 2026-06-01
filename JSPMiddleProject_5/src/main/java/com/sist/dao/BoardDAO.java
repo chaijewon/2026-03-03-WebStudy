@@ -75,15 +75,17 @@ public class BoardDAO {
 	   try
 	   {
 		   // 1. Cnnection 대여 
-		   getConnection();
+		   getConnection(); // config.xml
 		   // 2. SQL문장 생성 
+		   // xml에서 읽기 
 		   String sql="SELECT no,subject,name,TO_CHAR(regdate,'yyyy-mm-dd'),hit,group_tab "
 				     +"FROM jspReplyBoard "
 				     +"ORDER BY group_id DESC,group_step ASC "
 				     +"OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 		   // 3. 오라클 전송 
+		   
 		   ps=conn.prepareStatement(sql);
-		   // 4. 실행전에 ?에 값을 채운다 
+		   // 4. 실행전에 ?에 값을 채운다 parameterType
 		   ps.setInt(1, (page*ROW)-ROW);
 		   ps.setInt(2, ROW);
 		   // 5. 실행요청 => 결과값 저장 
@@ -91,7 +93,7 @@ public class BoardDAO {
 		   // 6. => List에 담는다 => 브라우저로 전송 (JSP)
 		   while(rs.next()) // 메모리에 출력된 1번째 위치 커서이동 
 		   {
-			   BoardVO vo=new BoardVO();
+			   BoardVO vo=new BoardVO(); // resultType
 			   vo.setNo(rs.getInt(1));
 			   vo.setSubject(rs.getString(2));
 			   vo.setName(rs.getString(3));

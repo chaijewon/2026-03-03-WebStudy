@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- Connectoion + VO + SQL문장  -->
+<configuration>
+  <!-- 
+     (properties?, settings?, typeAliases?, typeHandlers?, objectFactory?, objectWrapperFactory?, 
+      reflectorFactory?, plugins?, environments?, databaseIdProvider?, mappers?)
+      
+      properties : 데이터베이스 정보 읽기 => .properties
+      settings : 캐시메모리를 활용 => 값을 SQL이면 => 저장된 데이터
+      typeAliases : VO 등록 
+      typeHandlers : 데이터 변경 
+      mappers : SQL문장 위치 확인 
+   -->
+   <!-- 
+     1. VO 등록 
+    -->
+    <typeAliases>
+      <typeAlias type="com.sist.vo.DataBoardVO" alias="DataBoardVO"/>
+    </typeAliases>
+    <!-- 
+      2. Connection 설정 => getConnection() / disConnection()
+     -->
+    <environments default="development">
+      <!-- 
+          (environment+) : +는 반드시 한번이상 사용
+       -->
+      <environment id="development">
+        <!-- 
+           (transactionManager,dataSource) : default는 반드시 한번만 사용
+                               | database의 정보 
+                               | UNPOOLED / POOLED
+                                            | DBCP
+                                 => JDBC (열고 닫기)
+           | => commit / rollback 
+             => JDBC / MANAGE(미리 설정해서 만듬) 
+         -->
+         <transactionManager type="JDBC"/>
+         <dataSource type="POOLED">
+           <property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+           <property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+           <property name="username" value="hr"/>
+           <property name="password" value="happy"/>
+           <!-- 
+             maxActive=8 / maxIdle=8 / maxWait=10000 
+            -->
+         </dataSource>
+      </environment>
+    </environments>
+    <mappers>
+      <mapper resource="com/sist/dao/databoard-mapper.xml"/>
+    </mappers>
+</configuration>
