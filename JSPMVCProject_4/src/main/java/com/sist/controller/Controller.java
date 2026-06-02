@@ -32,6 +32,7 @@ import com.sist.model.*;
 // 고정이 안되면 => 사이트는 동작할 수 없다
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	// 단점 : 관리가 어렵다 => 
 	private String[] cls={
 		"com.sist.model.ListModel",
 		"com.sist.model.InsertModel",
