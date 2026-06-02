@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.food-mapper">
+  <!-- 
+      파싱 = 저장 (Map) 
+      id => key로 사용 => 중복이 되면 안된다
+      resultType => 결과값을 담을 데이터형 선택 
+      parameterType => ?에 값을 채우는 데이터형 
+      resultMap => VO가 여러개 혼합일 경우에 처리 = JOIN
+      = 동적 쿼리 
+   -->
+  <!-- 
+     <sql> : 중복 SQL문장 모아두는 태그 = 필요시마다 <include>
+     <select> : 데이터 검색 
+     <insert> : 데이터 추가 = 2개사용이 가능 : sequence 
+     <update> : 데이터 수정 
+     <delete> : 데이터 삭제 
+     ** 각 태그에는 SQL문장 1개 사용이 가능 
+                        ====== 2개 이상 : 서브쿼리 이용
+   -->
+  <sql id="select">
+    SELECT no,name,poster,address 
+    FROM food 
+  </sql>
+  <sql id="offset">
+    OFFSET #{start} ROWS FETCH NEXT 12 ROWS ONLY 
+  </sql>
+  
+  <select id="foodListData" resultType="FoodVO" parameterType="int">
+    <include refid="select"/>
+    ORDER BY no ASC
+    <include refid="offset"/>
+  </select>
+  <!-- 
+    resultType   : 리턴형
+    parameterType : 매개변수 
+    public FoodVO foodDetailData(int no)
+   -->
+  <select id="foodDetailData" resultType="FoodVO" parameterType="int">
+    SELECT *
+    FROM food
+    WHERE no=#{no}
+  </select>
+  <!-- 
+      데이터가 여러개인 경우 (?)
+      hashmap : vo에 없는 변수인 경우 
+                start / fd / column => VO에 존재하지 않는다  
+      FoodVO
+      
+      => 음식종류 / 주소 / 맛집명
+   -->
+  <select id="foodFindData" resultType="FoodVO" parameterType="hashmap">
+    <include refid="select"/>
+    WHERE ${column} LIKE '%'||#{fd}||'%'
+    <include refid="offset"/>
+  </select>
+  
+  <sql id="total">
+   SELECT CEIL(COUNT(*)/12.0) FROM food
+  </sql>
+  
+  <select id="foodTotalPage" resultType="int">
+    <include refid="total"/>
+  </select>
+  
+  <select id="foodFindTotalPage" resultType="int" parameterType="hashmap">
+    <include refid="total"/>
+    WHERE ${column} LIKE '%'||#{fd}||'%'
+  </select>
+</mapper>
+
+
+
+
+
+
+

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 
+     = food => 댓글 + 지도 
+     = goods => 장바구니 + 결제창 
+     = Ajax (자체 처리) : JavaScript (바닐라JS) => Jquery 
+     1. 동작순서 
+        = Config.xml (1개만 설정) 
+        = mapper.xml (테이블당 1개씩 설정) : XML / Annotation 
+        
+        1) 사용자 요청 
+        2) Controller가 요청을 받는다 
+        3) Model에 있는 메소드 호출 (@RequestMapping)
+                      =========
+                      1) 데이터베이스 연동 
+                      2) getConnection() : Config.xml
+                         disConnection()
+                         ================ SqlSessionFactory 
+                      3) mapper.xml => SqlSession 
+                         ========== SQL을 문장을 읽어서 
+                                    실행후에 ResultSet이용해서 
+                                    List/VO에 담아주는 역할 
+        1. 연결 
+        ============= SqlSessionFactory(Connection)
+        => JDBC 
+        2. SQL문장 읽기 
+        3. SQL문장을 전송 
+        4. SQL문장을 실행 요청 
+        5. 결과값을 받는다 
+        ============== SqlSession (PreparedStatement,ResultSet)
+        6. 닫기 
+ -->
+<configuration>
+   <!-- properties파일 읽기 -->
+   <properties resource="db.properties"/>
+   <!-- VO 등록 -->
+   <typeAliases>
+     <typeAlias type="com.sist.vo.FoodVO" alias="FoodVO"/>
+     <typeAlias type="com.sist.vo.ReplyVO" alias="ReplyVO"/>
+     <typeAlias type="com.sist.vo.MemberVO" alias="MemberVO"/>
+   </typeAliases>
+   <!-- 데이터베이스 설정 -->
+   <environments default="development">
+     <environment id="development">
+       <!-- transaction: JDBC / MANAGE -->
+       <transactionManager type="JDBC"/>
+       <!-- 정보 설정 (보안) -->
+       <dataSource type="POOLED">
+         <!-- POOLED(Connection Pool) / UNPOOLED(일반 JDBC) -->
+         <property name="driver" value="${driver}"/>
+         <property name="url" value="${url}"/>
+         <property name="username" value="${username}"/>
+         <property name="password" value="${password}"/>
+       </dataSource>
+     </environment>
+   </environments>
+   <!-- SQL문장 : mapper등록 -->
+   <mappers>
+     <mapper resource="com/sist/mapper/food-mapper.xml"/>
+     <!-- include  
+         <!ENTITY nbsp ""> &nbsp;
+         <!ENTITY lt "<">  &lt;
+         <!ENTITY gt ">">  &gt;
+         <!ENTITY xml "파일명"> &xml;
+         XML 단점 커길수록 속도가 느려진다 (스트럿츠)
+     -->
+   </mappers>
+</configuration>
+
+
+
+
+
+
+
+
+
