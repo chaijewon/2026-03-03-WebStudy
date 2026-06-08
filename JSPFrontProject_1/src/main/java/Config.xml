@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <!-- VO 등록  -->
+  <typeAliases>
+    <typeAlias type="com.sist.dao.EmpVO" alias="EmpVO"/>
+  </typeAliases>
+  <!-- 오라클 환경 설정 : 정보 등록 : DBCP -->
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+       <property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+       <property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+       <property name="username" value="hr"/>
+       <property name="password" value="happy"/>
+       <!-- maxActive:8 / maxIdle:8 / maxWait:10000 -->
+      </dataSource>
+    </environment>
+  </environments>
+  <!-- SQL문장을 저장하는 Mapper 등록 -->
+  <mappers>
+    <mapper resource="com/sist/dao/emp-mapper.xml"/>
+    <!-- mapper(테이블당 한개씩) 등록이 없는 경우 : SQL을 문장을 실행할 수 없다 -->
+  </mappers>
+</configuration>
