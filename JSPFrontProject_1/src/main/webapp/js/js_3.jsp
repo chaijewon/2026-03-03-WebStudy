@@ -10,22 +10,22 @@
     Web 
      1. BackEnd
         언어(Java) = JSP = MVC = SpringFramework = SpringBoot 
-        ---------------------
+       
         
      2. DataBase = 오라클 (SQL) = JDBC = DBCP = ORM 
                                               (MyBatis,JPA)
                                               --------
      3. Front = HTML = CSS = JavaScript 
                 = Jquery = Vue = React 
-                ---------
+              
      
       이항연산자 
-        산술 연산자  ( + , - , * , / , % )
-             + : 덧셈 , 문자열 결합 => 연산이 안되는 경우 : NaN
-             / : 0으로 나눌 수 없다 
-                 정수 / 정수 = 실수  (자바 : 5/2 : 2, 5/2=2.5)
-                 ---------------
-             % : 왼쪽부호가 남는다 
+        산술 연산자  ( + , - , * , / ,  )
+             + 덧셈 , 문자열 결합  연산이 안되는 경우  NaN
+             /  0으로 나눌 수 없다 
+                 정수 / 정수 = 실수  (자바  5/2  2, 5/2=2.5)
+                
+               왼쪽부호가 남는다 
                  + % +  +
                  + % -  +
                  - % +  -
@@ -33,7 +33,7 @@
         비교 연산자 : 장점 => 문자열 / 날짜를 비교할 수 있다 
            == (데이터형과 관련없이 비교) === (데이터과 관련이 있다:권장)
                '10'==10   '10'===10
-               ---------  ----------
+              
                  true       false
                  
                => == 같은 데이터형으로 변경 
@@ -77,14 +77,14 @@ window.onload=function(){
 	let m=10
 	let n="10"
     
-	console.log("m==n:"+(m==n))
-	console.log("m===n:"+(m===n)) // 유효성 검사 (id==="") NOT NULL
-	console.log("m!==n:"+(m!==n)) // (pwd!==pwd1)
-	console.log("m!=n:"+(m!=n)) // => 회원 가입 / 검색 / 로그인 
-	console.log("m<n:"+(m<n)) // required => HTML5
-	console.log("m>n:"+(m>n)) // 이메일 => 정규식
-	console.log("m<=n:"+(m<=n))
-	console.log("m>=n:"+(m>=n))
+	console.log("m==n"+(m==n))
+	console.log("m===n"+(m===n)) // 유효성 검사 (id==="") NOT NULL
+	console.log("m!==n"+(m!==n)) // (pwd!==pwd1)
+	console.log("m!=n"+(m!=n)) // => 회원 가입 / 검색 / 로그인 
+	console.log("m<n"+(m<n)) // required => HTML5
+	console.log("m>n"+(m>n)) // 이메일 => 정규식
+	console.log("m<=n"+(m<=n))
+	console.log("m>=n"+(m>=n))
 }
 function ok()
 {
