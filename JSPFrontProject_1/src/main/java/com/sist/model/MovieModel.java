@@ -33,6 +33,7 @@ public class MovieModel {
 	   {
 		   URI uri=new URI(baseURL+movie[Integer.parseInt(no)]);
 		   URL url=uri.toURL();
+		   // Document doc=Jsoup.connection(url).get()
 		   HttpURLConnection conn=
 				   (HttpURLConnection)url.openConnection();
 		   String json="";

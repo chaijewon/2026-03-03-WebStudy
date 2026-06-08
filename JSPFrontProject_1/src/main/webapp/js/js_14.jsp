@@ -56,13 +56,52 @@ function movieList(no)
 	            +'<td>'+m.genre+'</td>'
 	            +'</tr>'
 		})
-		document.querySelector('tbody').innerHTML=html
+		document.querySelector('#list tbody').innerHTML=html
 	})
 }
-function movieDetail(mno)
-{
+//function movieDetail(mno)
+//const movieDetail=function(mno){}
+const movieDetail=(mno)=>{
+	let table=document.querySelector("#detail")
+	table.style.display=''
+	let m=movie.find(m=>m.rank===mno)
+	console.log(m)
+	let img=document.querySelector("#poster")
+	img.src="https://www.kobis.or.kr"+m.thumbUrl
+	
+	let name=document.querySelector("#name")
+	name.textContent=m.movieNm
+	// $('#name').text(m.movieNm)
+	let director=document.querySelector("#director")
+	director.textContent=m.director
+	let genre=document.querySelector("#genre")
+	genre.textContent=m.genre
+	let grade=document.querySelector("#grade")
+	grade.textContext=m.watchGradeNm
+	let story=document.querySelector("#story")
+	story.textContent=m.synop
 	
 }
+/*
+ *   1. 함수 호출 
+        언제 호출하는지 
+          = onclick => button/img 
+          = onmouseover / onmouseout 
+          = onchange 
+          = onkeydown / onkeyup 
+     2. 이벤트 처리 
+	     = onclick => button/img 
+	     = onmouseover / onmouseout 
+	     = onchange 
+	     = onkeydown / onkeyup 
+     3. 태그 읽기 => DOM 
+        ***document.querySelector(CSS 선택자)
+        document.getElementById(id명) => id 
+        document.getElementByClassName(class명) = class
+        document.getElementByTagName(태그명) = Tag이름 읽기 
+        바닐라 JS => 순수하게 JavaScript만 이용해서 처리 
+        
+ */
 </script>
 </head>
 <body>
@@ -90,7 +129,34 @@ function movieDetail(mno)
        </table>
      </div>
      <div class="col-sm-4">
-       
+       <table class="table" id="detail" style="display:none">
+         <tbody>
+           <tr>
+             <td colspan="2" class="text-center">
+              <img src="" style="width:360px;height: 250px;object-fit:cover" id="poster">
+             </td>
+           </tr>
+           <tr>
+             <td width=25%>영화명</td>
+             <td width=75% id="name"></td>
+           </tr>
+           <tr>
+             <td width=25%>감독</td>
+             <td width=75% id="director"></td>
+           </tr>
+           <tr>
+             <td width=25%>장르</td>
+             <td width=75% id="genre"></td>
+           </tr>
+           <tr>
+             <td width=25%>등급</td>
+             <td width=75% id="grade"></td>
+           </tr>
+           <tr>
+             <td colspan="2" id="story"></td>
+           </tr>
+         </tbody>
+       </table>
      </div>
    </div>
   </div>
