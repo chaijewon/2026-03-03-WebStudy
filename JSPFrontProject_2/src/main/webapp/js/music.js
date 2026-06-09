@@ -38,6 +38,8 @@ window.onload=()=>{
 	     
 	     // 검색 
 	     let key=document.querySelector('#keyword')
+		 // let key=$('#keyword')
+		 // key.on('keyup',function(){})
 	     key.addEventListener('keyup',function(){
 	    	 const keyword=this.value.trim()
 	    	 //console.log(keyword)
@@ -69,4 +71,5 @@ window.onload=()=>{
              }) 
 	     })
 	     // Jquery => 바닐라 JS 
+		 // 태그 선택 => CSS 선택자 126~127page 
 }
