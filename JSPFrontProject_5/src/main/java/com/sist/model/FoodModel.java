@@ -1,5 +1,6 @@
 package com.sist.model;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -116,6 +117,12 @@ public class FoodModel {
 		   i++;
 		   
 	   }
+	   try
+	   {
+		   response.setContentType("text/plain;charset=UTF-8");
+		   PrintWriter out=response.getWriter(); // 브라우저 찾기
+		   out.write(arr.toJSONString());
+	   }catch(Exception ex) {}
 	   
    }
 }
