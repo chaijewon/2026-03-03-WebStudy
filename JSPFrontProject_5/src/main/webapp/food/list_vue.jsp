@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,23 +23,24 @@ p{
   text-overflow: ellipsis;
 }
 </style>
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
   <div class="container">
    <div class="row">
-     <c:forEach var="vo" items="${list }">
-      <a href="detail.do?no=${vo.no }">
+      <a href="#" v-for="vo in list">
        <div class="col-sm-3">
         <div class="thumbnail">
-         <img src="${vo.poster }" style="width: 204px;height: 130px;object-fit:cover">
-         <p>${vo.name }</p>
+         <img :src="vo.poster" style="width: 204px;height: 130px;object-fit:cover">
+         <p>{{vo.name }}</p>
         </div>
        </div>
       </a>
-     </c:forEach>
    </div>
    <div class="row text-center" style="margin-top: 20px">
-     <ul class="pagination">
+     <%--<ul class="pagination">
       <c:if test="${startPage>1 }">
        <li><a href="list.do?page=${startPage-1 }">&laquo;</a></li>
       </c:if>
@@ -54,7 +54,42 @@ p{
        <li><a href="list.do?page=${endPage+1 }">&raquo;</a></li>
       </c:if>
      </ul>
+     --%>
    </div>
   </div>
-</body>
+  <script>
+   let list=Vue.createApp({
+	   data(){
+		   return {
+			   // 멤버변수 
+			   list:[],
+			   curpage:1,
+			   endPage:0,
+			   startPage:0,
+			   totalpage:0
+		   }
+	   },
+	   // => window.onload / $(function(){})
+	   mounted(){
+		   this.dataRecv()
+	   },
+	   methods:{
+		   dataRecv(){
+			   axios.get('list_ajax.do',{
+				   params:{
+					   page:this.curpage
+				   }
+			   }).then(response=>{
+				   console.log(response.data)
+				   this.list=response.data
+				   this.curpage=response.data[0].curpage
+				   this.totalpage=response.data[0].totalpage
+				   this.startPage=response.data[0].startPage
+				   this.endPage=response.data[0].endPage
+			   })
+		   }
+	   }
+   }).mount('.container')
+  </script>
+ </body>
 </html>

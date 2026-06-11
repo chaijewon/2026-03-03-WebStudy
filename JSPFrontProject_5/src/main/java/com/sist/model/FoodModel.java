@@ -125,4 +125,16 @@ public class FoodModel {
 	   }catch(Exception ex) {}
 	   
    }
+   @RequestMapping("food/detail.do")
+   // "food/detail.do"이 중복되면 실행 안된다 
+   public String foodDetailData(HttpServletRequest request,HttpServletResponse response)
+   {
+	   String no=request.getParameter("no");
+	   FoodVO vo=FoodDAO.foodDetailData(Integer.parseInt(no));
+	   request.setAttribute("vo", vo);
+	   String[] address=vo.getAddress().split(" ");
+	   request.setAttribute("addr", address[2]);
+	   System.out.println(address[2]);
+	   return "../food/detail.jsp";
+   }
 }

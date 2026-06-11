@@ -25,4 +25,24 @@
    <select id="foodTotalPage" resultType="int">
     SELECT CEIL(COUNT(*)/12.0) FROM food
    </select>
+   <!-- 
+     parameterType="int"  setInt()
+     parameterType="string" setString()
+     parameterType="hashmap" 
+     Map map=new HashMap()
+     map.put("start",1)
+     map.put("end",10)
+     start=#{start} AND end=#{end}
+          map.get("start") map.get("end")
+     parameterType="FoodVO"
+     insert into food value(#{name},#{poster}...)
+                            vo.getName() vo.getPoster()
+    -->
+   <select id="foodDetailData" resultType="FoodVO"
+    parameterType="int"
+   >
+     SELECT *
+     FROM food
+     WHERE no=#{no}
+   </select>
 </mapper>

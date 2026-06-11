@@ -24,6 +24,9 @@ p{
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+a.link{
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
