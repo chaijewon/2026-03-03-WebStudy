@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -319,7 +320,36 @@ p{
 		</script>
     </div>
     <div class="row text-center" style="margin-top: 10px">
-     
+     <h3>댓글</h3>
+     <c:if test="${rcount==0 }">
+       <table class="table">
+         <tr>
+           <td class="text-center">댓글이 없습니다</td>
+         </tr>
+       </table>
+     </c:if>
+     <c:if test="${rcount!=0 }">
+       <table class="table">
+        <tr>
+          <td>
+            <c:forEach var="rvo" items="${rList }">
+              <table class="table">
+                <tr>
+                  <td class="text-left">◑${vo.name }(${vo.dbday })</td>
+                  <td class="text-right">
+                    <a href="#" class="btn btn-xs btn-warning">수정</a>
+                    <a href="#" class="btn btn-xs btn-info">삭제</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2"><pre style="white-space: pre-wrap;background: white;border: none"></pre></td>
+                </tr>
+              </table>
+            </c:forEach>
+          </td>
+        </tr>
+       </table>
+     </c:if>
     </div>
   </div>
 </body>

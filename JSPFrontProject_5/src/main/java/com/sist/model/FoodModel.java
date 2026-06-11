@@ -135,6 +135,7 @@ public class FoodModel {
 	   String[] address=vo.getAddress().split(" ");
 	   request.setAttribute("addr", address[2]);
 	   System.out.println(address[2]);
+	   request.setAttribute("rcount", 0);
 	   return "../food/detail.jsp";
    }
 }
