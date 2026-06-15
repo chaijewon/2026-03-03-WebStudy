@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+ <!-- VO가 등록 -->
+ <typeAliases>
+   <typeAlias type="com.sist.vo.MemberVO" alias="MemberVO"/>
+   <typeAlias type="com.sist.vo.FoodVO" alias="FoodVO"/>
+ </typeAliases>
+ <!-- Connection : 오라클 정보 전송 -->
+ <environments default="development">
+   <environment id="development">
+     <transactionManager type="JDBC"/>
+     <dataSource type="POOLED">
+       <property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+       <property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+       <property name="username" value="hr"/>
+       <property name="password" value="happy"/>
+       <!-- 
+             type : class명 
+             PooledConnection 
+             property : PooledDataSource가 가지고 있는 변수명 
+             public class PooledDataSource
+             {
+                private String driver,url,username,password;
+                = setDriver setUrl setUsername setPassword
+                = DI (의존성 주입) 
+             }
+             
+             ConnectionPool 
+               = maxActive / maxIdle / maxWait
+                    8          8       10000
+             Connection이 만들어진다 : getConnection() / disConnection()
+                                   = SqlSesionFactory 
+                                   = Connection 주소 = SqlSession
+        -->
+     </dataSource>
+   </environment>
+ </environments>
+ <mappers>
+   <!-- SQL 문장 저장 : PreparedStatement , ResultSet -->
+   <mapper resource="com/sist/mapper/member-mapper.xml"/>
+   <mapper resource="com/sist/mapper/food-mapper.xml"/>
+   <!-- 등록 = 어노테이션으로 변경  -->
+ </mappers>
+</configuration>
