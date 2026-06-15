@@ -24,10 +24,46 @@ $(function(){
 			return
 		}
 		///// 유효성 검사 => 강제로 입력 
+		$.ajax({
+			type:'post',
+			url:'../member/login.do',
+			data:{"id":id,"pwd":pwd},
+			// 콜백 함수 => 자동으로 호출 : result(매개변수) => 실제 결과값을 가지고 있다
+			success:function(result)
+			{
+				if(result.trim()==="NOID")
+				{
+					alert("아이디가 존재하지 않습니다!!")
+					$('#id').val("")
+					$('#pwd').val("")
+					$('#id').focus()
+				}
+				else if(result.trim()==="NOPWD")
+				{
+					alert("비밀번호가 틀립니다!!")
+					$('#pwd').val("")
+					$('#pwd').focus()
+				}
+				else
+				{
+					location.href="../main/main.do"
+				}
+			}
+		})
 		
 	})
 	$('#logoutBtn').on('click',function(){
-		
+		$.ajax({
+			type:'post',
+			url:'../member/logout.do',
+			success:function(result)
+			{
+				if(result.trim()==="yes")
+				{
+					location.href="../main/main.do"
+				}
+			}
+		})
 	})
 })
 </script>

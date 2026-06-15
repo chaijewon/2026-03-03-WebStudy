@@ -28,8 +28,11 @@ public class MainModel {
    {
 	   String id=request.getParameter("id");
 	   String pwd=request.getParameter("pwd");
+	   System.out.println("id:"+id);
+	   System.out.println("pwd:"+pwd);
 	   MemberVO vo=MemberDAO.memberLogin(id, pwd);
-	   if(vo.equals("OK"))
+	   System.out.println("result:"+vo.getMsg());
+	   if(vo.getMsg().equals("OK"))
 	   {
 		   // 정상 수행 = 로그인된 상태 
 		   HttpSession session=request.getSession();
