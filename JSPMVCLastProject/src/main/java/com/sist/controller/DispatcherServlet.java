@@ -116,7 +116,7 @@ public class DispatcherServlet extends HttpServlet {
 					{
 						String jsp=(String)m.invoke(obj, request,response);
 						
-						if(jsp==null)
+						if(jsp==null) // void 
 						{
 							// JavaScript => Ajax 
 							return;

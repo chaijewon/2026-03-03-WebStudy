@@ -7,6 +7,7 @@
  <typeAliases>
    <typeAlias type="com.sist.vo.MemberVO" alias="MemberVO"/>
    <typeAlias type="com.sist.vo.FoodVO" alias="FoodVO"/>
+   <typeAlias type="com.sist.vo.ReplyVO" alias="ReplyVO"/>
  </typeAliases>
  <!-- Connection : 오라클 정보 전송 -->
  <environments default="development">
@@ -42,6 +43,7 @@
    <!-- SQL 문장 저장 : PreparedStatement , ResultSet -->
    <mapper resource="com/sist/mapper/member-mapper.xml"/>
    <mapper resource="com/sist/mapper/food-mapper.xml"/>
+   <mapper resource="com/sist/mapper/reply-mapper.xml"/>
    <!-- 등록 = 어노테이션으로 변경  -->
  </mappers>
 </configuration>

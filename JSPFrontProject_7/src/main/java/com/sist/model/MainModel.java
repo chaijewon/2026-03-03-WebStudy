@@ -1,6 +1,7 @@
 package com.sist.model;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.sist.controller.Controller;
@@ -10,6 +11,7 @@ import com.sist.dao.MemberDAO;
 import com.sist.vo.FoodVO;
 import com.sist.vo.MemberVO;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -43,6 +45,28 @@ public class MainModel {
 	   // include되는 파일명 지정 
 	   request.setAttribute("main_jsp", "../food/list.jsp");
 	   // 이동은 main으로 
+	   
+	   // Cookie읽기
+	   Cookie[] cookies=request.getCookies();
+	   List<FoodVO> cList=new ArrayList<FoodVO>();
+	   int j=0;
+	   if(cookies!=null)
+	   {
+		   for(int i=cookies.length-1;i>=0;i--)
+		   {
+			  if(cookies[i].getName().startsWith("food_"))
+			  {
+			     if(j>=9) break;
+			     // getName() => key읽기 
+			     String no=cookies[i].getValue();
+			     FoodVO vo=FoodDAO.foodDetailData(Integer.parseInt(no));
+			     cList.add(vo);
+			     j++;
+			  }
+		   }
+	   }
+	   request.setAttribute("cList", cList);
+	   request.setAttribute("size", cList.size());
 	   return "../main/main.jsp";
    }
    @RequestMapping("member/login.do")

@@ -21,6 +21,7 @@ p {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
 </style>
 </head>
 <body>
@@ -28,7 +29,7 @@ p {
    <div class="row">
     <c:forEach var="vo" items="${list }">
       <div class="col-sm-3">
-       <a href="#">
+       <a href="../food/detail_before.do?no=${vo.no}">
         <div class="thumbnail">
           <img src="${vo.poster }" title="${vo.address }"
             style="width: 240px;height: 130px">
@@ -52,6 +53,16 @@ p {
        <li><a href="../main/main.do?page=${endPage+1 }">&raquo;</a></li>
       </c:if>
      </ul>
+   </div>
+   <div class="row" style="margin: 10px">
+     <h3>최근 방문 맛집</h3>
+     <hr>
+     <c:forEach var="cvo" items="${cList }">
+       
+        <img src="${cvo.poster }" title="${vo.name }" 
+           style="width: 100px;height: 100px;margin-left: 3px">
+        
+     </c:forEach>
    </div>
  </div>
 </body>
