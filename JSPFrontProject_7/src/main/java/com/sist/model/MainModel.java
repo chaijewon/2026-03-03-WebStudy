@@ -1,10 +1,13 @@
 package com.sist.model;
 
 import java.io.PrintWriter;
+import java.util.List;
 
 import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
+import com.sist.dao.FoodDAO;
 import com.sist.dao.MemberDAO;
+import com.sist.vo.FoodVO;
 import com.sist.vo.MemberVO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +20,26 @@ public class MainModel {
    public String main_main(HttpServletRequest request,
 		   HttpServletResponse response)
    {
+	   String page=request.getParameter("page");
+	   if(page==null)
+		   page="1";
+	   int curpage=Integer.parseInt(page);
+	   List<FoodVO> list=FoodDAO.foodListData((curpage*12)-12);
+	   int totalpage=FoodDAO.foodTotalPage();
+	   
+	   // 블록별 페이지 
+	   final int BLOCK=10;
+	   int startPage=((curpage-1)/BLOCK*BLOCK)+1; // 1 11 21 
+	   int endPage=((curpage-1)/BLOCK*BLOCK)+BLOCK;// 10 20 30...
+	   if(endPage>totalpage)
+		   endPage=totalpage;
+	   
+	   // 출력에 필요한 데이터를 보낸다 => food/list.jsp 
+	   request.setAttribute("list", list);
+	   request.setAttribute("curpage", curpage);
+	   request.setAttribute("totalpage", totalpage);
+	   request.setAttribute("startPage", startPage);
+	   request.setAttribute("endPage", endPage);
 	   // include되는 파일명 지정 
 	   request.setAttribute("main_jsp", "../food/list.jsp");
 	   // 이동은 main으로 

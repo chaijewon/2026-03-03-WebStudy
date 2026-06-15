@@ -50,6 +50,7 @@ public class MemberDAO {
     		  vo.setMsg("NOPWD");
     	  }
       }
+      session.close();
       return vo;
   }
 }
