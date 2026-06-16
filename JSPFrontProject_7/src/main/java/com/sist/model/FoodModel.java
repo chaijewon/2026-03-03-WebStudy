@@ -148,6 +148,13 @@ public class FoodModel {
     	   out.write(arr.toJSONString());
        }catch(Exception ex) {}
    }
+   @RequestMapping("food/movie.do")
+   public String food_movie(HttpServletRequest request,
+		     HttpServletResponse response)
+   {
+	   request.setAttribute("main_jsp", "../food/movie.jsp");
+	   return "../main/main.jsp";
+   }
 }
 
 
