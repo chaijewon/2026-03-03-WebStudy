@@ -37,13 +37,13 @@ const search= async(fd)=>{
 	    const result=await response.json()
 	    const movie=result.items
 	    console.log(movie)
-	    const html=''
+	    let html=''
 	    movie.forEach((m)=>{
 	    	html+='<div class="col-sm-4">'
 	    	     +'<div class="thumbnail">'
-	             +'<embed src="https://www.youtube.com/watch?v='+movie.id.videoId+'">'
+	             +'<embed src="http://www.youtube.com/embed/'+m.id.videoId+'" style="width:350px;height:250px"></embed>'
 	             +'</div>'
-	             +'<p>'+movie.snippet.title+'</p>'
+	             +'<p>'+m.snippet.title+'</p>'
 	             +'</div>'
 	             
 	    })
