@@ -124,4 +124,25 @@ public class EmpDAO {
 	   session.close();
 	   return list;
    }
+   /*
+    *   <select id="empFindData5" resultType="EmpVO" parameterType="EmpVO">
+		   SELECT empno,ename,job,TO_CHAR(hiredate,'YYYY-MM-DD') as dbday,sal
+		   FROM emp
+		   <trim prefix="WHERE" prefixOverrides="AND|OR">
+		     <if test="ename!=null and ename!=''">
+		      AND ename LIKE '%'||#{ename}||'%'
+		     </if>
+		     <if test="job!=null and job!=''">
+		      AND job LIKE '%'||#{job}||'%'
+		     </if>
+		   </trim>
+		  </select>
+    */
+   public static List<EmpVO> empFindData5(EmpVO vo)
+   {
+	   SqlSession session=ssf.openSession();
+	   List<EmpVO> list=session.selectList("empFindData5",vo);
+	   session.close();
+	   return list;
+   }
 }

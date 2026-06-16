@@ -63,6 +63,18 @@
   </select>
   <!-- 
       {7788,7890,7460} => IN(7788,7890,7460)
+      
+      1. <if> 
+         IN(1,1,1,1,1,)
+      2. <foreach collection="data" item="emp" separator=","
+                                    ==========
+                                    배열/List에서 값 추출
+                  ========== 배열 / List
+           open="(" close=")"> (1,1,1,1,1,1,1,1)
+      3. <choose> 
+      4. <where> 
+      5. <trim> 
+      6. <bind> 
    -->
   <select id="empFindData4" resultType="EmpVO" parameterType="hashmap">
     SELECT empno,ename,job,TO_CHAR(hiredate,'YYYY-MM-DD') as dbday,sal
@@ -78,5 +90,33 @@
    SELECT empno,ename
    FROM emp
    ORDER BY empno ASC
+  </select>
+  <!-- 
+     <trim>  : 필터 검색 
+       prefix  => 앞에 추가 => WHERE
+       prefixOverrides => 앞에 내용 삭제  AND / OR
+       suffix => 뒤에 추가  )
+       suffixOverrides => 뒤에 내용 삭제 
+       
+       if / choose / trim / where / foreach 
+       sql : 중복 제거 
+       bind : 복잡한 SQL문장이 있는 경우 
+       동적 쿼리 제작  
+       
+       => SQL문장 여러개를 동시 수행 => foregin key DELETE 
+       => PROCEDURE 사용 : 공통 기반 (댓글) / 좋아요 / 찜하기 
+                          
+   -->
+  <select id="empFindData5" resultType="EmpVO" parameterType="EmpVO">
+   SELECT empno,ename,job,TO_CHAR(hiredate,'YYYY-MM-DD') as dbday,sal
+   FROM emp
+   <trim prefix="WHERE" prefixOverrides="AND|OR">
+     <if test="ename!=null and ename!=''">
+      AND ename LIKE '%'||#{ename}||'%'
+     </if>
+     <if test="job!=null and job!=''">
+      AND job LIKE '%'||#{job}||'%'
+     </if>
+   </trim>
   </select>
 </mapper>

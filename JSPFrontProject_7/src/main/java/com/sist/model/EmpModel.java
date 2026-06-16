@@ -61,4 +61,17 @@ public class EmpModel {
 	  request.setAttribute("list", list);
 	  return "../emp/list_ok.jsp";
   }
+  
+  @RequestMapping("emp/if_where4.do")
+  public String emp_trim(HttpServletRequest request,
+		  HttpServletResponse response)
+  {
+	  EmpVO vo=new EmpVO();
+	  vo.setEname("K");
+	  vo.setJob("P");
+	  List<EmpVO> list=EmpDAO.empFindData5(vo);
+	  request.setAttribute("list", list);
+	  
+	  return "../emp/if_where.jsp";
+  }
 }
