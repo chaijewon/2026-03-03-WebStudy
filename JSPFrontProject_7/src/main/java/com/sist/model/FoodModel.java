@@ -93,9 +93,15 @@ public class FoodModel {
        if(fd==null)
     	   fd="마포";
        String col=request.getParameter("col"); // <select> name/address/type
+       if(col==null)
+    	   col="address";
        String page=request.getParameter("page");
        if(page==null)
     	   page="1";
+       
+       System.out.println("page:"+page);
+       System.out.println("col:"+col);
+       System.out.println("fd:"+fd);
        int curpage=Integer.parseInt(page);
        Map map=new HashMap();
        map.put("fd",fd);
