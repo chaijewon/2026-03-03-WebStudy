@@ -78,7 +78,7 @@ $(function(){
       <li class="active"><a href="../main/main.do">Home</a></li>
       <li><a href="../food/find.do">맛집 검색</a></li>
       <li><a href="../food/movie.do">동영상 검색</a></li>
-      <li><a href="#">커뮤니티</a></li>
+      <li><a href="../board/list.do">커뮤니티</a></li>
     </ul>
   </div>
 </nav>

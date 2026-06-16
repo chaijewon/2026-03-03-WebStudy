@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.emp-mapper">
+ <!-- 
+      <if> : 조건문 = <choose> : 다중 조건문 
+      <trim> : 제거 / 추가 
+      <foreach> : 반복문  
+      <bind> : 중복된 데이터를 변수형으로 처리 
+      <where> , <set> 
+  -->
+  <select id="empFindData" resultType="EmpVO" parameterType="EmpVO">
+    SELECT empno,ename,job,TO_CHAR(hiredate,'YYYY-MM-DD') as dbday,
+           sal,deptno
+    FROM emp
+    <where> <!--  자동으로 WHERE 첫번째 OR/AND 제거 -->
+      <if test="empno!=0">
+        AND empno=#{empno}
+      </if>
+      <if test="ename!=null and ename!=''">
+        AND ename LIKE '%'||#{ename}||'%'
+      </if>
+      <if test="deptno!=0">
+        AND deptno=#{deptno}
+      </if>
+     </where>
+    <!--
+       WHERE deptno=#{deptno} 
+       
+       => 7788
+       WHERE empno=7788 AND ename LIKE '%S%'
+     -->
+  </select>
+  <!-- 
+      <bind> : 대소문자 구분 없이 사용이 가능 
+      <bind name="uname"
+            value="ename.toUpperCase()"/>
+   -->
+  <select id="empFindData2" resultType="EmpVO" parameterType="string">
+    <!--  변수 설정  -->
+    <bind name="keyword"
+          value="'%'+ename+'%'"
+    />
+    SELECT empno,ename,job,hiredate,sal,deptno
+    FROM emp
+    WHERE ename LIKE #{keyword}
+  </select>
+  <!-- choose -->
+  <select id="empFindData3" resultType="EmpVO" parameterType="string">
+    SELECT empno,ename,job,hiredate,sal
+    FROM emp 
+    WHERE 
+    <choose>
+      <when test="job=='MANAGER'">
+        sal>=3000
+      </when>
+      <when test="job=='SALESMAN'">
+        sal>=1500
+      </when>
+      <otherwise>
+        sal>=1000
+      </otherwise>
+    </choose>
+  </select>
+  <!-- 
+      {7788,7890,7460} => IN(7788,7890,7460)
+   -->
+  <select id="empFindData4" resultType="EmpVO" parameterType="hashmap">
+    SELECT empno,ename,job,TO_CHAR(hiredate,'YYYY-MM-DD') as dbday,sal
+    FROM emp
+    WHERE empno IN 
+    <foreach collection="data" item="emp" separator=","
+     open="(" close=")"
+    >
+      #{emp}
+    </foreach>
+  </select>
+  <select id="empGetData" resultType="EmpVO">
+   SELECT empno,ename
+   FROM emp
+   ORDER BY empno ASC
+  </select>
+</mapper>
