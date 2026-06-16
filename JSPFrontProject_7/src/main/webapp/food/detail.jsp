@@ -12,6 +12,29 @@
   width: 800px;
 }
 </style>
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript">
+let u=0
+$(function(){
+	$('.ups').hide()
+	$('.updateBtns').on('click',function(){
+		let no=$(this).attr("data-no")
+		$('.ups').hide("slow")
+		if(u===0)
+		{
+			$(this).text("취소")
+			$('#up'+no).show("slow")
+			u=1
+		}
+		else
+		{
+			$(this).text("수정")
+			$('#up'+no).hide("slow")
+			u=0
+		}
+	})
+})
+</script>
 </head>
 <body>
   <div class="container">
@@ -85,13 +108,33 @@
                  </td>
                  <td class="text-right">
                    <c:if test="${rvo.id==sessionScope.id }">
-                     <span class="btn btn-xs btn-success">수정</span>
-                     <a href="#" class="btn btn-xs btn-info">삭제</a>
+                     <span class="btn btn-xs btn-success updateBtns" data-no="${rvo.no }">수정</span>
+                     <a href="../reply/delete.do?no=${rvo.no }&fno=${vo.no}" class="btn btn-xs btn-info">삭제</a>
                    </c:if>
                  </td>
                </tr>
                <tr>
                  <td style="white-space: pre-wrap;" colspan="2">${rvo.msg}</td>
+               </tr>
+               <tr style="display:none" class="ups" id="up${rvo.no }">
+                 <td colspan="2">
+                  <table class="table">
+			        <form method=post action="../reply/update.do">
+				         <tr>
+				           <td>
+				             <input type="hidden" name="fno" value="${vo.no }">
+				             <input type="hidden" name="no" value="${rvo.no }">
+				             <textarea rows="4" cols="70" style="float: left" name="msg">${rvo.msg}</textarea>
+				             
+				             <button type=submit class="btn-primary"
+				              style="width: 100px;height: 92px;float: left"
+				             >댓글수정</button>
+				             
+				           </td>
+				         </tr>
+			         </form>
+			       </table>
+                 </td>
                </tr>
               </table>
             </c:forEach>

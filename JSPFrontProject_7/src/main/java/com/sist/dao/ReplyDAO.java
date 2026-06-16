@@ -48,5 +48,36 @@ public class ReplyDAO {
 	   session.insert("replyInsert",vo);
 	   session.close();
    }
-   
+   /*
+    *     <update id="replyUpdate" parameterType="hashmap">
+		    UPDATE reply SET 
+		    msg=#{msg}
+		    WHERE no=#{no}
+		  </update>
+		  
+		  => @Update("UPDATE reply SET 
+					    msg=#{msg}
+					    WHERE no=#{no}")
+	         public void replyUpdate(Map map)
+	         
+	         @Mapper
+    */
+   public static void replyUpdate(Map map)
+   {
+	   SqlSession session=ssf.openSession(true);// autoCommit
+	   session.update("replyUpdate",map);
+	   session.close();
+   }
+   /*
+    *   <delete id="replyDelete" parameterType="int">
+		    DELETE FROM reply
+		    WHERE no=#{no}
+		  </delete>
+    */
+   public static void replyDelete(int no)
+   {
+	   SqlSession session=ssf.openSession(true);// autoCommit
+	   session.delete("replyDelete",no);
+	   session.close();
+   }
 }

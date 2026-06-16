@@ -20,4 +20,13 @@
     INSERT INTO reply VALUES(#{no},#{fno},#{id},#{name},
     #{msg},SYSDATE)
   </insert>
+  <update id="replyUpdate" parameterType="hashmap">
+    UPDATE reply SET 
+    msg=#{msg}
+    WHERE no=#{no}
+  </update>
+  <delete id="replyDelete" parameterType="int">
+    DELETE FROM reply
+    WHERE no=#{no}
+  </delete>
 </mapper>

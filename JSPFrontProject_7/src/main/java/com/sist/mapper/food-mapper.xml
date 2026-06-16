@@ -16,6 +16,22 @@
     WHERE no=#{no}
   </select>
   <!-- 
-     동적 쿼리 / 댓글 : Ajax 
+     동적 쿼리 / 댓글 : Ajax  String / string 
    -->
+  <select id="foodFindData" resultType="FoodVO" parameterType="hashmap">
+    SELECT no,name,poster,address
+    FROM food
+    WHERE ${column} LIKE '%'||#{fd}||'%'
+    ORDER BY no ASC
+    OFFSET #{start} ROWS FETCH NEXT 12 ROWS ONLY 
+  </select>
+  <select id="foodFindTotalPage" resultType="int" parameterType="hashmap">
+   SELECT CEIL(COUNT(*)/12.0) 
+   FROM food
+   WHERE ${column} LIKE '%'||#{fd}||'%'
+  </select>
 </mapper>
+
+
+
+

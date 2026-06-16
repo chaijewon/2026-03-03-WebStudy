@@ -72,11 +72,11 @@ $(function(){
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Ajax/동적쿼리</a>
+      <a class="navbar-brand" href="../main/main.do">Ajax/동적쿼리</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="#">Home</a></li>
-      <li><a href="#">맛집 검색</a></li>
+      <li class="active"><a href="../main/main.do">Home</a></li>
+      <li><a href="../food/find.do">맛집 검색</a></li>
       <li><a href="#">동영상 검색</a></li>
       <li><a href="#">커뮤니티</a></li>
     </ul>
