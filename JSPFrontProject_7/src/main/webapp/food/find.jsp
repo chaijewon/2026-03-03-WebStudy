@@ -49,6 +49,28 @@ function dataRecv(page)
 			})  
 			$('#print').html(html)
 			
+			// 페이지 설정 vue => thymeleaf : SpringFrame + Vue / MyBatis (Annotation)
+			let curpage=json[0].curpage
+			let totalpage=json[0].totalpage
+			let startPage=json[0].startPage
+			let endPage=json[0].endPage
+			
+			let pageHtml='<ul class="pagination">'
+			if(startPage>1)
+			{
+				pageHtml+='<li><a class="link" onclick="prev('+(startPage-1)+')">&laquo;</a></li>'
+			}
+			for(let i=startPage;i<=endPage;i++)
+			{
+				pageHtml+='<li '+(i===curpage?"class=active":"")+'><a class="link" onclick="change('+i+')">'+i+'</a></li>'
+			}
+			if(endPage<totalpage)
+			{
+				pageHtml+='<li><a class="link" onclick="next('+(endPage+1)+')">&raquo;</a></li>'
+			}
+			pageHtml+='</ul>'
+			
+			$('#paging').html(pageHtml)
 		}
 	})
 }
