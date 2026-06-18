@@ -105,7 +105,7 @@
        
        => SQL문장 여러개를 동시 수행 => foregin key DELETE 
        => PROCEDURE 사용 : 공통 기반 (댓글) / 좋아요 / 찜하기 
-                          
+                           
    -->
   <select id="empFindData5" resultType="EmpVO" parameterType="EmpVO">
    SELECT empno,ename,job,TO_CHAR(hiredate,'YYYY-MM-DD') as dbday,sal
