@@ -69,10 +69,59 @@
                                         </div>
                                     </div>
                                     </c:forEach>
-                                   
+                                    
                                 </div>
                             </div>
                       </div>
+                      <table class="table">
+                                      <tr>
+                                        <td width=30% class="text-center" rowspan="8">
+                                          <img src="${vo.poster }"
+                                            style="width: 340px;height: 350px"
+                                            class="img-rounded">
+                                        </td>
+                                        <td colspan="2"><h3>${vo.name }</h3>
+                                      </tr>
+                                      <tr>
+                                        <th width=10% style="color:gray">주소</th>
+                                        <td width=60%>${vo.address }</td>
+                                      </tr>
+                                      <tr>
+                                        <th width=10% style="color:gray">전화</th>
+                                        <td width=60%>${vo.phone }</td>
+                                      </tr>
+                                      <tr>
+                                        <th width=10% style="color:gray">음식종류</th>
+                                        <td width=60%>${vo.type }</td>
+                                      </tr>
+                                      <tr>
+                                        <th width=10% style="color:gray">영업시간</th>
+                                        <td width=60%>${vo.time }</td>
+                                      </tr>
+                                      <tr>
+                                        <th width=10% style="color:gray">가격대</th>
+                                        <td width=60%>${vo.price }</td>
+                                      </tr>
+                                      <tr>
+                                        <th width=10% style="color:gray">주차</th>
+                                        <td width=60%>${vo.parking }</td>
+                                      </tr>
+                                      <tr>
+                                        <th width=10% style="color:gray">테마</th>
+                                        <td width=60%>${vo.theme }</td>
+                                      </tr>
+                                      <tr>
+                                       <td colspan="3">${vo.content }</td>
+                                      </tr>
+                                      <tr>
+                                       <td colspan="3" class="text-right">
+                                        <a href="#" class="btn btn-xs btn-danger">좋아요</a>
+                                        <a href="#" class="btn btn-xs btn-info">찜하기</a>
+                                        <a href="#" class="btn btn-xs btn-success">예약하기</a>
+                                        <a href="../food/list.do" class="btn btn-xs btn-warning">목록</a>
+                                       </td>
+                                      </tr>
+                                    </table>
                     </div>
                 </div>
             </div>
