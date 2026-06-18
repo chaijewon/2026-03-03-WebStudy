@@ -90,6 +90,16 @@ public class FoodDAO {
 		    FROM food
 		    WHERE no=#{no}
 		  </select>
+    */
+   public static FoodVO foodDetailData(int no)
+   {
+	   SqlSession session=ssf.openSession(true);
+	   session.update("foodHitIncrement",no);
+	   FoodVO vo=session.selectOne("foodDetailData",no);
+	   session.close();
+	   return vo;
+   }
+   /*
 		  <select id="foodRearData" resultType="FoodVO" parameterType="string">
 		    SELECT no,name,poster,address,rownum
 		    FROM food
@@ -97,4 +107,11 @@ public class FoodDAO {
 		    AND rownum&lt;=7
 		  </select>
     */
+   public static List<FoodVO> foodRearData(String address)
+   {
+	   SqlSession session=ssf.openSession();
+	   List<FoodVO> list=session.selectList("foodRearData",address);
+	   session.close();
+	   return list;
+   }
 }
