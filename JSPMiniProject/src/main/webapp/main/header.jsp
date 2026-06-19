@@ -116,7 +116,18 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">커뮤니티</a>
                                     <div class="dropdown-menu" aria-labelledby="yummyDropdown">
-                                        <a class="dropdown-item" href="index.html">자유 게시판</a>
+                                        <%--
+                                            ../board/list.do = DispatcherServlet(Controller) 
+                                                                | Model 찾기 
+                                                                | Model안에서 @RequestMapping() 찾기 
+                                                                | 밑에 있는 메소드가 호출 
+                                                                ---------------------------HandleMapping
+                                                                | request.setAttribute() 
+                                                                  JSP 찾기  
+                                                                ---------------------------ViewResolver
+                                                                | => request에 첨부된 데이터를 JSP 전송 
+                                         --%>
+                                        <a class="dropdown-item" href="../board/list.do">자유 게시판</a>
                                         <a class="dropdown-item" href="archive.html">묻고 답하기</a>
                                         <a class="dropdown-item" href="single.html">공지 사항</a>
                                         <a class="dropdown-item" href="single.html">실시간 채팅</a>

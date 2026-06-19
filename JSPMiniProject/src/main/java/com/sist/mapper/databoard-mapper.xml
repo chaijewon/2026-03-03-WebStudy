@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.databoard-mapper">
+  <select id="boardListData" resultType="DataBoardVO" parameterType="int">
+    SELECT no,subject,name,TO_CHAR(regdate,'yyyy-mm-dd') as dbday,hit
+    FROM mvcdataboard
+    ORDER BY no DESC
+    OFFSET #{start} ROWS FETCH NEXT 10 ROWS ONLY
+  </select>
+  <select id="boardRowCount" resultType="int">
+    SELECT COUNT(*) 
+    FROM mvcdataboard
+  </select>
+  <!-- 
+       insert
+   -->
+  <insert id="boardInsert" parameterType="DataBoardVO">
+    <selectKey keyProperty="no" resultType="int" order="BEFORE">
+      <!-- sequence -->
+      SELECT NVL(MAX(no)+1,1) as no FROM mvcdataboard
+    </selectKey>
+    INSERT INTO mvcdataboard(no,name,subject,content,pwd,filename,filesize)
+    VALUES(#{no},#{name},#{subject},#{content},#{pwd},
+    #{filename},#{filesize})
+  </insert>
+  <!-- 
+      update
+   -->
+   <select id="boardGetPassword" parameterType="int" resultType="string">
+    SELECT pwd FROM mvcdataboard
+    WHERE no=#{no}
+   </select>
+   
+   <update id="boardUpdate" parameterType="DataBoardVO">
+     UPDATE mvcdataboard SET 
+     name=#{name},subject=#{subject},content=#{content},
+     filename=#{filename},filesize=#{filesize}
+     WHERE no=#{no}
+   </update>
+   <!-- 
+       delete : 우분투 (AWS) => 파일업로드 / 파일 다운로드 가능 
+    -->
+   <select id="boardFileInfoData" parameterType="int"
+    resultType="DataBoardVO"
+   >
+     SELECT filename,filesize
+     FROM mvcdataboard 
+     WHERE no=#{no}
+   </select>
+   
+   <delete id="boardDelete" parameterType="int">
+     DELETE FROM mvcdataboard
+     WHERE no=#{no}
+   </delete>
+   <!-- 
+       상세보기 
+    -->
+   <update id="boardHitIncrement" parameterType="int">
+     UPDATE mvcdataboard SET
+     hit=hit+1
+     WHERE no=#{no}
+   </update>
+   <select id="boardDetailData" parameterType="int" 
+       resultType="DataBoardVO">
+     SELECT no,name,subject,content,
+            TO_CHAR(regdate,'yyyy-mm-dd hh24:mi:ss') as dbday,   
+            filename,filesize
+     FROM mvcdataboard
+     WHERE no=#{no} 
+   </select>
+   <!-- 
+         묻고답하기 : user/admin , 공지사항 
+    -->
+</mapper>
