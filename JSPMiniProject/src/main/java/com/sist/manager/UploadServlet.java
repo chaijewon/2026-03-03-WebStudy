@@ -13,7 +13,13 @@ import java.io.IOException;
 
 import com.sist.dao.DataBoardDAO;
 import com.sist.vo.DataBoardVO;
-
+/*
+ *   class A
+ *   {
+ *   }
+ *   
+ *   A a=new A()
+ */
 
 @WebServlet("/UploadServlet")
 // JSP에서는 실행이 안됨 = Servlet으로 실행 => 스프링 => web.xml
@@ -25,10 +31,12 @@ import com.sist.vo.DataBoardVO;
 public class UploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private static final String UPLOAD_DIR="uploads";
+    
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String uploadPath=getServletContext().getRealPath("")
 				          +File.separator+UPLOAD_DIR;
+		
 		// getServletContext() : JSP=> application
 		// application => 서버와 관련 데이터 관리 => ServletContext
 		//System.out.println(uploadPath);
@@ -41,6 +49,7 @@ public class UploadServlet extends HttpServlet {
 		 *   Part 1 : file
 		 *   Part 2 : text
 		 */
+		
 		try
 		{
 			//1. 한글 깨짐 방지 

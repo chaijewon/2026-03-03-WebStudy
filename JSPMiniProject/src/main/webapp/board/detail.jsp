@@ -6,6 +6,26 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript">
+let i=0
+$(function(){
+	$('#delBtn').on('click',function(){
+		if(i===0)
+		{
+			$('#delTr').show()
+			$(this).text("취소")
+			i=1
+		}
+		else
+		{
+			$('#delTr').hide()
+			$(this).text("삭제")
+			i=0
+		}
+	})
+})
+</script>
 </head>
 <body>
   <div class="breadcumb-area" style="background-image: url(../img/bg-img/breadcumb.jpg);">
@@ -57,7 +77,7 @@
                       <c:if test="${vo.filesize>0 }">
 	                      <tr>
 	                        <th width=20% class="text-center">첨부파일</th>
-	                        <td colspan="3">${vo.filename }(${vo.filesize }Bytes)</td>
+	                        <td colspan="3"><a href="../board/download.do?fn=${vo.filename }">${vo.filename }</a>(${vo.filesize }Bytes)</td>
 	                      </tr>
                       </c:if>
                       <tr>
