@@ -70,6 +70,7 @@
 	                           주고 / 받기 
 	                           ===========   ?
 	                           자주 = 소스 
+	                           
 	                        --%>
 	                       <td width="45%"><a href="../board/detail.do?no=${vo.no }">${vo.subject }</a></td>
 	                       <td width="15%" class="text-center">${vo.name }</td>

@@ -42,4 +42,19 @@ public class BoardModel {
 	   request.setAttribute("main_jsp", "../board/insert.jsp");
 	   return "../main/main.jsp";
    }
+   // => 무슨값 전송 / 화면 출력 => 무슨 값을 받을지 
+   // 어떤 JSP로 전송할지 확인 
+   // 데이터는 무조건 오라클에서 가지고 온다 (공유 데이터)
+   // => 외부 데이터 (날씨,뉴스)
+   // ? 뒤에 어떤 값을 붙일지 
+   @RequestMapping("board/detail.do")
+   public String board_detail(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String no=request.getParameter("no");
+	   DataBoardVO vo=DataBoardDAO.boardDetailData(Integer.parseInt(no));
+	   request.setAttribute("vo", vo);
+	   request.setAttribute("main_jsp", "../board/detail.jsp");
+	   return "../main/main.jsp";
+   }
 }

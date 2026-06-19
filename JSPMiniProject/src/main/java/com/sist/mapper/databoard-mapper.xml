@@ -64,7 +64,7 @@
        resultType="DataBoardVO">
      SELECT no,name,subject,content,
             TO_CHAR(regdate,'yyyy-mm-dd hh24:mi:ss') as dbday,   
-            filename,filesize
+            filename,filesize,hit
      FROM mvcdataboard
      WHERE no=#{no} 
    </select>
