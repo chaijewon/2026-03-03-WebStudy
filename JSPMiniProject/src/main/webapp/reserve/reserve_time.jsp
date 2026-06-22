@@ -11,6 +11,15 @@ $(function(){
 	$('.times').on('click',function(){
 		let t=$(this).text()
 		$('#food_reserve_time').text(t)
+		
+		$.ajax({
+			type:'post',
+			url:'../reserve/reserve_inwon.do',
+			success:function(result)
+			{
+				$('#r_inwon').html(result)
+			}
+		})
 	})
 })
 </script>
