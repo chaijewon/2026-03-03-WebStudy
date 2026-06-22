@@ -74,7 +74,7 @@ $(function(){
          예약일 정보
         </div>
         <div class="card-body" id="food_rdays">
-         
+          
         </div>
        </div>
       </div>

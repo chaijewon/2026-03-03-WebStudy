@@ -29,6 +29,15 @@ $(function(){
 		$('#food_name').text(name)
 		$('#food_poster').show()
 		$('#reserve_info').show()
+		
+		$.ajax({
+			type:'post',
+			url:'../reserve/diary.do',
+			success:function(result)
+			{
+				$('#food_rdays').html(result)
+			}
+		})
 	})
 })
 </script>

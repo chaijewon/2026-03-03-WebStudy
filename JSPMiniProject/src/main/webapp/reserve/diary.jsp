@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <style type="text/css">
 .container{
    margin-top: 50px;
@@ -18,8 +18,8 @@
 h3 {
    text-align: center;
 }
-</style>
-<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+</style> -->
+<!-- <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script> -->
 <script type="text/javascript">
 $(function(){
 	$('#year').on('change',function(){
@@ -30,6 +30,11 @@ $(function(){
 	})
 })
 </script>
+<style type="text/css">
+.day-link{
+  cursor: pointer;
+}
+</style>
 </head>
 <body>
   <%--
@@ -53,11 +58,14 @@ $(function(){
               ================== 값을 숨긴 상태에서 값 읽기 (Jquery에서 가능)
        
    --%>
-  <div class="container">
-   <div class="row">
-    <h3>${year }년도 ${month }월 ${today }일</h3>
-   </div>
-   <div class="row" style="margin-top: 10px">
+   <table class="table">
+    <tr>
+	    <td>
+	      <h3>${year }년도 ${month }월 ${today }일</h3>
+	    </td>
+    </tr>
+   </table>
+   
      <form method="post" action="../reserve/diary.do" id="frm">
      <table class="table">
       <tbody>
@@ -78,8 +86,8 @@ $(function(){
       </tbody>
      </table>
      </form>
-   </div>
-   <div class="row" style="margin-top: 20px">
+   
+   
       <table class="table">
        <tbody>
          <tr class="danger">
@@ -116,9 +124,16 @@ $(function(){
               </c:forEach>
            </c:if>
            <%-- 일자 출력 --%>
-           <td class="text-center ${today==i?'success':'' }">
-            ${i }
-           </td>
+           <c:if test="${today>i }">
+	           <td class="text-center ${today==i?'success':'' }">
+	            <h4 style="color:gray">${i }</h4>
+	           </td>
+           </c:if>
+           <c:if test="${today<=i }">
+	           <td class="text-center ${today==i?'success':'' }">
+	            <h4 class="day-link" style="color:green">${i }</h4>
+	           </td>
+           </c:if>
            <%-- 요일 한개씩 증가 : 토요일까지 증가  --%>
            <c:set var="week" value="${week+1 }"/>
            <c:if test="${week>6 }">
@@ -131,7 +146,7 @@ $(function(){
          </tr>
        </tbody>
       </table>
-   </div>
-  </div>
+   
+
 </body>
 </html>
