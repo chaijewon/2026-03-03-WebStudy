@@ -28,6 +28,24 @@ $(function(){
 	$('#month').on('change',function(){
 		$('#frm').submit()
 	})
+	
+	$('.day-link').on('click',function(){
+		let year=$('#year').val();
+		let month=$('#month').val();
+		let day=$(this).text()
+		let rday=year+"-"+month+"-"+day
+		$('#food_reserve_day').text(rday)
+		
+		$.ajax({
+			type:'post',
+			url:'../reserve/reserve_time.do',
+			success:function(result)
+			{
+				$('#r_time').html(result)
+			}
+		})
+	})
+	
 })
 </script>
 <style type="text/css">

@@ -111,22 +111,22 @@ $(function(){
       </div>
     </div>
     <div class="row g-4 mt-3">
-       <div class="col-sm-8">
+       <div class="col-sm-7">
         <div class="card">
         <div class="card-header bg-primary  text-white text-center">
          시간 정보
         </div>
-        <div class="card-body text-center">
-         
+        <div class="card-body text-center" id="r_time">
+          
         </div>
        </div>
        </div>
-       <div class="col-sm-4">
+       <div class="col-sm-5">
         <div class="card">
         <div class="card-header bg-warning  text-white text-center">
          인원 정보
         </div>
-        <div class="card-body text-center">
+        <div class="card-body text-center" id="r_inwon">
          
         </div>
        </div>
