@@ -6,6 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+$(function(){
+	$('.inwons').on('click',function(){
+		let inwon=$(this).text()
+		$('#food_reserve_inwon').text(inwon)
+		$('#ok').show()
+	})
+})
+</script>
 </head>
 <body>
   <table class="table">
@@ -13,9 +22,9 @@
       <tr>
         <td>
           <c:forEach var="i" begin="2" end="5">
-            <span class="btn btn-xs btn-danger">${i }</span>
+            <span class="btn btn-xs btn-danger inwons">${i }명</span>
           </c:forEach>
-            <span class="btn btn-xs btn-danger">단체</span>
+            <span class="btn btn-xs btn-danger inwons">단체</span>
         </td>
       </tr>
     </tbody>

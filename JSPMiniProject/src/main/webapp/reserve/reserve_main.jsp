@@ -105,6 +105,11 @@ $(function(){
              <td class="text-muted">예약인원</td>
              <td id="food_reserve_inwon">-</td>
             </tr>
+            <tr id="ok" style="display:none">
+              <td colspan="2" class="text-center">
+               <button class="btn-lg btn-primary">예약하기</button>
+              </td>
+            </tr>
           </table>
         </div>
        </div>

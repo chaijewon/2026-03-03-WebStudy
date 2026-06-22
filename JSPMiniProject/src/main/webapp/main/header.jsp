@@ -140,10 +140,10 @@
                                     <a class="nav-link" href="#">스토어</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="archive.html">관리자페이지</a>
+                                    <a class="nav-link" href="../adminpage/admin_main.do">관리자페이지</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">마이페이지</a>
+                                    <a class="nav-link" href="../mypage/mypage_main.do">마이페이지</a>
                                 </li>
                                 
                             </ul>

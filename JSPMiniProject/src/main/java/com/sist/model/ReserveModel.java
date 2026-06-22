@@ -89,7 +89,7 @@ public class ReserveModel {
    {
 	   String time=TimeConfig.reserveTime();
 	   request.setAttribute("time", time);
-	   return "../reserve/reserve_time.jsp";
+	   return "../reserve/reserve_time.jsp"; // html을 읽어서 원하는 위치에 출력
    }
    
    @RequestMapping("reserve/reserve_inwon.do")
