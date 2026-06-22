@@ -22,6 +22,8 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 import java.util.*;
 import java.text.*;
+import com.sist.dao.*;
+import com.sist.vo.*;
 @Controller
 public class ReserveModel {
    @RequestMapping("reserve/diary.do")
@@ -70,6 +72,16 @@ public class ReserveModel {
 	   String[] strWeek={"일","월","화","수","목","금","토"};
 	   request.setAttribute("strWeek", strWeek);
 	   return "../reserve/diary.jsp";
+   }
+   @RequestMapping("reserve/reserve_food.do")
+   public String reserve_food(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String type=request.getParameter("type");
+	   List<FoodVO> list=
+			        FoodDAO.foodCategoryData(type);
+	   request.setAttribute("list", list);
+	   return "../reserve/reserve_food.jsp";
    }
 }
 

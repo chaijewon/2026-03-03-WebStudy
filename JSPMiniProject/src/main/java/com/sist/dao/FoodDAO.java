@@ -114,4 +114,23 @@ public class FoodDAO {
 	   session.close();
 	   return list;
    }
+   /*
+    *   <select id="foodCategoryData" resultType="FoodVO" parameterType="string">
+	    SELECT no,name,poster
+	    FROM food
+	    WHERE type LIKE '%'||#{type}||'%'
+	    ORDER BY no ASC
+	  </select>
+    */
+   public static List<FoodVO> foodCategoryData(String type)
+   {
+	   // 1. 연결 
+	   SqlSession session=ssf.openSession();
+	   // 2. SQL문장 실행 결과 
+	   List<FoodVO> list=session.selectList("foodCategoryData",type);
+	   //                                     id명          
+	   // 3. session 닫기
+	   session.close(); // 반환 
+	   return list;
+   }
 }

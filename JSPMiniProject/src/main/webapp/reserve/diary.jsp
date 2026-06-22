@@ -116,7 +116,9 @@ $(function(){
               </c:forEach>
            </c:if>
            <%-- 일자 출력 --%>
-           <td class="text-center ${today==i?'success':'' }">${i }</td>
+           <td class="text-center ${today==i?'success':'' }">
+            ${i }
+           </td>
            <%-- 요일 한개씩 증가 : 토요일까지 증가  --%>
            <c:set var="week" value="${week+1 }"/>
            <c:if test="${week>6 }">
