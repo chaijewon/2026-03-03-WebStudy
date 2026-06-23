@@ -26,6 +26,7 @@ p {
 <script type="text/javascript" src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript" src="page_card.js"></script>
+<script type="text/javascript" src="food_detail.js"></script>
 </head>
 <body>
   <div class="container-fluid">
@@ -48,117 +49,6 @@ p {
 	    </div>
     </div>
   </div>
-  <script>
-  const food_detail={
-    props:['food_detail']//['curpage','totalpage'....]
-	template:
-		`
-		  <table class="table">
-           <tbody>
-            <tr>
-             <td class="text-center" width=30% rowspan="8">
-               <img :src="food_detail.poster" style="width:100%">
-             </td>
-             <td colspan="2"><h3>{{food_detail.name}}&nbsp;<span style="color:orange">{{food_detail.score}}</span></h3></td>
-            </tr>
-            <tr>
-              <td width=20%>주소</td>
-              <td width=50%>{{food_detail.address}}</td>
-            </tr>
-            <tr>
-              <td width=20%>전화</td>
-              <td width=50%>{{food_detail.phone}}</td>
-            </tr>
-            <tr>
-              <td width=20%>음식종류</td>
-              <td width=50%>{{food_detail.type}}</td>
-            </tr>
-            <tr>
-              <td width=20%>주차</td>
-              <td width=50%>{{food_detail.parking}}</td>
-            </tr>
-            <tr>
-              <td width=20%>가격대</td>
-              <td width=50%>{{food_detail.price}}</td>
-            </tr>
-            <tr>
-              <td width=20%>영업시간</td>
-              <td width=50%>{{food_detail.time}}</td>
-            </tr>
-            <tr>
-              <td colspan="3">{{food_detail.theme}}</td>
-            </tr>
-            <tr>
-              <td colspan="3">{{food_detail.content}}</td>
-            </tr>
-           </tbody>
-          </table>
-		`
-  }
-  let food=Vue.createApp({
-	  data(){
-		  return {
-			  curpage:1,
-			  totalpage:0,
-			  endPage:0,
-			  startPage:0,
-			  food_list:[], // ArrayList = []
-			  isShow:false,
-			  food_detail:{} // {} = VO
-		  }
-	  },
-	  mounted(){
-		 this.dataRecv()  
-	  },
-	  methods:{
-		  dataRecv(){
-			  axios.get('../food/list_vue.do',{
-				  params:{
-					  page:this.curpage
-				  }// ? => 데이터 전송 
-			  }).then(response=>{
-				  // 결과값 => response에 채워서 가지고 온다 
-				  console.log(response.data)
-				  this.endPage=response.data.endPage
-				  this.startPage=response.data.startPage
-				  this.curpage=response.data.curpage
-				  this.totalpage=response.data.totalpage
-				  this.food_list=response.data.food_list
-			  })
-		  },
-		  // 숫자 증가 = 배열에 저장 
-		  range(start,end){
-			  let arr=[]
-			  let len=end-start
-			  for(let i=0;i<=len;i++)
-			  {
-				  arr[i]=start
-				  start++
-			  }
-			  return arr
-		  },
-		  move(page){
-			  this.curpage=page
-			  this.dataRecv()
-		  },
-		  detail(no){
-			  this.isShow=true
-			  // detail_vue.do?no=2
-			  axios.get('../food/detail_vue.do',{
-				  params:{
-					  no:no
-				  }
-			  }).then(response=>{
-				  console.log(response.data)
-				  this.food_detail=response.data
-			  })
-		  }
-	  },
-	  components:{
-		  pagecard:page_card,
-		  fooddetail:food_detail
-	  }
-  }).mount(".container-fluid")
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>
