@@ -19,9 +19,13 @@ p {
    white-space: nowrap;
    text-overflow: ellipsis;
 }
+.a-link:hover{
+  cursor: pointer;
+}
 </style>
 <script type="text/javascript" src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript" src="page_card.js"></script>
 </head>
 <body>
   <div class="container">
@@ -36,11 +40,7 @@ p {
       </div>
     </div>
     <div class="row text-center" style="margin-top: 20px">
-      <ul class="pagination">
-        <li v-if="startPage>1"><a href="#">&laquo;</a></li>
-        <li v-for="i in range(startPage,endPage)" :class="i===curpage?'active':''"><a href="#">{{i}}</a></li>
-        <li v-if="endPage<totalpage"><a href="#">&raquo;</a></li>
-      </ul>
+      <pagecard></pagecard>
     </div>
   </div>
   <script>
@@ -83,7 +83,14 @@ p {
 				  start++
 			  }
 			  return arr
+		  },
+		  move(page){
+			  this.curpage=page
+			  this.dataRecv()
 		  }
+	  },
+	  components:{
+		  pagecard:page_card
 	  }
   }).mount(".container")
   </script>
