@@ -44,51 +44,52 @@ p {
 	      </div>
 	    </div>
 	    <div class="col-sm-4" v-show="isShow">
-	     <food-detail></food-detail>
+	     <fooddetail v-bind:food_detail="food_detail" ></fooddetail>
 	    </div>
     </div>
   </div>
   <script>
   const food_detail={
+    props:['food_detail']//['curpage','totalpage'....]
 	template:
 		`
 		  <table class="table">
            <tbody>
             <tr>
              <td class="text-center" width=30% rowspan="8">
-               <img src="" style="width:100%">
+               <img :src="food_detail.poster" style="width:100%">
              </td>
-             <td colspan="2"><h3>&nbsp;<span style="color:orange"></span></h3></td>
+             <td colspan="2"><h3>{{food_detail.name}}&nbsp;<span style="color:orange">{{food_detail.score}}</span></h3></td>
             </tr>
             <tr>
               <td width=20%>주소</td>
-              <td width=50%></td>
+              <td width=50%>{{food_detail.address}}</td>
             </tr>
             <tr>
               <td width=20%>전화</td>
-              <td width=50%></td>
+              <td width=50%>{{food_detail.phone}}</td>
             </tr>
             <tr>
               <td width=20%>음식종류</td>
-              <td width=50%></td>
+              <td width=50%>{{food_detail.type}}</td>
             </tr>
             <tr>
               <td width=20%>주차</td>
-              <td width=50%></td>
+              <td width=50%>{{food_detail.parking}}</td>
             </tr>
             <tr>
               <td width=20%>가격대</td>
-              <td width=50%></td>
+              <td width=50%>{{food_detail.price}}</td>
             </tr>
             <tr>
               <td width=20%>영업시간</td>
-              <td width=50%></td>
+              <td width=50%>{{food_detail.time}}</td>
             </tr>
             <tr>
-              <td colspan="3"></td>
+              <td colspan="3">{{food_detail.theme}}</td>
             </tr>
             <tr>
-              <td colspan="3"></td>
+              <td colspan="3">{{food_detail.content}}</td>
             </tr>
            </tbody>
           </table>
@@ -101,8 +102,9 @@ p {
 			  totalpage:0,
 			  endPage:0,
 			  startPage:0,
-			  food_list:[],
-			  isShow:false
+			  food_list:[], // ArrayList = []
+			  isShow:false,
+			  food_detail:{} // {} = VO
 		  }
 	  },
 	  mounted(){
@@ -141,11 +143,20 @@ p {
 		  },
 		  detail(no){
 			  this.isShow=true
+			  // detail_vue.do?no=2
+			  axios.get('../food/detail_vue.do',{
+				  params:{
+					  no:no
+				  }
+			  }).then(response=>{
+				  console.log(response.data)
+				  this.food_detail=response.data
+			  })
 		  }
 	  },
 	  components:{
 		  pagecard:page_card,
-		  food-detail:food_detail
+		  fooddetail:food_detail
 	  }
   }).mount(".container-fluid")
   </script>

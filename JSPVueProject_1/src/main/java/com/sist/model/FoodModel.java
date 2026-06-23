@@ -54,6 +54,22 @@ public class FoodModel {
 		  out.write(json);
 	   }catch(Exception ex) {}
    }
+   @RequestMapping("food/detail_vue.do")
+   public void food_detail(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   try
+	   {
+		   String no=request.getParameter("no");
+		   FoodVO vo=FoodDAO.foodDetailData(Integer.parseInt(no));
+		   ObjectMapper mapper=new ObjectMapper();
+		   String json=mapper.writeValueAsString(vo);
+		   
+		   response.setContentType("text/plain;charset=UTF-8");
+		   PrintWriter out=response.getWriter();
+		   out.write(json);
+	   }catch(Exception ex) {}
+   }
    
 }
 
