@@ -12,7 +12,7 @@
 }
 .row {
   margin: 0px auto;
-  width: 900px;
+  width: 100%;
 }
 p {
    overflow: hidden;
@@ -28,22 +28,72 @@ p {
 <script type="text/javascript" src="page_card.js"></script>
 </head>
 <body>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-3" v-for="vo in food_list">
-        <a href="#">
-         <div class="thumbnail">
-           <img :src="vo.poster" style="width: 250px;height: 130px">
-           <p v-text="vo.name"></p>
-         </div>
-        </a>
-      </div>
-    </div>
-    <div class="row text-center" style="margin-top: 20px">
-      <pagecard></pagecard>
+	     <div class="col-sm-8">
+	      <div class="col-sm-3" v-for="vo in food_list">
+	        <a class="a-link" @click="detail(vo.no)">
+	         <div class="thumbnail">
+	           <img :src="vo.poster" style="width: 320px;height: 130px;object-fit:cover">
+	           <p v-text="vo.name"></p>
+	         </div>
+	        </a>
+	      </div>
+	      <div class="text-center" style="margin-top: 20px">
+	        <pagecard></pagecard>
+	      </div>
+	    </div>
+	    <div class="col-sm-4" v-show="isShow">
+	     <food-detail></food-detail>
+	    </div>
     </div>
   </div>
   <script>
+  const food_detail={
+	template:
+		`
+		  <table class="table">
+           <tbody>
+            <tr>
+             <td class="text-center" width=30% rowspan="8">
+               <img src="" style="width:100%">
+             </td>
+             <td colspan="2"><h3>&nbsp;<span style="color:orange"></span></h3></td>
+            </tr>
+            <tr>
+              <td width=20%>주소</td>
+              <td width=50%></td>
+            </tr>
+            <tr>
+              <td width=20%>전화</td>
+              <td width=50%></td>
+            </tr>
+            <tr>
+              <td width=20%>음식종류</td>
+              <td width=50%></td>
+            </tr>
+            <tr>
+              <td width=20%>주차</td>
+              <td width=50%></td>
+            </tr>
+            <tr>
+              <td width=20%>가격대</td>
+              <td width=50%></td>
+            </tr>
+            <tr>
+              <td width=20%>영업시간</td>
+              <td width=50%></td>
+            </tr>
+            <tr>
+              <td colspan="3"></td>
+            </tr>
+            <tr>
+              <td colspan="3"></td>
+            </tr>
+           </tbody>
+          </table>
+		`
+  }
   let food=Vue.createApp({
 	  data(){
 		  return {
@@ -51,7 +101,8 @@ p {
 			  totalpage:0,
 			  endPage:0,
 			  startPage:0,
-			  food_list:[]
+			  food_list:[],
+			  isShow:false
 		  }
 	  },
 	  mounted(){
@@ -87,12 +138,16 @@ p {
 		  move(page){
 			  this.curpage=page
 			  this.dataRecv()
+		  },
+		  detail(no){
+			  this.isShow=true
 		  }
 	  },
 	  components:{
-		  pagecard:page_card
+		  pagecard:page_card,
+		  food-detail:food_detail
 	  }
-  }).mount(".container")
+  }).mount(".container-fluid")
   </script>
 </body>
 </html>
