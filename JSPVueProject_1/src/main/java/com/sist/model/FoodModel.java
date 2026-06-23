@@ -11,6 +11,7 @@ import com.sist.vo.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+// Model / JSP / DAO / VO 
 @Controller
 public class FoodModel {
    @RequestMapping("food/list.do")
