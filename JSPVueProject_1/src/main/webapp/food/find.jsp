@@ -111,12 +111,21 @@ p {
        <option value="name">업체명</option>
        <option value="address">주소</option>
      </select>
-     <input type=text size=20 class="input-sm" v-model="ss">
+     <%--
+        @submit.prevent=""
+        @blur=""
+        @click=""
+        @change=""
+        @keydown.enter=""
+      --%>
+     <input type=text size=20 class="input-sm" v-model="ss"
+      ref="ssInput" @keydown.enter="find()"
+     >
      <button type=button class="btn-sm btn-primary" @click="find()">검색</button>
     </div>
     <div class="row" style="margin-top: 20px">
       <div class="col-sm-3" v-for="vo in food_list">
-        <a href="#">
+        <a :href="'../food/detail.do?no='+vo.no">
           <div class="thumbnail">
             <img :src="vo.poster" :title="vo.address" style="width:250px;height: 150px;object-fit:cover">
             <p>{{vo.name}}</p>
@@ -183,6 +192,19 @@ p {
     				start++
     			}
     			return arr
+    		},
+    		find(){
+    			// 태그를 가지고 오는 경우 => ref속성 사용 
+    			// 유효성 검사 => $()=(X)
+    			this.curpage=1
+    			if(this.ss.trim()==="")
+    			{
+    				this.$refs.ssInput.focus()
+    				return
+    			}
+    			
+    			this.dataRecv()
+    			
     		}
     	},
     	components:{

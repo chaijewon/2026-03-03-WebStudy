@@ -129,6 +129,17 @@ public class FoodModel {
 		 }catch(Exception ex) {}
 	   
    }
+   /*
+    *   http://localhost/JSPVueProject_1/food/detail.do?no=31
+    *   
+    *   => URI : food/detail.do
+    */
+   @RequestMapping("food/detail.do")
+   public String food_detail1(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   return "../food/detail.jsp";
+   }
 }
 
 
