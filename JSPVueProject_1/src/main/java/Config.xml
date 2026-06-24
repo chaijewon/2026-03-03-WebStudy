@@ -17,11 +17,13 @@
   </settings>
   <typeAliases>
     <typeAlias type="com.sist.vo.FoodVO" alias="FoodVO"/>
+    <typeAlias type="com.sist.vo.GoodsVO" alias="GoodsVO"/>
   </typeAliases>
   <environments default="development">
     <environment id="development">
       <transactionManager type="JDBC"/>
       <dataSource type="POOLED">
+       <!-- type : class명 PooledDataSource-->
        <property name="driver" value="${driver}"/>
        <property name="url" value="${url}"/>
        <property name="username" value="${username}"/>
@@ -35,5 +37,6 @@
   </environments>
   <mappers>
     <mapper resource="com/sist/dao/food-mapper.xml"/>
+    <mapper resource="com/sist/dao/goods_mapper.xml"/>
   </mappers>
 </configuration>

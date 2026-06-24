@@ -74,6 +74,8 @@
                 })
         => Server : axios / fetch 
                             => 자바스크립트 지원 : OpenApi
+                            
+        Vue에서 화면 이동 : Router
  --%>
 <!DOCTYPE html>
 <html>

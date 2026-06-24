@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+     @Data
+     class GoodsVO
+     {
+         private int no ...
+         private String name,poster;
+     }
+     String sql="SELECT no,goods_name,goods_poster..."
+               +"FROM goods_all"
+     ps=conn.preparedStatement(sql)
+     ResultSet rs=ps.executeQuery()
+     while(rs.next())
+     {
+         GoodsVO vo=new GoodsVO()
+         vo.setNo(rs.getInt("no"))
+         vo.setName(rs.getString("goods_name"));
+         vo.setPoster(rs.getString("goods_poster"));
+     }
+     
+     private int no,discount,hit,won;
+     private String name,sub,price,fprice,delivery;       
+ -->
+<mapper namespace="com.sist.dao.goods_mapper">
+   <resultMap type="com.sist.vo.GoodsVO" id="goodsMap">
+     <result property="name" column="goods_name"/>
+     <!-- 
+          <property name="age"  value="20"> : setAge(20)
+          <bean property="age" value="30"> : setAge(30)
+          => DI : Spring 
+          #{name} => getName()
+          
+          SELECT goods_sub as sub
+          => JOIN 
+             vo.getDvo().setDname()
+             <result property="dvo.dname" column="dname"/>
+          parameterMap = PROCEDURE
+          
+          resultMap 
+          resultType
+          parameterType
+      -->
+     <result property="sub" column="goods_sub"/>
+     <result property="price" column="goods_price"/>
+     <result property="poster" column="goods_poster"/>
+     <result property="fprice" column="goods_first_price"/>
+     <result property="delivery" column="goods_delivery"/>
+     <result property="discount" column="goods_discount"/>
+   </resultMap>
+   <select id="goodsListData" resultMap="goodsMap" parameterType="int">
+     SELECT no,goods_name,goods_poster,goods_price
+     FROM goods_all
+     ORDER BY no ASC
+     OFFSET #{start} ROWS FETCH NEXT 12 ROWS ONLY
+   </select>
+   <select id="goodsTotalPage" resultType="int">
+     SELECT CEIL(COUNT(*)/12.0) FROM goods_all
+   </select>
+</mapper>

@@ -101,6 +101,7 @@ button {
     		return {
     			no:${param.no}, // EL
     			food_detail:{} // => 데이터가 있는 경우에 HTML에 적용
+    			
     		}
     	},
     	mounted(){
@@ -112,6 +113,7 @@ button {
     		}).then(response=>{
     			console.log(response.data)
     			this.food_detail=response.data
+    			
     			if(window.kakao && window.kakao.maps)
     			{
     				this.initMap()
@@ -127,6 +129,7 @@ button {
     		// 이벤트 처리 => 버튼 클릭시
     		addScript(){
     			const script=document.createElement("script")
+    			/* global kakao */
     			script.onload=()=>kakao.maps.load(this.initMap)
     			script.src="http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=72fa81817487692b6dc093004af97650&libraries=services"
     			document.head.appendChild(script)
@@ -146,7 +149,15 @@ button {
     		    var geocoder = new kakao.maps.services.Geocoder();
   
     		    // 주소로 좌표를 검색합니다
-	    		geocoder.addressSearch(this.food_detail.address, function(result, status) {
+    		    // function => 자체 this를 가지고 있다
+    		    /*
+    		                          function   =>
+    		       자체 this보유           O        X
+    		       this 결정시기           호출시    선언시 
+    		       다른 메소드 연결         가능       불가능 
+    		       call / apply / bind 
+    		    */
+	    		geocoder.addressSearch(this.food_detail.address, (result, status) =>{
 	
 	    		    // 정상적으로 검색이 완료됐으면 
 	    		     if (status === kakao.maps.services.Status.OK) {
@@ -161,7 +172,7 @@ button {
 	
 	    		        // 인포윈도우로 장소에 대한 설명을 표시합니다
 	    		        var infowindow = new kakao.maps.InfoWindow({
-	    		            content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+	    		            content: '<div style="width:150px;text-align:center;padding:6px 0;">'+this.food_detail.name+'</div>'
 	    		        });
 	    		        infowindow.open(map, marker);
 	
