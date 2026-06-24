@@ -52,6 +52,25 @@
     FROM food
     WHERE no=#{no}
   </select>
+  <select id="foodFindListData" resultType="FoodVO" parameterType="hashmap">
+    SELECT no,poster,name,address
+    FROM food
+    WHERE ${column} LIKE '%'||#{ss}||'%'
+    OFFSET #{start} ROWS FETCH NEXT 12 ROWS ONLY
+  </select>
+  <!--  데이터형을 한개만 지정 
+        selectList(String id,Object obj)
+        selectOne(String id,Object obj)
+        insert(String id,Object obj)
+        update(String id,Object obj)
+        delete(String id,Object obj)
+        
+        => 데이터형 자동 처리 = 제네릭
+   -->
+  <select id="foodFindTotalPage" resultType="int" parameterType="hashmap">
+    SELECT CEIL(COUNT(*)/12.0) FROM food
+    WHERE ${column} LIKE '%'||#{ss}||'%'
+  </select>
 </mapper>
 
 
