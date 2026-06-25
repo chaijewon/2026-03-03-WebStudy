@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.dao.board-mapper">
+  <select id="boardListData" resultType="BoardVO" parameterType="int">
+    SELECT no,subject,name,TO_CHAR(regdate,'YYYY-MM-DD') as dbday,hit
+    FROM jspboard
+    ORDER BY no DESC
+    OFFSET #{start} ROWS FETCH NEXT 10 ROWS ONLY
+  </select>
+  <select id="boardRowCount" resultType="int">
+    SELECT COUNT(*) FROM jspboard
+  </select>
+  <insert id="boardInsert" parameterType="BoardVO">
+    <!-- sequence : 자동 증가 번호 
+         #{} = setString() => ''
+         ${} = 일반문장열 => ''(X) = column/table
+    -->
+    <!-- <selectKey keyProperty="no" resultType="int" order="BEFORE">
+      SELECT NVL(MAX(no)+1,1) as no FROM jspboard
+    </selectKey> -->
+    INSERT INTO jspboard(name,subject,content,pwd) VALUES(
+      #{name},
+      #{subject},
+      #{content},
+      #{pwd}
+    )
+  </insert>
+</mapper>
