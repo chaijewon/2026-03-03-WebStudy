@@ -78,7 +78,7 @@ h3{
         </thead>
         <tbody>
           <tr v-for="(vo,index) in list" :key="index">
-           <td width=10% class="text-center">{{vo.no}}</th>
+           <td width=10% class="text-center">{{count-index}}</th>
            <td width=45%><a :href="'../board/detail.do?no='+vo.no">{{vo.subject}}</a></th>
            <td width=15% class="text-center">{{vo.name}}</th>
            <td width=20% class="text-center">{{vo.dbday}}</th>

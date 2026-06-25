@@ -80,5 +80,29 @@ public class BoardModel {
 	   
 	   BoardDAO.boardInsert(vo);
    }
+   // 화면 변경 
+   @RequestMapping("board/detail.do")
+   public String board_detail(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   return "../board/detail.jsp";
+   }
+   
+   @RequestMapping("board/detail_vue.do")
+   public void board_detail_vue(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String no=request.getParameter("no");
+	   BoardVO vo=BoardDAO.boardDetailData(Integer.parseInt(no));
+	   try
+	   {
+		   ObjectMapper mapper=new ObjectMapper();
+		   String json=mapper.writeValueAsString(vo);
+		   
+		   response.setContentType("text/plain;charset=UTF-8");
+		   PrintWriter out=response.getWriter();
+		   out.write(json);
+	   }catch(Exception ex) {}
+   }
    
 }

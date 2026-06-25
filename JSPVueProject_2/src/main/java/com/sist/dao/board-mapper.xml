@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sist.dao.board-mapper">
+  <!-- 반복 : 동적쿼리 -->
+  <sql id="where-no">
+    WHERE no=#{no}
+  </sql>
+  
   <select id="boardListData" resultType="BoardVO" parameterType="int">
     SELECT no,subject,name,TO_CHAR(regdate,'YYYY-MM-DD') as dbday,hit
     FROM jspboard
@@ -25,4 +30,28 @@
       #{pwd}
     )
   </insert>
+  <!-- 상세보기 
+       MyBatis 단점 = 두개의 SQL문장을 실행할 수 없다 
+   -->
+   <update id="hitIncrement" parameterType="int">
+    UPDATE jspboard SET 
+    hit=hit+1
+    <include refid="where-no"/>
+   </update>
+   <!-- 
+       resultType    : 리턴형 => 없는 void => insert/update/delete
+       parameterType : 매개변수 => 매개변수가 없는 경우 
+       public BoardVO boardDetailData(int no)
+       
+       SQL문장의 반복 = <sql>
+    -->
+   <select id="boardDetailData" resultType="BoardVO" parameterType="int">
+     SELECT no,name,subject,content,hit,
+            TO_CHAR(regdate,'yyyy-mm-dd hh24:mi:ss') as dbday
+     FROM jspboard
+     <include refid="where-no"/>
+   </select>
 </mapper>
+
+
+

@@ -77,4 +77,32 @@ public class BoardDAO {
     	session.insert("boardInsert",vo);
     	session.close();
     }
+    /*
+     *   <update id="hitIncrement" parameterType="int">
+		    UPDATE jspboard SET 
+		    hit=hit+1
+		    <include refid="where-no"/>
+		   </update>
+		   <!-- 
+		       resultType    : 리턴형 => 없는 void => insert/update/delete
+		       parameterType : 매개변수 => 매개변수가 없는 경우 
+		       public BoardVO boardDetailData(int no)
+		       
+		       SQL문장의 반복 = <sql>
+		    -->
+		   <select id="boardDetailData" resultType="BoardVO" parameterType="int">
+		     SELECT no,name,subject,content,hit,
+		            TO_CHAR(regdate,'yyyy-mm-dd hh24:mi:ss') as dbday
+		     FROM jspboard
+		     <include refid="where-no"/>
+		   </select>
+     */
+    public static BoardVO boardDetailData(int no)
+    {
+    	SqlSession session=ssf.openSession(true);
+    	session.update("hitIncrement",no);
+    	BoardVO vo=session.selectOne("boardDetailData",no);
+    	session.close();
+    	return vo;
+    }
 }
