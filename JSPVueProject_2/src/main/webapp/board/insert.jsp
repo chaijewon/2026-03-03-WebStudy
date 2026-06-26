@@ -117,7 +117,7 @@ h3{
     				this.$refs.pwdRef.focus()
     				return
     			}
-    			
+    			// (@RequestBody BoardVO vo)
     			axios.post('../board/insert_ok.do',{},{
     				params:{
     					name:this.name,

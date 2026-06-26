@@ -1,5 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%--
+      1. MVC 
+      2. MyBatis 
+      3. JSP 
+      ----------- Back 
+      4. Jquery 
+      5. Ajax : 예약
+      6. Vue : 검색 / 댓글 
+      ------------------ 게시판 / 회원 가입 / 로그인 / 회원 수정 / 회원 탈퇴
+      => 목록 페이지 / 상세보기 / 좋아요 / 찜하기 
+      => 공지사항 
+      => 관리 /마이페이지 
+         --- 
+      ------------------------ 최종 : ThymeLeaf + Pinia 
+      Next (react) 
+      => CI/CD => 우분투 명령어 => AWS
+ --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,7 +78,7 @@ h3{
           </tr>
           <tr>
             <td colspan="4" class="text-right">
-             <a href="#" class="btn btn-xs btn-warning">수정</a>
+             <a :href="'../board/update.do?no='+no" class="btn btn-xs btn-warning">수정</a>
              <a class="btn btn-xs btn-warning a-link"
               @click="btnClick()">{{isOn?'삭제':'취소'}}</a>
              <a href="../board/list.do" class="btn btn-xs btn-warning">목록</a>

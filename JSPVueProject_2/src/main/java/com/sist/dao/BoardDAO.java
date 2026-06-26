@@ -105,4 +105,75 @@ public class BoardDAO {
     	session.close();
     	return vo;
     }
+    /*
+     *    <!--  삭제  -->
+		   <select id="boardGetPassword" resultType="string" parameterType="int">
+		    SELECT pwd 
+		    FROM jspboard
+		    WHERE no=#{no}
+		   </select>
+		   <delete id="boardDelete" parameterType="int">
+		    DELETE FROM jspboard
+		    WHERE no=#{no}
+		   </delete>
+     */
+    public static boolean boardDelete(int no,String pwd)
+    {
+    	boolean bCheck=false;
+    	// autocommit => 해제 => 트랜잭션 
+    	SqlSession session=ssf.openSession(true);
+    	//                                delete / insert / update
+    	String db_pwd=session.selectOne("boardGetPassword",no);
+    	if(db_pwd.equals(pwd))
+    	{
+    		bCheck=true;
+    	    session.delete("boardDelete",no);
+    	    //session.commit();
+    	}
+    	session.close();
+    	return bCheck;
+    }
+    /*
+     *    Primary : 중복없다 
+     *      => <태그 id=""> 
+     *             ------- MyBatis / Spring (클래스 찾기)
+     *                               => 클래스 관리자 
+     *      => 어노테이션 
+     *      
+     *      => table명 
+     */
+    // 수정 
+    public static BoardVO boardUpdateData(int no)
+    {
+    	// MyBatis연결 => Connection 
+    	SqlSession session=ssf.openSession();
+    	BoardVO vo=session.selectOne("boardDetailData", no);
+    	session.close();
+    	return vo;
+    }
+    
+    /*
+     *    <update id="boardUpdate" parameterType="BoardVO">
+		     UPDATE jspboard SET
+		     name=#{name},subject=#{subject},content=#{content}
+		     WHERE no=#{no}
+		    </update>
+     */
+    //  mapper에 있는 SQL문장은 한번 사용하는 것이 아니다 (필요시 계속 호출리 가능)
+    public static boolean boardUpdate(BoardVO vo)
+    {
+    	boolean bCheck=false;
+    	// autocommit => 해제 => 트랜잭션 
+    	SqlSession session=ssf.openSession(true);
+    	//                                delete / insert / update
+    	String db_pwd=session.selectOne("boardGetPassword",vo.getNo());
+    	if(db_pwd.equals(vo.getPwd()))
+    	{
+    		bCheck=true;
+    	    session.delete("boardUpdate",vo);
+    	    //session.commit();
+    	}
+    	session.close();
+    	return bCheck;
+    }
 }

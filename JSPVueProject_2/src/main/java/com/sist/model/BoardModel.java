@@ -104,5 +104,117 @@ public class BoardModel {
 		   out.write(json);
 	   }catch(Exception ex) {}
    }
+   /*
+    *         axios.get('../board/delete_vue.do',{
+    				params:{
+    					no:this.no,
+    					pwd:this.pwd
+    				}
+    			}
+    			
+    			board/delete_vue.do?no=1&pwd=1234
+    			
+    			=> Ajax => data:{no:1,pwd:'1234'}
+    			
+    		fetch('../board/delete_vue.do?no=${no}&....')
+    		         JSON / 일반 문자열 
+    		javascript ===== server(MVC,Spring,NodeJS)
+    		             |
+    		           ajax 
+    		           -------------
+    		           axios
+    		           fetch 
+    		           ------------- async / await 
+    */
+   @RequestMapping("board/delete_vue.do")
+   public void board_delete_vue(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String no=request.getParameter("no");
+	   String pwd=request.getParameter("pwd");
+	   // 데이터베이스 연동 
+	   boolean bCheck=BoardDAO.boardDelete(Integer.parseInt(no), pwd);
+	   String msg="";
+	   if(bCheck==true)
+	   {
+		   msg="yes";
+	   }
+	   else
+	   {
+		   msg="no";
+	   }
+	   // Vue로 전송 
+	   try
+	   {
+		   response.setContentType("text/html;charset=UTF-8");
+		   PrintWriter out=response.getWriter();
+		   out.write(msg);
+		   // 일반 문자열 => text/html 
+		   // JSON     => text/plain
+	   }catch(Exception ex) {}
+   }
+   @RequestMapping("board/update.do")
+   public String board_update(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   return "../board/update.jsp";
+   }
    
+   @RequestMapping("board/update_vue.do")
+   public void board_update_vue(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String no=request.getParameter("no");
+	   BoardVO vo=BoardDAO.boardUpdateData(Integer.parseInt(no));
+	   // then(response)
+	   try
+	   {
+		   ObjectMapper mapper=new ObjectMapper();
+		   String json=mapper.writeValueAsString(vo);
+		   
+		   response.setContentType("text/plain;charset=UTF-8");
+		   PrintWriter out=response.getWriter();
+		   out.write(json);
+		   // 일반 문자열 => text/html 
+		   // JSON     => text/plain
+	   }catch(Exception ex) {}
+   }
+   
+   @RequestMapping("board/update_ok.do")
+   public void board_update_ok(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String name=request.getParameter("name");
+	   String subject=request.getParameter("subject");
+	   String content=request.getParameter("content");
+	   String pwd=request.getParameter("pwd");
+	   String no=request.getParameter("no");
+	   System.out.println(name);
+	   System.out.println(subject);
+	   BoardVO vo=new BoardVO();
+	   vo.setName(name);
+	   vo.setSubject(subject);
+	   vo.setPwd(pwd);
+	   vo.setContent(content);
+	   vo.setNo(Integer.parseInt(no));
+	   
+	   // DB연동
+	   String msg="no";
+	   
+	   boolean bCheck=BoardDAO.boardUpdate(vo);
+	   if(bCheck==true)
+	   {
+		   msg="yes";
+	   }
+	   
+	   try
+	   {
+		   response.setContentType("text/html;charset=UTF-8");
+		   PrintWriter out=response.getWriter();
+		   out.write(msg);
+		   // 일반 문자열 => text/html 
+		   // JSON     => text/plain
+	   }catch(Exception ex) {}
+	   
+   }
 }
