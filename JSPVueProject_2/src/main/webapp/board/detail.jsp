@@ -125,6 +125,7 @@ h3{
     	    updated() : data()안에 있는 데이터가 수정되는 경우 
     	    unmounted() : 화면 이동 / 브라우저 종료 / 새로 고침 
     	*/
+    	// 브라우저에 화면 출력전에 호출 
     	mounted(){
     		// board/detail_vue.do?no=1
     		axios.get('../board/detail_vue.do',{
@@ -137,24 +138,38 @@ h3{
     			// response => 실행된 결과를 자동으로 첨부한다 
     		})
     	},
+    	// 이벤트 처리 
     	methods:{
     		btnClick(){
     			this.isOn=!this.isOn
     			this.bShow=!this.bShow
     		},
     		del(){
+    			// 좌우 공백 제거 
+    			// 비교는 권장 === (데이터형 일치)
     			if(this.pwd.trim()==="")
     			{
     				this.$refs.pwdRef.focus()
+    				// 태그 자체 제어 ===> ref 속성 ==> this.$refs
     				return
     			}
     			
     			// 데이터 전송 
+    			// 요청 
     			axios.get('../board/delete_vue.do',{
     				params:{
     					no:this.no,
     					pwd:this.pwd
     				}
+    			// 응답
+    			/*
+    			    response : text / json 
+    			                      = text/plain
+    			               = text/html 
+    			               
+    			               = 요청 처리에 대한 결과값 
+    			                 Model에서 처리 
+    			*/
     			}).then(response=>{
     				if(response.data==='yes')
     				{
@@ -169,6 +184,8 @@ h3{
     			})
     		}
     	}
+    	// components / computed => 계산식 (상품) / watch => 채팅 
+    	// Vue => CRUD / 페이징 / 댓글 
     }).mount(".container")
    </script>
 </body>
