@@ -1,4 +1,5 @@
 // <pagecard curPage="curpage">
+// 재사용이 필요한 경우 / 조립식 
 const pagecard={  
 	props:{
 		curPage:0, 

@@ -1,9 +1,11 @@
 package com.sist.model;
 import java.io.PrintWriter;
+import java.lang.annotation.Repeatable;
 // 브라우저로 데이터 전송 
 import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sist.commons.Commons;
 import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
 import com.sist.dao.*;
@@ -50,13 +52,36 @@ public class GoodsModel {
 		  ObjectMapper mapper=new ObjectMapper();
 		  String json=mapper.writeValueAsString(map);
 		  
-		  // json을 vue로 전송 
-		  response.setContentType("text/plain;charset=UTF-8");
-		  PrintWriter out=response.getWriter();
-		  // out => 요청한 브라우저에서 읽어 가는 메모리 위치 : TCP 
-		  System.out.println(json);
-		  out.write(json);
-		  // Front연결은 JSON을 만들어서 처리 
+		  Commons.sendData(response, "text/plain", json);
 	  }catch(Exception ex) {}
   }
+  /*
+   *   goods/list.do
+   */
+  @RequestMapping("goods/detail.do")
+  public String goods_detail(HttpServletRequest request,
+		  HttpServletResponse response)
+  {
+	  return "../goods/detail.jsp";
+  }
+  
+  @RequestMapping("goods/detail_vue.do")
+  public void goods_detail_vue(HttpServletRequest request,
+		  HttpServletResponse response)
+  {
+	  String no=request.getParameter("no");
+	  GoodsVO vo=GoodsDAO.goodsDetailData(Integer.parseInt(no));
+	  
+	  // Vue => JSON변경 => 전송 
+	  try
+	  {
+		  ObjectMapper mapper=new ObjectMapper();
+		  String json=mapper.writeValueAsString(vo);
+		  
+		  Commons.sendData(response, "text/plain", json);
+		  // yes / no => text/html
+	  }catch(Exception ex) {}
+  }
+  
+  
 }

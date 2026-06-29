@@ -66,4 +66,12 @@ public class GoodsDAO {
 		     WHERE no=#{no}
 		   </select>
    */
+  public static GoodsVO goodsDetailData(int no)
+  {
+	  SqlSession session=ssf.openSession(true);
+	  session.update("goodsHitIncrement",no);
+	  GoodsVO vo=session.selectOne("goodsDetailData",no);
+	  session.close();
+	  return vo;
+  }
 }

@@ -37,7 +37,7 @@ h3{
   <div class="container">
     <div class="row">
      <div class="col-sm-3" v-for="(vo,index) in list" :key="index">
-       <a href="#">
+       <a :href="'../goods/detail.do?no='+vo.no">
         <div class="thumbnail">
           <img :src="vo.goods_poster" style="width: 250px;height: 150px;object-fit:cover">
           <p>{{vo.goods_name}}</p>
@@ -45,6 +45,9 @@ h3{
        </a>
      </div>
     </div>
+    <%-- 권장 : startPage="startPage" :오류 발생이 있을 수 있다 
+         --- start-page="startPage"
+     --%>
     <div class="row text-center" style="margin-top: 20px">
       <pagecard :start-page="startPage"
                 :end-page="endPage"
