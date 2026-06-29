@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.dao.goods-mapper">
+  <!-- 
+       mapper : SQL 
+       VO , Model , Service 
+       View : Jquery , Vue3 , React 
+       Config.xml / Controller 
+   -->
+   <select id="goodsListData" resultType="GoodsVO" parameterType="int">
+     SELECT no,goods_poster,goods_price,goods_name
+     FROM goods_all
+     ORDER BY 1
+     OFFSET #{start} ROWS FETCH NEXT 12 ROWS ONLY
+   </select>
+   <select id="goodsTotalPage" resultType="int">
+     SELECT CEIL(COUNT(*)/12.0) 
+     FROM goods_all
+   </select>
+   <!-- 
+   <select id="goodsTopData" resultType="GoodsVO">
+     SELECT no,goods_poster,goods_price,goods_name,rownum
+     FROM (SELECT no,goods_poster,goods_price,goods_name
+       FROM goods_all ORDER BY hit DESC
+     )
+     WHERE rownum&lt;=5
+     rownum = Top-N = rownum의 순서변경 = 인라인뷰 
+     select : 조건문 (WHERE뒤에) 서브쿼리 
+              컬럼 대신 사용 : 스칼라 서브쿼리  
+              테이블 대신 사용 : 인라인뷰 
+   </select> -->
+   <update id="goodsHitIncrement" parameterType="int">
+     UPDATE goods_all SET 
+     hit=hit+1
+     WHERE no=#{no}
+   </update>
+   <select id="goodsDetailData" resultType="GoodsVO" parameterType="int">
+     SELECT *
+     FROM goods_all
+     WHERE no=#{no}
+   </select>
+   
+</mapper>
