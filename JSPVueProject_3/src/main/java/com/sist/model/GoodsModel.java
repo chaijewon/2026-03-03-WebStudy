@@ -71,7 +71,9 @@ public class GoodsModel {
   {
 	  String no=request.getParameter("no");
 	  GoodsVO vo=GoodsDAO.goodsDetailData(Integer.parseInt(no));
-	  
+	  String p=vo.getGoods_price();
+	  p=p.replaceAll("[^0-9]", "");
+	  vo.setPrice(Integer.parseInt(p));
 	  // Vue => JSON변경 => 전송 
 	  try
 	  {
