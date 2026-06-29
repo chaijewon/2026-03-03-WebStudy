@@ -34,7 +34,7 @@ h3{
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="detailApp">
     <div class="panel panel-success product-card">
       <div class="panel-body">
         <div class="row">
@@ -133,7 +133,7 @@ h3{
     		   });
     		}
     	}
-    }).mount(".container")
+    }).mount("#detailApp")
   </script>
 </body>
 </html>

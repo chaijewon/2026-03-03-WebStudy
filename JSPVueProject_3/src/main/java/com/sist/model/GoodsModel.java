@@ -62,7 +62,8 @@ public class GoodsModel {
   public String goods_detail(HttpServletRequest request,
 		  HttpServletResponse response)
   {
-	  return "../goods/detail.jsp";
+	  request.setAttribute("main_jsp", "../goods/detail.jsp");
+	  return "../main/main.jsp";
   }
   
   @RequestMapping("goods/detail_vue.do")
@@ -84,6 +85,5 @@ public class GoodsModel {
 		  // yes / no => text/html
 	  }catch(Exception ex) {}
   }
-  
   
 }

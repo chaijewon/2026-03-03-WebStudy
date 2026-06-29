@@ -31,10 +31,10 @@ h3{
 </style>
 <script type="text/javascript" src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script type="text/javascript" src="pagecard.js"></script>
+<script type="text/javascript" src="../goods/pagecard.js"></script>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="listApp">
     <div class="row">
      <div class="col-sm-3" v-for="(vo,index) in list" :key="index">
        <a :href="'../goods/detail.do?no='+vo.no">
@@ -96,7 +96,7 @@ h3{
     	components:{
     		pagecard:pagecard
     	}
-    }).mount(".container")
+    }).mount("#listApp")
   </script>
 </body>
 </html>
