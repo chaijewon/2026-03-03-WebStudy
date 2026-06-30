@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 @Controller
 public class ReplyModel {
-  public void listData(int cno,int rno,HttpServletResponse response)
+  public static void listData(int cno,int rno,HttpServletResponse response)
   {
 	  Map map=new HashMap();
 	  map.put("cno", cno);
@@ -22,6 +22,11 @@ public class ReplyModel {
 	  // WHERE cno=#{cno} AND rno=#{rno}
 	  
 	  List<ReplyVO> list=ReplyDAO.replyListData(map);
+	  
+	  for(ReplyVO vo:list)
+	  {
+		  vo.setUMsg(vo.getMsg());
+	  }
 	  
 	  try
 	  {
@@ -70,5 +75,37 @@ public class ReplyModel {
 	  ReplyDAO.replyInsert(vo);
 	  
 	  listData(Integer.parseInt(cno),Integer.parseInt(rno),response);
+  }
+  /*
+   *   전송값 / 데이터베이스 / 응답값 
+   *   채팅 ==> 챗봇 => 생성형 
+   */
+  @RequestMapping("reply/delete_vue.do")
+  public void reply_delete(HttpServletRequest request,
+		  HttpServletResponse response)
+  {
+	  String cno=request.getParameter("cno");
+	  String rno=request.getParameter("rno");
+	  String no=request.getParameter("no");
+	  
+	  ReplyDAO.replyDelete(Integer.parseInt(no));
+	  listData(Integer.parseInt(cno),Integer.parseInt(rno),response);
+  }
+  
+  @RequestMapping("reply/update_vue.do")
+  public void reply_update(HttpServletRequest request,
+		  HttpServletResponse response)
+  {
+	  String cno=request.getParameter("cno");
+	  String rno=request.getParameter("rno");
+	  String no=request.getParameter("no");
+	  String msg=request.getParameter("msg");
+	  ReplyVO vo=new ReplyVO();
+	  vo.setNo(Integer.parseInt(no));
+	  vo.setMsg(msg);
+	  
+	  ReplyDAO.replyUpdate(vo);
+	  listData(Integer.parseInt(cno),Integer.parseInt(rno),response);
+	  
   }
 }

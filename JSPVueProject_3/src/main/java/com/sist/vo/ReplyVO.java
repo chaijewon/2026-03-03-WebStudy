@@ -14,6 +14,7 @@ import lombok.Data;
 @Data
 public class ReplyVO {
    private int no,cno,rno;
-   private String id,name,msg,dbday;
+   private String id,name,msg,dbday,uMsg;
    private Date regdate;
+   private boolean show;
 }

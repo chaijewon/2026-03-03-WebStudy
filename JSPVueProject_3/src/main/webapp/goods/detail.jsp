@@ -82,15 +82,17 @@ h3{
                   </td>
                 </tr>
               </table>
-              <table class="table" v-else>
+              <table class="table">
                 <tr>
                   <td>
                     <table class="table" v-for="rvo in replyList" :key="rvo.no">
                       <tr>
                         <td class="text-left" width=80%>◑{{rvo.name}} ({{rvo.dbday}})</td>
                         <td class="text-right" width=20%>
-                          <button class="btn-xs btn-success" v-if="rvo.id===loginId">수정</button>
-                          <button class="btn-xs btn-info" v-if="rvo.id===loginId">삭제</button>
+                          <button class="btn-xs btn-success" v-if="rvo.id===loginId" @click="toggle(rvo)">{{rvo.show?"취소":"수정"}}</button>
+                          <button class="btn-xs btn-info" v-if="rvo.id===loginId"
+                           @click="deleteReply(rvo.no)"
+                          >삭제</button>
                         </td>
                       </tr>
                       <tr>
@@ -98,6 +100,15 @@ h3{
                          {{rvo.msg}}
                         </td>
                       </tr>
+                      
+                      <tr v-show="rvo.show">
+			             <td colspan="2">
+			               <textarea rows="4" cols="60" style="float: left" v-model="rvo.umsg"></textarea>
+			               <input type=button value="댓글수정" 
+			               style="width: 100px;height: 88px;float: left;margin-left: 3px" 
+			               class="btn-primary" @click="update(rvo)">
+			             </td>
+			           </tr>
                     </table>
                   </td>
                 </tr>
@@ -123,9 +134,9 @@ h3{
     let detail=Vue.createApp({
     	data(){
     		return {
-    			no:${param.no},
+    			no:${no},
     			vo:{},
-    			cno:1,
+    			cno:${cno},
     			replyList:[],
     			msg:'',
     			loginId:'${sessionScope.id}'
@@ -148,7 +159,9 @@ h3{
     			}
     		}).then(response=>{
     			console.log(response.data)
-    			this.repltList=response.data
+    			this.replyList=response.data
+    			
+    		
     		})
     	},
     	/*
@@ -200,8 +213,42 @@ h3{
     				}
     			}).then(response=>{
     				this.replyList=response.data
+    				this.msg=''
+    			})
+    		},
+    		deleteReply(no){
+    			axios.get('../reply/delete_vue.do',{
+    				params:{
+    					no:no,
+    					cno:this.cno,
+    					rno:this.no
+    				}
+    			}).then(response=>{
+    				this.replyList=response.data
+    			})
+    		},
+    		toggle(rvo){
+    			this.replyList.forEach(r=>{
+    				if(r.no!=rvo.no)
+    				{
+    					r.show=false
+    				}
+    			})
+    			rvo.show=!rvo.show
+    		},
+    		update(rvo){
+    			axios.post('../reply/update_vue.do',{},{
+    				params:{
+    					no:rvo.no,
+    					cno:rvo.cno,
+    					rno:rvo.rno,
+    					msg:rvo.umsg
+    				}
+    			}).then(response=>{
+    				this.replyList=response.data
     			})
     		}
+    		
     	}
     }).mount("#detailApp")
   </script>

@@ -43,4 +43,29 @@ public class ReplyDAO {
 	   session.insert("replyInsert",vo);
 	   session.close();
    }
+   /*
+    *   <delete id="replyDelete" parameterType="int">
+		    DELETE FROM allReply 
+		    WHERE no=#{no}
+		  </delete>
+    */
+   public static void replyDelete(int no)
+   {
+	   SqlSession session=ssf.openSession(true);
+	   session.delete("replyDelete",no);
+	   session.close();
+   }
+   /*
+    *   <update id="replyUpdate" parameterType="ReplyVO">
+		    UPDATE allReply SET
+		    msg=#{msg}
+		    WHERE no=#{no}
+		  </update>
+    */
+   public static void replyUpdate(ReplyVO vo)
+   {
+	   SqlSession session=ssf.openSession(true);
+	   session.delete("replyUpdate",vo);
+	   session.close();
+   }
 }

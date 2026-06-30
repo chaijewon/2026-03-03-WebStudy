@@ -62,6 +62,9 @@ public class GoodsModel {
   public String goods_detail(HttpServletRequest request,
 		  HttpServletResponse response)
   {
+	  String no=request.getParameter("no");
+	  request.setAttribute("no", no);
+	  request.setAttribute("cno", 1);
 	  request.setAttribute("main_jsp", "../goods/detail.jsp");
 	  return "../main/main.jsp";
   }

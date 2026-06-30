@@ -11,7 +11,16 @@
   <insert id="replyInsert" parameterType="ReplyVO">
     INSERT INTO allReply VALUES(
       (SELECT NVL(MAX(no)+1,1) FROM allReply),
-      #{cno},#{rno},#{id},#{name},#{msg},SYSDTAE
+      #{cno},#{rno},#{id},#{name},#{msg},SYSDATE
     )
   </insert>
+  <delete id="replyDelete" parameterType="int">
+    DELETE FROM allReply 
+    WHERE no=#{no}
+  </delete>
+  <update id="replyUpdate" parameterType="ReplyVO">
+    UPDATE allReply SET
+    msg=#{msg}
+    WHERE no=#{no}
+  </update>
 </mapper>

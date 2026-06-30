@@ -32,6 +32,8 @@
        <li><a href="../member/join.do">회원수정</a></li>
       </c:if>
       
+      <li><a href="../food/list.do">맛집</a></li>
+      
       <c:if test="${sessionScope.id!=null }">
        <li><a href="../chat/chat.do">채팅</a></li>
        <li><a href="../news/news.do">실시간 뉴스</a></li>

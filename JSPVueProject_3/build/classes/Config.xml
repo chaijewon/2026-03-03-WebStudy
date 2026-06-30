@@ -40,5 +40,6 @@
     <mapper resource="com/sist/dao/goods-mapper.xml"/>
     <mapper resource="com/sist/dao/member-mapper.xml"/>
     <mapper resource="com/sist/dao/reply-mapper.xml"/>
+    <mapper resource="com/sist/dao/food-mapper.xml"/>
   </mappers>
 </configuration>
