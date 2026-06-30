@@ -1,5 +1,6 @@
 package com.sist.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sist.commons.Commons;
 import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
@@ -27,13 +28,20 @@ public class MemberModel {
 		   session.setAttribute("name", vo.getName());
 		   session.setAttribute("isAdmin", vo.getIsadmin());
 	   }
+	   // NOID , NOPWD , OK
+	   try
+	   {
+		   //ObjectMapper mapper=new ObjectMapper();
+		   //String json=mapper.writeValueAsString(vo);
+		   Commons.sendData(response, "text/html", vo.getMsg());
+	   }catch(Exception ex){}
 	   
-	   Commons.sendData(response, "text/html", vo.getMsg());
    }
    @RequestMapping("member/logout.do")
    public void member_logout(HttpServletRequest request,
 		   HttpServletResponse response)
    {
-	   
+	   HttpSession session=request.getSession();
+	   session.invalidate();
    }
 }
