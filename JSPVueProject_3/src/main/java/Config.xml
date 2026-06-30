@@ -18,6 +18,7 @@
   <typeAliases>
     <typeAlias type="com.sist.vo.GoodsVO" alias="GoodsVO"/>
     <typeAlias type="com.sist.vo.MemberVO" alias="MemberVO"/>
+    <typeAlias type="com.sist.vo.ReplyVO" alias="ReplyVO"/>
   </typeAliases>
   <environments default="development">
     <environment id="development">
@@ -38,5 +39,6 @@
   <mappers>
     <mapper resource="com/sist/dao/goods-mapper.xml"/>
     <mapper resource="com/sist/dao/member-mapper.xml"/>
+    <mapper resource="com/sist/dao/reply-mapper.xml"/>
   </mappers>
 </configuration>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.dao.reply-mapper">
+  <select id="replyListData" resultType="ReplyVO" parameterType="hashmap">
+    SELECT no,cno,rno,id,name,msg,
+           TO_CHAR(regdate,'yyyy-mm-dd hh24:mi:ss') as dbday
+    FROM allReply
+    WHERE cno=#{cno} AND rno=#{rno}
+    ORDER BY no DESC
+  </select>
+  <insert id="replyInsert" parameterType="ReplyVO">
+    INSERT INTO allReply VALUES(
+      (SELECT NVL(MAX(no)+1,1) FROM allReply),
+      #{cno},#{rno},#{id},#{name},#{msg},SYSDTAE
+    )
+  </insert>
+</mapper>

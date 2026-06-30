@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -71,6 +72,50 @@ h3{
         
       </div>
     </div>
+    <div class="panel panel-success" style="margin-top: 20px">
+      <div class="panel-body">
+        <div class="row">
+              <table class="table" v-if="replyList.length===0">
+                <tr>
+                  <td class="text-center">
+                    <strong>댓글이 없습니다</strong>
+                  </td>
+                </tr>
+              </table>
+              <table class="table" v-else>
+                <tr>
+                  <td>
+                    <table class="table" v-for="rvo in replyList" :key="rvo.no">
+                      <tr>
+                        <td class="text-left" width=80%>◑{{rvo.name}} ({{rvo.dbday}})</td>
+                        <td class="text-right" width=20%>
+                          <button class="btn-xs btn-success" v-if="rvo.id===loginId">수정</button>
+                          <button class="btn-xs btn-info" v-if="rvo.id===loginId">삭제</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" style="white-space: pre-wrap;">
+                         {{rvo.msg}}
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+	          <table class="table" v-if="loginId">
+	           <tr>
+	             <td>
+	               <textarea rows="4" cols="60" style="float: left" v-model="msg"></textarea>
+	               <input type=button value="댓글쓰기" 
+	               style="width: 100px;height: 88px;float: left;margin-left: 3px" 
+	               class="btn-primary" @click="insert()">
+	             </td>
+	           </tr>
+	          </table>
+          
+        </div>
+      </div>
+    </div>
   </div>
   <script>
     var IMP = window.IMP; 
@@ -79,7 +124,11 @@ h3{
     	data(){
     		return {
     			no:${param.no},
-    			vo:{}
+    			vo:{},
+    			cno:1,
+    			replyList:[],
+    			msg:'',
+    			loginId:'${sessionScope.id}'
     		}
     	},
     	mounted(){
@@ -90,6 +139,16 @@ h3{
     		}).then(response=>{
     			console.log(response.data)
     			this.vo=response.data
+    		})
+    		
+    		axios.get('../reply/list_vue.do',{
+    			params:{
+    				cno:this.cno,
+    				rno:this.no
+    			}
+    		}).then(response=>{
+    			console.log(response.data)
+    			this.repltList=response.data
     		})
     	},
     	/*
@@ -131,6 +190,17 @@ h3{
     		    	//window.location.href="../mypage/buy_list.do"
     		    	//parent.Shadowbox.close()
     		   });
+    		},
+    		insert(){
+    			axios.get('../reply/insert_vue.do',{
+    				params:{
+    					cno:this.cno,
+    					rno:this.no,
+    					msg:this.msg
+    				}
+    			}).then(response=>{
+    				this.replyList=response.data
+    			})
     		}
     	}
     }).mount("#detailApp")

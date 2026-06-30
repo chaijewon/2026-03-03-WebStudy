@@ -111,6 +111,7 @@ public class DispatcherServlet extends HttpServlet {
 				// 모든 메소드를 가지고 온다 
 				for(Method m:methods)
 				{
+					// 메소드 위에 @RequestMapping이 없는 경우 => 제외 
 					if(!m.isAnnotationPresent(RequestMapping.class))
 						continue;
 					
