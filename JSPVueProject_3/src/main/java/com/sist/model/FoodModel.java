@@ -139,7 +139,11 @@ public class FoodModel {
    public String food_detail1(HttpServletRequest request,
 		   HttpServletResponse response)
    {
-	   return "../food/detail.jsp";
+	   String no=request.getParameter("no");
+	   request.setAttribute("no", no);
+	   request.setAttribute("cno", 2);
+	   request.setAttribute("main_jsp", "../food/detail.jsp");
+	   return "../main/main.jsp";
    }
 }
 
