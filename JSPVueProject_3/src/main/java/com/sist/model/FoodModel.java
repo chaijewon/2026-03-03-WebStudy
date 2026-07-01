@@ -136,6 +136,7 @@ public class FoodModel {
     *   => URI : food/detail.do
     */
    @RequestMapping("food/detail.do")
+   // 요청 => 요청 처리 => 응답 
    public String food_detail1(HttpServletRequest request,
 		   HttpServletResponse response)
    {
