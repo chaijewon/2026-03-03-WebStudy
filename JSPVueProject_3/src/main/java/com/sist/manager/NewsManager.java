@@ -19,8 +19,8 @@ public class NewsManager {
     public static List<NewsVO> newsFindData(String fd) {
         List<NewsVO> list=new ArrayList<NewsVO>();
     	
-    	String clientId = "OtKU74j2Bx_QN_K5YPck"; //애플리케이션 클라이언트 아이디
-        String clientSecret = "eyn6LY7L0j"; //애플리케이션 클라이언트 시크릿
+    	String clientId = ""; //애플리케이션 클라이언트 아이디
+        String clientSecret = ""; //애플리케이션 클라이언트 시크릿
 
 
         String text = null;

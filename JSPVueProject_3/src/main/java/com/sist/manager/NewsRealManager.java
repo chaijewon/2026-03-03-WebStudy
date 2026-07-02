@@ -24,8 +24,8 @@ public class NewsRealManager {
 	public static String newsFindData(String fd) {
         String json="";
     	
-    	String clientId = "OtKU74j2Bx_QN_K5YPck"; //애플리케이션 클라이언트 아이디
-        String clientSecret = "eyn6LY7L0j"; //애플리케이션 클라이언트 시크릿
+    	String clientId = ""; //애플리케이션 클라이언트 아이디
+        String clientSecret = ""; //애플리케이션 클라이언트 시크릿
 
 
         String text = null;

@@ -7,54 +7,96 @@
 <title>Insert title here</title>
 <style type="text/css">
 .news-box{
-width:700px;
-margin:30px auto;
-background:#fff;
-border-radius:15px;
-box-shadow:0 5px 20px rgba(0,0,0,.15);
-overflow:hidden;
+    max-width:850px;
+    margin:auto;
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,.2);
 }
 
-.news-box h2{
-margin:0;
-padding:18px;
-background:#0d6efd;
-color:white;
-text-align:center;
-font-size:24px;
+.news-header{
+    background:#0d6efd;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+
+.news-header h2{
+    margin:0;
+    font-weight:bold;
+}
+
+.news-header p{
+    margin-top:8px;
+    color:#dbe8ff;
 }
 
 #newsList{
-list-style:none;
-padding:20px;
-margin:0;
+    list-style:none;
+    margin:0;
+    padding:20px;
 }
 
 #newsList li{
-margin-bottom:12px;
-border:1px solid #ddd;
-border-radius:10px;
-transition:.3s;
-background:white;
+    background:#fff;
+    border-left:6px solid #0d6efd;
+    border-radius:12px;
+    margin-bottom:15px;
+    transition:.3s;
+    animation:fadeIn .5s;
 }
 
 #newsList li:hover{
-background:#f8f9fa;
-transform:translateX(5px);
-box-shadow:0 3px 10px rgba(0,0,0,.15);
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
 }
 
 #newsList a{
-display:block;
-padding:15px;
-text-decoration:none;
-color:#333;
-font-size:17px;
-font-weight:bold;
+    display:block;
+    padding:18px;
+    color:#333;
+    text-decoration:none;
+    font-size:17px;
+    font-weight:600;
 }
 
 #newsList a:hover{
-color:#0d6efd;
+    color:#0d6efd;
+}
+
+.news-no{
+    display:inline-block;
+    width:35px;
+    height:35px;
+    line-height:35px;
+    text-align:center;
+    background:#0d6efd;
+    color:white;
+    border-radius:50%;
+    margin-right:15px;
+}
+
+.update{
+    text-align:right;
+    padding:15px;
+    background:#f8f9fa;
+    color:gray;
+    font-size:14px;
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
 }
 
 }
@@ -74,9 +116,12 @@ $(function(){
 			console.log(data)
 			let html=""
 			data.map(news=>{
-				html+='<li>'+news.title+'</li>'
+				html+='<li><a href="'+news.link+'" target="_blank">'+news.title+'</a></li>'
 			})
 			$('#newsList').html(html)
+			
+			const now=new Date()
+			$('#updateTime').text("마지막 업데이트 :"+now.toLocaleTimeString())
 			
 		}catch(err)
 		{
@@ -89,10 +134,15 @@ $(function(){
 </head>
 <body>
   <div class="news-box">
+   <div class="news-header">
     <h2>실시간 뉴스</h2>
+   </div>
     <ul id="newsList">
       
     </ul>
+    <div class="update" id="updateTime">
+      마지막 업데이트 :
+    </div>
   </div>
 </body>
 </html>
