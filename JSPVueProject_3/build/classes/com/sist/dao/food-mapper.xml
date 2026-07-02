@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.dao.food-mapper">
+  <!-- 
+        1. HTML의 기본 태그 
+        2. CSS : 약간 수정 = 선택자 
+        3. JavaScript : 기본 문법 : 변수 , 연산자 , 제어문 , 배열 
+           = String , Number , Boolean , Date
+           = 내장 객체 
+             window / document / history / location 
+           = 태그를 읽기 (DOM) 
+             querySelector() / getElementById() 
+        4. jquery / ajax 
+        5. 자바 => 기본 문법 : 어노테이션 / XML 파싱 
+        6. JSP : 지시자 (page,taglib) 
+                 내장 객체 (request,response,session,application) 
+                 JSTL / EL 
+                 <c:forEach> <c:if> <c:choose> 
+                 ${}
+        7. MVC 
+           요청 = Controller = Model = DAO = Model =Controller =JSP
+        8. 오라클 
+           CRUD (select/update/delete/insert) 
+                 | 내장 함수 , 연산자 , JOIN , SubQuery 
+        9. MyBatis 
+           SQL문장 / 처리 소스가 나눠서 작업 
+                    = DAO 
+           = mapper.xml
+   -->
+  <select id="foodListData" resultType="com.sist.vo.FoodVO" parameterType="int">
+    <!-- id:중복이 없어야 한다 (메소드명)  
+         resultType="FoodVO" = return 
+                     List<FoodVO> : selectList
+                     FoodVO : selectOne
+         parameterType="int" = 매개변수 => ?에 값을 채우는 데이터형 
+                       ====== 2개 이상 , VO , Map
+         SELECT no,name,poster,TO_CHAR(regdate...) as dbday
+               === setNo()
+               === 함수사용시는 반드시 별칭(멤버변수로 설정)
+         변경해야 되는 데이터가 많은 경우 : <resultMap>
+    -->
+    SELECT no,name,poster,address
+    FROM food
+    ORDER BY no ASC
+    OFFSET #{start} ROWS FETCH NEXT 12 ROWS ONLY
+  </select>
+  <select id="foodTotalPage" resultType="int">
+    SELECT CEIL(COUNT(*)/12.0) FROM food
+  </select>
+  <select id="foodDetailData" resultType="com.sist.vo.FoodVO" parameterType="int">
+    SELECT *
+    FROM food
+    WHERE no=#{no}
+  </select>
+  <select id="foodFindListData" resultType="com.sist.vo.FoodVO" parameterType="hashmap">
+    SELECT no,poster,name,address
+    FROM food
+    WHERE ${column} LIKE '%'||#{ss}||'%'
+    OFFSET #{start} ROWS FETCH NEXT 12 ROWS ONLY
+  </select>
+  <!--  데이터형을 한개만 지정 
+        selectList(String id,Object obj)
+        selectOne(String id,Object obj)
+        insert(String id,Object obj)
+        update(String id,Object obj)
+        delete(String id,Object obj)
+        
+        => 데이터형 자동 처리 = 제네릭
+   -->
+  <select id="foodFindTotalPage" resultType="int" parameterType="hashmap">
+    SELECT CEIL(COUNT(*)/12.0) FROM food
+    WHERE ${column} LIKE '%'||#{ss}||'%'
+  </select>
+</mapper>
+
+
