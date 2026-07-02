@@ -106,7 +106,7 @@ function onMessage(event){
 function appendMessage(msg){
 	$('#chatBox').append(msg+"<br>")
 	// 스ㅋ크롤의 위치 지정 => 가장 아래 
-	$('#chatBox').scrollTop($('#chatBox').scrollHeight())
+	$('#chatBox').scrollTop($('#chatBox')[0].scrollHeight)
 }
 
 function send(){
