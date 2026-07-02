@@ -19,9 +19,7 @@
     <div id="preloader">
         <div class="yummy-load"></div>
     </div>
-    <div id="patter-close">
-        <i class="fa fa-times" aria-hidden="true"></i>
-    </div>
+    
 
     
     <jsp:include page="header.jsp"></jsp:include>

@@ -5,6 +5,30 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+.link{
+  cursor: pointer;
+}
+</style>
+<link rel="stylesheet" href="../shadow/css/shadowbox.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript" src="../shadow/js/shadowbox.js"></script>
+<script type="text/javascript">
+ Shadowbox.init({
+	 players:['iframe']
+ })
+ $(function(){
+	 $('#login').on('click',function(){
+		 Shadowbox.open({
+			 content:'../member/login.jsp',
+			 player:'iframe',
+			 width:500,
+			 height:250,
+			 title:'로그인'
+		 })
+	 })
+ })
+</script>
 </head>
 <body>
 <div class="top_header_area">
@@ -25,10 +49,10 @@
                     <div class="signup-search-area d-flex align-items-center justify-content-end">
                         <div class="login_register_area d-flex">
                             <div class="login">
-                                <a href="register.html">Sing in</a>
+                                <a class="link" id="login">로그인</a>
                             </div>
-                            <div class="register">
-                                <a href="register.html">Sing up</a>
+                            <div class="logout">
+                                <a class="link" id="logout">로그아웃</a>
                             </div>
                         </div>
                         <!-- Search Button Area -->
@@ -36,13 +60,13 @@
                             <a class="searchBtn" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
                         </div>
                         <!-- Search Form -->
-                        <div class="search-hidden-form">
+                        <!-- <div class="search-hidden-form">
                             <form action="#" method="get">
                                 <input type="search" name="search" id="search-anything" placeholder="Search Anything...">
                                 <input type="submit" value="" class="d-none">
                                 <span class="searchBtn"><i class="fa fa-times" aria-hidden="true"></i></span>
                             </form>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -57,7 +81,7 @@
                 <!-- Logo Area Start -->
                 <div class="col-12">
                     <div class="logo_area text-center">
-                        <a href="index.html" class="yummy-logo">Yummy Blog</a>
+                        <a href="index.html" class="yummy-logo">Travel</a>
                     </div>
                 </div>
             </div>
