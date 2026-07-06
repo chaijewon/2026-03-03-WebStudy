@@ -41,6 +41,37 @@ $(function(){
 			}
 		}).open()
 	})
+	
+	$('#joinBtn').on('click',function(){
+		let id=$('#join_id').val()
+		// required => readonly는 적용이 안됨 
+		if(id.trim()==="")
+		{
+			alert("아이디 중복체크를 히세요")
+			return
+		}
+		
+		let pwd1=$('#pwd1').val()
+		let pwd2=$('#pwd2').val()
+		
+		if(pwd1!==pwd2)
+	    {
+			alert("비밀번호가 틀립니다")
+			$('#pwd2').val("")
+			$('#pwd2').focus()
+			return
+		}
+		
+		let post=$('#post').val()
+		if(post.trim()==="")
+		{
+			alert("우편번호를 검색하세요")
+			return
+		}
+		
+		// Model로 전송 
+		$('#frm').submit();
+	})
 })
 </script>
 </head>
@@ -93,15 +124,15 @@ $(function(){
 			          <th class="text-center">Password</th>
 			          <td>
 			            <div class="form-inline">
-			              <input type="password" name="pwd" id="pwd1" class="form-control input-sm" placeholder="비밀번호">
-			              <input type="password" name="pwd1" id="pwd2" class="form-control input-sm" placeholder="비밀번호 재입력">
+			              <input type="password" name="pwd" id="pwd1" class="form-control input-sm" placeholder="비밀번호" required>
+			              <input type="password" name="pwd1" id="pwd2" class="form-control input-sm" placeholder="비밀번호 재입력" required>
 			            </div>
 			          </td>
 			        </tr>
 			
 			        <tr>
 			          <th class="text-center">이름</th>
-			          <td><input type="text" name="name" id="name" class="form-control input-sm" placeholder="이름 입력"></td>
+			          <td><input type="text" name="name" id="name" class="form-control input-sm" placeholder="이름 입력" required></td>
 			        </tr>
 			
 			        <tr>
@@ -114,7 +145,7 @@ $(function(){
 			
 			        <tr>
 			          <th class="text-center">생년월일</th>
-			          <td><input type="date" name="birthday"  id="birthday" class="form-control input-sm"></td>
+			          <td><input type="date" name="birthday"  id="birthday" class="form-control input-sm" required></td>
 			        </tr>
 			
 			        <tr>
@@ -158,7 +189,7 @@ $(function(){
 			
 			        <tr>
 			          <th class="text-center">소개</th>
-			          <td><textarea rows="5" name="content" class="form-control input-sm" placeholder="자기소개를 입력하세요"></textarea></td>
+			          <td><textarea rows="5" name="content" class="form-control input-sm" placeholder="자기소개를 입력하세요" required></textarea></td>
 			        </tr>
 			
 			        <tr>

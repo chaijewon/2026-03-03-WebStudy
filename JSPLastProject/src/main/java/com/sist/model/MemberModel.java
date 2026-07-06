@@ -50,4 +50,38 @@ public class MemberModel {
 	   }catch(Exception ex) {}
 	   
    }
+   @RequestMapping("member/join_ok.do")
+   public String member_join_ok(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String id=request.getParameter("id");
+	   String pwd=request.getParameter("pwd");
+	   String name=request.getParameter("name");
+	   String sex=request.getParameter("sex");
+	   String birthday=request.getParameter("birthday");
+	   String email=request.getParameter("email");
+	   String post=request.getParameter("post");
+	   String addr1=request.getParameter("addr1");
+	   String addr2=request.getParameter("addr2");
+	   String phone1=request.getParameter("phone1");
+	   String phone2=request.getParameter("phone2");
+	   String content=request.getParameter("content");
+	   
+	   MemberVO vo=new MemberVO();
+	   vo.setId(id);
+	   vo.setPwd(pwd);
+	   vo.setName(name);
+	   vo.setSex(sex);
+	   vo.setBirthday(birthday);
+	   vo.setEmail(email);
+	   vo.setPost(post);
+	   vo.setAddr1(addr1);
+	   vo.setAddr2(addr2);
+	   vo.setContent(content);
+	   vo.setPhone(phone1+"-"+phone2);
+	   
+	   MemberDAO.memberInsert(vo);
+	   
+	   return "redirect:../main/main.do";
+   }
 }
