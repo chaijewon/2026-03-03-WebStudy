@@ -24,7 +24,7 @@
                     <div class="single_catagory wow fadeInUp" data-wow-delay=".3s">
                         <img src="../img/catagory-img/1.jpg" alt="">
                         <div class="catagory-title">
-                            <a href="#">
+                            <a href="../food/food_main.do">
                                 <h5>맛집</h5>
                             </a>
                         </div>
