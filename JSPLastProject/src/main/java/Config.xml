@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+      1. JSP MVC 구조 = Spring / Spring-Boot
+         Model : VO , DAO , Service , Manager = 브라우저와 연결 
+         View : Front-End (HTML,JSP,JavaScript,CSS) : 화면 출력 
+         Controller : DispatcherServlet (메소드를 찾기 = 어노테이션 구현)
+         사용자 요청 : .do (******)
+            |
+          DispatcherServlet
+            |
+          요청에 해당되는 메소드를 찾아서 결과값 읽기 
+          ==> @RequestMapping() 
+          ==> request에 값을 담아준다 / JSON (******)
+            |
+          DispatcherServlet을 통해 전송 
+            |
+          JSP 처리 (******)
+            
+         
+      2. MyBatis (ORM) = XML / Annotation / JPA
+      3. JavaScript 
+         1) 바닐라 JS : 순수 자바스크립트 
+         2) Jquery = Ajax
+         3) Vue CDN 처리 
+      4. Oracle : CRUD / DDL 
+                         = CREATE : 테이블 (키 설정 , 제약조건)
+                                    View / Index / Trigger
+                   | = JOIN / SubQuery / 페이징 처리 
+            
+ -->
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--  Connection 관련  -->
+<configuration>
+  <properties resource="db.properties"/>
+  <settings>
+    <setting name="cacheEnabled" value="true"/>
+    <!-- 동일 쿼리를 반복 실행하면 DB를 다시 조회하지 않는다 -->
+    <!-- <setting name="mapUnderscoreToCamelCase" value="true"/> -->
+    <!-- 컬럼명 : user_name + userName -->
+    <setting name="callSettersOnNulls" value="true"/>
+    <!-- null값이 있는 경우 : setter호출 -->
+    <setting name="logImpl" value="STDOUT_LOGGING"/>
+    <!-- SQL실행 로그 출력 -->
+  </settings>
+  <typeAliases>
+    <typeAlias type="com.sist.vo.MemberVO" alias="MemberVO"/>
+  </typeAliases>
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+       <!-- type : class명 PooledDataSource-->
+       <property name="driver" value="${driver}"/>
+       <property name="url" value="${url}"/>
+       <property name="username" value="${username}"/>
+       <property name="password" value="${password}"/>
+       <property name="poolMaximumActiveConnections" value="${maxActive}"/>
+       <property name="poolMaximumIdleConnections" value="${maxIdle}"/>
+       <property name="poolTimeToWait" value="${maxWait}"/>
+       <!-- 설정이 없는 경우 maxActive:8 / maxIdle:8 / maxWait:10000 -->
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <mapper resource="com/sist/mapper/member-mapper.xml"/>
+  </mappers>
+</configuration>

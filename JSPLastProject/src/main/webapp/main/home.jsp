@@ -25,7 +25,7 @@
                         <img src="../img/catagory-img/1.jpg" alt="">
                         <div class="catagory-title">
                             <a href="#">
-                                <h5>Food</h5>
+                                <h5>맛집</h5>
                             </a>
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                         <img src="../img/catagory-img/2.jpg" alt="">
                         <div class="catagory-title">
                             <a href="#">
-                                <h5>Cooking</h5>
+                                <h5>레시피</h5>
                             </a>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                         <img src="../img/catagory-img/3.jpg" alt="">
                         <div class="catagory-title">
                             <a href="#">
-                                <h5>Life Style</h5>
+                                <h5>스토어</h5>
                             </a>
                         </div>
                     </div>

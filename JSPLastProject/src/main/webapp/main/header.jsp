@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,10 +21,10 @@
  $(function(){
 	 $('#login').on('click',function(){
 		 Shadowbox.open({
-			 content:'../member/login.jsp',
+			 content:'../member/login.do',
 			 player:'iframe',
-			 width:500,
-			 height:250,
+			 width:350,
+			 height:200,
 			 title:'로그인'
 		 })
 	 })
@@ -48,12 +49,16 @@
                 <div class="col-7 col-sm-6">
                     <div class="signup-search-area d-flex align-items-center justify-content-end">
                         <div class="login_register_area d-flex">
+                           <c:if test="${sessionScope.id==null }">
                             <div class="login">
                                 <a class="link" id="login">로그인</a>
                             </div>
+                           </c:if>
+                           <c:if test="${sessionScope.id!=null }">
                             <div class="logout">
                                 <a class="link" id="logout">로그아웃</a>
                             </div>
+                           </c:if>
                         </div>
                         <!-- Search Button Area -->
                         <div class="search_button">
@@ -81,7 +86,7 @@
                 <!-- Logo Area Start -->
                 <div class="col-12">
                     <div class="logo_area text-center">
-                        <a href="index.html" class="yummy-logo">Travel</a>
+                        <a href="../main/main.do" class="yummy-logo">Travel</a>
                     </div>
                 </div>
             </div>
@@ -94,33 +99,79 @@
                         <div class="collapse navbar-collapse justify-content-center" id="yummyfood-nav">
                             <ul class="navbar-nav" id="yummy-nav">
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                                    <a class="nav-link" href="../main/main.do">Home</a>
                                 </li>
+                                <c:if test="${sessionScope.id==null }">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
+                                    <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">회원</a>
                                     <div class="dropdown-menu" aria-labelledby="yummyDropdown">
-                                        <a class="dropdown-item" href="index.html">Home</a>
-                                        <a class="dropdown-item" href="archive.html">Archive</a>
-                                        <a class="dropdown-item" href="single.html">Single Blog</a>
-                                        <a class="dropdown-item" href="static.html">Static Page</a>
-                                        <a class="dropdown-item" href="contact.html">Contact</a>
+                                        <a class="dropdown-item" href="../member/join.do">회원가입</a>
+                                        <a class="dropdown-item" href="archive.html">아이디찾기</a>
+                                        <a class="dropdown-item" href="single.html">비밀번호찾기</a>
+                 
                                     </div>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Features</a>
+                                </c:if>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">서울여행</a>
+                                    <div class="dropdown-menu" aria-labelledby="yummyDropdown">
+                                        <a class="dropdown-item" href="index.html">지금의 서울</a>
+                                        <a class="dropdown-item" href="archive.html">여행지</a>
+                                        <a class="dropdown-item" href="single.html">추천</a>
+                                        <a class="dropdown-item" href="single.html">날씨</a>
+                                    </div>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Categories</a>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">제주여행</a>
+                                    <div class="dropdown-menu" aria-labelledby="yummyDropdown">
+                                       <a class="dropdown-item" href="index.html">지금의 제주</a>
+                                        <a class="dropdown-item" href="archive.html">여행지</a>
+                                        <a class="dropdown-item" href="single.html">추천</a>
+                                        <a class="dropdown-item" href="single.html">날씨</a>
+                                    </div>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="archive.html">Archive</a>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">부산여행</a>
+                                    <div class="dropdown-menu" aria-labelledby="yummyDropdown">
+                                       <a class="dropdown-item" href="index.html">지금의 부산</a>
+                                        <a class="dropdown-item" href="archive.html">여행지</a>
+                                        <a class="dropdown-item" href="single.html">추천</a>
+                                        <a class="dropdown-item" href="single.html">날씨</a>
+                 
+                                    </div>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">About</a>
+                                <c:if test="${sessionScope.id!=null }">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">빠른예약</a>
+                                    <div class="dropdown-menu" aria-labelledby="yummyDropdown">
+                                        <a class="dropdown-item" href="index.html">맛집</a>
+                                        <a class="dropdown-item" href="archive.html">공연&축제</a>
+                                    </div>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="contact.html">Contact</a>
+                                </c:if>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">커뮤니티</a>
+                                    <div class="dropdown-menu" aria-labelledby="yummyDropdown">
+                                        <a class="dropdown-item" href="index.html">자유게시판</a>
+                                        <a class="dropdown-item" href="archive.html">공지사항</a>
+                                        <c:if test="${sessionScope.id!=null }">
+                                         <a class="dropdown-item" href="single.html">실시간채팅</a>
+                                        </c:if>
+                                    </div>
                                 </li>
+                                <c:if test="${sessionScope.id!=null }">
+                                <c:if test="${sessionScope.admin=='n' }">
+                                 <li class="nav-item">
+                                    <a class="nav-link" href="archive.html">마이페이지</a>
+                                 </li>
+                                </c:if>
+                                <c:if test="${sessionScope.admin=='y' }">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">관리자페이지</a>
+                                </li>
+                                </c:if>
+                                </c:if>
+                                
                             </ul>
                         </div>
                     </nav>
