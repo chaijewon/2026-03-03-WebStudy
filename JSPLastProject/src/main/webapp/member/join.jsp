@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="../css/table.css">
 <link rel="stylesheet" href="../shadow/css/shadowbox.css">
-<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
 <script type="text/javascript" src="../shadow/js/shadowbox.js"></script>
 <script type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <style type="text/css">
@@ -31,10 +31,10 @@ $(function(){
 			title:'아이디 중복체크'
 		})
 	})
-	
+	// $('#postBtn').click(function(){}) => 고전적 이벤트 => 이벤ㅌ, Listener 
 	$('#postBtn').on('click',function(){
 		new daum.Postcode({
-			oncomplete:function(data)
+			oncomplete(data)
 			{
 				$('#post').val(data.zonecode)
 				$('#addr1').val(data.address)
@@ -43,7 +43,7 @@ $(function(){
 	})
 	
 	$('#joinBtn').on('click',function(){
-		let id=$('#join_id').val()
+		const id=$('#join_id').val()
 		// required => readonly는 적용이 안됨 
 		if(id.trim()==="")
 		{
@@ -51,8 +51,8 @@ $(function(){
 			return
 		}
 		
-		let pwd1=$('#pwd1').val()
-		let pwd2=$('#pwd2').val()
+		const pwd1=$('#pwd1').val()
+		const pwd2=$('#pwd2').val()
 		
 		if(pwd1!==pwd2)
 	    {
@@ -62,16 +62,27 @@ $(function(){
 			return
 		}
 		
-		let post=$('#post').val()
-		if(post.trim()==="")
+		const post=$('#post').val().trim()
+		if(!post)
 		{
 			alert("우편번호를 검색하세요")
 			return
 		}
 		
 		// Model로 전송 
-		$('#frm').submit();
+		//$('#frm').submit();
+		$('#frm').trigger("submit")
 	})
+	/*
+	    Jquery 3 =====> Jquery 4
+	    1. 값이 변경되지 않는 경우 : let => const 
+	    2. trim()==="" => !id , !post 
+	    3. aaa:function() => ES6 => aaa()
+	    4. $('#pwd2').val("")
+		   $('#pwd2').focus()
+		   => $('#pwd2').val("").focus()
+		5. $('#frm').submit() => $('#frm').trigger("submit")
+	*/
 })
 </script>
 </head>

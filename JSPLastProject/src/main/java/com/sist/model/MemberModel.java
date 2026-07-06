@@ -9,6 +9,7 @@ import com.sist.vo.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import com.sist.dao.*;
 @Controller
@@ -82,6 +83,45 @@ public class MemberModel {
 	   
 	   MemberDAO.memberInsert(vo);
 	   
+	   return "redirect:../main/main.do";
+   }
+   
+   @RequestMapping("member/login_ok.do")
+   public void member_login_ok(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String id=request.getParameter("id");
+	   String pwd=request.getParameter("pwd");
+	   
+	   MemberVO vo=MemberDAO.isLogin(id, pwd);
+	   if(vo.getMsg().equals("OK"))
+	   {
+		  HttpSession session=request.getSession();
+		  // 상태 유지 => 데이터값을 유지 (사용자의 기본 정보)
+		  session.setAttribute("id", vo.getId());
+		  session.setAttribute("name", vo.getName());
+		  session.setAttribute("sex", vo.getSex());
+		  session.setAttribute("email", vo.getEmail());
+		  session.setAttribute("post", vo.getPost());
+		  session.setAttribute("address", vo.getAddr1()+" "+vo.getAddr2());
+		  session.setAttribute("phone", vo.getPhone());
+		  session.setAttribute("admin", vo.getAdmin());
+	   }
+	   
+	   try
+	   {
+		   response.setContentType("text/html;charset-UTF-8");
+		   PrintWriter out=response.getWriter();
+		   out.write(vo.getMsg());
+	   }catch(Exception ex) {}
+	   
+   }
+   @RequestMapping("member/logout.do")
+   public String member_logout(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   HttpSession session=request.getSession();
+	   session.invalidate();
 	   return "redirect:../main/main.do";
    }
 }

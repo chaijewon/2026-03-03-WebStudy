@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,12 +25,24 @@
 			 content:'../member/login.do',
 			 player:'iframe',
 			 width:350,
-			 height:200,
+			 height:300,
 			 title:'로그인'
 		 })
 	 })
+	 
  })
 </script>
+<style type="text/css">
+.welcome{
+    font-size: 15px;
+    color: #555;
+}
+
+.welcome strong{
+    color: #ff6b6b;
+}
+
+</style>
 </head>
 <body>
 <div class="top_header_area">
@@ -51,19 +64,26 @@
                         <div class="login_register_area d-flex">
                            <c:if test="${sessionScope.id==null }">
                             <div class="login">
-                                <a class="link" id="login">로그인</a>
+                                <a class="btn-xs btn-success btn link" id="login">로그인</a>
                             </div>
                            </c:if>
                            <c:if test="${sessionScope.id!=null }">
                             <div class="logout">
-                                <a class="link" id="logout">로그아웃</a>
+                              <span>
+                                <strong class="welcome">
+                                  ${sessionScope.name }(${sessionScope.admin=='y'?"관리자":"일반사용자" })님 환영합니다
+                                </strong>
+                              </span>
+                                <a class="btn-xs btn-danger btn link" 
+                                   href="../member/logout.do"
+                                   id="logout" style="margin-left: 5px">로그아웃</a>
                             </div>
                            </c:if>
                         </div>
                         <!-- Search Button Area -->
-                        <div class="search_button">
+                        <!-- <div class="search_button">
                             <a class="searchBtn" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
-                        </div>
+                        </div> -->
                         <!-- Search Form -->
                         <!-- <div class="search-hidden-form">
                             <form action="#" method="get">

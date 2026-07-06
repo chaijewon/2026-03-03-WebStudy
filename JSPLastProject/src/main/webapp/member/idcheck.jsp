@@ -100,44 +100,56 @@ button:hover {
   border: 1px solid #f5b7b1;
 }
 </style>
-<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-4.0.0.min.js"></script>
 <script type="text/javascript">
 $(function(){
 	$('#okBtn').on('click',function(){
-		let id=$('#userid').val()
+		const id=$('#userid').val()
 		parent.frm.id.value=id
 		parent.Shadowbox.close()
 	})
 	$('#checkBtn').on('click',function(){
-		let id=$('#userid').val()
-		if(id.trim()==="")
+		const id=$('#userid').val().trim()
+		if(!id)
 		{
-			$('#message').text("아이디를 입력하세요")
+			/*$('#message').text("아이디를 입력하세요")
 			$('#message').attr("class","message error")
-			$('#message').show()
+			$('#message').show()*/
+			$('#message')
+			   .text("아이디를 입력하세요")
+			   .removeClass()
+			   .addClass("message error")
+			   .show()
 			return
 		}
 		
-		// 서버와 연결 
+		// 서버와 연결  type=method
 		$.ajax({
-			type:'post',
+			method:'post',
 			url:'../member/idcheck_ok.do',
-			data:{"id":id},
+			data:{id},
 			success:function(result) // result=0,1
 			{
+				result=result.trim()
 				//alert(result)
-				if(result.trim()==0)
+				if(result==="0")
 				{
-					$('#message').text(id+"는(은) 사용 가능한 아이디입니다")
-					$('#message').attr("class","message success")
-					$('#message').show()
+					$('#message')
+					   .text(id+"는(은) 사용 가능한 아이디입니다")
+					   .removeClass()
+					   .addClass("message success")
+					   .show()
+					
 					$('#okBtn').show()
 				}
 				else
 				{
-					$('#message').text(id+"는(은) 사용중인 아이디입니다")
-					$('#message').attr("class","message error")
-					$('#message').show()
+					$('#message')
+					  .text(id+"는(은) 사용중인 아이디입니다")
+					  .removeClass()
+					  .addClass("message error")
+					  .show()
+					
 					$('#okBtn').hide()
 				}
 			},
@@ -147,6 +159,16 @@ $(function(){
 			}
 		})
 	})
+	/*
+	    1. type:"post"  => method:"POST"
+	    2. attr("class","message") => removeClass().addClass("message")
+	    
+	    3. let ==> const 
+	    4. data:{"id":id} ==> data:{id} => ES6 단축문법 
+	    
+	    => module : 4버전  CDN은 3버전 호환 
+	       ------- Vue3 
+	*/
 })
 </script>
 </head>
