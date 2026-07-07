@@ -17,7 +17,7 @@ public class TourController {
 
 
     private static final String SERVICE_KEY =
-            "710f338430c34ba2c82b39729103f49d6eea0c8c91d7bc4b7c72ed5f2121f015";
+            "3ba8caea925973006728d324fd68207328dd10d779818d09d0737d1b15118fdc";
 
 
     // 서울 부산 제주

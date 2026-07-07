@@ -40,4 +40,60 @@ public class FoodDAO {
 	   session.close();
 	   return total;
    }
+   /*
+    *    <update id="foodHitIncrement" parameterType="int">
+		    UPDATE food SET
+		    hit=hit+1
+		    WHERE no=#{no}
+		  </update>
+		  <select id="foodDetailData" resultType="FoodVO" parameterType="int">
+		    SELECT *
+		    FROM food
+		    WHERE no=#{no}
+		  </select>
+    */
+   /*
+    *                    요청 JSP(.do)
+    *                    => <a> <img> title
+    *                    => button
+    *                                     | Controller
+    *    View(JSP,ThymeLeaf) ========> DispatcherServlet 
+    *                                     |
+    *                                  ------------- 
+    *                                   Model ==> request/json
+    *                                     |
+    *                                   Service : SpringFramework 
+    *                                     |
+    *                                    DAO 
+    *                                  ------------ Model
+    *    ------------------------------------------------------
+    *    SpringFrameWork / Spring-Boot 
+    *      => Setting      | XML(X) , Annotation 
+    *                        | 6버전 / 3.xx , 4.xx , 5.xx
+    *                                        | 사용 => MyBatis 
+    *                                        | SpringAI
+    *         | XML / Annotataion      
+    *         | 5버전 
+    *    ------------------------------------------------------
+    *      JPA / Security (JWT) / MSA 
+    *    ------------------------------------------------------
+    *    => Vue => vuex / Pinia 
+    *    => React => Redux => TanStack-Query => NextJS 
+    *    ------------------------------------------------------
+    *    Oracle / MySQL 
+    *    ------------------------------------------------------
+    *    Stomp / 카프카 
+    *    ------------------------------------------------------
+    *    CI/CD => Git Action / docker / docker-compose / 쿠바네티스
+    *    Jenkins / ngiex / ngrok / 
+    *    ------------------------------------------------------- 
+    */
+   public static FoodVO foodDetailData(int no)
+   {
+	   SqlSession session=ssf.openSession(true);
+	   session.update("foodHitIncrement",no);
+	   FoodVO vo=session.selectOne("foodDetailData",no);
+	   session.close();
+	   return vo;
+   }
 }

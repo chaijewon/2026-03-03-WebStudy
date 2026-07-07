@@ -11,4 +11,14 @@
     SELECT CEIL(COUNT(*)/12.0)
     FROM food
   </select>
+  <update id="foodHitIncrement" parameterType="int">
+    UPDATE food SET
+    hit=hit+1
+    WHERE no=#{no}
+  </update>
+  <select id="foodDetailData" resultType="FoodVO" parameterType="int">
+    SELECT *
+    FROM food
+    WHERE no=#{no}
+  </select>
 </mapper>

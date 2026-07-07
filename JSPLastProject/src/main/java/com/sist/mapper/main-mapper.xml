@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.main-mapper">
+  <select id="mainSeoulOne" resultType="TourVO">
+    SELECT contentid,firstimage,addr1,likecount,replycount,title,rownum
+    FROM (SELECT contentid,firstimage,addr1,likecount,replycount,title 
+          FROM tour 
+          WHERE areacode=1 AND contenttypeid=12
+          ORDER BY hit DESC
+         )
+    WHERE rownum=1
+  </select>
+  <select id="mainPusanTop4" resultType="TourVO">
+    SELECT contentid,firstimage,addr1,likecount,replycount,title,rownum
+    FROM (SELECT contentid,firstimage,addr1,likecount,replycount,title 
+          FROM tour 
+          WHERE areacode=6 AND contenttypeid=12
+          ORDER BY hit DESC
+         )
+    WHERE rownum&lt;=4
+  </select>
+  <select id="mainJejuTop4" resultType="TourVO">
+    SELECT contentid,firstimage,addr1,likecount,replycount,title,rownum
+    FROM (SELECT contentid,firstimage,addr1,likecount,replycount,title 
+          FROM tour 
+          WHERE areacode=39 AND contenttypeid=12
+          ORDER BY hit DESC
+         )
+    WHERE rownum&lt;=4
+  </select>
+  <select id="mainFoodTop7" resultType="FoodVO">
+    SELECT no,name,type,poster,likecount,replycount,address,rownum
+    FROM (SELECT no,name,type,poster,likecount,replycount,address
+          FROM food
+          ORDER BY hit DESC
+         )
+    WHERE rownum&lt;=7
+  </select>
+  
+</mapper>
