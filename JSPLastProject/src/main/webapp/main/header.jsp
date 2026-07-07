@@ -135,29 +135,37 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">서울여행</a>
                                     <div class="dropdown-menu" aria-labelledby="yummyDropdown">
-                                        <a class="dropdown-item" href="index.html">지금의 서울</a>
-                                        <a class="dropdown-item" href="archive.html">여행지</a>
-                                        <a class="dropdown-item" href="single.html">추천</a>
-                                        <a class="dropdown-item" href="single.html">날씨</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=12&areaCode=1">관광지</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=14&areaCode=1">문화시설</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=15&areaCode=1">행사/공연/축제</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=32&areaCode=1">숙박</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=38&areaCode=1">쇼핑</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=39&areaCode=1">음식점</a>
+                                        <a class="dropdown-item" href="#">날씨</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">제주여행</a>
                                     <div class="dropdown-menu" aria-labelledby="yummyDropdown">
-                                       <a class="dropdown-item" href="index.html">지금의 제주</a>
-                                        <a class="dropdown-item" href="archive.html">여행지</a>
-                                        <a class="dropdown-item" href="single.html">추천</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=12&areaCode=39">관광지</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=14&areaCode=39">문화시설</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=15&areaCode=39">행사/공연/축제</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=32&areaCode=39">숙박</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=38&areaCode=39">쇼핑</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=39&areaCode=39">음식점</a>
                                         <a class="dropdown-item" href="single.html">날씨</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">부산여행</a>
                                     <div class="dropdown-menu" aria-labelledby="yummyDropdown">
-                                       <a class="dropdown-item" href="index.html">지금의 부산</a>
-                                        <a class="dropdown-item" href="archive.html">여행지</a>
-                                        <a class="dropdown-item" href="single.html">추천</a>
-                                        <a class="dropdown-item" href="single.html">날씨</a>
-                 
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=12&areaCode=6">관광지</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=14&areaCode=6">문화시설</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=15&areaCode=6">행사/공연/축제</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=32&areaCode=6">숙박</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=38&areaCode=6">쇼핑</a>
+                                        <a class="dropdown-item" href="../tour/travel.do?contenttypeid=39&areaCode=6">음식점</a>
+                                        <a class="dropdown-item" href="#">날씨</a>
                                     </div>
                                 </li>
                                 <c:if test="${sessionScope.id!=null }">
