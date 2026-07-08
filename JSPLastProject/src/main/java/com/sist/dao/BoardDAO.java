@@ -63,4 +63,90 @@ public class BoardDAO {
    // 수정 하기 
    // 삭제 하기 
    // 상세 보기 
+   /*
+    *    <update id="boardHitIncrement" parameterType="int">
+		    UPDATE freeboard SET 
+		    hit=hit+1
+		    WHERE no=#{no}
+		  </update>
+		  <!-- 
+		       1. 회원가입 (로그인)
+		       2. 게시판 : CRUD
+		       3. 공지사항 : 관리자 / 일반사용자 
+		       4. HttpSession / Cookie 
+		                        | 최신방문 / 장바구니 / 자동로그인 (remember-me)
+		   -->
+		  <select id="boardDetailData" resultType="BoardVO" parameterType="int">
+		    SELECT no,name,subject,content,hit,
+		           TO_CHAR(regdate,'yyyy-mm-dd hh24:mi:ss') as dbday
+		    FROM freeboard
+		    WHERE no=#{no}
+		  </select>
+    */
+   public static BoardVO boardDetailData(int no)
+   {
+	   SqlSession session=ssf.openSession(true);
+	   session.update("boardHitIncrement",no);
+	   BoardVO vo=session.selectOne("boardDetailData",no);
+	   session.close();
+	   return vo;
+   }
+   //  JSP = Mapper = DAO = Model = JSP
+   
+   /*
+    *     <select id="boardGetPassword" resultType="string" parameterType="int">
+		   SELECT pwd 
+		   FROM freeboard
+		   WHERE no=#{no}
+		  </select>
+		  
+		  <delete id="boardDelete" parameterType="int">
+		    DELETE FROM freeboard
+		    WHERE no=#{no}
+		  </delete>
+    */
+   public static String boardDelete(int no,String pwd)
+   {
+	   String result="no";
+	   SqlSession session=ssf.openSession();
+	   String db_pwd=session.selectOne("boardGetPassword",no);
+	   if(db_pwd.equals(pwd))
+	   {
+		   session.delete("boardDelete",no);
+		   session.commit();
+		   result="yes";
+	   }
+	   session.close();
+	   return result;
+   }
+   
+   public static BoardVO boardUpdateData(int no)
+   {
+	   SqlSession session=ssf.openSession(true);
+	   BoardVO vo=session.selectOne("boardDetailData",no);
+	   session.close();
+	   return vo;
+   }
+   /*
+    *    <update id="boardUpdate" parameterType="BoardVO">
+		    UPDATE freeboard SET 
+		    name=#{name},subject=#{subject},content=#{content}
+		    WHERE no=#{no}
+		  </update>
+    */
+   public static String boardUpdate(BoardVO vo)
+   {
+	   String result="no";
+	   SqlSession session=ssf.openSession();
+	   String db_pwd=session.selectOne("boardGetPassword",vo.getNo());
+	   if(db_pwd.equals(vo.getPwd()))
+	   {
+		   session.update("boardUpdate",vo);
+		   session.commit();
+		   result="yes";
+	   }
+	   session.close();
+	   return result;
+   }
+   
 }
