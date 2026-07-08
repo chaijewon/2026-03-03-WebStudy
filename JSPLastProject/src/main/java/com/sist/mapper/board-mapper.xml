@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.board-mapper">
+  <select id="boardListData" resultType="BoardVO" parameterType="int">
+    SELECT no,subject,name,TO_CHAR(regdate,'yyyy-mm-dd') as dbday,hit
+    FROM freeboard
+    ORDER BY no DESC
+    OFFSET #{start} ROWS FETCH NEXT 10 ROWS ONLY
+  </select>
+  <select id="boardTotalPage" resultType="int">
+    SELECT CEIL(COUNT(*)/10.0)
+    FROM freeboard
+  </select>
+  <insert id="boardInsert" parameterType="BoardVO">
+    INSERT INTO freeboard(no,name,subject,content,pwd)
+    VALUES(
+       fb_no_seq.nextval,
+       #{name},#{subject},#{content},#{pwd}
+    )
+  </insert>
+</mapper>
