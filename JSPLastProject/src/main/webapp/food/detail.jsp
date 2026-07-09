@@ -93,7 +93,7 @@
                                </c:if>
                               </c:if>
                               <button class="btn-xs btn-primary">추천</button>
-                              <button class="btn-xs btn-warning" onclick="javascript:history.back()">목록</button>
+                              <a class="btn-xs btn-warning" href="../food/food_main.do">목록</a>
                             </td>
                           </tr>
                         </table>
