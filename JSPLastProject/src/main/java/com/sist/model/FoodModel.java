@@ -41,6 +41,7 @@ import com.sist.vo.*;
  *       ------------------ Model
  *    
  */
+
 public class FoodModel {
    @RequestMapping("food/food_main.do")
    public String food_main(HttpServletRequest request,
@@ -170,6 +171,26 @@ public class FoodModel {
 	   cookie.setPath("/");
 	   response.addCookie(cookie);
 	   return "redirect:../food/detail.do?no="+no;
+   }
+   @RequestMapping("food/find.do")
+   public String food_find(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   // vue/ajax
+	   request.setAttribute("food_jsp", "../food/find.jsp");
+	   request.setAttribute("main_jsp", "../food/food_main.jsp");
+	   return "../main/main.jsp";
+   }
+   @RequestMapping("food/find_vue.do")
+   public void food_find_vue(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String page=request.getParameter("page");
+	   String column=request.getParameter("column"); // 컬럼 : 음식종류/업체명/주소
+	   String fd=request.getParameter("fd"); // 검색어 
+	   
+	   // vue 
+	   
    }
    
 }

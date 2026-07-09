@@ -43,7 +43,21 @@ public class ReviewModel {
    {
 	   String no=request.getParameter("no");
 	   String fno=request.getParameter("fno");
-	   
+	   ReviewDAO.reviewDelete(Integer.parseInt(no));
 	   return "redirect:../food/detail.do?no="+fno;
    }
+   @RequestMapping("review/update.do")
+   public String review_update(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String no=request.getParameter("no");
+	   String fno=request.getParameter("fno");
+	   String msg=request.getParameter("msg");
+	   ReviewVO vo=new ReviewVO();
+	   vo.setNo(Integer.parseInt(no));
+	   vo.setMsg(msg);
+	   ReviewDAO.reviewUpdate(vo);
+	   return "redirect:../food/detail.do?no="+fno;
+   }
+   
 }

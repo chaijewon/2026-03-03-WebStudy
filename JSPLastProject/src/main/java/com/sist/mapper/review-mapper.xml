@@ -24,6 +24,15 @@
    DELETE FROM foodReview
    WHERE no=#{no}
   </delete>
+  <update id="reviewUpdate" parameterType="ReviewVO">
+    UPDATE foodReview SET
+    msg=#{msg}
+    WHERE no=#{no}
+  </update>
+  <!-- 
+     XML : SQL = DAO 
+                 ==== 호출 : Model === JSP
+   -->
 </mapper>
 
 
