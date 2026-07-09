@@ -94,6 +94,10 @@ public class FoodModel {
 	   request.setAttribute("cList", cList);
 	   return "../main/main.jsp";
    }
+   // 화면 UI , 구현 , 데이터베이스 설계
+   // 1. 
+   // 2. 
+   // 3.
    @RequestMapping("food/detail.do")
    public String food_detail(HttpServletRequest request,
 		   HttpServletResponse response)
@@ -105,6 +109,11 @@ public class FoodModel {
 	   
 	   request.setAttribute("food_jsp", "../food/detail.jsp");
 	   request.setAttribute("main_jsp", "../food/food_main.jsp");
+	   
+	   List<ReviewVO> list=
+			   ReviewDAO.reviewListData(Integer.parseInt(no));
+	   request.setAttribute("reList", list);
+	   request.setAttribute("rCount", list.size());
 	   return "../main/main.jsp";
    }
    /*

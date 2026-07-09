@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,7 +94,7 @@
                                </c:if>
                               </c:if>
                               <button class="btn-xs btn-primary">추천</button>
-                              <a class="btn-xs btn-warning" href="../food/food_main.do">목록</a>
+                              <button class="btn-xs btn-warning" onclick="location.href='../food/food_main.do'">목록</button>
                             </td>
                           </tr>
                         </table>
@@ -155,13 +156,45 @@
         </c:if>
         <c:if test="${rCount>0 }">
           <ul class="review-list">
-            
+            <c:forEach var="rvo" items="${reList }">
+             <li class="review-card">
+               <div class="review-header">
+                 <div class="review-avatar">
+                   ${fn:substring(rvo.name,0,1) }
+                 </div>
+                 <div class="review-nick">${rvo.name }</div>
+                 <div class="review-date">${rvo.dbday }</div>
+               </div>
+               <div class="review-text">${rvo.msg }</div>
+               <c:if test="${sessionScope.id==rvo.id }">
+                <div class="review-meta">
+                 <div><input type=button class="btn-xs btn-primary" value="수정"></div>
+                 <div><input type=button class="btn-xs btn-danger" value="삭제"
+                   onclick="location.href='../review/delete.do?no=${rvo.no}&fno=${rvo.fno }'"
+                 ></div>
+                </div>
+               </c:if>
+             </li>
+            </c:forEach>
           </ul>
         </c:if>
+        <%--
+           1. 번호  ====>  자동 증가 
+           2. 맛집번호 
+           3. id , name ===> session
+           4. msg
+           5. date ==> SYSDATE
+           1111 유형  ==> #{1} 
+           
+           .do?no=1
+           /insert/1
+         --%>
         <c:if test="${sessionScope.id!=null }">
-          <form class="review-form">
+          <form class="review-form" method="post" action="../review/insert.do">
+            <input type="hidden" name=fno value="${vo.no}">
             <input type=text name=msg placeholder="댓글 입력" required>
             <button type="submit">등록</button>
+            
           </form>
         </c:if>
   </section>

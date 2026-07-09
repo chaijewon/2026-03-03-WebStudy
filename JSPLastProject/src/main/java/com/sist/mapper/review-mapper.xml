@@ -1,3 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sist.mapper.review-mapper"></mapper>
+<mapper namespace="com.sist.mapper.review-mapper">
+  <!-- 
+    VALUES(vo.getFno(),vo.getId()...)
+    VALUES(map.get("start"))
+    class 조(반)
+    DispatcherServlet (배달부)
+    package 꾸러미 
+    import 불러오기 
+   -->
+  <insert id="reviewInsert" parameterType="ReviewVO">
+    INSERT INTO foodReview(fno,id,name,msg)
+    VALUES(#{fno},#{id},#{name},#{msg})
+  </insert>
+  <select id="reviewListData" resultType="ReviewVO" parameterType="int">
+    SELECT no,fno,id,name,msg,
+          TO_CHAR(regdate,'yyyy-mm-dd hh24:mi:ss') as dbday
+    FROM foodReview
+    WHERE fno=#{fno}
+    ORDER BY no DESC
+  </select>
+  <delete id="reviewDelete" parameterType="int">
+   DELETE FROM foodReview
+   WHERE no=#{no}
+  </delete>
+</mapper>
+
+
+
+
+
+
+
