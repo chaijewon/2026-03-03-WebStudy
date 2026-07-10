@@ -110,7 +110,7 @@ $(function(){
                           <tr>
                             <td colspan="3" class="text-right">
                               <c:if test="${sessionScope.id!=null }">
-                               <button class="btn-xs btn-danger">좋아요</button>
+                               <button class="btn-xs btn-danger">좋아요 <span>10</span></button>
                                <button class="btn-xs btn-info">찜하기</button>
                                <c:if test="${vo.reserve!='불가' }">
                                 <button class="btn-xs btn-success">예약하기</button>

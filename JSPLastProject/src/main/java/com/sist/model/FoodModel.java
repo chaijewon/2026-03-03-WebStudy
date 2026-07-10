@@ -1,11 +1,14 @@
 package com.sist.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.PrintWriter;
 import java.util.*;
 import com.sist.dao.*;
 import com.sist.vo.*;
@@ -181,6 +184,47 @@ public class FoodModel {
 	   request.setAttribute("main_jsp", "../food/food_main.jsp");
 	   return "../main/main.jsp";
    }
+   /*
+    *   vue / react => 100% 
+    *   가상돔을 이용한다 => 임시메모리 ====== 실제메모리(브라우저 읽기)
+    *                       |              |
+    *                       ----------------
+    *                         | 비교 => 변경된 부분만 갱신
+    *                     | => mount("CSS선택자")
+    *                       => 부분적으로 변경 
+    *                       => 속도의 최적화 
+    *   ----- 돔 : 트리구조 (ML) 
+    *   모든 개발자가 소스 패턴이 동일 
+    *              ------------- 유지보수 
+    *   => MyBatis / @RequestMapping() / JPA / React 
+    *   => FrameWork : 기본 틀 
+    *   => TypeScript와 친화적 
+    *      ---------- 데이터형 고정 
+    *      let a:number; a='' (X)
+    *      let b=10
+    *      b='aaa'
+    *      b=[]
+    *      int a; 
+    *   => 역할 
+    *      => 화면 출력 
+    *         ------- 상태 관리 (데이터 관리)
+    *                 --- 데이터 변경 => HTML에 적용
+    *      => Vue3 : 화면 UI
+    *      => Pinia => 최신 상태 관리 표준 (store)
+    *      => Vuex => 레거시 (JSP MVC)  
+    *   => UI (디렉티브) 
+    *      1) v-text / v-html
+    *         => {{}} 
+    *         => jquery : text() , html()
+    *         <div>{{msg}}</div>
+    *              | HTML을 파싱이 안된다 (HTML을 그대로 출력)
+    *         <div v-text="msg"></div>
+    *         
+    *         => msg:'<b>Hello</b>' => v-html="msg"
+    *         => 뉴스 출력 
+    *   
+    *   
+    */
    @RequestMapping("food/find_vue.do")
    public void food_find_vue(HttpServletRequest request,
 		   HttpServletResponse response)
@@ -189,8 +233,42 @@ public class FoodModel {
 	   String column=request.getParameter("column"); // 컬럼 : 음식종류/업체명/주소
 	   String fd=request.getParameter("fd"); // 검색어 
 	   
-	   // vue 
+	   int curpage=Integer.parseInt(page);
+	   // vue 전송 
+	   Map map=new HashMap();
+	   map.put("column", column);
+	   map.put("fd", fd);
+	   map.put("start", (curpage*12)-12);
+	   List<FoodVO> list=FoodDAO.foodFindListData(map);
 	   
+	   int totalpage=FoodDAO.foodFindTotalPage(map);
+	   
+	   final int BLOCK=10;
+	   int startPage=((curpage-1)/BLOCK*BLOCK)+1;
+	   int endPage=((curpage-1)/BLOCK*BLOCK)+BLOCK;
+	   if(endPage>totalpage)
+		   endPage=totalpage;
+	   
+	   try
+	   {
+		   map=new HashMap();
+		   map.put("fd", fd);
+		   map.put("column", column);
+		   map.put("list",list);
+		   map.put("curpage", curpage);
+		   map.put("totalpage", totalpage);
+		   map.put("startPage", startPage);
+		   map.put("endPage", endPage);
+		   
+		   ObjectMapper mapper=
+				   new ObjectMapper();
+		   String json=mapper.writeValueAsString(map);
+		   
+		   // 전송 
+		   response.setContentType("text/plain;charset=UTF-8");
+		   PrintWriter out=response.getWriter();
+		   out.write(json);
+	   }catch(Exception ex){}
    }
    
 }
