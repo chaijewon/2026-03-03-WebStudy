@@ -190,12 +190,12 @@
                                 <c:if test="${sessionScope.id!=null }">
                                 <c:if test="${sessionScope.admin=='n' }">
                                  <li class="nav-item">
-                                    <a class="nav-link" href="archive.html">마이페이지</a>
+                                    <a class="nav-link" href="../mypage/mypage_main.do">마이페이지</a>
                                  </li>
                                 </c:if>
                                 <c:if test="${sessionScope.admin=='y' }">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">관리자페이지</a>
+                                    <a class="nav-link" href="../adminpage/admin_main.do">관리자페이지</a>
                                 </li>
                                 </c:if>
                                 </c:if>

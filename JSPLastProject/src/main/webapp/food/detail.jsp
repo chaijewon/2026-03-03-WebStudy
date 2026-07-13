@@ -11,6 +11,7 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-4.0.0.min.js"></script>
 <script type="text/javascript">
 $(function(){
+	
 	let bCheck=false;
 	$('.btns').on('click',function(){
 		let no=$(this).attr('data-no')
@@ -31,6 +32,41 @@ $(function(){
 	})
 })
 </script>
+<style type="text/css">
+.like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid #ff6b81;
+  border-radius: 20px;
+  background: #fff;
+  color: #ff4757;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.like-btn:hover {
+  background: #fff0f3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 71, 87, 0.2);
+}
+
+.heart {
+  font-size: 20px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.like-btn:hover .heart {
+  transform: scale(1.2);
+}
+
+.count {
+  font-weight: 600;
+}
+</style>
 </head>
 <body>
   <section class="archive-area section_padding_80">
@@ -110,8 +146,11 @@ $(function(){
                           <tr>
                             <td colspan="3" class="text-right">
                               <c:if test="${sessionScope.id!=null }">
-                               <button class="btn-xs btn-danger">좋아요 <span>10</span></button>
-                               <button class="btn-xs btn-info">찜하기</button>
+                               <button class="like-btn">
+								  <span class="heart">♡</span>
+								  <span class="count">0</span>
+								</button>
+                               <button class="btn-xs btn-outline-info">찜하기</button>
                                <c:if test="${vo.reserve!='불가' }">
                                 <button class="btn-xs btn-success">예약하기</button>
                                </c:if>

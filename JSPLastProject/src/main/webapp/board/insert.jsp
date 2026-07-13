@@ -41,13 +41,13 @@
                <tr>
                  <th class="text-center bg-success text-white" width="15%">이름</th>
                  <td width="85%">
-                  <input type="text" name=name size=20 class="input-sm" required>
+                  <input type="text" name=name size=20 class="form-control-sm" required>
                  </td>
                </tr>
                <tr>
                  <th class="text-center bg-success text-white" width="15%">제목</th>
                  <td width="85%">
-                  <input type="text" name=subject size=57 class="input-sm" required>
+                  <input type="text" name=subject size=57 class="form-control-sm" required>
                  </td>
                </tr>
                <tr>
@@ -59,7 +59,7 @@
                <tr>
                  <th class="text-center bg-success text-white" width="15%">비밀번호</th>
                  <td width="85%">
-                  <input type="password" name=pwd size=10 class="input-sm" required>
+                  <input type="password" name=pwd size=10 class="form-control-sm" required>
                  </td>
                </tr>
                <tr>
