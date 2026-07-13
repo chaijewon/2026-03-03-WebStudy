@@ -40,7 +40,7 @@
   </select>
   <!-- 비밀번호 검색 -->
   <select id="memberGetPassword" resultType="MemberVO" parameterType="string">
-    SELECT id,pwd,name,sex,phone,email,post,addr1,addr2,admin
+    SELECT id,pwd,name,sex,phone,email,post,addr1,addr2,admin,regdate
     FROM member
     WHERE id=#{id}
   </select>

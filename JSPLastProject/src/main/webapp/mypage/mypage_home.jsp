@@ -17,7 +17,7 @@
         </tr>
         <tr>
           <th>주소</th>
-          <td>${sessionScope.addr1 += " " += sessionScope.addr2}</td>
+          <td>${sessionScope.address}</td>
         </tr>
         <tr>
           <th>연락처</th>
@@ -25,7 +25,7 @@
         </tr>
         <tr>
           <th>가입일</th>
-          <td>2024-05-12</td>
+          <td>${sessionScope.day }</td>
         </tr>
       </table>
     </div>

@@ -124,7 +124,7 @@ public class MemberDAO {
     				 vo.setAdmin(dbVO.getAdmin()); // 관리자 /일반 사용자 
     				 vo.setEmail(dbVO.getEmail()); // 예약 완료 / 회원 가입시 => email전송 예정
     				 ////////////////////////////////
-    				 
+    				 vo.setRegdate(dbVO.getRegdate());
     			 }
     			 else
     			 {
