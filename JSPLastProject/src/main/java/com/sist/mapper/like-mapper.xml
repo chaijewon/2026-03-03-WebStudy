@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.like-mapper">
+  
+  <insert id="likeOn" parameterType="LikeVO">
+   INSERT INTO mylike VALUES(
+     like_lno_seq.nextval,
+     #{fno},
+     #{id}
+   )
+  </insert>
+  <delete id="likeOff" parameterType="LikeVO">
+   DELETE FROM mylike
+   WHERE id=#{id} AND fno=#{fno}
+  </delete>
+  <select id="likeCount" resultType="int" parameterType="int">
+    SELECT COUNT(*) 
+    FROM mylike 
+    WHERE fno=#{fno}
+  </select>
+  <select id="likeCheck" resultType="int" parameterType="LikeVO">
+    SELECT COUNT(*)
+    FROM mylike
+    WHERE fno=#{fno} AND id=#{id}
+  </select>
+  <update id="foodLikeUpdate" parameterType="int">
+    UPDATE food SET 
+    likecount=(SELECT COUNT(*) 
+               FROM mylike 
+               WHERE fno=#{fno})
+    WHERE no=#{fno}
+  </update>
+</mapper>

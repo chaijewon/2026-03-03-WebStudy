@@ -35,6 +35,7 @@ public class ReviewModel {
 	   vo.setFno(Integer.parseInt(fno));
 	   // DB에 저장 요청 
 	   ReviewDAO.reviewInsert(vo);
+	   ReviewDAO.foodReviewCount(Integer.parseInt(fno));
 	   return "redirect:../food/detail.do?no="+fno;
    }
    @RequestMapping("review/delete.do")
@@ -44,6 +45,7 @@ public class ReviewModel {
 	   String no=request.getParameter("no");
 	   String fno=request.getParameter("fno");
 	   ReviewDAO.reviewDelete(Integer.parseInt(no));
+	   ReviewDAO.foodReviewCount(Integer.parseInt(fno));
 	   return "redirect:../food/detail.do?no="+fno;
    }
    @RequestMapping("review/update.do")

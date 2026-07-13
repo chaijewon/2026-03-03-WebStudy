@@ -70,4 +70,18 @@ public class ReviewDAO {
     	 session.delete("reviewUpdate",vo);
     	 session.close();
      }
+     /*
+      *   <update id="foodReviewCount" parameterType="int">
+		    UPADTE food SET 
+		    replycount=(SELECT COUNT(*) FROM foodReview
+		                WHERE fno=#{fno}
+		    WHERE no=#{fno}
+		  </update>
+      */
+     public static void foodReviewCount(int fno)
+     {
+    	 SqlSession session=ssf.openSession(true);
+    	 session.delete("foodReviewCount",fno);
+    	 session.close();
+     }
 }

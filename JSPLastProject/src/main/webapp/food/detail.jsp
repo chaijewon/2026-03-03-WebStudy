@@ -30,6 +30,31 @@ $(function(){
 			$(this).val("수정")
 		}
 	})
+	/*
+	$('.like-btn').on('click',function(){
+		let heart=$('.heart').text()
+		let count=$('.count').text()
+		alert(count)
+		if(heart==='♡')
+		{
+		   $('.heart').text('♥')	
+		   $('.count').text(Number(count)+1)
+		}
+		else
+		{
+			$('.heart').text('♡')	
+		    $('.count').text(Number(count)-1)
+		}
+		
+	})*/
+	$('#likeOn').on('click',function(){
+		let no=$(this).attr("data-no")
+		location.href="../like/likeOn.do?fno="+no
+	})
+	$('#likeOff').on('click',function(){
+		let no=$(this).attr("data-no")
+		location.href="../like/likeOff.do?fno="+no
+	})
 })
 </script>
 <style type="text/css">
@@ -146,10 +171,18 @@ $(function(){
                           <tr>
                             <td colspan="3" class="text-right">
                               <c:if test="${sessionScope.id!=null }">
-                               <button class="like-btn">
-								  <span class="heart">♡</span>
-								  <span class="count">0</span>
-								</button>
+                               <c:if test="${check==0 }">
+	                                <button class="like-btn" id="likeOn" data-no="${vo.no }">
+									  <span class="heart">♡</span>
+									  <span class="count">${count}</span>
+									</button>
+							   </c:if>
+							   <c:if test="${check==1 }">
+	                                <button class="like-btn" id="likeOff" data-no="${vo.no }">
+									  <span class="heart">♥</span>
+									  <span class="count">${count}</span>
+									</button>
+							   </c:if>
                                <button class="btn-xs btn-outline-info">찜하기</button>
                                <c:if test="${vo.reserve!='불가' }">
                                 <button class="btn-xs btn-success">예약하기</button>

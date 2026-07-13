@@ -29,6 +29,12 @@
     msg=#{msg}
     WHERE no=#{no}
   </update>
+  <update id="foodReviewCount" parameterType="int">
+    UPDATE food SET 
+    replycount=(SELECT COUNT(*) FROM foodReview
+                WHERE fno=#{fno})
+    WHERE no=#{fno}
+  </update>
   <!-- 
      XML : SQL = DAO 
                  ==== 호출 : Model === JSP
