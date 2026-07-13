@@ -16,4 +16,5 @@ public class AdminPageModel {
 	  return "../adminpage/admin_main.jsp";
   }
   
+  
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.notice-mapper">
+  <insert id="noticeInsert" parameterType="NoticeVO">
+   INSERT INTO notice(no,type,subject,content)
+   VALUES(notice_no_seq.nextval,
+    #{type},
+    #{subject},
+    #{content}
+   )
+  </insert>
+  <!-- user/admin -->
+  <select id="noticeListData" parameterType="int" resultType="NoticeVO">
+    SELECT no,type,name,subject,
+           TO_CHAR(regdate,'yyyy-MM-dd') as dbday,hit
+    FROM notice 
+    ORDER BY no DESC
+    OFFSET #{start} ROWS FETCH NEXT 10 ROWS ONLY
+  </select>
+  <select id="noticeTotalPage" resultType="int">
+    SELECT CEIL(COUNT(*)/10.0) FROM notice
+  </select>
+</mapper>

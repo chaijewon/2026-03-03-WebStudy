@@ -6,10 +6,8 @@
 <meta charset="UTF-8">
 <title>관리자 페이지</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/adminMain.css">
 
 <style>
-
 body {
   font-family: 'Noto Sans KR', sans-serif;
   margin: 0;
@@ -208,7 +206,7 @@ body {
     <ul>
       <li class="active"><a href="adminMain.jsp">대시보드</a></li>
       <li><a href="memberList.jsp">회원관리</a></li>
-      <li><a href="../admin/notice_list.do">공지관리</a></li>
+      <li><a href="../adminpage/admin_list.do">공지관리</a></li>
       <li><a href="../admin/admin_reserve.do">예약관리</a></li>
       <li><a href="boardManage.jsp">묻고답하기관리</a></li>
       <li><a href="stats.jsp">통계관리</a></li>
