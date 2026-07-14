@@ -25,4 +25,20 @@
      SYSDATE
    )
   </insert>
+  <resultMap type="com.sist.vo.JjimVO" id="jjimMap">
+    <result property="fvo.name" column="name"/>
+    <!-- 
+          vo.getFvo().setName(rs.getString("name"))
+     -->
+    <result property="fvo.poster" column="poster"/>
+    <result property="fvo.address" column="address"/>
+  </resultMap>
+  <select id="jjimListData" resultMap="jjimMap" 
+   parameterType="string">
+    SELECT fno,jno,name,poster,address,
+           TO_CHAR(regdate,'yyyy-mm-dd') as dbday
+    FROM jjim JOIN food
+    ON jjim.fno=food.no AND id=#{id}
+    ORDER BY no DESC
+  </select>
 </mapper>

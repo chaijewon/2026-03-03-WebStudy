@@ -2,6 +2,8 @@ package com.sist.model;
 
 
 
+import java.util.List;
+
 import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
 import com.sist.dao.JjimDAO;
@@ -28,5 +30,18 @@ public class JjimModel {
 	   // DB연동
 	   JjimDAO.jjimInsert(vo);
 	   return "redirect:../food/detail.do?no="+fno;
+   }
+   @RequestMapping("jjim/jjim_list.do")
+   public String jjim_list(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   HttpSession session=request.getSession();
+	   String id=(String)session.getAttribute("id");
+	   
+	   List<JjimVO> list=JjimDAO.jjimListData(id);
+	   request.setAttribute("list", list);
+	   request.setAttribute("mypage_jsp", "../mypage/jjim.jsp");
+	   request.setAttribute("main_jsp", "../mypage/mypage_main.jsp");
+	   return "../main/main.jsp";
    }
 }

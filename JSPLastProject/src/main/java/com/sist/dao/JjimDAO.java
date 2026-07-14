@@ -45,4 +45,20 @@ public class JjimDAO {
 		  session.close();
 		  
 	  }
+	  /*
+	   *     <select id="jjimListData" resultMap="jjimMap" 
+			   parameterType="string">
+			    SELECT fno,jno,name,poster,TO_CHAR(regdate,'yyyy-mm-dd') as dbday
+			    FROM jjim JOIN food
+			    ON jjim.fno=food.no AND id=#{id}
+			    ORDER BY no DESC
+			  </select>
+	   */
+	  public static List<JjimVO> jjimListData(String id)
+	  {
+		  SqlSession session=ssf.openSession();
+		  List<JjimVO> list=session.selectList("jjimListData",id);
+		  session.close();
+		  return list;
+	  }
 }
