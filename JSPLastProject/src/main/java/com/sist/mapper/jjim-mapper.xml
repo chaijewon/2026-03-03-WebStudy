@@ -41,4 +41,8 @@
     ON jjim.fno=food.no AND id=#{id}
     ORDER BY no DESC
   </select>
+  <delete id="jjimDelete" parameterType="int">
+    DELETE FROM jjim
+    WHERE jno=#{jno}
+  </delete>
 </mapper>

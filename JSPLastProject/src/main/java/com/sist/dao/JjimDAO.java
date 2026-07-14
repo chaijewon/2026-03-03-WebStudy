@@ -61,4 +61,17 @@ public class JjimDAO {
 		  session.close();
 		  return list;
 	  }
+	  /*
+	   *   <delete id="jjimDelete" parameterType="int">
+		    DELETE FROM jjim
+		    WHERE jno=#{jno}
+		  </delete>
+	   */
+	  public static void jjimDelete(int jno)
+	  {
+		  SqlSession session=ssf.openSession(true);
+		  session.insert("jjimDelete",jno);
+		  session.close();
+		  
+	  }
 }

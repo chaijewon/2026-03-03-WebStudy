@@ -44,4 +44,13 @@ public class JjimModel {
 	   request.setAttribute("main_jsp", "../mypage/mypage_main.jsp");
 	   return "../main/main.jsp";
    }
+   @RequestMapping("jjim/jjim_cancel.do")
+   public String jjim_cancel(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String jno=request.getParameter("jno");
+	   // DB
+	   JjimDAO.jjimDelete(Integer.parseInt(jno));
+	   return "redirect:../jjim/jjim_list.do";
+   }
 }
