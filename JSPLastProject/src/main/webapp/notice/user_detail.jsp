@@ -53,7 +53,7 @@
             <div class="row h-100 align-items-center">
                 <div class="col-12">
                     <div class="bradcumb-title text-center">
-                        <h2>공지사항</h2>
+                        <h2>상세보기</h2>
                     </div>
                 </div>
             </div>
@@ -74,20 +74,12 @@
     </div>
     <section class="archive-area section_padding_80">
         <div class="container">
-            <div class="row">
-             <table class="table">
+            <div class="row" style="width: 960px;margin: 0px auto">
+              <table class="table">
                <tr>
-                 <th width=10% class="text-center">번호</th>
-                 <th width=45% class="text-center">제목</th>
-                 <th width=15% class="text-center">작성자</th>
-                 <th width=20% class="text-center">작성일</th>
-                 <th width=10% class="text-center">조회수</th>
-               </tr>
-               <c:forEach var="vo" items="${nList }">
-                 <tr>
-	                 <td width=10% class="text-center">${vo.no}</td>
-	                 <td width=45%>
-	                  <c:choose>
+                 <th width=20% class="text-center danger">공지종류</th>
+                 <td width=30% class="text-center">
+                     <c:choose>
 	                    <c:when test="${vo.type==1 }">
 	                     <span class="notice-category service">서비스/점검</span>
 	                    </c:when>
@@ -104,14 +96,31 @@
 	                     <span class="notice-category schedule">행사/일정</span>
 	                    </c:when>
 	                  </c:choose>
-	                  &nbsp;<a href="../notice/detail.do?no=${vo.no }">${vo.subject }</a>
-	                 </td>
-	                 <td width=15% class="text-center">${vo.name }</td>
-	                 <td width=20% class="text-center">${vo.dbday }</td>
-	                 <td width=10% class="text-center">${vo.hit}</td>
-	               </tr>
-               </c:forEach>
-             </table>
+                 </td>
+                 <th width=20% class="text-center danger">작성일</th>
+                 <td width=30% class="text-center">${vo.dbday }</td>
+               </tr>
+               <tr>
+                 <th width=20% class="text-center danger">작성자</th>
+                 <td width=30% class="text-center">${vo.name }</td>
+                 <th width=20% class="text-center danger">조회수</th>
+                 <td width=30% class="text-center">${vo.hit }</td>
+               </tr>
+               <tr>
+                 <th width=20% class="text-center danger">제목</th>
+                 <td colspan="3" class="text-center">${vo.subject }</td>
+               </tr>
+               <tr>
+                 <td colspan="4" class="text-left" valign="top" height="200">
+                   <pre style="white-space: pre-wrap;border:none;background: white;">${vo.content }</pre>
+                 </td>
+               </tr>
+               <tr>
+                 <td colspan="4" class="text-right">
+                  <a href="../notice/user_list.do" class="btn btn-sm btn-danger">목록</a>
+                 </td>
+               </tr>
+              </table>
             </div>
         </div>
     </section>

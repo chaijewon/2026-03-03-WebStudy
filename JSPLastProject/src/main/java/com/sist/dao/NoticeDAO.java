@@ -101,4 +101,18 @@ public class NoticeDAO {
 		   session.close();
 		   return vo;
 	   }
+	   /*
+	    *   <update id="noticeUpdate" parameterType="NoticeVO">
+			   UPDATE notice SET 
+			   subject=#{subject} , content=#{content} , type=#{type}
+			   WHERE no=#{no}
+			  </update>
+	    */
+	   public static void noticeUpdate(NoticeVO vo)
+	   {
+		   SqlSession session=ssf.openSession(true);
+		   session.update("noticeUpdate",vo);
+		   session.close();
+		   
+	   }
 }

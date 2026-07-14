@@ -126,4 +126,67 @@ public class NoticeModel {
 	   request.setAttribute("admin_jsp", "../notice/update.jsp");
 	   return "../adminpage/admin_main.jsp";
    }
+   /*
+    *   1. 요청 => .do => 어떤 값을 전송할지 
+    *      1) 상세보기 : 번호 => .do?no=1
+    *      2) 검색 : 검색어 / 페이지번호 
+    *      3) 목록 : page번호 
+    *      4) 로그인 : id / pwd 
+    *      5) 회원 / 글쓰기 / 수정 => <form>
+    *   2. .do => 매칭후 처리 
+    *      @RequestMapping() => Model
+    *   3. 데이터 처리 => DAO 
+    *   4. 처리후에 화면 보여주기 
+    *      => 일반 / 기존 화면 
+    */
+   @RequestMapping("notice/update_ok.do")
+   public String notice_update_ok(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String no=request.getParameter("no");
+	   String subject=request.getParameter("subject");
+	   String content=request.getParameter("content");
+	   String type=request.getParameter("type");
+	   
+	   // DAO전송 
+	   NoticeVO vo=new NoticeVO();
+	   vo.setNo(Integer.parseInt(no));
+	   vo.setSubject(subject);
+	   vo.setContent(content);
+	   vo.setType(Integer.parseInt(type));
+	   
+	   /*
+	    *    JSP ===== Model (요청 => 처리(응답) = 비지니스로직)
+	    *                |
+	    *               DAO                       | 프로그램언어(C#, 파이썬...)
+	    *     |
+	    *    프리젠테이션 로직 (JSP / HTML / Vue / React)
+	    */
+	   NoticeDAO.noticeUpdate(vo);
+	   // => 회원 수정 / 게시물 수정 / 댓글 
+	   return "redirect:../adminpage/admin_list.do";
+   }
+   /*
+    *   사용자 요청 => request를 초기화 
+    *               request유지 
+    */
+   @RequestMapping("notice/detail.do")
+   public String notice_detail(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   // request를 유지 => forward 
+	   String no=request.getParameter("no");
+	   NoticeVO vo=NoticeDAO.noticeDetailData(Integer.parseInt(no));
+	   request.setAttribute("vo", vo);
+	   request.setAttribute("main_jsp", "../notice/user_detail.jsp");
+	   return "../main/main.jsp";
+   }
 }
+
+
+
+
+
+
+
+
