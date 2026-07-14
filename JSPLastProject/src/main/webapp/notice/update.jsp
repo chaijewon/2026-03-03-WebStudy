@@ -119,39 +119,40 @@ input[type=file]{
 <body>
 <main class="admin-main">
   <div class="notice-form-wrap">
-    <h2 class="form-title">📅 공지사항 등록</h2>
+    <h2 class="form-title">📅 공지사항 수정</h2>
 
-    <form method="post" action="../notice/insert_ok.do"
+    <form method="post" action="../notice/update_ok.do"
           class="notice-form">
 
       <!-- 공지 종류 -->
       <div class="form-row">
         <label class="label">공지 종류</label>
         <select name="type" class="input">
-          <option value="1">서비스/점검</option>
-          <option value="2">이벤트</option>
-          <option value="3">정책변경</option>
-          <option value="4">영업/운영</option>
-          <option value="5">행사/일정</option>
+          <option value="1" ${vo.type==1?"selected":"" }>서비스/점검</option>
+          <option value="2" ${vo.type==2?"selected":"" }>이벤트</option>
+          <option value="3" ${vo.type==3?"selected":"" }>정책변경</option>
+          <option value="4" ${vo.type==4?"selected":"" }>영업/운영</option>
+          <option value="5" ${vo.type==5?"selected":"" }>행사/일정</option>
         </select>
       </div>
 
       <!-- 제목 -->
       <div class="form-row">
         <label class="label">제목</label>
-        <input type="text" name="subject" class="input">
+        <input type="text" name="subject" class="input" value="${vo.subject  }">
+        <input type="hidden" name=no value="${vo.no }">
       </div>
 
       <!-- 내용 -->
       <div class="form-row top">
         <label class="label">내용</label>
-        <textarea name="content" class="textarea" rows="8"></textarea>
+        <textarea name="content" class="textarea" rows="8">${vo.content }</textarea>
       </div>
 
       
 
       <div class="form-actions">
-        <button type="submit" class="btn primary">등록</button>
+        <button type="submit" class="btn primary">수정</button>
         <button type="button" class="btn"
                 onclick="history.back()">취소</button>
       </div>

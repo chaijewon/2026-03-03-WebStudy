@@ -66,7 +66,15 @@ public class NoticeModel {
 	   vo.setSubject(subject);
 	   vo.setType(Integer.parseInt(type));
 	   // DB 연동 
-	   NoticeDAO.noticeInsert(vo);
+	   int a=NoticeDAO.noticeInsert(vo);
+	   if(a==0)
+	   {
+		   
+	   }
+	   else
+	   {
+		   
+	   }
 	   return "redirect:../adminpage/admin_list.do";
    }
    @RequestMapping("notice/user_list.do")
@@ -99,5 +107,23 @@ public class NoticeModel {
 			   new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 	   request.setAttribute("main_jsp", "../notice/user_list.jsp");
 	   return "../main/main.jsp";
+   }
+   @RequestMapping("notice/delete.do")
+   public String notice_delete(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String no=request.getParameter("no");
+	   NoticeDAO.noticeDelete(Integer.parseInt(no));
+	   return "redirect:../adminpage/admin_list.do";
+   }
+   @RequestMapping("notice/update.do")
+   public String notice_update(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String no=request.getParameter("no");
+	   NoticeVO vo=NoticeDAO.noticeUpdateData(Integer.parseInt(no));
+	   request.setAttribute("vo", vo);
+	   request.setAttribute("admin_jsp", "../notice/update.jsp");
+	   return "../adminpage/admin_main.jsp";
    }
 }

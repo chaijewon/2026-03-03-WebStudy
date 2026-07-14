@@ -20,4 +20,20 @@
   <select id="noticeTotalPage" resultType="int">
     SELECT CEIL(COUNT(*)/10.0) FROM notice
   </select>
+  <delete id="noticeDelete" parameterType="int">
+   DELETE FROM notice
+   WHERE no=#{no}
+  </delete>
+  
+  <select id="noticeDetailData" resultType="NoticeVO" parameterType="int">
+   SELECT *
+   FROM notice
+   WHERE no=#{no}
+  </select>
+  <update id="noticeHitIncrement" parameterType="int">
+   UPDATE notice SET
+   hit=hit+1
+   WHERE no=#{no}
+  </update>
+  
 </mapper>
