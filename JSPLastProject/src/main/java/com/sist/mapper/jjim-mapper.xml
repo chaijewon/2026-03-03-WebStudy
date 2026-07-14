@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.jjim-mapper">
+ <!-- 
+       count()
+       findAll(Page p)
+       findByNo(int no) 
+  -->
+ <select id="jjimCount" resultType="int" 
+     parameterType="com.sist.vo.JjimVO">
+     SELECT COUNT(*) 
+     FROM jjim
+     WHERE id=#{id} AND fno=#{fno}
+ </select>
+ <!-- 
+    jjim insert
+    jjim delete 
+    foodDetail 
+  -->
+  <insert id="jjimInsert" parameterType="com.sist.vo.JjimVO">
+   INSERT INTO jjim VALUES(
+     jjim_jno_seq.nextval,
+     #{fno},
+     #{id},
+     SYSDATE
+   )
+  </insert>
+</mapper>

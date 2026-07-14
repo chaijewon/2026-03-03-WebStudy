@@ -124,7 +124,6 @@ public class FoodModel {
 	   request.setAttribute("rCount", list.size());
 	   
 	   
-	   
 	   HttpSession session=request.getSession();
 	   String id=(String)session.getAttribute("id");
 	   if(id!=null)
@@ -136,6 +135,12 @@ public class FoodModel {
 	      int check=LikeDAO.likeCheck(lvo);
 	      request.setAttribute("count", count);
 	      request.setAttribute("check", check);
+	      
+	      JjimVO jvo=new JjimVO();
+	      jvo.setId(id);
+	      jvo.setFno(Integer.parseInt(no));
+	      int jCount=JjimDAO.jjimCount(jvo);
+	      request.setAttribute("jCount", jCount);
 	      
 	   }
 	   return "../main/main.jsp";

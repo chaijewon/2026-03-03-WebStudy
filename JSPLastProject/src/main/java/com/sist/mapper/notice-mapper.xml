@@ -26,7 +26,7 @@
   </delete>
   
   <select id="noticeDetailData" resultType="NoticeVO" parameterType="int">
-   SELECT no,name,subject,content,hit,
+   SELECT no,name,subject,content,hit,type,
           TO_CHAR(regdate,'yyyy-mm-dd hh24:mi:ss') as dbday
    FROM notice
    WHERE no=#{no}
