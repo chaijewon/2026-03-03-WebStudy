@@ -44,6 +44,15 @@ $(function(){
 		$('#food-name').text(name)
 		$('#food-poster').show()
 		$('.table-borderless').show()
+		
+		$.ajax({
+			type:'post',
+			url:'../reserve/reserve_date.do',
+			success:function(result)
+			{
+				$('#food_rdays').html(result)
+			}
+		})
 	})
 })
 </script>

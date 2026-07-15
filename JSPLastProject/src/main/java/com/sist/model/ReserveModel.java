@@ -1,5 +1,6 @@
 package com.sist.model;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.sist.controller.Controller;
@@ -71,6 +72,57 @@ public class ReserveModel {
 	   request.setAttribute("type", type);
 	   return "../reserve/reserve_food.jsp";
    }
+   @RequestMapping("reserve/reserve_date.do")
+   public String reserve_date(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   Date date=new Date();
+	   SimpleDateFormat sdf=new SimpleDateFormat("yyyy-M-d");
+	   String today=sdf.format(date);
+	   StringTokenizer st=new StringTokenizer(today,"-");
+	   int year=Integer.parseInt(st.nextToken());
+	   int month=Integer.parseInt(st.nextToken());
+	   int day=Integer.parseInt(st.nextToken());
+	   
+	   Calendar cal=Calendar.getInstance();
+	   cal.set(Calendar.YEAR, year);
+	   cal.set(Calendar.MONTH, month-1);
+	   cal.set(Calendar.DATE, 1);
+	   
+	   int week=cal.get(Calendar.DAY_OF_WEEK);
+	   int lastday=cal.getActualMaximum(Calendar.DATE);
+	   
+	   week=week-1;
+	   
+	   request.setAttribute("year", year);
+	   request.setAttribute("month", month);
+	   request.setAttribute("day", day);
+	   request.setAttribute("week", week);
+	   request.setAttribute("lastday", lastday);
+	   
+	   String[] weeks={"일","월","화","수","목","금","토"};
+	   request.setAttribute("weeks", weeks);
+	   
+	   return "../reserve/reserve_date.jsp";
+   }
+   @RequestMapping("reserve/reserve_time.do")
+   public String reserve_time(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   String[] times={"10:00","11:00","12:00","12:30","13:00",
+			           "14:00","18:00","19:00","20:00","20:30"};
+	   request.setAttribute("times", times);
+	   return "../reserve/reserve_time.jsp";
+   }
+   
+   @RequestMapping("reserve/reserve_inwon.do")
+   public String reserve_inwon(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	  
+	   return "../reserve/reserve_inwon.jsp";
+   }
+   
 } 
 
 
