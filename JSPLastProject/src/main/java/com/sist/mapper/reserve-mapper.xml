@@ -14,4 +14,67 @@
     FROM food 
     WHERE type LIKE '%'||#{type}||'%'
   </select>
+  <!-- 
+     RNO     NOT NULL NUMBER       
+	 FNO              NUMBER       
+	ID               VARCHAR2(20) 
+	NAME    NOT NULL VARCHAR2(51) 
+	RDATE   NOT NULL VARCHAR2(20) 
+	RTIME   NOT NULL VARCHAR2(20) 
+	INWON   NOT NULL VARCHAR2(20) 
+	REGDATE          DATE         
+	OK               CHAR(1)  
+   -->
+  <insert id="reserveInsert" parameterType="ReserveVO">
+   INSERT INTO reserve(rno,fno,id,name,rdate,rtime,inwon)
+   VALUES(res_rno_seq.nextval,#{fno},#{id},#{name},
+   #{rdate},#{rtime},#{inwon})
+  </insert>
+  <!-- 
+      ResultSet rs=ps.executeQuery()
+      while(rs.next())
+      {
+         ReserveVO vo=new ReserveVO()
+         vo.setRno(rs.getInt("rno"))
+         vo.getFvo().setPhone(rs.getString("phone"))
+         ====================              =======
+           fvo.phone                       column
+      }
+   -->
+  <resultMap type="com.sist.vo.ReserveVO" id="rMap">
+    <result column="poster" property="fvo.poster"/>
+    <result column="name" property="fvo.name"/>
+    <result column="phone" property="fvo.phone"/>
+  </resultMap>
+  <select id="reservemyPageListData" parameterType="string"
+    resultMap="rMap"
+  >
+    SELECT rno,fno,id,r.name,rdate,rtime,inwon,
+           TO_CHAR(regdate,'yyyy-mm-dd') as dbday,
+           poster,f.name,phone,ok
+    FROM reserve r JOIN food f
+    ON r.fno=f.no
+    AND id=#{id}
+    ORDER BY rno DESC
+  </select>
+  <!-- 
+      승인 / 취소 / 예약정보 보기 = 알림 
+   -->
+  <select id="reserveAdminPageListData" resultMap="rMap"
+  >
+    SELECT rno,fno,id,r.name,rdate,rtime,inwon,
+           TO_CHAR(regdate,'yyyy-mm-dd') as dbday,
+           poster,f.name,phone,ok
+    FROM reserve r JOIN food f
+    ON r.fno=f.no
+    ORDER BY rno DESC
+  </select>
+  
+  <update id="reserveAdminOk" parameterType="int">
+    UPDATE reserve SET
+    ok='y'
+    WHERE rno=#{rno}
+  </update>
 </mapper>
+
+

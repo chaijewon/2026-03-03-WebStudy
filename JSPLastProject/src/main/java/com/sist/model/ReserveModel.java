@@ -7,9 +7,11 @@ import com.sist.controller.Controller;
 import com.sist.controller.RequestMapping;
 import com.sist.dao.ReserveDAO;
 import com.sist.vo.FoodVO;
+import com.sist.vo.ReserveVO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 // 데이터 JSP로 전송  => @Controller가 있는 클래스만 => DispatcherServlet
 /*
@@ -121,6 +123,36 @@ public class ReserveModel {
    {
 	  
 	   return "../reserve/reserve_inwon.jsp";
+   }
+   
+   @RequestMapping("reserve/reserve_insert.do")
+   public String reserve_insert(HttpServletRequest request,
+		   HttpServletResponse response)
+   {
+	   /*
+	    *         <input type="hidden" name="no" id="rno">
+	              <input type="hidden" name="day" id="rdays">
+	              <input type="hidden" name="time" id="rtime">
+	              <input type="hidden" name="inwon" id="rinwon">
+	    */
+	   HttpSession session=request.getSession();
+	   String id=(String)session.getAttribute("id");
+	   String name=(String)session.getAttribute("name");
+	   String no=request.getParameter("no");
+	   String day=request.getParameter("day");
+	   String time=request.getParameter("time");
+	   String inwon=request.getParameter("inwon");
+	   
+	   ReserveVO vo=new ReserveVO();
+	   vo.setId(id);
+	   vo.setName(name);
+	   vo.setFno(Integer.parseInt(no));
+	   vo.setRdate(day);
+	   vo.setRtime(time);
+	   vo.setInwon(inwon);
+	   // DB로 연동 
+	   ReserveDAO.reserveInsert(vo);
+	   return "redirect:../mypage/mypage_reserve.do";
    }
    
 } 

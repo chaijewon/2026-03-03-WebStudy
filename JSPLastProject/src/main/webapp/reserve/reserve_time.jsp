@@ -6,6 +6,24 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+$(function(){
+	$('.times').on('click',function(){
+		let time=$(this).text()
+		alert(time)
+		$('#food-time').text(time)
+		$('#rtime').val(time)
+		$.ajax({
+			type:'post',
+			url:'../reserve/reserve_inwon.do',
+			success:function(result)
+			{
+				$('#food_inwons').html(result)
+			}
+		})
+	})
+})
+</script>
 </head>
 <body>
   <c:forEach var="time" items="${times }">

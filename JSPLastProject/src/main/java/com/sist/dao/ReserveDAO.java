@@ -51,4 +51,54 @@ public class ReserveDAO {
 		  session.close();
 		  return total;
 	  }
+	  /*
+	   *   <insert id="reserveInsert" parameterType="ReserveVO">
+		   INSERT INTO reserve(rno,fno,id,name,rdate,rtime,inwon)
+		   VALUES(res_rno_seq.nextval,#{fno},#{id},#{name},
+		   #{rdate},#{rtime},#{inwon})
+		  </insert>
+	   */
+	  public static void reserveInsert(ReserveVO vo)
+	  {
+		  SqlSession session=ssf.openSession(true);
+		  session.insert("reserveInsert",vo);
+		  session.close();
+	  }
+	  /*
+	   *    <select id="reservemyPageListData" parameterType="string">
+			    SELECT rno,fno,id,r.name,rdate,rtime,inwon,
+			           TO_CHAR(regdate,'yyyy-mm-dd') as dbday,
+			           poster,f.name,phone
+			    FROM reserve r JOIN food f
+			    ON r.fno=f.no
+			    AND id=#{id}
+			    ORDER BY rno DESC
+			  </select>
+	   */
+	  public static List<ReserveVO> reservemyPageListData(String id)
+	  {
+		  SqlSession session=ssf.openSession();
+		  List<ReserveVO> list=session.selectList("reservemyPageListData",id);
+		  session.close();
+		  return list;
+	  }
+	  /*
+	   *   <select id="reserveAdminPageListData" parameterType="string"
+		    resultMap="rMap"
+		  >
+		    SELECT rno,fno,id,r.name,rdate,rtime,inwon,
+		           TO_CHAR(regdate,'yyyy-mm-dd') as dbday,
+		           poster,f.name,phone,ok
+		    FROM reserve r JOIN food f
+		    ON r.fno=f.no
+		    ORDER BY rno DESC
+		  </select>
+	   */
+	  public static List<ReserveVO> reserveAdminPageListData()
+	  {
+		  SqlSession session=ssf.openSession();
+		  List<ReserveVO> list=session.selectList("reserveAdminPageListData");
+		  session.close();
+		  return list;
+	  }
 }

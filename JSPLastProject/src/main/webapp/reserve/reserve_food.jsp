@@ -44,7 +44,7 @@ $(function(){
 		$('#food-name').text(name)
 		$('#food-poster').show()
 		$('.table-borderless').show()
-		
+		$('#rno').val(no)
 		$.ajax({
 			type:'post',
 			url:'../reserve/reserve_date.do',

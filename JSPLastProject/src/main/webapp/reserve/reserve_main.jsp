@@ -100,6 +100,16 @@ $(function(){
 	             <td id="food-inwon">-</td>
 	            </tr>
 	          </table>
+	          <form method="post" action="../reserve/reserve_insert.do"
+	            id="reserveBtn" style="display:none">
+	              <input type="hidden" name="no" id="rno">
+	              <input type="hidden" name="day" id="rdays">
+	              <input type="hidden" name="time" id="rtime">
+	              <input type="hidden" name="inwon" id="rinwon">
+	              <button type="submit" class="btn-primary w-100">
+	               예약하기
+	              </button>
+	          </form>
 	         </div>
 	       </div>
        </div>

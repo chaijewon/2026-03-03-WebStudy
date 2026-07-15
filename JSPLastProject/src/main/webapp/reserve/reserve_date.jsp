@@ -31,7 +31,7 @@ $(function(){
 		let month=$('#month').text()
 		let date=year+"-"+month+"-"+day
 		$('#food-day').text(date)
-		
+		$('#rdays').val(date)
 		$.ajax({
 			type:'post',
 			url:'../reserve/reserve_time.do',

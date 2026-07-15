@@ -57,5 +57,18 @@ public class AdminDAO {
 	   session.close();
 	   return count;
    }
+   /*
+    *   <update id="reserveAdminOk" parameterType="int">
+		    UPDATE reserve SET
+		    ok='y'
+		    WHERE rno=#{rno}
+		  </update>
+    */
+   public static void reserveAdminOk(int rno)
+   {
+	   SqlSession session=ssf.openSession(true);
+	   session.update("reserveAdminOk",rno);
+	   session.close();
+   }
    
 }
