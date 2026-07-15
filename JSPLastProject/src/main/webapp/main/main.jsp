@@ -31,7 +31,8 @@
     
 
     <!-- Jquery-2.2.4 js -->
-    <script src="../js/jquery/jquery-2.2.4.min.js"></script>
+    
+    <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
     <!-- Popper js -->
     <script src="../js/bootstrap/popper.min.js"></script>
     <!-- Bootstrap-4 js -->

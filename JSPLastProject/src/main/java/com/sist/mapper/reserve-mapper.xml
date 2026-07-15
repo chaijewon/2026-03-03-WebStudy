@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.reserve-mapper">
+  <select id="reserveFoodListData" resultType="FoodVO"
+  parameterType="hashmap">
+    SELECT no,name,poster,type
+    FROM food 
+    WHERE type LIKE '%'||#{type}||'%'
+    ORDER BY no ASC
+    OFFSET #{start} ROWS FETCH NEXT 20 ROWS ONLY
+  </select>
+  <select id="reserveFoodTotalPage" resultType="int" parameterType="string">
+    SELECT CEIL(COUNT(*)/20.0)
+    FROM food 
+    WHERE type LIKE '%'||#{type}||'%'
+  </select>
+</mapper>

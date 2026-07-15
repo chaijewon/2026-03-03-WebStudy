@@ -172,7 +172,7 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">빠른예약</a>
                                     <div class="dropdown-menu" aria-labelledby="yummyDropdown">
-                                        <a class="dropdown-item" href="index.html">맛집</a>
+                                        <a class="dropdown-item" href="../reserve/reserve_main.do">맛집</a>
                                         <a class="dropdown-item" href="archive.html">공연&축제</a>
                                     </div>
                                 </li>
