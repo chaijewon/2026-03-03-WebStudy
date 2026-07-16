@@ -183,7 +183,7 @@
                                         <a class="dropdown-item" href="../board/list.do">자유게시판</a>
                                         <a class="dropdown-item" href="../notice/user_list.do">공지사항</a>
                                         <c:if test="${sessionScope.id!=null }">
-                                         <a class="dropdown-item" href="single.html">실시간채팅</a>
+                                         <a class="dropdown-item" href="../chat/chat.do">실시간채팅</a>
                                         </c:if>
                                     </div>
                                 </li>

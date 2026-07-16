@@ -59,9 +59,109 @@
   .system-message { text-align: center; color: gray; font-size: 12px; margin: 5px 0; }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
-
+<script type="text/javascript">
+let websocket
+window.onload=function(){
+	connection()
+}
+function connection()
+{
+	websocket=new WebSocket("ws://localhost/JSPLastProject/chat") 
+	websocket.onopen=onOpen
+	websocket.onmessage=onMessage
+	websocket.onclose=onClose
+	// callback 함수 설정 => 시스템에 의해 자동 호출 
+}
+function onOpen(event)
+{
+	alert("채팅 서버와 연결되었습니다...")
+}
+function onClose(event)
+{
+	alert("채팅 서버와 연결해제 되었습니다")
+}
+function onMessage(event)
+{
+	let data=event.data // 전송된 데이터 
+	if(data.substring(0,3)==="my:")
+	{
+		appendMyMessage(data.substring(3))
+	}
+	if(data.substring(0,4)==="you:")
+	{
+		appendYouMessage(data.substring(4))
+	}
+	if(data.substring(0,4)==="msg:")
+	{
+		appendMsgMessage(data.substring(4))
+	}
+}
+function disConnection()
+{
+	websocket.close()
+}
+function appendMyMessage(msg)
+{
+	$('#chatBox').append(
+	  '<div class="message-row my-message-row">'
+	     +'<div class="message my-message">'
+	     +msg
+	     +'</div>'
+	  +'</div>'
+	)
+	$('#chatBox').scrollTop($('#chatBox').scrollHeight)
+}
+function appendYouMessage(msg)
+{
+	$('#chatBox').append(
+			'<div class="message-row other-message-row">'
+		     +'<div class="message other-message">'
+		     +msg
+		     +'</div>'
+		    +'</div>'		
+	)
+	$('#chatBox').scrollTop($('#chatBox').scrollHeight)
+}
+function appendMsgMessage(msg)
+{
+	$('#chatBox').append(
+		'<div class="system-message">'+msg+"</div>"		
+	)
+	$('#chatBox').scrollTop($('#chatBox').scrollHeight)
+}
+function send()
+{
+	let msg=$('#messageInput').val()
+	if(msg.trim()==="")
+	{
+		$('#messageInput').focus()
+		return
+	}
+	websocket.send(msg)
+	$('#messageInput').val("")
+	$('#messageInput').focus()
+}
+$(function(){
+	$('#sendBtn').on('click',function(){
+		send()
+	})
+	$('#messageInput').on('keydown',function(key){
+		if(key.keyCode===13)
+		{
+			send()
+		}
+	})
+})
+</script>
 </head>
 <body>
-
+  <div class="chat-container">
+    <div class="chat-header">🧾 실시간 채팅방</div>
+    <div id="chatBox" class="chat-box"></div>
+    <div class="chat-input">
+      <input type=text id="messageInput" placeholder="메시지를 입력하세요">
+      <button id="sendBtn">전송</button>
+    </div>
+  </div>
 </body>
 </html>
