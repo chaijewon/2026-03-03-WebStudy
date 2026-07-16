@@ -123,5 +123,6 @@
     <mapper resource="com/sist/mapper/admin-mapper.xml"/>
     <mapper resource="com/sist/mapper/jjim-mapper.xml"/>
     <mapper resource="com/sist/mapper/reserve-mapper.xml"/>
+    <mapper resource="com/sist/mapper/recommand-mapper.xml"/>
   </mappers>
 </configuration>

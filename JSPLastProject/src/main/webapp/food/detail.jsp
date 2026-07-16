@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script type="text/javascript" src="http://code.jquery.com/jquery-4.0.0.min.js"></script>
 <script type="text/javascript">
+let c=0
 $(function(){
 	
 	let bCheck=false;
@@ -56,6 +57,19 @@ $(function(){
 		let no=$(this).attr("data-no")
 		location.href="../like/likeOff.do?fno="+no
 	})
+	
+	$('#reBtn').on('click',function(){
+		if(c===0)
+		{
+			$(this).text("닫기")
+			c=1
+		}
+		else
+		{
+			$(this).text("추천")
+			c=0
+		}
+	})
 })
 </script>
 <style type="text/css">
@@ -92,7 +106,56 @@ $(function(){
 .count {
   font-weight: 600;
 }
+/* 추천 영역 */
+#recommendArea{
+    margin-top:30px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+    justify-content:space-between;
+}
+
+/* 추천 카드 */
+.recommend-card{
+    width:calc((100% - 60px) / 5);
+    max-width:160px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    overflow:hidden;
+    background:#fff;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+    transition:0.3s;
+    cursor:pointer;
+}
+
+/* 마우스 올렸을 때 */
+.recommend-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+/* 이미지 */
+.recommend-card img{
+    width:100%;
+    height:150px;
+    object-fit:cover;
+    /* display:block; */
+}
+
+/* 음식 이름 */
+.recommend-title{
+    padding:8px;
+    text-align:center;
+    font-size:13px;
+    font-weight:bold;
+    color:#333;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
 </style>
+
 </head>
 <body>
   <section class="archive-area section_padding_80">
@@ -198,11 +261,12 @@ $(function(){
                                 <button class="btn-xs btn-success">예약하기</button>
                                </c:if>
                               </c:if>
-                              <button class="btn-xs btn-primary">추천</button>
+                              <button class="btn-xs btn-primary" id="reBtn">추천</button>
                               <button class="btn-xs btn-warning" onclick="location.href='../food/food_main.do'">목록</button>
                             </td>
                           </tr>
                         </table>
+                        
                         <table class="table">
                           <tr>
                             <td>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.mapper.recommand-mapper">
+  <!--  관심있는 음식 종류 찾기 -->
+  <select id="foodGetType" resultType="string" parameterType="string">
+    SELECT type FROM food
+	WHERE no=(SELECT no
+	          FROM (SELECT no,count(*) as review_cnt
+	                FROM foodReview
+	                WHERE id=#{id}
+	                GROUP BY no
+	                ORDER BY review_cnt DESC)
+	          WHERE rownum=1)
+  </select>
+  <select id="memberGetAddress" resultType="string" parameterType="string">
+    SELECT addr1 FROM member
+    WHERE id=#{id}
+  </select>
+  <select id="foodRecommandData" resultType="FoodVO"
+     parameterType="hashmap">
+   SELECT * 
+   FROM (SELECT * FROM food 
+	     WHERE type LIKE '%'||#{type}||'%' and address LIKE '%'||#{address}||'%'
+	     ORDER BY score DESC)
+	WHERE rownum&lt;=5;
+  </select>
+</mapper>
