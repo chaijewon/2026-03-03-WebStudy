@@ -101,4 +101,34 @@ public class ReserveDAO {
 		  session.close();
 		  return list;
 	  }
+	  /*
+	   *   <delete id="reserveDelete" parameterType="int">
+		   DELETE FROM reserve
+		   WHERE rno=#{rno}
+		  </delete>
+	   */
+	  public static void reserveDelete(int rno)
+	  {
+		  SqlSession session=ssf.openSession(true);
+		  session.insert("reserveDelete",rno);
+		  session.close();
+	  }
+	  /*
+	   *  <select id="reserveInfoData" parameterType="int"
+		   resultMap="infoMap"
+		  >
+		    SELECT rno,no,rdate,rtime,inwon,address,phone,parking,poster,
+		           type,score,time
+		    FROM reserve r JOIN food f
+		    ON r.fno=f.no
+		    AND rno=#{rno}
+		  </select>
+	   */
+	  public static ReserveVO reserveInfoData(int rno)
+	  {
+		  SqlSession session=ssf.openSession();
+		  ReserveVO list=session.selectOne("reserveInfoData",rno);
+		  session.close();
+		  return list;
+	  }
 }

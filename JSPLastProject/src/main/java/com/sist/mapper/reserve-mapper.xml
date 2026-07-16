@@ -49,7 +49,7 @@
   <select id="reservemyPageListData" parameterType="string"
     resultMap="rMap"
   >
-    SELECT rno,fno,id,r.name,rdate,rtime,inwon,
+    SELECT rno,fno,id,rdate,rtime,inwon,
            TO_CHAR(regdate,'yyyy-mm-dd') as dbday,
            poster,f.name,phone,ok
     FROM reserve r JOIN food f
@@ -75,6 +75,37 @@
     ok='y'
     WHERE rno=#{rno}
   </update>
+  <!--  예약 취소 -->
+  <delete id="reserveDelete" parameterType="int">
+   DELETE FROM reserve
+   WHERE rno=#{rno}
+  </delete>
+  <!-- 예약 정보  -->
+  <resultMap type="com.sist.vo.ReserveVO" id="infoMap">
+    <result property="fvo.name" column="name"/>
+    <result property="fvo.poster" column="poster"/>
+    <!-- setter
+         vo.getFvo().setPoster(rs.getString("poster"))
+         vo.setPoster()
+         
+         @Results({}) 
+     -->
+    <result property="fvo.address" column="address"/>
+    <result property="fvo.phone" column="phone"/>
+    <result property="fvo.parking" column="parking"/>
+    <result property="fvo.type" column="type"/>
+    <result property="fvo.score" column="score"/>
+    <result property="fvo.time" column="time"/>
+  </resultMap>
+  <select id="reserveInfoData" parameterType="int"
+   resultMap="infoMap"
+  >
+    SELECT rno,no,rdate,rtime,inwon,address,phone,parking,poster,
+           type,score,time,f.name
+    FROM reserve r JOIN food f
+    ON r.fno=f.no
+    AND rno=#{rno}
+  </select>
 </mapper>
 
 
