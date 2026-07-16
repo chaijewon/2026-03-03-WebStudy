@@ -62,11 +62,34 @@ $(function(){
 		if(c===0)
 		{
 			$(this).text("닫기")
+			$('#recommendArea').show()
 			c=1
+			$.ajax({
+				type:'post',
+				url:'../recommand/recommand.do',
+				success:function(result)
+				{
+					let json=JSON.parse(result)
+					let html=''
+					// for(let a of json)
+					// json.map json.forEach 
+					json.forEach((food)=>{
+						html+='<div class="recommend-card">'
+						     +'<img src="'+food.poster+'" title="'+food.type+'">'
+						     +'<div class="recommend-title">'
+						     +food.name
+						     +'</div>'
+						     +'</div>'
+					})
+					
+					$('#recommendArea').html(html)
+				}
+			})
 		}
 		else
 		{
 			$(this).text("추천")
+			$('#recommendArea').hide()
 			c=0
 		}
 	})
@@ -261,12 +284,16 @@ $(function(){
                                 <button class="btn-xs btn-success">예약하기</button>
                                </c:if>
                               </c:if>
-                              <button class="btn-xs btn-primary" id="reBtn">추천</button>
+                              <c:if test="${sessionScope.id!=null }">
+                               <button class="btn-xs btn-primary" id="reBtn">추천</button>
+                              </c:if>
                               <button class="btn-xs btn-warning" onclick="location.href='../food/food_main.do'">목록</button>
                             </td>
                           </tr>
                         </table>
-                        
+                        <div id="recommendArea" style="display:none">
+                          
+                        </div>
                         <table class="table">
                           <tr>
                             <td>
