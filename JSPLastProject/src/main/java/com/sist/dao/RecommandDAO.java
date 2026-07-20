@@ -45,6 +45,12 @@ public class RecommandDAO {
    {
 	   SqlSession session=ssf.openSession();
 	   String type=session.selectOne("foodGetType",id);
+	   if(type==null || type.equals(""))
+	   {
+		   type="한식";
+	   }
+	   type=type.substring(0,2);
+	   
 	   String address=session.selectOne("memberGetAddress",id);
 	   String[] addrs=address.split(" ");
 	   Map map=new HashMap();

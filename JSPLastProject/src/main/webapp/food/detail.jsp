@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="../css/comment.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script type="text/javascript" src="http://code.jquery.com/jquery-4.0.0.min.js"></script>
+
 <script type="text/javascript">
 let c=0
 $(function(){
@@ -70,6 +70,7 @@ $(function(){
 				success:function(result)
 				{
 					let json=JSON.parse(result)
+					console.log(json)
 					let html=''
 					// for(let a of json)
 					// json.map json.forEach 

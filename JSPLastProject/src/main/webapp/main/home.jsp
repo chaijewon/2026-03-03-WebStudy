@@ -45,7 +45,7 @@
                     <div class="single_catagory wow fadeInUp" data-wow-delay=".9s">
                         <img src="../img/catagory-img/3.jpg" alt="">
                         <div class="catagory-title">
-                            <a href="#">
+                            <a href="../goods/list.do">
                                 <h5>스토어</h5>
                             </a>
                         </div>
