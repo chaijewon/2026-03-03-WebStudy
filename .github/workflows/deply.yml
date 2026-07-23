@@ -9,7 +9,6 @@ jobs:
   deploy:
     runs-on: self-hosted
 
-    # 2026-03-03-WebStudy 저장소 내부의 JSPLastProject 디렉터리로 이동
     defaults:
       run:
         working-directory: JSPLastProject
@@ -67,20 +66,31 @@ jobs:
             cp -r src/main/webapp/* build/
           fi
 
-          # 2. resources 내 모든 파일(Config.xml 등)을 classes 폴더로 완전히 복사
+          # 2. resources 폴더가 존재할 경우 복사
           if [ -d "src/main/resources" ]; then
             cp -a src/main/resources/. build/WEB-INF/classes/
-          else
-            echo "⚠️ WARNING: src/main/resources 디렉터리가 없습니다."
           fi
 
-          # 3. classes 내 Config.xml 설정 파일 검증
-          echo "=== classes 내부 설정 파일 목록 ==="
-          find build/WEB-INF/classes -type f \( -name "*.xml" -o -name "*.properties" \)
+          # 3. src/main/java 내부에 있는 설정 파일(xml, properties)을 동일한 패키지 경로로 복사
+          if [ -d "src/main/java" ]; then
+            echo "=== src/main/java 내 설정 파일 복사 중 ==="
+            cd src/main/java
+            find . -type f \( -name "*.xml" -o -name "*.properties" -o -name "*.config" \) -exec cp --parents {} ../../../build/WEB-INF/classes/ \;
+            cd ../../..
+          fi
 
-          if [ ! -f "build/WEB-INF/classes/Config.xml" ]; then
-            echo "❌ ERROR: Config.xml 파일이 build/WEB-INF/classes/ 경로에 복사되지 않았습니다!"
+          # 4. classes 내 복사된 설정 파일 목록 확인
+          echo "=== classes 내부 설정 파일 목록 ==="
+          find build/WEB-INF/classes -type f \( -name "*.xml" -o -name "*.properties" -o -name "*.config" \)
+
+          # Config.xml 파일 검증
+          CONFIG_FILE=$(find build/WEB-INF/classes -iname "*config.xml" | head -n 1)
+
+          if [ -z "$CONFIG_FILE" ]; then
+            echo "❌ ERROR: Config.xml 파일을 찾을 수 없습니다!"
             exit 1
+          else
+            echo "✅ Config.xml 발견: $CONFIG_FILE"
           fi
 
       - name: Create WAR
@@ -99,7 +109,6 @@ jobs:
           /home/sist/apache-tomcat-11.0.23/bin/shutdown.sh || true
           sleep 3
 
-          # 잔여 프로세스 강제 종료
           PID=$(pgrep -f "apache-tomcat-11.0.23") || true
           if [ -n "$PID" ]; then
             echo "톰캣 프로세스 강제 종료 (PID: $PID)"
@@ -109,7 +118,6 @@ jobs:
 
       - name: Remove Old WAR and Deployment
         run: |
-          # Permission denied 및 에러 방지를 위해 || true 적용
           rm -rf /home/sist/apache-tomcat-11.0.23/webapps/JSPLastProject.war || true
           rm -rf /home/sist/apache-tomcat-11.0.23/webapps/JSPLastProject || true
 
@@ -120,9 +128,7 @@ jobs:
       - name: Start Tomcat
         run: |
           echo "Tomcat 시작 중..."
-          # Actions 프로세스 추적 회피
           RUNNER_TRACKING_ID="" nohup /home/sist/apache-tomcat-11.0.23/bin/startup.sh > /dev/null 2>&1 &
           sleep 5
 
-          # 실행 확인
           ps -ef | grep apache-tomcat-11.0.23 | grep -v grep
