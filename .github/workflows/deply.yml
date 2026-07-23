@@ -9,11 +9,6 @@ jobs:
   deploy:
     runs-on: self-hosted
 
-    # GitHub Actions 저장소 루트 내의 JSPLastProject 폴더 지정
-    defaults:
-      run:
-        working-directory: JSPLastProject
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
