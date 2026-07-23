@@ -18,6 +18,7 @@
     border-top-right-radius:12px;
 }
 </style>
+
 </head>
 <body>
    <div class="breadcumb-area" style="background-image: url(../img/bg-img/breadcumb.jpg);">
