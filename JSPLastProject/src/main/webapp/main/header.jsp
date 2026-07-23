@@ -109,6 +109,7 @@
                         <a href="../main/main.do" class="yummy-logo" style="color:red">Travel</a>
                     </div>
                 </div>
+                
             </div>
 
             <div class="row">
