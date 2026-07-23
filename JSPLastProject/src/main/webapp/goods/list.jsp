@@ -18,7 +18,7 @@
                     <div class="single-post wow fadeInUp" data-wow-delay="1.2s">
                         <!-- Post Thumb -->
                         <div class="post-thumb">
-                           <a href="../goods/detail_before.do?no=${vo.no }">
+                           <a href="../goods/detail.do?no=${vo.no }">
                             <img src="${vo.goods_poster }" alt="">
                            </a>
                         </div>
@@ -91,7 +91,7 @@
                 <h3>최근 방문 맛집</h3>
                 <div class="recent-list">
                  <c:forEach var="vo" items="${cList }">
-                   <a class="recent-card" href="../food/detail.do?no=${vo.no }">
+                   <a class="recent-card" href="../goods/detail.do?no=${vo.no }">
                     <div class="thumb">
                       <img src="${vo.poster }">
                     </div>

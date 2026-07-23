@@ -15,7 +15,9 @@ import lombok.Data;
 	REPLYCOUNT                 NUMBER         
 	JJIMCOUNT                  NUMBER         
 	LIKECOUNT                  NUMBER         
-	STOCK                      NUMBER          
+	STOCK                      NUMBER    
+	
+	상품명 / 상품 이미지 / 가격 / 배달 / 상품 내용 / 장바구니 / 바로 구매
  */
 @Data
 public class GoodsVO {
