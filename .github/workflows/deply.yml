@@ -9,11 +9,10 @@ jobs:
   deploy:
     runs-on: self-hosted
 
-    # 프로젝트 저장소 최상단에 JSPLastProject 디렉터리가 있을 경우 사용
-    # 만약 저장소 루트에 바로 src가 있다면 아래 defaults 구문을 삭제하세요.
+    # 저장소 내 실제 프로젝트 위치 경로 지정
     defaults:
       run:
-        working-directory: JSPLastProject
+        working-directory: 2026-03-03-WebStudy/JSPLastProject
 
     steps:
       - name: Checkout
@@ -68,7 +67,7 @@ jobs:
             cp -r src/main/webapp/* build/
           fi
 
-          # 2. resources 내 모든 파일(Config.xml 등)을 classes 폴더로 완전히 복사
+          # 2. resources 내 모든 파일(Config.xml 등)을 classes 폴더로 복사
           if [ -d "src/main/resources" ]; then
             cp -a src/main/resources/. build/WEB-INF/classes/
           else
@@ -79,11 +78,9 @@ jobs:
           echo "=== classes 내부 설정 파일 목록 ==="
           find build/WEB-INF/classes -type f \( -name "*.xml" -o -name "*.properties" \)
 
-          # Config.xml 존재 여부 검사 (없을 경우 빌드 중단)
+          # Config.xml 존재 여부 검사
           if [ ! -f "build/WEB-INF/classes/Config.xml" ]; then
             echo "❌ ERROR: Config.xml 파일이 build/WEB-INF/classes/ 경로에 복사되지 않았습니다!"
-            echo "1. Git에 Config.xml이 커밋/푸시되었는지 확인하세요."
-            echo "2. 파일 경로가 src/main/resources/Config.xml 이 맞는지 확인하세요."
             exit 1
           fi
 
@@ -113,7 +110,6 @@ jobs:
 
       - name: Remove Old WAR and Deployment
         run: |
-          # Permission denied 방지를 위해 오류 무시(|| true) 설정 및 기존 파일 제거
           rm -rf /home/sist/apache-tomcat-11.0.23/webapps/JSPLastProject.war || true
           rm -rf /home/sist/apache-tomcat-11.0.23/webapps/JSPLastProject || true
 
@@ -124,9 +120,7 @@ jobs:
       - name: Start Tomcat
         run: |
           echo "Tomcat 시작 중..."
-          # Actions Runner가 종료 시 Tomcat 프로세스를 함께 Kill하지 못하도록 방지
           RUNNER_TRACKING_ID="" nohup /home/sist/apache-tomcat-11.0.23/bin/startup.sh > /dev/null 2>&1 &
           sleep 5
 
-          # 실행 상태 확인
           ps -ef | grep apache-tomcat-11.0.23 | grep -v grep
