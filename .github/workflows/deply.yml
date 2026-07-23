@@ -5,100 +5,130 @@ on:
     branches:
       - master
 
-  workflow_dispatch:
-
-
 jobs:
   deploy:
-
     runs-on: self-hosted
 
     defaults:
       run:
         working-directory: JSPLastProject
 
-
     steps:
-
-      # GitHub 소스 다운로드
-      - name: Checkout Source
+      - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check Project Structure
+        run: |
+          echo "=== 현재 작업 디렉터리 위치 ==="
+          pwd
+          echo "=== JSPLastProject 내부 파일 목록 ==="
+          ls -al
+          echo "=== src 구조 확인 ==="
+          find src -maxdepth 3 -type d 2>/dev/null || echo "src 디렉터리를 찾을 수 없습니다."
 
-      # Java 21 설치
-      - name: Setup Java 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
-
-
-      # Java 확인
-      - name: Check Java Version
+      - name: Java Version
         run: |
           java -version
-          javac -version
 
-
-      # Build 폴더 생성
       - name: Clean Build Directory
         run: |
           rm -rf build
           mkdir -p build/WEB-INF/classes
 
-
-      # Servlet 컴파일
-      - name: Compile Java Source
+      - name: Compile Servlet
         run: |
+          # 1. WEB-INF/lib 의 jar 파일 클래스패스 추가
+          LIB_PATH=""
+          if [ -d "src/main/webapp/WEB-INF/lib" ]; then
+            LIB_PATH=$(find src/main/webapp/WEB-INF/lib -name "*.jar" 2>/dev/null | tr '\n' ':')
+          fi
 
-          LIB_PATH=$(find src/main/webapp/WEB-INF/lib -name "*.jar" | tr '\n' ':')
+          # 2. 컴파일 대상 Java 파일 목록 확인
+          JAVA_FILES=$(find src/main/java -name "*.java" 2>/dev/null)
 
+          if [ -z "$JAVA_FILES" ]; then
+            echo "❌ ERROR: src/main/java 에서 .java 파일을 찾지 못했습니다."
+            echo "현재 경로: $(pwd)"
+            exit 1
+          fi
+
+          # 3. javac 컴파일 실행
           javac \
-          -encoding UTF-8 \
-          -cp "${LIB_PATH}:/home/sist/apache-tomcat-11.0.23/lib/servlet-api.jar" \
-          -d build/WEB-INF/classes \
-          $(find src/main/java -name "*.java")
+            -encoding UTF-8 \
+            -cp "${LIB_PATH}:/home/sist/apache-tomcat-11.0.23/lib/servlet-api.jar" \
+            -d build/WEB-INF/classes \
+            $JAVA_FILES
 
-
-      # JSP / CSS / JS / WEB-INF 복사
-      - name: Copy Web Application
+      - name: Copy Web Application & Resources
         run: |
+          # 1. webapp 정적 자원/JSP 복사
+          if [ -d "src/main/webapp" ]; then
+            cp -r src/main/webapp/* build/
+          fi
 
-          cp -r src/main/webapp/* build/
+          # 2. resources 폴더가 존재할 경우 복사
+          if [ -d "src/main/resources" ]; then
+            cp -a src/main/resources/. build/WEB-INF/classes/
+          fi
 
+          # 3. src/main/java 내부에 있는 설정 파일(xml, properties)을 동일한 패키지 경로로 복사
+          if [ -d "src/main/java" ]; then
+            echo "=== src/main/java 내 설정 파일 복사 중 ==="
+            cd src/main/java
+            find . -type f \( -name "*.xml" -o -name "*.properties" -o -name "*.config" \) -exec cp --parents {} ../../../build/WEB-INF/classes/ \;
+            cd ../../..
+          fi
 
-      # WAR 생성
-      - name: Create WAR File
+          # 4. classes 내 복사된 설정 파일 목록 확인
+          echo "=== classes 내부 설정 파일 목록 ==="
+          find build/WEB-INF/classes -type f \( -name "*.xml" -o -name "*.properties" -o -name "*.config" \)
+
+          # Config.xml 파일 검증
+          CONFIG_FILE=$(find build/WEB-INF/classes -iname "*config.xml" | head -n 1)
+
+          if [ -z "$CONFIG_FILE" ]; then
+            echo "❌ ERROR: Config.xml 파일을 찾을 수 없습니다!"
+            exit 1
+          else
+            echo "✅ Config.xml 발견: $CONFIG_FILE"
+          fi
+
+      - name: Create WAR
         run: |
-
           cd build
-
           jar -cvf ../JSPLastProject.war .
 
-
-      # 기존 Tomcat 배포 제거
-      - name: Remove Old Deployment
+      - name: Check WAR Contents
         run: |
+          echo "=== 생성된 WAR 내 주요 파일 검증 ==="
+          jar tf JSPLastProject.war | grep -iE "config|properties|xml|class" || true
 
-          rm -rf /home/sist/apache-tomcat-11.0.23/webapps/JSPLastProject
+      - name: Stop Tomcat
+        run: |
+          echo "Tomcat 종료 시도 중..."
+          /home/sist/apache-tomcat-11.0.23/bin/shutdown.sh || true
+          sleep 3
 
-          rm -f /home/sist/apache-tomcat-11.0.23/webapps/JSPLastProject.war
+          PID=$(pgrep -f "apache-tomcat-11.0.23") || true
+          if [ -n "$PID" ]; then
+            echo "톰캣 프로세스 강제 종료 (PID: $PID)"
+            kill -9 $PID || true
+            sleep 2
+          fi
 
+      - name: Remove Old WAR and Deployment
+        run: |
+          rm -rf /home/sist/apache-tomcat-11.0.23/webapps/JSPLastProject.war || true
+          rm -rf /home/sist/apache-tomcat-11.0.23/webapps/JSPLastProject || true
 
-      # WAR 배포
       - name: Deploy WAR
         run: |
+          cp JSPLastProject.war /home/sist/apache-tomcat-11.0.23/webapps/
 
-          cp JSPLastProject.war \
-          /home/sist/apache-tomcat-11.0.23/webapps/
-
-
-      # Tomcat 재시작
-      - name: Restart Tomcat
+      - name: Start Tomcat
         run: |
-
-          /home/sist/apache-tomcat-11.0.23/bin/shutdown.sh || true
-
+          echo "Tomcat 시작 중..."
+          RUNNER_TRACKING_ID="" nohup /home/sist/apache-tomcat-11.0.23/bin/startup.sh > /dev/null 2>&1 &
           sleep 5
 
-          /home/sist/apache-tomcat-11.0.23/bin/startup.sh
+          ps -ef | grep apache-tomcat-11.0.23 | grep -v grep
