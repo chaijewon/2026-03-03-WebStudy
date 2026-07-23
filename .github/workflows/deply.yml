@@ -9,10 +9,10 @@ jobs:
   deploy:
     runs-on: self-hosted
 
-    # 저장소 내 실제 프로젝트 위치 경로 지정
+    # GitHub Actions 저장소 루트 내의 JSPLastProject 폴더 지정
     defaults:
       run:
-        working-directory: 2026-03-03-WebStudy/JSPLastProject
+        working-directory: JSPLastProject
 
     steps:
       - name: Checkout
@@ -122,3 +122,5 @@ jobs:
           echo "Tomcat 시작 중..."
           RUNNER_TRACKING_ID="" nohup /home/sist/apache-tomcat-11.0.23/bin/startup.sh > /dev/null 2>&1 &
           sleep 5
+
+          ps -ef | grep apache-tomcat-11.0.23 | grep -v grep
