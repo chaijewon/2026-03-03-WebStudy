@@ -106,7 +106,7 @@
                 <!-- Logo Area Start -->
                 <div class="col-12">
                     <div class="logo_area text-center">
-                        <a href="../main/main.do" class="yummy-logo">Travel</a>
+                        <a href="../main/main.do" class="yummy-logo" style="color:red">Travel</a>
                     </div>
                 </div>
             </div>
