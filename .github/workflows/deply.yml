@@ -10,9 +10,9 @@ jobs:
     runs-on: self-hosted
 
     # 프로젝트 구조에 따라 working-directory가 필요 없다면 아래 2줄을 삭제하세요.
-    defaults:
-      run:
-        working-directory: JSPLastProject
+    #defaults:
+      #run:
+        #working-directory: JSPLastProject
 
     steps:
       - name: Checkout
