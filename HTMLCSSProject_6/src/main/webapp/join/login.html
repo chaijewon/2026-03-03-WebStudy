@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI LIFE | 로그인</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    font-family:"Noto Sans KR","Malgun Gothic",Arial,sans-serif;
+}
+
+body{
+    background:#111936;
+    overflow:hidden;
+}
+
+/* =========================
+   전체 배경
+========================= */
+
+.page{
+    width:100%;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+
+    background:
+        radial-gradient(circle at 10% 85%,
+            rgba(112,72,255,.38),
+            transparent 30%),
+
+        radial-gradient(circle at 90% 15%,
+            rgba(20,203,255,.30),
+            transparent 28%),
+
+        linear-gradient(
+            135deg,
+            #111858 0%,
+            #24349a 45%,
+            #5427db 100%
+        );
+}
+
+/* 빛 효과 */
+
+.light{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(10px);
+    opacity:.5;
+}
+
+.light1{
+    width:420px;
+    height:420px;
+    background:#653cff;
+    left:-170px;
+    bottom:-220px;
+}
+
+.light2{
+    width:330px;
+    height:330px;
+    background:#12c9ff;
+    right:-100px;
+    top:80px;
+}
+
+/* Grid */
+
+.grid{
+    position:absolute;
+    inset:0;
+
+    opacity:.07;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.7) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.7) 1px,
+            transparent 1px
+        );
+
+    background-size:55px 55px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+
+    height:76px;
+
+    padding:0 55px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    color:white;
+
+    z-index:10;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    font-size:22px;
+    font-weight:900;
+}
+
+.logo-icon{
+    width:43px;
+    height:43px;
+
+    border-radius:13px;
+
+    display:grid;
+    place-items:center;
+
+    font-size:19px;
+
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.28);
+
+    backdrop-filter:blur(10px);
+}
+
+.home-btn{
+    color:white;
+    text-decoration:none;
+
+    padding:9px 17px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.30);
+
+    transition:.25s;
+}
+
+.home-btn:hover{
+    background:rgba(255,255,255,.20);
+}
+
+/* =========================
+   LOGIN CARD
+========================= */
+
+.login-wrap{
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    width:430px;
+    max-width:92vw;
+
+    z-index:5;
+}
+
+.login-card{
+
+    padding:42px;
+
+    border-radius:30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.18),
+            rgba(255,255,255,.08)
+        );
+
+    border:1px solid rgba(255,255,255,.30);
+
+    backdrop-filter:blur(25px);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.35),
+        inset 0 1px rgba(255,255,255,.25);
+
+    color:white;
+}
+
+/* 타이틀 */
+
+.title{
+    text-align:center;
+}
+
+.title-icon{
+
+    width:72px;
+    height:72px;
+
+    margin:0 auto 18px;
+
+    border-radius:22px;
+
+    display:grid;
+    place-items:center;
+
+    font-size:34px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(20,202,255,.25),
+            rgba(116,75,255,.30)
+        );
+
+    border:1px solid rgba(255,255,255,.25);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.15);
+}
+
+.title h1{
+    font-size:29px;
+    letter-spacing:-1.5px;
+}
+
+.title p{
+    margin-top:9px;
+
+    font-size:13px;
+
+    color:rgba(255,255,255,.65);
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form{
+    margin-top:30px;
+}
+
+.field{
+    margin-bottom:18px;
+}
+
+.field label{
+    display:block;
+
+    margin-bottom:8px;
+
+    font-size:12px;
+    font-weight:700;
+
+    color:rgba(255,255,255,.85);
+}
+
+.input-box{
+    position:relative;
+}
+
+.input-box span{
+    position:absolute;
+
+    left:16px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    font-size:17px;
+
+    opacity:.65;
+}
+
+.input{
+
+    width:100%;
+    height:53px;
+
+    padding:0 16px 0 45px;
+
+    border-radius:14px;
+
+    outline:none;
+
+    color:white;
+
+    font-size:13px;
+
+    background:rgba(255,255,255,.10);
+
+    border:1px solid rgba(255,255,255,.23);
+
+    transition:.25s;
+}
+
+.input::placeholder{
+    color:rgba(255,255,255,.42);
+}
+
+.input:focus{
+
+    background:rgba(255,255,255,.15);
+
+    border-color:#6feaff;
+
+    box-shadow:
+        0 0 0 3px rgba(65,220,255,.10);
+}
+
+/* 옵션 */
+
+.option{
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    margin:2px 0 22px;
+
+    font-size:11px;
+
+    color:rgba(255,255,255,.65);
+}
+
+.remember{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.remember input{
+    accent-color:#6657ff;
+}
+
+.find{
+    color:#a5eeff;
+    text-decoration:none;
+}
+
+/* 로그인 버튼 */
+
+.login-btn{
+
+    width:100%;
+    height:54px;
+
+    border:0;
+    border-radius:14px;
+
+    color:white;
+
+    font-size:14px;
+    font-weight:900;
+
+    cursor:pointer;
+
+    background:
+        linear-gradient(
+            90deg,
+            #20c8ed,
+            #6657ff
+        );
+
+    box-shadow:
+        0 12px 30px rgba(57,91,230,.38);
+
+    transition:.25s;
+}
+
+.login-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 17px 38px rgba(57,91,230,.52);
+}
+
+/* =========================
+   구분선
+========================= */
+
+.divider{
+
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+
+    margin:25px 0;
+
+    color:rgba(255,255,255,.38);
+
+    font-size:10px;
+}
+
+.divider:before,
+.divider:after{
+
+    content:"";
+
+    height:1px;
+
+    flex:1;
+
+    background:rgba(255,255,255,.16);
+}
+
+/* 회원가입 */
+
+.signup-text{
+
+    text-align:center;
+
+    font-size:12px;
+
+    color:rgba(255,255,255,.60);
+}
+
+.signup-text a{
+
+    margin-left:6px;
+
+    color:#9beeff;
+
+    text-decoration:none;
+
+    font-weight:900;
+}
+
+/* Footer */
+
+.footer{
+
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:17px;
+
+    text-align:center;
+
+    color:rgba(255,255,255,.42);
+
+    font-size:10px;
+
+    z-index:5;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    .header{
+        padding:0 18px;
+    }
+
+    .login-card{
+        padding:32px 24px;
+    }
+
+    .title h1{
+        font-size:25px;
+    }
+
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+```
+<div class="light light1"></div>
+<div class="light light2"></div>
+<div class="grid"></div>
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            AI
+        </div>
+
+        AI LIFE
+
+    </div>
+
+
+    <a href="index.html" class="home-btn">
+        ← 메인으로
+    </a>
+
+</header>
+
+
+<!-- LOGIN -->
+
+<main class="login-wrap">
+
+    <div class="login-card">
+
+
+        <div class="title">
+
+            <div class="title-icon">
+                🔐
+            </div>
+
+            <h1>
+                AI LIFE 로그인
+            </h1>
+
+            <p>
+                AI LIFE 서비스를 이용하려면 로그인해 주세요.
+            </p>
+
+        </div>
+
+
+        <form class="form"
+              action="/login"
+              method="post">
+
+
+            <!-- 이메일 -->
+
+            <div class="field">
+
+                <label>
+                    이메일
+                </label>
+
+                <div class="input-box">
+
+                    <span>✉</span>
+
+                    <input
+                        type="email"
+                        name="email"
+                        class="input"
+                        placeholder="이메일을 입력하세요"
+                        autocomplete="username"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <!-- 비밀번호 -->
+
+            <div class="field">
+
+                <label>
+                    비밀번호
+                </label>
+
+                <div class="input-box">
+
+                    <span>🔒</span>
+
+                    <input
+                        type="password"
+                        name="password"
+                        class="input"
+                        placeholder="비밀번호를 입력하세요"
+                        autocomplete="current-password"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <!-- 옵션 -->
+
+            <div class="option">
+
+                <label class="remember">
+
+                    <input
+                        type="checkbox"
+                        name="remember">
+
+                    로그인 상태 유지
+
+                </label>
+
+
+                <a href="#" class="find">
+                    아이디 / 비밀번호 찾기
+                </a>
+
+            </div>
+
+
+            <!-- 로그인 -->
+
+            <button
+                type="submit"
+                class="login-btn">
+
+                로그인&nbsp;&nbsp; →
+
+            </button>
+
+        </form>
+
+
+        <div class="divider">
+            OR
+        </div>
+
+
+        <div class="signup-text">
+
+            아직 AI LIFE 회원이 아니신가요?
+
+            <a href="signup.html">
+                회원가입
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    AI LIFE PLATFORM
+    <span>•</span>
+    AI RECIPE
+    <span>•</span>
+    AI EDUCATION
+
+</footer>
+```
+
+</div>
+
+</body>
+</html>

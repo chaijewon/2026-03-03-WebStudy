@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI LIFE - 맛집 · 레시피 · 쇼핑 추천</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{--navy:#071f4b;--blue:#176ce4;--purple:#6557f5;--cyan:#76e4ff;--bg:#f5f9ff;--line:#dce8fb;--text:#14366d;--muted:#7185a7}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);font-family:Pretendard,"Noto Sans KR",sans-serif;color:var(--text)}
+.hero{height:305px;color:white;position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(3,27,70,.95),rgba(10,72,145,.72),rgba(3,20,55,.25)),url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1900&q=85') center/cover}
+.hero.recipe{background:linear-gradient(90deg,rgba(4,45,75,.92),rgba(13,117,145,.58),rgba(4,30,55,.2)),url('https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&w=1900&q=85') center/cover}
+.hero.shopping{background:linear-gradient(90deg,rgba(27,19,73,.94),rgba(91,55,151,.57),rgba(20,13,50,.18)),url('https://images.unsplash.com/photo-1607082348824-0a96f2a0a9b1?auto=format&fit=crop&w=1900&q=85') center/cover}
+.hero.travel{background:linear-gradient(90deg,rgba(4,55,112,.9),rgba(11,112,180,.46),rgba(3,44,83,.25)),url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1900&q=85') center/cover}
+.hero-inner{max-width:1450px;margin:auto;padding:38px 52px;position:relative}
+.hand{font-size:27px;font-style:italic}.hero h1{font-size:60px;line-height:1;font-weight:900;letter-spacing:-3px;margin:5px 0 12px;background:linear-gradient(90deg,#fff,#9be6ff,#cbb8ff);-webkit-background-clip:text;color:transparent}
+.hero p{font-size:18px;font-weight:600;line-height:1.5}.callout{position:absolute;right:5%;top:42px;border-left:2px solid white;padding-left:28px;width:340px}.callout b{font-size:27px;display:block}.callout span{line-height:1.6}
+.stack{max-width:1390px;margin:-48px auto 0;padding:0 15px;position:relative;z-index:2}.techbar{background:#fffefeed;border:1px solid #d6e4f9;border-radius:22px;padding:13px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 30px #235b9a1f}.tech{flex:1;min-height:70px;border:1px solid #e3ecfa;border-radius:16px;background:#fafdff;display:flex;align-items:center;gap:12px;padding:9px 14px}.tech i{font-size:29px}.tech b{display:block}.tech small{color:#7086a8}.arrow{font-size:23px;color:#3772c6}
+.shell{max-width:1480px;margin:14px auto 30px;padding:0 22px;display:grid;grid-template-columns:185px minmax(0,1fr) 300px;gap:14px}
+.side,.main,.info{background:#fff;border-radius:20px;border:1px solid #e0eafa;box-shadow:0 8px 28px #285b9914}.side{background:linear-gradient(180deg,#09275d,#071e45);color:#fff;padding:16px 10px;min-height:690px}.brand{font-size:23px;font-weight:900;padding:8px 10px 18px;border-bottom:1px solid #ffffff22}.side button{width:100%;border:0;background:transparent;color:#fff;text-align:left;padding:12px;border-radius:10px;margin-top:5px;font-weight:700}.side button:hover,.side button.active{background:#176ce4}.side-note{margin-top:300px;text-align:center;font-style:italic;line-height:1.7;color:#d8e8ff}
+.main{padding:20px}.title{display:flex;gap:10px;align-items:center}.title .spark{font-size:28px;color:#6757f4}.title h2{font-size:29px;font-weight:900;margin:0}.subtitle{color:var(--muted);margin:4px 0 18px}
+.filters{display:grid;grid-template-columns:repeat(4,1fr) 145px;gap:8px;border-bottom:1px solid #e5edf8;padding-bottom:14px}.filter{border:1px solid var(--line);border-radius:12px;padding:8px 11px;background:#fbfdff}.filter label{display:block;font-size:11px;color:#7186a7}.filter select{border:0;background:transparent;width:100%;outline:0;font-weight:700;color:#173d77}.search{border:0;border-radius:12px;background:linear-gradient(135deg,#5b54ef,#2f7ee9);color:#fff;font-weight:800}
+.result-head{display:flex;justify-content:space-between;align-items:center;margin:17px 0 10px}.result-head h3{font-size:18px;font-weight:900;margin:0}.toggle button{border:0;border-radius:8px;padding:7px 12px;color:#5275a5}.toggle .active{background:#2777e7;color:white}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:white;box-shadow:0 5px 15px #285b9912}.pic{height:120px;background-size:cover;background-position:center;position:relative}.badge{position:absolute;top:8px;left:8px;background:#5253eb;color:white;border-radius:7px;padding:4px 8px;font-size:11px;font-weight:800}.body{padding:10px}.body h4{font-size:16px;font-weight:900;margin:0 0 4px}.meta{display:flex;justify-content:space-between;color:#7185a7;font-size:12px}.score{color:#f0a800;font-weight:900}.tags{display:flex;gap:4px;flex-wrap:wrap;margin:7px 0}.tag{background:#edf5ff;color:#4474ae;border-radius:99px;padding:3px 7px;font-size:10px}.desc{font-size:11px;color:#7185a6;line-height:1.5;margin:0}
+.info{padding:20px;min-height:690px}.info h3{font-size:20px;font-weight:900;margin-bottom:17px}.info-row{display:flex;gap:12px;margin:18px 0}.info-icon{width:46px;height:46px;flex:0 0 46px;border-radius:50%;display:grid;place-items:center;background:#f0f6ff;color:#4e59ed;font-size:22px}.info-row b{display:block;margin-bottom:4px}.info-row p{font-size:12px;color:#7185a7;line-height:1.55;margin:0}.scribble{text-align:center;color:#5a50ed;font-style:italic;font-size:18px;margin-top:48px;transform:rotate(-3deg)}
+.map{height:260px;margin-top:12px;border:1px solid #d9e7f7;border-radius:15px;position:relative;overflow:hidden;background:linear-gradient(135deg,#e9f5ec,#d9ecfa),repeating-linear-gradient(35deg,transparent 0 20px,#bdd0e4 21px 22px)}.road{position:absolute;height:4px;background:#397de0;border-radius:5px;transform-origin:left}.r1{width:70%;left:8%;top:35%;transform:rotate(12deg)}.r2{width:45%;left:30%;top:65%;transform:rotate(-25deg)}.pin{position:absolute;width:29px;height:29px;background:#5262eb;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;color:#fff;font-weight:900}.pin span{transform:rotate(45deg)}.pin1{left:18%;top:23%}.pin2{left:49%;top:51%}.pin3{left:72%;top:34%;background:#ef8a25}
+.recipe-panel{display:grid;grid-template-columns:1fr .85fr;gap:12px}.fridge{border:1px solid var(--line);border-radius:15px;padding:16px;background:linear-gradient(180deg,#fafdff,#f1f8ff)}.ingredient-list{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.ingredient{background:white;border:1px solid #d7e7fa;border-radius:99px;padding:8px 11px;font-size:12px}.ingredient i{color:#25a96a}.recipe-result{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:#fff}.recipe-img{height:185px;background:url('https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=85') center/cover}.recipe-content{padding:15px}.recipe-content h3{font-size:21px;font-weight:900}.need{display:flex;gap:6px;flex-wrap:wrap}.need span{font-size:11px;padding:5px 8px;border-radius:8px;background:#fff3e7;color:#d47712}.have span{background:#e9f9ef;color:#219157}.recipe-steps{margin-top:10px;font-size:12px;color:#7185a7;line-height:1.7}
+.shopping-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.product .pic{height:170px}.price{font-size:19px;font-weight:900;color:#173d77}.old{text-decoration:line-through;color:#9aabc2;font-size:11px}.product-btn{border:0;background:#edf4ff;color:#2169c9;border-radius:8px;padding:7px 10px;font-size:12px;font-weight:800}
+.travel-box{border:1px solid var(--line);border-radius:15px;overflow:hidden}.travel-cover{height:190px;background:url('https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1000&q=85') center/cover;position:relative}.travel-cover div{position:absolute;inset:0;background:linear-gradient(0deg,#062b5acc,transparent 70%);color:#fff;display:flex;align-items:flex-end;padding:18px}.travel-cover h3{font-size:25px;font-weight:900;margin:0}.travel-course{display:grid;grid-template-columns:1fr .8fr;gap:12px;padding:12px}.timeline{padding:10px}.step{display:flex;gap:10px;margin:12px 0}.dot{width:26px;height:26px;border-radius:50%;background:#e9f2ff;color:#2370db;display:grid;place-items:center;font-size:11px;font-weight:900}.step b{font-size:13px}.step p{font-size:11px;color:#7b8da8;margin:2px 0}
+.page{display:none}.page.active{display:block}
+@media(max-width:1100px){.shell{grid-template-columns:1fr}.side{min-height:auto}.side button{width:auto;display:inline-block}.side-note{display:none}.info{min-height:auto}.callout{display:none}}
+@media(max-width:700px){.hero-inner{padding:28px 20px}.hero h1{font-size:39px}.hero p{font-size:15px}.techbar{overflow:auto}.tech{min-width:220px}.arrow{display:none}.shell{padding:0 10px}.main,.info{padding:14px}.filters{grid-template-columns:1fr 1fr}.cards,.shopping-grid{grid-template-columns:1fr}.recipe-panel,.travel-course{grid-template-columns:1fr}.search{height:50px}}
+
+.lms-hero{background:linear-gradient(90deg,rgba(5,29,76,.95),rgba(34,77,151,.72),rgba(13,31,72,.25)),url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1900&q=85') center/cover}
+.lms-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
+.lms-stat{border:1px solid var(--line);border-radius:14px;padding:16px;background:linear-gradient(135deg,#fafdff,#f1f7ff)}
+.lms-stat i{font-size:25px;color:#4268ed}.lms-stat b{display:block;font-size:23px;margin-top:5px}.lms-stat small{color:#7185a7}
+.progress{height:8px;background:#eaf0f9}.progress-bar{background:linear-gradient(90deg,#5c54ee,#277ce8)}
+.exam-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.exam{border:1px solid var(--line);border-radius:14px;padding:15px;background:#fff}.exam h4{font-size:16px;font-weight:900}.exam-meta{font-size:11px;color:#7185a7;margin:7px 0}.exam-btn{border:0;background:#edf4ff;color:#2169c9;border-radius:8px;padding:7px 11px;font-weight:800;font-size:12px}
+.risk{border-radius:12px;padding:12px;background:#fff5ee;border:1px solid #ffe1c5}.risk b{color:#d87917}.wrong{border-radius:12px;padding:12px;background:#f2f0ff;border:1px solid #ddd8ff}.wrong b{color:#5a50ed}
+.ai-box{border-radius:14px;padding:16px;background:linear-gradient(135deg,#f5f3ff,#edf7ff);border:1px solid #dddfff}.ai-box h4{font-weight:900}.ai-box p{font-size:12px;color:#7185a7;line-height:1.7;margin-bottom:0}
+.lms-tabs{display:flex;gap:7px;overflow:auto;margin-bottom:14px}.lms-tabs button{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 13px;font-weight:700;color:#5c759c}.lms-tabs .active{background:#246fe0;color:#fff;border-color:#246fe0}
+@media(max-width:900px){.lms-grid{grid-template-columns:1fr 1fr}.exam-list{grid-template-columns:1fr}}
+@media(max-width:600px){.lms-grid{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+
+<div class="position-fixed top-0 end-0 p-3" style="z-index:100">
+ <div class="btn-group shadow">
+  <button class="btn btn-primary" onclick="show('restaurant')">🍴 맛집</button>
+  <button class="btn btn-light" onclick="show('recipe')">🍳 레시피</button>
+  <button class="btn btn-light" onclick="show('shopping')">🛒 쇼핑</button>
+  <button class="btn btn-light" onclick="show('travel')">✈️ 여행</button><button class="btn btn-light" onclick="show('lms')">🎓 LMS</button>
+ </div>
+</div>
+
+<!-- 맛집 -->
+<section id="restaurant" class="page active">
+<header class="hero"><div class="hero-inner"><div class="hand">AI가 찾아주는</div><h1>나만의 맞춤 맛집 추천</h1><p>Spring AI와 PostgreSQL + pgVector로<br>당신의 취향에 딱 맞는 맛집을 찾아드립니다.</p><div class="callout"><b>오늘, 무엇을 먹을까?</b><span>AI가 당신의 취향을 분석해<br>최고의 맛집을 추천합니다.</span></div></div></header>
+<div class="stack"><div class="techbar">
+<div class="tech"><i class="bi bi-database" style="color:#d52b2b"></i><div><b>Oracle</b><small>맛집 데이터</small></div></div><span class="arrow">→</span>
+<div class="tech"><i class="bi bi-leaf" style="color:#36a866"></i><div><b>Spring AI</b><small>임베딩 & AI</small></div></div><span class="arrow">→</span>
+<div class="tech"><i class="bi bi-database-fill"></i><div><b>PostgreSQL</b><small>데이터 저장</small></div></div><span class="arrow">→</span>
+<div class="tech"><i class="bi bi-diagram-3"></i><div><b>pgVector</b><small>유사도 검색</small></div></div><span class="arrow">→</span>
+<div class="tech"><i class="bi bi-leaf-fill" style="color:#159252"></i><div><b>Thymeleaf</b><small>웹 화면</small></div></div>
+</div></div>
+<div class="shell">
+<aside class="side"><div class="brand">🍴 AI 맛집</div><button class="active">⌂ 맛집 추천</button><button>⌖ 지역별 맛집</button><button>◈ 테마별 맛집</button><button>♙ 내 취향 관리</button><button>♡ 즐겨찾기</button><div class="side-note">AI가 추천하는<br>당신만의 맛집 리스트!</div></aside>
+<main class="main"><div class="title"><span class="spark">✦</span><div><h2>AI 맞춤 맛집 추천</h2><div class="subtitle">당신의 취향을 분석하여 딱 맞는 맛집을 추천해드립니다.</div></div></div>
+<div class="filters"><div class="filter"><label>📍 지역</label><select><option>서울 강남구</option><option>서울 마포구</option><option>부산 해운대구</option></select></div><div class="filter"><label>🍴 음식</label><select><option>한식</option><option>양식</option><option>일식</option><option>카페</option></select></div><div class="filter"><label>♨ 분위기</label><select><option>데이트, 조용한</option><option>가족모임</option><option>친구모임</option></select></div><div class="filter"><label>💰 가격대</label><select><option>1만원 ~ 3만원</option><option>3만원 ~ 5만원</option></select></div><button class="search" onclick="alert('Spring AI + pgVector 검색 API를 연결하면 실제 추천 결과를 받을 수 있습니다.')">🔎 맛집 찾기</button></div>
+<div class="result-head"><h3>✦ AI 추천 맛집</h3><div class="toggle"><button class="active">✦ 지도 보기</button><button>☷ 목록 보기</button></div></div>
+<div class="cards">
+<div class="card"><div class="pic" style="background-image:url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=700&q=80')"><span class="badge">추천</span></div><div class="body"><h4>강남화로집</h4><div class="meta"><span class="score">★ 4.8 (1,243)</span><span>1.2km</span></div><div class="tags"><span class="tag">한식</span><span class="tag">고기</span><span class="tag">데이트</span></div><p class="desc">숯향 좋은 한우와 깔끔한 분위기의 강남 대표 맛집입니다.</p></div></div>
+<div class="card"><div class="pic" style="background-image:url('https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=700&q=80')"><span class="badge">추천</span></div><div class="body"><h4>스시하나</h4><div class="meta"><span class="score">★ 4.7 (856)</span><span>2.1km</span></div><div class="tags"><span class="tag">일식</span><span class="tag">초밥</span><span class="tag">데이트</span></div><p class="desc">신선한 재료와 정통 스시를 맛볼 수 있는 곳입니다.</p></div></div>
+<div class="card"><div class="pic" style="background-image:url('https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=700&q=80')"><span class="badge">추천</span></div><div class="body"><h4>파스타노아</h4><div class="meta"><span class="score">★ 4.6 (742)</span><span>1.8km</span></div><div class="tags"><span class="tag">양식</span><span class="tag">파스타</span><span class="tag">분위기</span></div><p class="desc">부드러운 크림과 감각적인 분위기가 매력적인 레스토랑입니다.</p></div></div>
+</div><div class="map"><div class="road r1"></div><div class="road r2"></div><div class="pin pin1"><span>1</span></div><div class="pin pin2"><span>2</span></div><div class="pin pin3"><span>3</span></div></div>
+</main>
+<aside class="info"><h3>🧠 AI가 추천하는 이유</h3><div class="info-row"><div class="info-icon">♙</div><div><b>취향 분석</b><p>사용자의 선호도, 리뷰, 방문 이력 등을 분석합니다.</p></div></div><div class="info-row"><div class="info-icon">✦</div><div><b>벡터 유사도 검색</b><p>pgVector를 활용하여 유사한 맛집을 빠르게 찾습니다.</p></div></div><div class="info-row"><div class="info-icon">▣</div><div><b>실시간 데이터</b><p>Oracle의 최신 맛집 정보를 반영합니다.</p></div></div><div class="info-row"><div class="info-icon">♡</div><div><b>개인화 추천</b><p>나에게 맞는 맛집을 더욱 정확하게 추천합니다.</p></div></div><div class="scribble">AI가 추천하는<br>지금 꼭 가야할 맛집! 🍴</div></aside>
+</div></section>
+
+<!-- 레시피 -->
+<section id="recipe" class="page">
+<header class="hero recipe"><div class="hero-inner"><div class="hand">AI가 찾아주는</div><h1>냉장고 속 재료로 오늘 뭐 먹지?</h1><p>Spring AI와 PostgreSQL + pgVector로<br>가지고 있는 재료에 딱 맞는 레시피를 추천합니다.</p><div class="callout"><b>남은 재료도 맛있게!</b><span>보유 재료와 부족한 재료를 분석해<br>오늘 만들 수 있는 요리를 추천합니다.</span></div></div></header>
+<div class="stack"><div class="techbar">
+<div class="tech"><i class="bi bi-database" style="color:#d52b2b"></i><div><b>Oracle</b><small>레시피 원본 1,156건</small></div></div><span class="arrow">→</span><div class="tech"><i class="bi bi-leaf" style="color:#36a866"></i><div><b>Spring AI</b><small>Embedding + Gemini</small></div></div><span class="arrow">→</span><div class="tech"><i class="bi bi-database-fill"></i><div><b>PostgreSQL</b><small>레시피 저장</small></div></div><span class="arrow">→</span><div class="tech"><i class="bi bi-diagram-3"></i><div><b>pgVector</b><small>유사 레시피 검색</small></div></div><span class="arrow">→</span><div class="tech"><i class="bi bi-window"></i><div><b>Thymeleaf</b><small>AI Recipe</small></div></div>
+</div></div>
+<div class="shell">
+<aside class="side"><div class="brand">🍳 AI RECIPE</div><button class="active">⌂ 오늘의 레시피</button><button>🥕 냉장고 재료</button><button>◈ 테마별 레시피</button><button>♡ 찜한 레시피</button><button>♙ 나의 식습관</button><div class="side-note">냉장고 속 재료로<br>오늘의 요리를<br>AI가 찾아드립니다.</div></aside>
+<main class="main"><div class="title"><span class="spark">✦</span><div><h2>AI 레시피 추천</h2><div class="subtitle">냉장고 재료와 취향을 분석하여 만들 수 있는 요리를 추천합니다.</div></div></div>
+<div class="filters"><div class="filter"><label>🥕 보유 재료</label><select><option>계란, 양파, 대파</option><option>닭가슴살, 양파</option><option>두부, 김치</option></select></div><div class="filter"><label>🍴 요리 종류</label><select><option>한식</option><option>일식</option><option>양식</option></select></div><div class="filter"><label>⏱ 조리시간</label><select><option>30분 이내</option><option>15분 이내</option><option>1시간 이내</option></select></div><div class="filter"><label>🔥 난이도</label><select><option>초급</option><option>중급</option><option>고급</option></select></div><button class="search" onclick="recipe()">🍳 레시피 찾기</button></div>
+<div class="result-head"><h3>✦ 오늘 만들 수 있는 레시피</h3></div>
+<div class="recipe-panel">
+<div class="fridge"><h4 style="font-weight:900">🥕 내 냉장고</h4><div class="ingredient-list"><span class="ingredient"><i>✓</i> 계란</span><span class="ingredient"><i>✓</i> 양파</span><span class="ingredient"><i>✓</i> 대파</span><span class="ingredient"><i>✓</i> 간장</span><span class="ingredient"><i>✓</i> 참기름</span></div><hr><b>AI가 계산한 부족한 재료</b><div class="ingredient-list"><span class="ingredient" style="background:#fff5ea">🛒 돼지고기</span><span class="ingredient" style="background:#fff5ea">🛒 김치</span></div><button class="search w-100 py-2" onclick="show('shopping')">부족한 재료 쇼핑하기</button></div>
+<div class="recipe-result"><div class="recipe-img"></div><div class="recipe-content"><h3>돼지고기 김치찌개</h3><div class="tags"><span class="tag">한식</span><span class="tag">30분</span><span class="tag">초급</span><span class="tag">4.8 ★</span></div><p class="desc">현재 가지고 있는 재료와 가장 유사한 레시피입니다. 부족한 재료 2개만 준비하면 만들 수 있습니다.</p><div class="need"><span>부족: 돼지고기</span><span>부족: 김치</span></div><div class="recipe-steps"><b>AI 조리 순서</b><br>① 재료를 먹기 좋은 크기로 손질합니다.<br>② 돼지고기와 김치를 볶아줍니다.<br>③ 물과 양념을 넣고 끓입니다.<br>④ 대파와 계란을 넣어 마무리합니다.</div></div></div>
+</div>
+</main>
+<aside class="info"><h3>🤖 AI Recipe가 하는 일</h3><div class="info-row"><div class="info-icon">🥕</div><div><b>냉장고 분석</b><p>보유 재료를 분석하여 만들 수 있는 메뉴를 찾습니다.</p></div></div><div class="info-row"><div class="info-icon">✦</div><div><b>벡터 레시피 검색</b><p>pgVector로 1,156개 레시피와 의미적으로 유사한 메뉴를 검색합니다.</p></div></div><div class="info-row"><div class="info-icon">🛒</div><div><b>부족 재료 계산</b><p>보유 재료와 레시피 재료를 비교해 구매 목록을 만듭니다.</p></div></div><div class="info-row"><div class="info-icon">✨</div><div><b>Gemini 최종 생성</b><p>검색된 레시피를 바탕으로 개인화된 조리법을 생성합니다.</p></div></div><div class="scribble">냉장고 속 재료가<br>오늘의 메뉴가 됩니다! 🍳</div></aside>
+</div></section>
+
+<!-- 쇼핑 -->
+<section id="shopping" class="page">
+<header class="hero shopping"><div class="hero-inner"><div class="hand">AI가 골라주는</div><h1>나만의 맞춤 쇼핑 추천</h1><p>Spring AI와 pgVector로 상품의 특징과 취향을 분석해<br>지금 필요한 상품을 추천합니다.</p><div class="callout"><b>무엇을 사야 할까?</b><span>가격·카테고리·취향을 분석해<br>나에게 맞는 상품을 찾아드립니다.</span></div></div></header>
+<div class="stack"><div class="techbar">
+<div class="tech"><i class="bi bi-database" style="color:#d52b2b"></i><div><b>상품 DB</b><small>상품·가격·카테고리</small></div></div><span class="arrow">→</span><div class="tech"><i class="bi bi-leaf" style="color:#36a866"></i><div><b>Spring AI</b><small>취향 분석</small></div></div><span class="arrow">→</span><div class="tech"><i class="bi bi-database-fill"></i><div><b>PostgreSQL</b><small>상품 데이터</small></div></div><span class="arrow">→</span><div class="tech"><i class="bi bi-diagram-3"></i><div><b>pgVector</b><small>상품 유사도</small></div></div><span class="arrow">→</span><div class="tech"><i class="bi bi-cart3"></i><div><b>AI Shopping</b><small>추천 결과</small></div></div>
+</div></div>
+<div class="shell">
+<aside class="side"><div class="brand">🛒 AI SHOPPING</div><button class="active">⌂ AI 상품 추천</button><button>▦ 카테고리</button><button>♧ 가격 비교</button><button>♡ 찜 목록</button><button>♙ 나의 취향</button><div class="side-note">AI가 추천하는<br>나에게 필요한<br>상품 리스트!</div></aside>
+<main class="main"><div class="title"><span class="spark">✦</span><div><h2>AI 맞춤 쇼핑 추천</h2><div class="subtitle">필요한 상품과 예산, 취향을 분석하여 추천합니다.</div></div></div>
+<div class="filters"><div class="filter"><label>🛒 카테고리</label><select><option>주방용품</option><option>식품</option><option>전자제품</option><option>생활용품</option></select></div><div class="filter"><label>💰 예산</label><select><option>3만원 이하</option><option>5만원 이하</option><option>10만원 이하</option></select></div><div class="filter"><label>⭐ 선호</label><select><option>가성비 좋은</option><option>프리미엄</option><option>인기상품</option></select></div><div class="filter"><label>🎯 용도</label><select><option>요리용</option><option>선물용</option><option>일상용</option></select></div><button class="search" onclick="shopping()">🛒 상품 찾기</button></div>
+<div class="result-head"><h3>✦ AI 추천 상품</h3></div>
+<div class="shopping-grid">
+<div class="card product"><div class="pic" style="background-image:url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=700&q=80')"><span class="badge">AI 추천</span></div><div class="body"><h4>스테인리스 프라이팬 28cm</h4><div class="score">★ 4.8 · 리뷰 2,431</div><p class="desc">요리 빈도가 높은 사용자에게 추천하는 내구성 좋은 프라이팬입니다.</p><div class="d-flex justify-content-between align-items-center mt-2"><span class="price">39,900원</span><button class="product-btn">상세보기</button></div></div></div>
+<div class="card product"><div class="pic" style="background-image:url('https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=700&q=80')"><span class="badge">취향 유사</span></div><div class="body"><h4>프리미엄 주방 도구 세트</h4><div class="score">★ 4.7 · 리뷰 1,082</div><p class="desc">깔끔한 디자인과 실용성을 중요하게 생각하는 사용자에게 추천합니다.</p><div class="d-flex justify-content-between align-items-center mt-2"><span class="price">49,000원</span><button class="product-btn">상세보기</button></div></div></div>
+<div class="card product"><div class="pic" style="background-image:url('https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=700&q=80')"><span class="badge">가성비</span></div><div class="body"><h4>실리콘 조리도구 7종</h4><div class="score">★ 4.6 · 리뷰 3,812</div><p class="desc">부담 없는 가격과 활용도를 함께 고려한 추천 상품입니다.</p><div class="d-flex justify-content-between align-items-center mt-2"><span class="price">18,900원</span><button class="product-btn">상세보기</button></div></div></div>
+</div>
+<div class="map" style="margin-top:15px;padding:18px;background:linear-gradient(135deg,#f2efff,#e9f7ff)"><h4 style="font-weight:900">🤖 AI 추천 이유</h4><p style="max-width:600px;color:#7185a7">사용자가 선택한 <b>주방용품 · 3만원 이하 · 가성비</b> 조건과 상품 설명의 의미를 벡터화하여 유사도가 높은 상품을 우선 추천합니다.</p><div class="tags"><span class="tag">가격 적합도 94%</span><span class="tag">취향 유사도 91%</span><span class="tag">인기도 88%</span></div></div>
+</main>
+<aside class="info"><h3>🧠 AI가 추천하는 이유</h3><div class="info-row"><div class="info-icon">♙</div><div><b>취향 분석</b><p>검색어, 클릭, 찜, 구매 이력 등을 활용합니다.</p></div></div><div class="info-row"><div class="info-icon">✦</div><div><b>상품 벡터 검색</b><p>상품 설명의 의미를 비교하여 비슷한 상품을 찾습니다.</p></div></div><div class="info-row"><div class="info-icon">₩</div><div><b>가격 조건 반영</b><p>예산 범위에 맞는 상품을 우선적으로 보여줍니다.</p></div></div><div class="info-row"><div class="info-icon">♡</div><div><b>개인화 추천</b><p>사용자별 관심 카테고리와 선호를 반영합니다.</p></div></div><div class="scribble">AI가 찾아주는<br>내가 원하는 쇼핑! 🛒</div></aside>
+</div></section>
+
+<!-- 여행 -->
+<section id="travel" class="page">
+<header class="hero travel"><div class="hero-inner"><div class="hand">AI가 추천하는 나만의 특별한 여행!</div><h1>지역 여행코스 생성 서비스</h1><p>Spring AI와 pgVector로 여행 데이터를 학습하고<br>당신의 취향에 맞는 지역별 여행 코스를 추천합니다.</p><div class="callout"><b>지금, AI와 함께 떠나볼까요?</b><span>취향과 여행 데이터를 분석해<br>나만의 여행 코스를 만들어드립니다.</span></div></div></header>
+<div class="stack"><div class="techbar">
+<div class="tech"><i class="bi bi-leaf" style="color:#36a866"></i><div><b>Spring AI</b><small>여행 추천</small></div></div><span class="arrow">+</span><div class="tech"><i class="bi bi-database-fill"></i><div><b>PostgreSQL</b><small>여행 데이터</small></div></div><span class="arrow">+</span><div class="tech"><i class="bi bi-diagram-3"></i><div><b>pgVector</b><small>유사도 검색</small></div></div><span class="arrow">+</span><div class="tech"><i class="bi bi-window"></i><div><b>Thymeleaf</b><small>웹 화면</small></div></div><span class="arrow">+</span><div class="tech"><i class="bi bi-database" style="color:#d52b2b"></i><div><b>Oracle</b><small>기존 데이터</small></div></div>
+</div></div>
+<div class="shell"><aside class="side"><div class="brand">✈️ AI TRAVEL</div><button class="active">⌂ 여행 코스 추천</button><button>⌖ 지역별 여행지</button><button>▣ 내 여행 코스</button><button>♙ MY 페이지</button></aside>
+<main class="main"><div class="title"><span class="spark">✦</span><div><h2>AI 여행코스 추천</h2><div class="subtitle">지역과 기간, 여행 취향을 분석해 나만의 코스를 생성합니다.</div></div></div><div class="filters"><div class="filter"><label>📍 지역</label><select><option>부산</option><option>제주도</option><option>경주</option><option>강릉</option></select></div><div class="filter"><label>🎯 테마</label><select><option>맛집 중심</option><option>힐링</option><option>역사·문화</option></select></div><div class="filter"><label>📅 기간</label><select><option>1박 2일</option><option>당일치기</option><option>2박 3일</option></select></div><div class="filter"><label>👨‍👩‍👧 동행</label><select><option>친구</option><option>연인</option><option>가족</option></select></div><button class="search">✦ 코스 추천</button></div>
+<div class="result-head"><h3>✦ 부산 감성 여행 코스</h3></div><div class="travel-box"><div class="travel-cover"><div><div><h3>부산 감성 여행 1박 2일</h3><small>맛집 + 바다 + 감성 카페 중심 코스</small></div></div></div><div class="travel-course"><div class="timeline"><div class="step"><span class="dot">1</span><div><b>해운대 해수욕장</b><p>부산 대표 해변에서 산책과 바다 감상</p></div></div><div class="step"><span class="dot">2</span><div><b>광안리 해변</b><p>오션뷰 카페와 저녁 식사</p></div></div><div class="step"><span class="dot">3</span><div><b>감천문화마을</b><p>알록달록한 골목길 사진 여행</p></div></div><div class="step"><span class="dot">4</span><div><b>태종대</b><p>아름다운 해안 절경 감상</p></div></div></div><div class="map"><div class="road r1"></div><div class="road r2"></div><div class="pin pin1"><span>1</span></div><div class="pin pin2"><span>2</span></div><div class="pin pin3"><span>3</span></div></div></div></div></main>
+<aside class="info"><h3>✨ 이런 점이 특별합니다</h3><div class="info-row"><div class="info-icon">AI</div><div><b>AI 맞춤 추천</b><p>사용자의 여행 취향과 선호도를 분석합니다.</p></div></div><div class="info-row"><div class="info-icon">⌕</div><div><b>벡터 검색</b><p>유사한 여행지와 코스를 검색합니다.</p></div></div><div class="info-row"><div class="info-icon">▣</div><div><b>데이터 연동</b><p>기존 Oracle 여행 데이터를 활용합니다.</p></div></div><div class="info-row"><div class="info-icon">▣</div><div><b>반응형 웹</b><p>PC와 모바일에서 편리하게 사용할 수 있습니다.</p></div></div><div class="scribble">AI와 함께하는<br>더 스마트한 여행! ✈️</div></aside>
+</div></section>
+
+
+<section id="lms" class="page">
+<header class="hero lms-hero"><div class="hero-inner">
+<div class="hand">AI가 관리하는</div>
+<h1>AI 맞춤형 학습관리 LMS</h1>
+<p>Spring AI + PostgreSQL + pgVector로<br>학생의 학습상태를 분석하고 시험·오답·학습방법까지 관리합니다.</p>
+<div class="callout"><b>오늘 무엇을 공부할까?</b><span>학습 데이터를 분석하여<br>다음 학습과 부족한 부분을 추천합니다.</span></div>
+</div></header>
+
+<div class="stack"><div class="techbar">
+<div class="tech"><i class="bi bi-database" style="color:#d52b2b"></i><div><b>Oracle</b><small>기존 LMS 데이터</small></div></div><span class="arrow">→</span>
+<div class="tech"><i class="bi bi-leaf" style="color:#36a866"></i><div><b>Spring AI</b><small>문제·학습 AI</small></div></div><span class="arrow">→</span>
+<div class="tech"><i class="bi bi-database-fill"></i><div><b>PostgreSQL</b><small>AI 학습 데이터</small></div></div><span class="arrow">→</span>
+<div class="tech"><i class="bi bi-diagram-3"></i><div><b>pgVector</b><small>문제·오답·학습 벡터</small></div></div><span class="arrow">→</span>
+<div class="tech"><i class="bi bi-window"></i><div><b>Thymeleaf</b><small>LMS 화면</small></div></div>
+</div></div>
+
+<div class="shell">
+<aside class="side"><div class="brand">🎓 AI LMS</div>
+<button class="active">⌂ 학습 대시보드</button><button>▣ 나의 강의</button><button>✦ AI 문제 출제</button>
+<button>✓ 시험 / 자동채점</button><button>⚠ 오답 노트</button><button>♙ 학습 상태</button><button>💼 취업 준비</button>
+<div class="side-note">AI가 분석하는<br>나만의 학습관리<br>시스템!</div></aside>
+
+<main class="main">
+<div class="title"><span class="spark">✦</span><div><h2>학생 AI 학습 대시보드</h2><div class="subtitle">수강 과정, 시험 결과, 오답과 학습 상태를 한눈에 확인합니다.</div></div></div>
+
+<div class="lms-tabs"><button class="active">대시보드</button><button>강의</button><button>시험</button><button>오답노트</button><button>학습분석</button><button>취업관리</button></div>
+
+<div class="lms-grid">
+<div class="lms-stat"><i class="bi bi-play-circle"></i><small>현재 수강 강의</small><b>3개</b></div>
+<div class="lms-stat"><i class="bi bi-bar-chart"></i><small>평균 학습률</small><b>78%</b></div>
+<div class="lms-stat"><i class="bi bi-pencil-square"></i><small>시험 평균</small><b>86점</b></div>
+<div class="lms-stat"><i class="bi bi-exclamation-circle"></i><small>복습 필요</small><b>7문제</b></div>
+</div>
+
+<div class="result-head"><h3>📚 현재 학습 과정</h3></div>
+<div class="exam-list">
+<div class="exam"><h4>Java 객체지향 프로그래밍</h4><div class="exam-meta">진도율 82% · 최근 학습 2시간 전</div><div class="progress"><div class="progress-bar" style="width:82%"></div></div><button class="exam-btn mt-3">학습 계속하기</button></div>
+<div class="exam"><h4>Spring Boot 백엔드</h4><div class="exam-meta">진도율 67% · 최근 학습 어제</div><div class="progress"><div class="progress-bar" style="width:67%"></div></div><button class="exam-btn mt-3">학습 계속하기</button></div>
+</div>
+
+<div class="result-head"><h3>✦ AI 추천 학습</h3></div>
+<div class="ai-box"><h4>🤖 다음 학습은 Spring DI / IoC를 복습하세요.</h4>
+<p>최근 시험에서 의존성 주입 관련 문제가 반복적으로 틀렸습니다. 기존 문제와 오답 데이터를 pgVector로 검색하여 유사 문제를 다시 학습하도록 추천합니다.</p>
+<div class="tags mt-3"><span class="tag">취약도 82%</span><span class="tag">추천 문제 5개</span><span class="tag">예상 학습시간 25분</span></div></div>
+
+<div class="result-head"><h3>📝 최근 시험</h3></div>
+<div class="exam-list">
+<div class="exam"><h4>Java 중간평가</h4><div class="exam-meta">20문제 · 자동채점 완료 · 90점</div><div class="score">★ 90점</div><button class="exam-btn mt-2">결과 보기</button></div>
+<div class="exam"><h4>Spring Boot 진단평가</h4><div class="exam-meta">20문제 · 자동채점 완료 · 78점</div><div class="score">★ 78점</div><button class="exam-btn mt-2">오답 확인</button></div>
+</div>
+</main>
+
+<aside class="info"><h3>🧠 AI LMS가 하는 일</h3>
+<div class="info-row"><div class="info-icon">✦</div><div><b>AI 문제 출제</b><p>과정·주제·난이도를 기준으로 AI가 시험 문제를 생성합니다.</p></div></div>
+<div class="info-row"><div class="info-icon">✓</div><div><b>자동 채점</b><p>학생 답안을 저장하고 시험 결과와 점수를 자동 계산합니다.</p></div></div>
+<div class="info-row"><div class="info-icon">⚠</div><div><b>오답 분석</b><p>틀린 문제를 wrong_answer_vector에 저장하고 유사 오답을 검색합니다.</p></div></div>
+<div class="info-row"><div class="info-icon">♙</div><div><b>학습 상태 분석</b><p>learning_vector를 활용해 취약 주제와 다음 학습을 추천합니다.</p></div></div>
+<div class="info-row"><div class="info-icon">💼</div><div><b>취업 학습 관리</b><p>학습·시험·프로젝트 데이터를 바탕으로 취업 준비 현황을 보여줍니다.</p></div></div>
+<div class="risk mt-4"><b>⚠ AI 학습 상태</b><br><small>Spring Boot · DI/IoC · JPA 영역의 복습이 필요합니다.</small></div>
+<div class="wrong mt-3"><b>✦ 오늘의 오답 복습</b><br><small>유사 문제 5개를 풀어보세요.</small></div>
+<div class="scribble">AI가 알려주는<br>오늘 해야 할 공부! 🎓</div>
+</aside>
+</div>
+</section>
+
+<script>
+function show(id){
+ const target=document.getElementById(id);
+ if(!target){console.error("페이지를 찾을 수 없습니다:",id);return;}
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+ target.classList.add('active');
+ document.querySelectorAll('.position-fixed .btn-group .btn').forEach(btn=>{
+   const match=btn.getAttribute('onclick');
+   const isActive=match===`show('${id}')`;
+   btn.classList.toggle('btn-primary',isActive);
+   btn.classList.toggle('btn-light',!isActive);
+ });
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function recipe(){alert('실제 Spring AI 연동 시 /api/recipe/recommend 로 냉장고 재료를 전송하면 됩니다.');}
+function shopping(){alert('실제 상품 DB + pgVector 연동 시 /api/shopping/recommend 로 추천 결과를 받을 수 있습니다.');}
+</script>
+</body>
+</html>

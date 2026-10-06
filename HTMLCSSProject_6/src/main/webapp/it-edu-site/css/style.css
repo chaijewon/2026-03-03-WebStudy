@@ -1,0 +1,10 @@
+
+:root{--brand:#ff6b35;--dark:#111827;--muted:#6b7280;--line:#e5e7eb;--bg:#f7f7f5}
+body{font-family:Arial,"Noto Sans KR",sans-serif;color:#171717;background:#fff}.navbar{border-bottom:1px solid var(--line)}
+.brand{font-weight:900;font-size:21px}.brand span{color:var(--brand)}
+.hero{background:#111;color:#fff}.hero h1{font-size:clamp(42px,6vw,72px);font-weight:900;letter-spacing:-3px}
+.section{padding:80px 0}.title{font-weight:900;letter-spacing:-2px}.cardx{border:1px solid var(--line);border-radius:20px;background:#fff;overflow:hidden;height:100%;transition:.2s}.cardx:hover{transform:translateY(-4px);box-shadow:0 15px 35px #00000010}
+.cover{height:180px;object-fit:cover;width:100%}.btn-brand{background:var(--brand);color:#fff;border:0}.btn-brand:hover{background:#e95727;color:#fff}
+.side{min-height:calc(100vh - 73px);background:#111827;color:#cbd5e1}.side a{display:block;padding:12px 18px;color:#cbd5e1;text-decoration:none;border-radius:10px;margin:3px 10px}.side a:hover,.side a.active{background:#273244;color:#fff}
+.panel{border:1px solid var(--line);border-radius:18px;background:#fff;padding:24px}.stat{border:1px solid var(--line);border-radius:18px;padding:22px;background:#fff}.stat h2{font-weight:900}.badge-soft{background:#fff1eb;color:#e95727}.progress{height:8px}.table>:not(caption)>*>*{padding:15px 12px}.quiz{border:1px solid var(--line);border-radius:18px;padding:25px;background:#fff}.answer{border:1px solid var(--line);border-radius:12px;padding:13px;margin:9px 0}.answer:hover{background:#fafafa}
+footer{background:#111827;color:#9ca3af}.footer-link{color:#d1d5db;text-decoration:none}

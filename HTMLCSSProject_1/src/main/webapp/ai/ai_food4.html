@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI 맛집 추천</title>
+
+    <!-- =========================================================
+         Vue 3 CDN
+         ========================================================= -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+
+        /* =========================================================
+           기본
+           ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                    "Pretendard",
+                    "Noto Sans KR",
+                    Arial,
+                    sans-serif;
+
+            background: #f6f7fb;
+            color: #333;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+
+        /* =========================================================
+           Header
+           ========================================================= */
+
+        header {
+            height: 72px;
+
+            background: linear-gradient(
+                    135deg,
+                    #ff7a18,
+                    #ff4b2b
+            );
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+        }
+
+        .header-inner {
+            width: 1400px;
+            margin: 0 auto;
+
+            padding: 0 30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 900;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 12px;
+
+            background: white;
+            color: #ff5722;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================================
+           전체 영역
+           ========================================================= */
+
+        .container {
+            width: 1400px;
+            margin: 35px auto;
+
+            padding: 0 30px;
+
+            display: grid;
+
+            grid-template-columns:
+                    minmax(600px, 1.15fr)
+                    minmax(450px, .85fr);
+
+            gap: 25px;
+        }
+
+
+        /* =========================================================
+           카드
+           ========================================================= */
+
+        .card {
+            background: white;
+
+            border-radius: 22px;
+
+            padding: 28px;
+
+            box-shadow:
+                    0 8px 30px rgba(0, 0, 0, .06);
+
+            border: 1px solid #eee;
+        }
+
+        .card-title {
+            font-size: 23px;
+            font-weight: 900;
+
+            margin-bottom: 7px;
+        }
+
+        .card-description {
+            color: #888;
+            font-size: 14px;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================================================
+           조건 그룹
+           ========================================================= */
+
+        .condition-group {
+            margin-bottom: 28px;
+        }
+
+        .condition-title {
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 13px;
+
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .condition-title span {
+            font-size: 20px;
+        }
+
+        .condition-grid {
+            display: grid;
+
+            grid-template-columns:
+                    repeat(4, 1fr);
+
+            gap: 9px;
+        }
+
+
+        /* =========================================================
+           조건 버튼
+           ========================================================= */
+
+        .condition-btn {
+            min-height: 44px;
+
+            border: 1px solid #e7e7e7;
+
+            background: #fafafa;
+
+            border-radius: 12px;
+
+            padding: 9px 8px;
+
+            color: #555;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            transition:
+                    .2s ease;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+        }
+
+        .condition-btn:hover {
+            border-color: #ff7043;
+
+            background: #fff4ef;
+
+            color: #ff5722;
+
+            transform: translateY(-1px);
+        }
+
+        .condition-btn.selected {
+            background: linear-gradient(
+                    135deg,
+                    #ff7043,
+                    #ff4b2b
+            );
+
+            color: white;
+
+            border-color: #ff5722;
+
+            box-shadow:
+                    0 4px 12px rgba(255, 87, 34, .25);
+        }
+
+
+        /* =========================================================
+           선택 조건
+           ========================================================= */
+
+        .selected-box {
+            margin-top: 25px;
+
+            padding: 18px;
+
+            background: #fff8f4;
+
+            border: 1px solid #ffe0d2;
+
+            border-radius: 15px;
+        }
+
+        .selected-title {
+            font-size: 14px;
+            font-weight: 800;
+
+            margin-bottom: 12px;
+        }
+
+        .selected-list {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 7px;
+        }
+
+        .selected-item {
+            padding: 7px 11px;
+
+            border-radius: 30px;
+
+            background: #ff5722;
+
+            color: white;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .empty-selected {
+            color: #aaa;
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+           추천 버튼
+           ========================================================= */
+
+        .recommend-btn {
+            width: 100%;
+
+            margin-top: 18px;
+
+            height: 58px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #ff7a18,
+                            #ff4b2b
+                    );
+
+            color: white;
+
+            font-size: 17px;
+            font-weight: 900;
+
+            box-shadow:
+                    0 7px 18px rgba(255, 87, 34, .25);
+
+            transition: .2s;
+        }
+
+        .recommend-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                    0 10px 25px rgba(255, 87, 34, .35);
+        }
+
+        .recommend-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+
+            box-shadow: none;
+        }
+
+
+        /* =========================================================
+           오른쪽 결과
+           ========================================================= */
+
+        .result-card {
+            position: sticky;
+            top: 20px;
+
+            height: fit-content;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .result-count {
+            color: #ff5722;
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+
+        /* =========================================================
+           검색중
+           ========================================================= */
+
+        .loading {
+            min-height: 350px;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            color: #888;
+        }
+
+        .spinner {
+            width: 42px;
+            height: 42px;
+
+            border: 4px solid #eee;
+
+            border-top-color: #ff5722;
+
+            border-radius: 50%;
+
+            animation:
+                    spin 1s linear infinite;
+
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        /* =========================================================
+           결과 없음
+           ========================================================= */
+
+        .empty-result {
+            min-height: 350px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            color: #999;
+
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+
+            border-radius: 50%;
+
+            background: #fff1eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 38px;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* =========================================================
+           맛집 결과
+           ========================================================= */
+
+        .restaurant-list {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 15px;
+        }
+
+        .restaurant-item {
+            display: grid;
+
+            grid-template-columns:
+                    110px 1fr;
+
+            gap: 15px;
+
+            padding: 14px;
+
+            border: 1px solid #eee;
+
+            border-radius: 15px;
+
+            transition: .2s;
+        }
+
+        .restaurant-item:hover {
+            border-color: #ffb39b;
+
+            box-shadow:
+                    0 5px 18px rgba(0, 0, 0, .07);
+
+            transform: translateY(-2px);
+        }
+
+        .restaurant-image {
+            width: 110px;
+            height: 110px;
+
+            border-radius: 12px;
+
+            object-fit: cover;
+
+            background: #eee;
+        }
+
+        .restaurant-name {
+            font-size: 17px;
+
+            font-weight: 900;
+
+            margin-bottom: 7px;
+        }
+
+        .restaurant-type {
+            color: #ff5722;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-bottom: 7px;
+        }
+
+        .restaurant-address {
+            color: #777;
+
+            font-size: 12px;
+
+            margin-bottom: 8px;
+        }
+
+        .restaurant-info {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 7px;
+        }
+
+        .restaurant-tag {
+            padding: 4px 7px;
+
+            background: #f5f5f5;
+
+            border-radius: 5px;
+
+            font-size: 11px;
+
+            color: #666;
+        }
+
+        .score {
+            color: #ff5722;
+
+            font-weight: 900;
+        }
+
+
+        /* =========================================================
+           AI 추천 설명
+           ========================================================= */
+
+        .ai-message {
+            margin-bottom: 20px;
+
+            padding: 15px;
+
+            background: linear-gradient(
+                    135deg,
+                    #fff8f4,
+                    #fff1eb
+            );
+
+            border-radius: 13px;
+
+            border: 1px solid #ffe0d2;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            color: #555;
+        }
+
+        .ai-message strong {
+            color: #ff5722;
+        }
+
+
+        /* =========================================================
+           반응형
+           ========================================================= */
+
+        @media (max-width: 1100px) {
+
+            .container {
+                width: 100%;
+
+                grid-template-columns: 1fr;
+            }
+
+            .result-card {
+                position: static;
+            }
+        }
+
+
+        @media (max-width: 700px) {
+
+            .header-inner {
+                padding: 0 15px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .container {
+                margin: 20px auto;
+
+                padding: 0 12px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .condition-grid {
+                grid-template-columns:
+                        repeat(3, 1fr);
+            }
+
+            .restaurant-item {
+                grid-template-columns: 85px 1fr;
+            }
+
+            .restaurant-image {
+                width: 85px;
+                height: 85px;
+            }
+        }
+
+
+        @media (max-width: 480px) {
+
+            .condition-grid {
+                grid-template-columns:
+                        repeat(2, 1fr);
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div id="app">
+
+    <!-- =========================================================
+         HEADER
+         ========================================================= -->
+
+    <header>
+
+        <div class="header-inner">
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    AI
+                </div>
+
+                AI 맛집 추천
+
+            </div>
+
+            <nav>
+
+                <a href="/">HOME</a>
+
+                <a href="/restaurant/list">
+                    맛집
+                </a>
+
+                <a href="/restaurant/recommend">
+                    AI 추천
+                </a>
+
+                <a href="/member/mypage">
+                    MY PAGE
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         MAIN
+         ========================================================= -->
+
+    <main class="container">
+
+
+        <!-- =====================================================
+             왼쪽 : 조건 선택
+             ===================================================== -->
+
+        <section class="card">
+
+            <div class="card-title">
+                🍽️ AI 맛집 추천 조건
+            </div>
+
+            <div class="card-description">
+                현재 상황과 원하는 조건을 선택하면
+                AI가 가장 적합한 맛집을 추천합니다.
+            </div>
+
+
+            <!-- =================================================
+                 날씨
+                 ================================================= -->
+
+            <div class="condition-group">
+
+                <div class="condition-title">
+                    <span>🌤️</span>
+                    날씨
+                </div>
+
+                <div class="condition-grid">
+
+                    <button
+                            v-for="item in weatherConditions"
+                            :key="item"
+                            class="condition-btn"
+                            :class="{selected: isSelected(item)}"
+                            @click="toggleCondition(item)">
+
+                        {{ item }}
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 맛
+                 ================================================= -->
+
+            <div class="condition-group">
+
+                <div class="condition-title">
+                    <span>🌶️</span>
+                    맛
+                </div>
+
+                <div class="condition-grid">
+
+                    <button
+                            v-for="item in tasteConditions"
+                            :key="item"
+                            class="condition-btn"
+                            :class="{selected: isSelected(item)}"
+                            @click="toggleCondition(item)">
+
+                        {{ item }}
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 음식 종류
+                 ================================================= -->
+
+            <div class="condition-group">
+
+                <div class="condition-title">
+                    <span>🍚</span>
+                    음식 종류
+                </div>
+
+                <div class="condition-grid">
+
+                    <button
+                            v-for="item in foodConditions"
+                            :key="item"
+                            class="condition-btn"
+                            :class="{selected: isSelected(item)}"
+                            @click="toggleCondition(item)">
+
+                        {{ item }}
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 상황
+                 ================================================= -->
+
+            <div class="condition-group">
+
+                <div class="condition-title">
+                    <span>👥</span>
+                    상황
+                </div>
+
+                <div class="condition-grid">
+
+                    <button
+                            v-for="item in situationConditions"
+                            :key="item"
+                            class="condition-btn"
+                            :class="{selected: isSelected(item)}"
+                            @click="toggleCondition(item)">
+
+                        {{ item }}
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 분위기
+                 ================================================= -->
+
+            <div class="condition-group">
+
+                <div class="condition-title">
+                    <span>✨</span>
+                    분위기
+                </div>
+
+                <div class="condition-grid">
+
+                    <button
+                            v-for="item in atmosphereConditions"
+                            :key="item"
+                            class="condition-btn"
+                            :class="{selected: isSelected(item)}"
+                            @click="toggleCondition(item)">
+
+                        {{ item }}
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 가격
+                 ================================================= -->
+
+            <div class="condition-group">
+
+                <div class="condition-title">
+                    <span>💰</span>
+                    가격
+                </div>
+
+                <div class="condition-grid">
+
+                    <button
+                            v-for="item in priceConditions"
+                            :key="item"
+                            class="condition-btn"
+                            :class="{selected: isSelected(item)}"
+                            @click="toggleCondition(item)">
+
+                        {{ item }}
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 건강 / 식단
+                 ================================================= -->
+
+            <div class="condition-group">
+
+                <div class="condition-title">
+                    <span>🥗</span>
+                    건강 / 식단
+                </div>
+
+                <div class="condition-grid">
+
+                    <button
+                            v-for="item in healthConditions"
+                            :key="item"
+                            class="condition-btn"
+                            :class="{selected: isSelected(item)}"
+                            @click="toggleCondition(item)">
+
+                        {{ item }}
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 시간
+                 ================================================= -->
+
+            <div class="condition-group">
+
+                <div class="condition-title">
+                    <span>⏰</span>
+                    시간
+                </div>
+
+                <div class="condition-grid">
+
+                    <button
+                            v-for="item in timeConditions"
+                            :key="item"
+                            class="condition-btn"
+                            :class="{selected: isSelected(item)}"
+                            @click="toggleCondition(item)">
+
+                        {{ item }}
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 거리 / 이동
+                 ================================================= -->
+
+            <div class="condition-group">
+
+                <div class="condition-title">
+                    <span>🚗</span>
+                    거리 / 이동
+                </div>
+
+                <div class="condition-grid">
+
+                    <button
+                            v-for="item in distanceConditions"
+                            :key="item"
+                            class="condition-btn"
+                            :class="{selected: isSelected(item)}"
+                            @click="toggleCondition(item)">
+
+                        {{ item }}
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 편의시설
+                 ================================================= -->
+
+            <div class="condition-group">
+
+                <div class="condition-title">
+                    <span>🅿️</span>
+                    편의시설
+                </div>
+
+                <div class="condition-grid">
+
+                    <button
+                            v-for="item in facilityConditions"
+                            :key="item"
+                            class="condition-btn"
+                            :class="{selected: isSelected(item)}"
+                            @click="toggleCondition(item)">
+
+                        {{ item }}
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 선택 결과
+                 ================================================= -->
+
+            <div class="selected-box">
+
+                <div class="selected-title">
+                    선택한 조건
+                    {{ selectedConditions.length }}개
+                </div>
+
+                <div
+                        v-if="selectedConditions.length > 0"
+                        class="selected-list">
+
+                    <span
+                            v-for="item in selectedConditions"
+                            :key="item"
+                            class="selected-item">
+
+                        {{ item }}
+
+                    </span>
+
+                </div>
+
+                <div
+                        v-else
+                        class="empty-selected">
+
+                    원하는 조건을 선택해주세요.
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 추천 버튼
+                 ================================================= -->
+
+            <button
+                    class="recommend-btn"
+                    @click="recommendRestaurants"
+                    :disabled="loading">
+
+                <span v-if="!loading">
+                    🤖 AI 맛집 추천받기
+                </span>
+
+                <span v-else>
+                    🔎 AI가 맛집을 찾고 있습니다...
+                </span>
+
+            </button>
+
+        </section>
+
+
+        <!-- =====================================================
+             오른쪽 : 추천 결과
+             ===================================================== -->
+
+        <section class="card result-card">
+
+            <div class="result-header">
+
+                <div class="card-title">
+                    🍴 추천 맛집
+                </div>
+
+                <div
+                        v-if="restaurants.length > 0"
+                        class="result-count">
+
+                    {{ restaurants.length }}곳
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 AI 추천 메시지
+                 ================================================= -->
+
+            <div
+                    v-if="recommendationMessage"
+                    class="ai-message">
+
+                🤖
+                <strong>AI 추천 이유</strong>
+
+                <br>
+
+                {{ recommendationMessage }}
+
+            </div>
+
+
+            <!-- =================================================
+                 로딩
+                 ================================================= -->
+
+            <div
+                    v-if="loading"
+                    class="loading">
+
+                <div class="spinner"></div>
+
+                <div>
+                    AI가 선택 조건을 분석하고 있습니다.
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 결과 없음
+                 ================================================= -->
+
+            <div
+                    v-else-if="restaurants.length === 0"
+                    class="empty-result">
+
+                <div class="empty-icon">
+                    🍜
+                </div>
+
+                <div>
+                    원하는 조건을 선택하고
+                    <br>
+                    <strong>AI 맛집 추천받기</strong>
+                    버튼을 눌러주세요.
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 맛집 결과
+                 ================================================= -->
+
+            <div
+                    v-else
+                    class="restaurant-list">
+
+                <div
+                        v-for="restaurant in restaurants"
+                        :key="restaurant.no"
+                        class="restaurant-item">
+
+                    <img
+                            class="restaurant-image"
+                            :src="restaurant.poster || '/images/noimage.jpg'"
+                            :alt="restaurant.name">
+
+                    <div>
+
+                        <div class="restaurant-type">
+                            {{ restaurant.type }}
+                        </div>
+
+                        <div class="restaurant-name">
+                            {{ restaurant.name }}
+                        </div>
+
+                        <div class="restaurant-address">
+                            📍 {{ restaurant.address }}
+                        </div>
+
+                        <div class="restaurant-info">
+
+                            <span class="restaurant-tag">
+                                ⭐
+                                <span class="score">
+                                    {{ restaurant.score }}
+                                </span>
+                            </span>
+
+                            <span
+                                    v-if="restaurant.price"
+                                    class="restaurant-tag">
+
+                                💰 {{ restaurant.price }}
+
+                            </span>
+
+                            <span
+                                    v-if="restaurant.parking"
+                                    class="restaurant-tag">
+
+                                🚗 {{ restaurant.parking }}
+
+                            </span>
+
+                            <span
+                                    v-if="restaurant.time"
+                                    class="restaurant-tag">
+
+                                ⏰ {{ restaurant.time }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =============================================================
+     Vue 3
+     ============================================================= -->
+
+<script>
+
+const { createApp } = Vue;
+
+
+createApp({
+
+    /* =========================================================
+       data
+       ========================================================= */
+
+    data() {
+
+        return {
+
+            /* 선택된 조건 */
+            selectedConditions: [],
+
+            /* 검색 결과 */
+            restaurants: [],
+
+            /* AI 추천 메시지 */
+            recommendationMessage: "",
+
+            /* 로딩 */
+            loading: false,
+
+
+            /* =================================================
+               날씨
+               ================================================= */
+
+            weatherConditions: [
+
+                "☀️ 맑은 날",
+                "🌧️ 비오는 날",
+                "❄️ 눈오는 날",
+                "🥶 추운 날",
+                "🥵 더운 날",
+                "🌙 늦은 밤",
+                "🌅 아침",
+                "🌇 저녁",
+                "🌫️ 미세먼지 많은 날",
+                "🌬️ 바람 부는 날"
+
+            ],
+
+
+            /* =================================================
+               맛
+               ================================================= */
+
+            tasteConditions: [
+
+                "🌶️ 매운맛",
+                "🍯 달달한 맛",
+                "🧂 짭짤한 맛",
+                "🥜 고소한 맛",
+                "🍋 새콤한 맛",
+                "🥬 담백한 맛",
+                "🔥 뜨끈한 음식",
+                "🧊 시원한 음식",
+                "🍗 짭짤고소",
+                "🍅 새콤달콤",
+                "🧄 마늘맛",
+                "🌿 깔끔한 맛"
+
+            ],
+
+
+            /* =================================================
+               음식 종류
+               ================================================= */
+
+            foodConditions: [
+
+                "🍚 한식",
+                "🍣 일식",
+                "🥟 중식",
+                "🍝 양식",
+                "🍕 피자",
+                "🍔 햄버거",
+                "🍜 면요리",
+                "🍖 고기",
+                "🐟 해산물",
+                "🍲 찌개",
+                "🥘 전골",
+                "🥗 샐러드",
+                "🍛 덮밥",
+                "🍱 도시락",
+                "🍰 디저트",
+                "☕ 카페"
+
+            ],
+
+
+            /* =================================================
+               상황
+               ================================================= */
+
+            situationConditions: [
+
+                "🙋 혼밥",
+                "💑 데이트",
+                "👨‍👩‍👧 가족 외식",
+                "👬 친구 모임",
+                "🏢 직장인 회식",
+                "🎂 생일",
+                "💍 기념일",
+                "💘 소개팅",
+                "👨‍👩‍👧‍👦 가족 모임",
+                "🍻 술자리",
+                "🌙 야식",
+                "🍳 아침식사",
+                "🥪 간단한 식사",
+                "🍺 2차",
+                "🎉 단체 모임",
+                "🧑‍💻 혼술"
+
+            ],
+
+
+            /* =================================================
+               분위기
+               ================================================= */
+
+            atmosphereConditions: [
+
+                "💸 가성비",
+                "💎 고급 맛집",
+                "🔥 핫플",
+                "💎 숨은 맛집",
+                "📸 사진 맛집",
+                "🌿 분위기 좋은 곳",
+                "🌃 야경 좋은 곳",
+                "🌊 뷰 좋은 곳",
+                "🎵 음악 좋은 곳",
+                "🕯️ 조용한 곳",
+                "✨ 인테리어 예쁜 곳",
+                "📷 SNS 인기",
+                "🏠 아늑한 곳",
+                "🌳 야외 좌석",
+                "👨‍🍳 셰프 추천",
+                "⭐ 평점 높은 곳"
+
+            ],
+
+
+            /* =================================================
+               가격
+               ================================================= */
+
+            priceConditions: [
+
+                "💵 1만원 이하",
+                "💵 1~2만원",
+                "💰 2~3만원",
+                "💰 3~5만원",
+                "💎 5만원 이상",
+                "🤑 가성비 최고"
+
+            ],
+
+
+            /* =================================================
+               건강 / 식단
+               ================================================= */
+
+            healthConditions: [
+
+                "🥗 다이어트",
+                "💪 고단백",
+                "🥬 채식",
+                "🌱 비건",
+                "🍚 저탄수화물",
+                "🧂 저염식",
+                "🍬 당 줄인 음식",
+                "🥩 단백질 위주",
+                "🥗 건강식",
+                "🍃 신선한 재료"
+
+            ],
+
+
+            /* =================================================
+               시간
+               ================================================= */
+
+            timeConditions: [
+
+                "🌅 아침",
+                "☀️ 점심",
+                "🌇 저녁",
+                "🌙 야식",
+                "⏱️ 빠른 식사",
+                "🐢 여유로운 식사",
+                "🌃 늦게까지 영업",
+                "24시간"
+
+            ],
+
+
+            /* =================================================
+               거리
+               ================================================= */
+
+            distanceConditions: [
+
+                "🚶 도보 5분",
+                "🚶 도보 10분",
+                "🚶 도보 15분",
+                "🚗 차량 10분",
+                "🚗 차량 20분",
+                "📍 가까운 곳",
+                "🗺️ 조금 멀어도 OK",
+                "🚇 역 근처"
+
+            ],
+
+
+            /* =================================================
+               편의시설
+               ================================================= */
+
+            facilityConditions: [
+
+                "🅿️ 주차 가능",
+                "🚗 주차 편한 곳",
+                "🚇 지하철 근처",
+                "🚌 버스정류장 근처",
+                "🛗 엘리베이터",
+                "👶 유아 동반",
+                "🐶 반려동물 동반",
+                "♿ 장애인 편의",
+                "📶 와이파이",
+                "💻 노트북 가능",
+                "🔌 콘센트",
+                "🪑 넓은 좌석"
+
+            ]
+
+        }
+
+    },
+
+
+    /* =========================================================
+       methods
+       ========================================================= */
+
+    methods: {
+
+
+        /* =====================================================
+           조건 선택
+           ===================================================== */
+
+        toggleCondition(condition) {
+
+            const index =
+                this.selectedConditions.indexOf(condition);
+
+
+            if (index === -1) {
+
+                /*
+                 * 조건이 없으면 추가
+                 */
+
+                this.selectedConditions.push(condition);
+
+            } else {
+
+                /*
+                 * 이미 선택되어 있으면 제거
+                 */
+
+                this.selectedConditions.splice(
+                    index,
+                    1
+                );
+
+            }
+
+        },
+
+
+        /* =====================================================
+           선택 여부
+           ===================================================== */
+
+        isSelected(condition) {
+
+            return this.selectedConditions.includes(
+                condition
+            );
+
+        },
+
+
+        /* =====================================================
+           Spring Boot API 호출
+           ===================================================== */
+
+        async recommendRestaurants() {
+
+
+            /*
+             * 조건이 없는 경우
+             */
+
+            if (
+                this.selectedConditions.length === 0
+            ) {
+
+                alert(
+                    "최소 1개 이상의 조건을 선택해주세요."
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * 로딩 시작
+             */
+
+            this.loading = true;
+
+            this.restaurants = [];
+
+            this.recommendationMessage = "";
+
+
+            try {
+
+
+                /* =================================================
+                   Spring Boot REST API
+
+                   POST
+                   /restaurant/recommend
+
+                   JSON
+
+                   {
+                     "conditions": [
+                       "비오는 날",
+                       "매운맛",
+                       "혼밥"
+                     ]
+                   }
+
+                   ================================================= */
+
+                const response = await fetch(
+                    "/restaurant/recommend",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body: JSON.stringify({
+
+                            conditions:
+                                this.selectedConditions
+
+                        })
+
+                    }
+                );
+
+
+                /*
+                 * HTTP 오류 처리
+                 */
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "맛집 추천 API 호출 실패"
+                    );
+
+                }
+
+
+                /*
+                 * JSON 변환
+                 */
+
+                const data =
+                    await response.json();
+
+
+                /*
+                 * Spring Boot 응답 예
+
+                 {
+                    "message":
+                       "비오는 날에는 뜨끈한 국물요리를 추천합니다.",
+
+                    "restaurants": [...]
+                 }
+
+                 */
+
+                this.restaurants =
+                    data.restaurants || [];
+
+
+                this.recommendationMessage =
+                    data.message || "";
+
+
+            } catch (error) {
+
+                console.error(
+                    "AI 맛집 추천 오류:",
+                    error
+                );
+
+                alert(
+                    "맛집 추천 중 오류가 발생했습니다."
+                );
+
+
+            } finally {
+
+                /*
+                 * 로딩 종료
+                 */
+
+                this.loading = false;
+
+            }
+
+        }
+
+    }
+
+}).mount("#app");
+
+</script>
+
+</body>
+
+</html>

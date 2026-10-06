@@ -1,0 +1,2252 @@
+```html
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI LIFE | AI Experience</title>
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                "Pretendard",
+                "Noto Sans KR",
+                sans-serif;
+
+            background: #05060a;
+
+            color: #f7f8ff;
+
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =====================================================
+           BACKGROUND
+        ===================================================== */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            background:
+
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(98,85,255,.16),
+                    transparent 25%
+                ),
+
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(0,220,255,.10),
+                    transparent 25%
+                ),
+
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(255,0,170,.08),
+                    transparent 30%
+                );
+
+            z-index: -2;
+        }
+
+
+        /* =====================================================
+           GRID
+        ===================================================== */
+
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            opacity: .13;
+
+            background-image:
+
+                linear-gradient(
+                    rgba(255,255,255,.06) 1px,
+                    transparent 1px
+                ),
+
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,.06) 1px,
+                    transparent 1px
+                );
+
+            background-size: 70px 70px;
+
+            mask-image:
+                linear-gradient(
+                    to bottom,
+                    black,
+                    transparent 75%
+                );
+
+            z-index: -1;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        header {
+
+            height: 78px;
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            right: 0;
+
+            z-index: 1000;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.08);
+
+            background:
+                rgba(5,6,10,.72);
+
+            backdrop-filter:
+                blur(22px);
+
+        }
+
+
+        .header-inner {
+
+            max-width: 1450px;
+
+            height: 100%;
+
+            margin: auto;
+
+            padding: 0 30px;
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
+
+        .logo {
+
+            width: 220px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 21px;
+
+            font-weight: 900;
+
+            letter-spacing: -1px;
+
+        }
+
+
+        .logo-mark {
+
+            width: 35px;
+
+            height: 35px;
+
+            border-radius: 11px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 17px;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #635bff,
+                    #00d9ff,
+                    #ff43b5
+                );
+
+            box-shadow:
+
+                0 0 25px
+                rgba(95,92,255,.55);
+
+        }
+
+
+        .logo-text span {
+
+            color: #8d91ff;
+
+        }
+
+
+        /* =====================================================
+           NAV
+        ===================================================== */
+
+        nav {
+
+            height: 100%;
+
+            flex: 1;
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+        .nav-list {
+
+            height: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 4px;
+
+        }
+
+
+        .nav-item {
+
+            height: 100%;
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+        .nav-title {
+
+            height: 100%;
+
+            padding: 0 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            color: #a9aec1;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: .25s;
+
+        }
+
+
+        .nav-title:hover {
+
+            color: white;
+
+        }
+
+
+        /* =====================================================
+           MEGA MENU
+        ===================================================== */
+
+        .mega-menu {
+
+            position: absolute;
+
+            top: 77px;
+
+            left: 50%;
+
+            transform:
+                translateX(-50%)
+                translateY(12px);
+
+            width: 720px;
+
+            padding: 22px;
+
+            border:
+
+                1px solid
+                rgba(255,255,255,.10);
+
+            border-radius: 20px;
+
+            background:
+
+                rgba(15,17,27,.94);
+
+            backdrop-filter:
+
+                blur(25px);
+
+            box-shadow:
+
+                0 30px 80px
+                rgba(0,0,0,.55);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transition: .22s;
+
+        }
+
+
+        .nav-item:hover .mega-menu {
+
+            opacity: 1;
+
+            visibility: visible;
+
+            transform:
+                translateX(-50%)
+                translateY(0);
+
+        }
+
+
+        .mega-head {
+
+            padding: 5px 8px 18px;
+
+            border-bottom:
+
+                1px solid
+                rgba(255,255,255,.08);
+
+            margin-bottom: 14px;
+
+        }
+
+
+        .mega-head strong {
+
+            display: block;
+
+            font-size: 17px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .mega-head span {
+
+            color: #777d91;
+
+            font-size: 12px;
+
+        }
+
+
+        .mega-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap: 6px;
+
+        }
+
+
+        .mega-link {
+
+            padding: 13px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            transition: .2s;
+
+        }
+
+
+        .mega-link:hover {
+
+            background:
+                rgba(255,255,255,.06);
+
+            transform: translateX(4px);
+
+        }
+
+
+        .mega-icon {
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 11px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                rgba(99,91,255,.13);
+
+            border:
+                1px solid
+                rgba(99,91,255,.15);
+
+            font-size: 17px;
+
+        }
+
+
+        .mega-text strong {
+
+            display: block;
+
+            font-size: 13px;
+
+            margin-bottom: 3px;
+
+        }
+
+
+        .mega-text span {
+
+            font-size: 11px;
+
+            color: #747b90;
+
+        }
+
+
+        /* =====================================================
+           AUTH
+        ===================================================== */
+
+        .auth {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+        }
+
+
+        .login {
+
+            padding: 10px 15px;
+
+            color: #aab0c2;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .join {
+
+            padding: 10px 16px;
+
+            border-radius: 10px;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #615aff,
+                    #8e5bff
+                );
+
+            color: white;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            box-shadow:
+
+                0 0 20px
+                rgba(99,91,255,.25);
+
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+
+            min-height: 850px;
+
+            padding-top: 78px;
+
+            display: flex;
+
+            align-items: center;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+
+        .hero-inner {
+
+            max-width: 1450px;
+
+            width: 100%;
+
+            margin: auto;
+
+            padding: 90px 30px;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            align-items: center;
+
+            gap: 80px;
+
+        }
+
+
+        /* =====================================================
+           HERO TEXT
+        ===================================================== */
+
+        .eyebrow {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 7px 12px;
+
+            border-radius: 30px;
+
+            background:
+
+                rgba(99,91,255,.10);
+
+            border:
+
+                1px solid
+                rgba(99,91,255,.25);
+
+            color: #9b96ff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            margin-bottom: 24px;
+
+        }
+
+
+        .live-dot {
+
+            width: 6px;
+
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #00e5a0;
+
+            box-shadow:
+
+                0 0 12px
+                #00e5a0;
+
+        }
+
+
+        .hero h1 {
+
+            font-size:
+                clamp(48px,6vw,82px);
+
+            line-height: 1.02;
+
+            letter-spacing: -5px;
+
+            margin-bottom: 28px;
+
+        }
+
+
+        .gradient-text {
+
+            background:
+
+                linear-gradient(
+                    90deg,
+                    #8b84ff,
+                    #35dcff,
+                    #ff61bd
+                );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+        }
+
+
+        .hero-description {
+
+            color: #8e94a8;
+
+            font-size: 17px;
+
+            line-height: 1.8;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .hero-buttons {
+
+            display: flex;
+
+            gap: 10px;
+
+        }
+
+
+        .primary {
+
+            padding: 15px 22px;
+
+            border-radius: 12px;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #635bff,
+                    #8b5cff
+                );
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            box-shadow:
+
+                0 10px 35px
+                rgba(98,91,255,.30);
+
+        }
+
+
+        .secondary {
+
+            padding: 15px 22px;
+
+            border-radius: 12px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.10);
+
+            background:
+                rgba(255,255,255,.035);
+
+            color: #b8bdcc;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =====================================================
+           AI CORE
+        ===================================================== */
+
+        .ai-stage {
+
+            height: 520px;
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        .orbit {
+
+            position: absolute;
+
+            width: 390px;
+
+            height: 390px;
+
+            border:
+
+                1px solid
+                rgba(115,105,255,.22);
+
+            border-radius: 50%;
+
+            animation:
+                rotate 20s linear infinite;
+
+        }
+
+
+        .orbit::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 9px;
+
+            height: 9px;
+
+            border-radius: 50%;
+
+            background: #35ddff;
+
+            box-shadow:
+
+                0 0 20px
+                #35ddff;
+
+            top: 10px;
+
+            left: 50%;
+
+        }
+
+
+        .orbit2 {
+
+            width: 470px;
+
+            height: 470px;
+
+            border-color:
+                rgba(255,90,190,.12);
+
+            animation-duration: 28s;
+
+            animation-direction: reverse;
+
+        }
+
+
+        @keyframes rotate {
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        .core {
+
+            width: 230px;
+
+            height: 230px;
+
+            border-radius: 50%;
+
+            background:
+
+                radial-gradient(
+                    circle at 32% 25%,
+                    white,
+                    #b9b2ff 16%,
+                    #655bff 48%,
+                    #00d9ff 75%,
+                    #ff4eaf
+                );
+
+            box-shadow:
+
+                0 0 80px
+                rgba(105,91,255,.45),
+
+                inset
+                -20px -20px 50px
+                rgba(255,255,255,.15);
+
+            animation:
+
+                pulse 4s ease-in-out infinite;
+
+        }
+
+
+        @keyframes pulse {
+
+            0%,100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+        }
+
+
+        /* =====================================================
+           FLOATING AI CARDS
+        ===================================================== */
+
+        .ai-card {
+
+            position: absolute;
+
+            padding: 14px 16px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(17,19,30,.80);
+
+            backdrop-filter:
+                blur(15px);
+
+            border:
+                1px solid
+                rgba(255,255,255,.10);
+
+            box-shadow:
+
+                0 20px 50px
+                rgba(0,0,0,.35);
+
+        }
+
+
+        .ai-card strong {
+
+            display: block;
+
+            font-size: 12px;
+
+            margin-bottom: 4px;
+
+        }
+
+
+        .ai-card span {
+
+            color: #747b91;
+
+            font-size: 10px;
+
+        }
+
+
+        .aic1 {
+
+            top: 55px;
+
+            left: 0;
+
+        }
+
+
+        .aic2 {
+
+            top: 130px;
+
+            right: 0;
+
+        }
+
+
+        .aic3 {
+
+            bottom: 60px;
+
+            left: 40px;
+
+        }
+
+
+        .aic4 {
+
+            bottom: 90px;
+
+            right: 30px;
+
+        }
+
+
+        /* =====================================================
+           EXPERIENCE SECTION
+        ===================================================== */
+
+        .section {
+
+            max-width: 1450px;
+
+            margin: auto;
+
+            padding: 110px 30px;
+
+        }
+
+
+        .section-head {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: end;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .section-label {
+
+            color: #817aff;
+
+            font-size: 11px;
+
+            font-weight: 900;
+
+            letter-spacing: 2px;
+
+        }
+
+
+        .section h2 {
+
+            font-size: 38px;
+
+            letter-spacing: -2px;
+
+            margin-top: 9px;
+
+        }
+
+
+        .section-description {
+
+            color: #737a8e;
+
+            font-size: 13px;
+
+            margin-top: 8px;
+
+        }
+
+
+        .view-all {
+
+            color: #898fff;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =====================================================
+           EXPERIENCE CARDS
+        ===================================================== */
+
+        .experience-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 14px;
+
+        }
+
+
+        .experience {
+
+            min-height: 220px;
+
+            padding: 24px;
+
+            border-radius: 18px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
+
+            background:
+
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.045),
+                    rgba(255,255,255,.015)
+                );
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition: .3s;
+
+        }
+
+
+        .experience::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 120px;
+
+            height: 120px;
+
+            border-radius: 50%;
+
+            right: -50px;
+
+            bottom: -50px;
+
+            background:
+                rgba(99,91,255,.16);
+
+            filter: blur(25px);
+
+        }
+
+
+        .experience:hover {
+
+            transform:
+                translateY(-7px);
+
+            border-color:
+
+                rgba(125,115,255,.35);
+
+            box-shadow:
+
+                0 20px 60px
+                rgba(0,0,0,.25);
+
+        }
+
+
+        .experience-icon {
+
+            width: 48px;
+
+            height: 48px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background:
+                rgba(99,91,255,.12);
+
+            border:
+                1px solid
+                rgba(99,91,255,.18);
+
+            font-size: 21px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .experience h3 {
+
+            font-size: 16px;
+
+            margin-bottom: 9px;
+
+        }
+
+
+        .experience p {
+
+            color: #747b8e;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+        }
+
+
+        .arrow {
+
+            position: absolute;
+
+            right: 20px;
+
+            bottom: 20px;
+
+            color: #7770ff;
+
+        }
+
+
+        /* =====================================================
+           LIVE ACTIVITY
+        ===================================================== */
+
+        .activity {
+
+            margin-top: 18px;
+
+            padding: 15px 20px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,255,255,.025);
+
+            border:
+                1px solid
+                rgba(255,255,255,.06);
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            color: #777e91;
+
+            font-size: 11px;
+
+        }
+
+
+        .activity-dot {
+
+            width: 7px;
+
+            height: 7px;
+
+            background: #00e3a0;
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 12px #00e3a0;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media(max-width:1050px) {
+
+            .experience-grid {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+
+            }
+
+            .hero-inner {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .ai-stage {
+
+                height: 430px;
+
+            }
+
+        }
+
+
+        @media(max-width:700px) {
+
+            .logo {
+
+                width: auto;
+
+            }
+
+            nav {
+
+                display: none;
+
+            }
+
+            .hero {
+
+                min-height: 760px;
+
+            }
+
+            .hero-inner {
+
+                text-align: center;
+
+            }
+
+            .hero-buttons {
+
+                justify-content: center;
+
+            }
+
+            .experience-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .section-head {
+
+                display: block;
+
+            }
+
+            .view-all {
+
+                display: inline-block;
+
+                margin-top: 15px;
+
+            }
+
+            .ai-stage {
+
+                transform: scale(.75);
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <div class="header-inner">
+
+
+        <a href="/" class="logo">
+
+            <div class="logo-mark">
+                AI
+            </div>
+
+            <div class="logo-text">
+                AI <span>LIFE</span>
+            </div>
+
+        </a>
+
+
+        <nav>
+
+            <div class="nav-list">
+
+
+                <!-- MAIN -->
+
+                <div class="nav-item">
+
+                    <a href="/"
+                       class="nav-title">
+
+                        HOME
+
+                    </a>
+
+                </div>
+
+
+                <!-- AI EXPERIENCE -->
+
+                <div class="nav-item">
+
+                    <div class="nav-title">
+
+                        🤖 AI EXPERIENCE
+                        <span>⌄</span>
+
+                    </div>
+
+
+                    <div class="mega-menu">
+
+                        <div class="mega-head">
+
+                            <strong>
+                                AI EXPERIENCE
+                            </strong>
+
+                            <span>
+                                지금 가장 재미있는 AI를 직접 경험해 보세요.
+                            </span>
+
+                        </div>
+
+
+                        <div class="mega-grid">
+
+
+                            <a class="mega-link"
+                               href="/experience/question">
+
+                                <div class="mega-icon">
+                                    🤖
+                                </div>
+
+                                <div class="mega-text">
+
+                                    <strong>
+                                        AI 질문
+                                    </strong>
+
+                                    <span>
+                                        AI와 자유롭게 대화하기
+                                    </span>
+
+                                </div>
+
+                            </a>
+
+
+                            <a class="mega-link"
+                               href="/experience/recipe">
+
+                                <div class="mega-icon">
+                                    🍳
+                                </div>
+
+                                <div class="mega-text">
+
+                                    <strong>
+                                        AI 레시피
+                                    </strong>
+
+                                    <span>
+                                        냉장고 재료로 레시피 만들기
+                                    </span>
+
+                                </div>
+
+                            </a>
+
+
+                            <a class="mega-link"
+                               href="/experience/restaurant">
+
+                                <div class="mega-icon">
+                                    🍜
+                                </div>
+
+                                <div class="mega-text">
+
+                                    <strong>
+                                        AI 맛집
+                                    </strong>
+
+                                    <span>
+                                        취향에 맞는 맛집 찾기
+                                    </span>
+
+                                </div>
+
+                            </a>
+
+
+                            <a class="mega-link"
+                               href="/experience/travel">
+
+                                <div class="mega-icon">
+                                    ✈️
+                                </div>
+
+                                <div class="mega-text">
+
+                                    <strong>
+                                        AI 여행
+                                    </strong>
+
+                                    <span>
+                                        나만의 여행 코스 만들기
+                                    </span>
+
+                                </div>
+
+                            </a>
+
+
+                            <a class="mega-link"
+                               href="/experience/resume">
+
+                                <div class="mega-icon">
+                                    📄
+                                </div>
+
+                                <div class="mega-text">
+
+                                    <strong>
+                                        AI 자기소개서
+                                    </strong>
+
+                                    <span>
+                                        나의 경험을 AI로 정리하기
+                                    </span>
+
+                                </div>
+
+                            </a>
+
+
+                            <a class="mega-link"
+                               href="/experience/interview">
+
+                                <div class="mega-icon">
+                                    🎤
+                                </div>
+
+                                <div class="mega-text">
+
+                                    <strong>
+                                        AI 면접
+                                    </strong>
+
+                                    <span>
+                                        AI와 모의면접 경험하기
+                                    </span>
+
+                                </div>
+
+                            </a>
+
+
+                            <a class="mega-link"
+                               href="/experience/development">
+
+                                <div class="mega-icon">
+                                    🧑‍💻
+                                </div>
+
+                                <div class="mega-text">
+
+                                    <strong>
+                                        AI 개발
+                                    </strong>
+
+                                    <span>
+                                        AI 서비스 개발을 체험하기
+                                    </span>
+
+                                </div>
+
+                            </a>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REVIEW -->
+
+                <div class="nav-item">
+
+                    <div class="nav-title">
+
+                        💬 REVIEW
+                        <span>⌄</span>
+
+                    </div>
+
+
+                    <div class="mega-menu"
+                         style="width:360px;">
+
+                        <div class="mega-head">
+
+                            <strong>
+                                EXPERIENCE REVIEW
+                            </strong>
+
+                            <span>
+                                다른 사람들이 직접 경험한 이야기
+                            </span>
+
+                        </div>
+
+
+                        <a class="mega-link"
+                           href="/review">
+
+                            <div class="mega-icon">
+                                💬
+                            </div>
+
+                            <div class="mega-text">
+
+                                <strong>
+                                    전체 후기
+                                </strong>
+
+                                <span>
+                                    모든 체험 후기
+                                </span>
+
+                            </div>
+
+                        </a>
+
+
+                        <a class="mega-link"
+                           href="/review/experience">
+
+                            <div class="mega-icon">
+                                🤖
+                            </div>
+
+                            <div class="mega-text">
+
+                                <strong>
+                                    체험별 후기
+                                </strong>
+
+                                <span>
+                                    AI 체험별 후기
+                                </span>
+
+                            </div>
+
+                        </a>
+
+
+                        <a class="mega-link"
+                           href="/review/best">
+
+                            <div class="mega-icon">
+                                🏆
+                            </div>
+
+                            <div class="mega-text">
+
+                                <strong>
+                                    베스트 후기
+                                </strong>
+
+                                <span>
+                                    가장 인기 있는 후기
+                                </span>
+
+                            </div>
+
+                        </a>
+
+
+                        <a class="mega-link"
+                           href="/review/write">
+
+                            <div class="mega-icon">
+                                ✏️
+                            </div>
+
+                            <div class="mega-text">
+
+                                <strong>
+                                    후기 작성
+                                </strong>
+
+                                <span>
+                                    나의 AI 체험 남기기
+                                </span>
+
+                            </div>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- COMMUNITY -->
+
+                <div class="nav-item">
+
+                    <div class="nav-title">
+
+                        📋 COMMUNITY
+                        <span>⌄</span>
+
+                    </div>
+
+
+                    <div class="mega-menu"
+                         style="width:400px;">
+
+                        <div class="mega-head">
+
+                            <strong>
+                                COMMUNITY
+                            </strong>
+
+                            <span>
+                                AI를 경험한 사람들과 이야기해 보세요.
+                            </span>
+
+                        </div>
+
+
+                        <a class="mega-link"
+                           href="/board/question">
+
+                            <div class="mega-icon">
+                                ❓
+                            </div>
+
+                            <div class="mega-text">
+
+                                <strong>
+                                    체험 질문
+                                </strong>
+
+                                <span>
+                                    AI 체험에 대해 질문하기
+                                </span>
+
+                            </div>
+
+                        </a>
+
+
+                        <a class="mega-link"
+                           href="/board/share">
+
+                            <div class="mega-icon">
+                                📤
+                            </div>
+
+                            <div class="mega-text">
+
+                                <strong>
+                                    체험 결과 공유
+                                </strong>
+
+                                <span>
+                                    재미있는 AI 결과 공유
+                                </span>
+
+                            </div>
+
+                        </a>
+
+
+                        <a class="mega-link"
+                           href="/board/free">
+
+                            <div class="mega-icon">
+                                💬
+                            </div>
+
+                            <div class="mega-text">
+
+                                <strong>
+                                    자유게시판
+                                </strong>
+
+                                <span>
+                                    자유롭게 이야기하기
+                                </span>
+
+                            </div>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PROJECT -->
+
+                <div class="nav-item">
+
+                    <a href="/project"
+                       class="nav-title">
+
+                        🎯 PROJECT
+
+                    </a>
+
+                </div>
+
+
+                <!-- COURSE -->
+
+                <div class="nav-item">
+
+                    <a href="/course"
+                       class="nav-title">
+
+                        📚 COURSE
+
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        </nav>
+
+
+        <div class="auth">
+
+            <a href="/member/login"
+               class="login">
+
+                LOGIN
+
+            </a>
+
+            <a href="/member/join"
+               class="join">
+
+                GET STARTED
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<main>
+
+    <section class="hero">
+
+
+        <div class="hero-inner">
+
+
+            <div>
+
+
+                <div class="eyebrow">
+
+                    <span class="live-dot"></span>
+
+                    AI EXPERIENCE CENTER
+
+                    · LIVE
+
+                </div>
+
+
+                <h1>
+
+                    AI를 배우기 전에<br>
+
+                    <span class="gradient-text">
+                        직접 경험하세요.
+                    </span>
+
+                </h1>
+
+
+                <p class="hero-description">
+
+                    AI에게 질문하고,<br>
+
+                    나만의 레시피를 만들고,<br>
+
+                    여행과 맛집을 추천받고,<br>
+
+                    AI 면접까지 직접 경험해 보세요.
+
+                </p>
+
+
+                <div class="hero-buttons">
+
+                    <a href="/experience"
+                       class="primary">
+
+                        🤖 EXPLORE AI
+
+                    </a>
+
+
+                    <a href="/review"
+                       class="secondary">
+
+                        💬 실제 체험 후기
+
+                    </a>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- AI CORE -->
+
+            <div class="ai-stage">
+
+
+                <div class="orbit"></div>
+
+                <div class="orbit orbit2"></div>
+
+
+                <div class="core"></div>
+
+
+                <div class="ai-card aic1">
+
+                    <strong>
+                        🤖 AI Question
+                    </strong>
+
+                    <span>
+                        AI와 대화 중...
+                    </span>
+
+                </div>
+
+
+                <div class="ai-card aic2">
+
+                    <strong>
+                        🍳 AI Recipe
+                    </strong>
+
+                    <span>
+                        새로운 레시피 생성
+                    </span>
+
+                </div>
+
+
+                <div class="ai-card aic3">
+
+                    <strong>
+                        🍜 AI Restaurant
+                    </strong>
+
+                    <span>
+                        취향 분석 완료
+                    </span>
+
+                </div>
+
+
+                <div class="ai-card aic4">
+
+                    <strong>
+                        🎤 AI Interview
+                    </strong>
+
+                    <span>
+                        질문을 준비하고 있습니다
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         EXPERIENCE
+    ================================================= -->
+
+    <section class="section">
+
+
+        <div class="section-head">
+
+
+            <div>
+
+                <div class="section-label">
+                    AI EXPERIENCE
+                </div>
+
+                <h2>
+                    무엇부터 경험해 볼까요?
+                </h2>
+
+                <p class="section-description">
+
+                    복잡한 설명보다 직접 경험하는 것이 가장 빠릅니다.
+
+                </p>
+
+            </div>
+
+
+            <a href="/experience"
+               class="view-all">
+
+                모든 체험 보기 →
+
+            </a>
+
+        </div>
+
+
+        <div class="experience-grid">
+
+
+            <a href="/experience/question"
+               class="experience">
+
+                <div class="experience-icon">
+                    🤖
+                </div>
+
+                <h3>
+                    AI 질문
+                </h3>
+
+                <p>
+                    무엇이든 질문하고
+                    AI의 답변을 직접 확인해 보세요.
+                </p>
+
+                <div class="arrow">
+                    ↗
+                </div>
+
+            </a>
+
+
+            <a href="/experience/recipe"
+               class="experience">
+
+                <div class="experience-icon">
+                    🍳
+                </div>
+
+                <h3>
+                    AI 레시피
+                </h3>
+
+                <p>
+                    냉장고 속 재료를 입력하면
+                    AI가 요리를 만들어 줍니다.
+                </p>
+
+                <div class="arrow">
+                    ↗
+                </div>
+
+            </a>
+
+
+            <a href="/experience/restaurant"
+               class="experience">
+
+                <div class="experience-icon">
+                    🍜
+                </div>
+
+                <h3>
+                    AI 맛집
+                </h3>
+
+                <p>
+                    나의 취향을 분석해
+                    AI가 맛집을 추천합니다.
+                </p>
+
+                <div class="arrow">
+                    ↗
+                </div>
+
+            </a>
+
+
+            <a href="/experience/travel"
+               class="experience">
+
+                <div class="experience-icon">
+                    ✈️
+                </div>
+
+                <h3>
+                    AI 여행
+                </h3>
+
+                <p>
+                    원하는 분위기와 취향으로
+                    여행 코스를 만들어 보세요.
+                </p>
+
+                <div class="arrow">
+                    ↗
+                </div>
+
+            </a>
+
+
+            <a href="/experience/resume"
+               class="experience">
+
+                <div class="experience-icon">
+                    📄
+                </div>
+
+                <h3>
+                    AI 자기소개서
+                </h3>
+
+                <p>
+                    나의 경험을 입력하고
+                    AI의 도움을 받아 정리해 보세요.
+                </p>
+
+                <div class="arrow">
+                    ↗
+                </div>
+
+            </a>
+
+
+            <a href="/experience/interview"
+               class="experience">
+
+                <div class="experience-icon">
+                    🎤
+                </div>
+
+                <h3>
+                    AI 면접
+                </h3>
+
+                <p>
+                    AI 면접관과
+                    실제 면접처럼 대화해 보세요.
+                </p>
+
+                <div class="arrow">
+                    ↗
+                </div>
+
+            </a>
+
+
+            <a href="/experience/development"
+               class="experience">
+
+                <div class="experience-icon">
+                    🧑‍💻
+                </div>
+
+                <h3>
+                    AI 개발
+                </h3>
+
+                <p>
+                    AI 서비스가 어떻게 만들어지는지
+                    직접 경험해 보세요.
+                </p>
+
+                <div class="arrow">
+                    ↗
+                </div>
+
+            </a>
+
+
+            <a href="/project"
+               class="experience">
+
+                <div class="experience-icon">
+                    🚀
+                </div>
+
+                <h3>
+                    AI Project
+                </h3>
+
+                <p>
+                    실제 AI 서비스를
+                    프로젝트 형태로 만나보세요.
+                </p>
+
+                <div class="arrow">
+                    ↗
+                </div>
+
+            </a>
+
+
+        </div>
+
+
+        <div class="activity">
+
+            <span class="activity-dot"></span>
+
+            <span>
+                LIVE
+            </span>
+
+            지금 이 순간에도 새로운 사용자가
+            AI 체험을 시작하고 있습니다.
+
+        </div>
+
+
+    </section>
+
+</main>
+
+</body>
+
+</html>
+```

@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI LIFE | AI 체험관</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family:
+                "Pretendard",
+                "Noto Sans KR",
+                Arial,
+                sans-serif;
+
+            background: #f7f8fc;
+            color: #20243a;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* ==================================================
+           HEADER
+        ================================================== */
+
+        header {
+
+            height: 76px;
+
+            background: rgba(255,255,255,.94);
+
+            backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid #eceef5;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+        }
+
+
+        .header-inner {
+
+            max-width: 1350px;
+
+            height: 100%;
+
+            margin: auto;
+
+            padding: 0 25px;
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+        /* ==================================================
+           LOGO
+        ================================================== */
+
+        .logo {
+
+            width: 210px;
+
+            font-size: 25px;
+
+            font-weight: 900;
+
+            letter-spacing: -1px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #5c5af2,
+                    #9b55f6,
+                    #ff5c9d
+                );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+        }
+
+
+        /* ==================================================
+           NAV
+        ================================================== */
+
+        nav {
+
+            height: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            flex: 1;
+
+        }
+
+
+        .menu {
+
+            height: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+        .menu-item {
+
+            position: relative;
+
+            height: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+        .menu-title {
+
+            height: 100%;
+
+            padding: 0 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            color: #555c70;
+
+            cursor: pointer;
+
+            transition: .25s;
+
+        }
+
+
+        .menu-title:hover {
+
+            color: #645cf0;
+
+        }
+
+
+        /* ==================================================
+           DROPDOWN
+        ================================================== */
+
+        .dropdown {
+
+            position: absolute;
+
+            top: 75px;
+
+            left: 50%;
+
+            transform:
+                translateX(-50%)
+                translateY(10px);
+
+            width: 245px;
+
+            padding: 12px;
+
+            background: white;
+
+            border-radius: 18px;
+
+            border: 1px solid #eceef5;
+
+            box-shadow:
+                0 20px 45px
+                rgba(31,36,65,.13);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transition: .22s ease;
+
+        }
+
+
+        .menu-item:hover .dropdown {
+
+            opacity: 1;
+
+            visibility: visible;
+
+            transform:
+                translateX(-50%)
+                translateY(0);
+
+        }
+
+
+        .dropdown-title {
+
+            padding: 12px 12px 8px;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            color: #9a9faf;
+
+        }
+
+
+        .dropdown a {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 12px;
+
+            border-radius: 11px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            color: #50576a;
+
+            transition: .2s;
+
+        }
+
+
+        .dropdown a:hover {
+
+            background: #f4f3ff;
+
+            color: #6359ec;
+
+            transform: translateX(3px);
+
+        }
+
+
+        .dropdown-icon {
+
+            width: 30px;
+
+            height: 30px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: #f3f2ff;
+
+            font-size: 15px;
+
+        }
+
+
+        /* ==================================================
+           MEGA DROPDOWN
+           AI 체험
+        ================================================== */
+
+        .mega {
+
+            width: 650px;
+
+            padding: 20px;
+
+        }
+
+
+        .mega-header {
+
+            padding: 5px 10px 17px;
+
+            border-bottom: 1px solid #eef0f5;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .mega-header strong {
+
+            display: block;
+
+            font-size: 17px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .mega-header span {
+
+            color: #9298a8;
+
+            font-size: 12px;
+
+        }
+
+
+        .experience-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 5px;
+
+        }
+
+
+        /* ==================================================
+           RIGHT MENU
+        ================================================== */
+
+        .auth {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-left: auto;
+
+        }
+
+
+        .login {
+
+            padding: 10px 16px;
+
+            border: 1px solid #e3e5ed;
+
+            border-radius: 11px;
+
+            background: white;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+        }
+
+
+        .join {
+
+            padding: 11px 17px;
+
+            border-radius: 11px;
+
+            background: #6058eb;
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+        }
+
+
+        /* ==================================================
+           HERO
+        ================================================== */
+
+        .hero {
+
+            min-height: 570px;
+
+            display: flex;
+
+            align-items: center;
+
+            background:
+
+                radial-gradient(
+                    circle at 10% 20%,
+                    rgba(104,91,245,.16),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(255,90,164,.14),
+                    transparent 30%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #f7f7ff,
+                    #ffffff
+                );
+
+        }
+
+
+        .hero-inner {
+
+            max-width: 1250px;
+
+            width: 100%;
+
+            margin: auto;
+
+            padding: 90px 25px;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 60px;
+
+            align-items: center;
+
+        }
+
+
+        .badge {
+
+            display: inline-block;
+
+            padding: 8px 14px;
+
+            border-radius: 30px;
+
+            background: #eeedff;
+
+            color: #6259ed;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .hero h1 {
+
+            font-size:
+                clamp(43px,5vw,68px);
+
+            line-height: 1.1;
+
+            letter-spacing: -3px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .hero h1 span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #5d5bef,
+                    #9d54f4,
+                    #ff5d9e
+                );
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+        }
+
+
+        .hero p {
+
+            color: #71798c;
+
+            font-size: 18px;
+
+            line-height: 1.7;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .hero-btn {
+
+            display: inline-flex;
+
+            padding: 15px 23px;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6259ed,
+                    #8d59f5
+                );
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 12px 25px
+                rgba(92,86,230,.25);
+
+        }
+
+
+        /* ==================================================
+           AI VISUAL
+        ================================================== */
+
+        .visual {
+
+            height: 380px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            position: relative;
+
+        }
+
+
+        .ai-orb {
+
+            width: 270px;
+
+            height: 270px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle at 30% 25%,
+                    white,
+                    #c9c4ff 22%,
+                    #765df0 55%,
+                    #ff72af
+                );
+
+            box-shadow:
+                0 0 90px
+                rgba(108,89,239,.35);
+
+            animation:
+                floating 5s ease-in-out infinite;
+
+        }
+
+
+        @keyframes floating {
+
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-18px);
+            }
+
+        }
+
+
+        .floating {
+
+            position: absolute;
+
+            padding: 14px 18px;
+
+            background:
+                rgba(255,255,255,.9);
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 15px 35px
+                rgba(40,45,70,.12);
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+        }
+
+
+        .f1 {
+
+            top: 20px;
+
+            left: 15px;
+
+        }
+
+
+        .f2 {
+
+            right: 0;
+
+            top: 100px;
+
+        }
+
+
+        .f3 {
+
+            bottom: 25px;
+
+            left: 30px;
+
+        }
+
+
+        /* ==================================================
+           CONTENT
+        ================================================== */
+
+        .content {
+
+            max-width: 1250px;
+
+            margin: auto;
+
+            padding: 90px 25px;
+
+        }
+
+
+        .title {
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .title small {
+
+            color: #6359ec;
+
+            font-weight: 800;
+
+            font-size: 12px;
+
+        }
+
+
+        .title h2 {
+
+            margin-top: 8px;
+
+            font-size: 33px;
+
+            letter-spacing: -1px;
+
+        }
+
+
+        .title p {
+
+            margin-top: 8px;
+
+            color: #858c9c;
+
+        }
+
+
+        /* ==================================================
+           EXPERIENCE CARD
+        ================================================== */
+
+        .cards {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 20px;
+
+        }
+
+
+        .card {
+
+            padding: 27px;
+
+            min-height: 220px;
+
+            border-radius: 22px;
+
+            background: white;
+
+            border: 1px solid #eceef5;
+
+            transition: .3s;
+
+        }
+
+
+        .card:hover {
+
+            transform: translateY(-7px);
+
+            box-shadow:
+                0 20px 45px
+                rgba(40,45,75,.1);
+
+        }
+
+
+        .icon {
+
+            width: 50px;
+
+            height: 50px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 15px;
+
+            background: #f0efff;
+
+            font-size: 24px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .card h3 {
+
+            margin-bottom: 10px;
+
+            font-size: 18px;
+
+        }
+
+
+        .card p {
+
+            color: #788092;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+        }
+
+
+        /* ==================================================
+           MOBILE
+        ================================================== */
+
+        @media(max-width:950px) {
+
+            nav {
+
+                display: none;
+
+            }
+
+            .hero-inner {
+
+                grid-template-columns: 1fr;
+
+                text-align: center;
+
+            }
+
+            .cards {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .logo {
+
+                width: auto;
+
+            }
+
+            .mega {
+
+                width: 90vw;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <div class="header-inner">
+
+
+        <!-- LOGO -->
+
+        <a href="/" class="logo">
+
+            AI LIFE AI 체험관
+
+        </a>
+
+
+        <!-- NAV -->
+
+        <nav>
+
+            <div class="menu">
+
+
+                <!-- ==============================
+                     메인
+                =============================== -->
+
+                <div class="menu-item">
+
+                    <a href="/"
+                       class="menu-title">
+
+                        🏠 메인
+
+                    </a>
+
+                </div>
+
+
+                <!-- ==============================
+                     AI 체험
+                =============================== -->
+
+                <div class="menu-item">
+
+                    <span class="menu-title">
+
+                        🤖 AI 체험
+                        <small>⌄</small>
+
+                    </span>
+
+
+                    <div class="dropdown mega">
+
+
+                        <div class="mega-header">
+
+                            <strong>
+                                🤖 AI 체험
+                            </strong>
+
+                            <span>
+                                재미있는 AI를 직접 경험해 보세요.
+                            </span>
+
+                        </div>
+
+
+                        <div class="experience-grid">
+
+
+                            <a href="/experience/question">
+
+                                <div class="dropdown-icon">
+                                    🤖
+                                </div>
+
+                                AI 질문
+
+                            </a>
+
+
+                            <a href="/experience/recipe">
+
+                                <div class="dropdown-icon">
+                                    🍳
+                                </div>
+
+                                AI 레시피
+
+                            </a>
+
+
+                            <a href="/experience/restaurant">
+
+                                <div class="dropdown-icon">
+                                    🍜
+                                </div>
+
+                                AI 맛집
+
+                            </a>
+
+
+                            <a href="/experience/travel">
+
+                                <div class="dropdown-icon">
+                                    ✈️
+                                </div>
+
+                                AI 여행
+
+                            </a>
+
+
+                            <a href="/experience/resume">
+
+                                <div class="dropdown-icon">
+                                    📄
+                                </div>
+
+                                AI 자기소개서
+
+                            </a>
+
+
+                            <a href="/experience/interview">
+
+                                <div class="dropdown-icon">
+                                    🎤
+                                </div>
+
+                                AI 면접
+
+                            </a>
+
+
+                            <a href="/experience/development">
+
+                                <div class="dropdown-icon">
+                                    🧑‍💻
+                                </div>
+
+                                AI 개발
+
+                            </a>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==============================
+                     체험 후기
+                =============================== -->
+
+                <div class="menu-item">
+
+                    <span class="menu-title">
+
+                        💬 체험 후기
+                        <small>⌄</small>
+
+                    </span>
+
+
+                    <div class="dropdown">
+
+
+                        <div class="dropdown-title">
+
+                            EXPERIENCE REVIEW
+
+                        </div>
+
+
+                        <a href="/review">
+
+                            <div class="dropdown-icon">
+                                💬
+                            </div>
+
+                            전체 후기
+
+                        </a>
+
+
+                        <a href="/review/experience">
+
+                            <div class="dropdown-icon">
+                                🤖
+                            </div>
+
+                            체험별 후기
+
+                        </a>
+
+
+                        <a href="/review/best">
+
+                            <div class="dropdown-icon">
+                                🏆
+                            </div>
+
+                            베스트 후기
+
+                        </a>
+
+
+                        <a href="/review/write">
+
+                            <div class="dropdown-icon">
+                                ✏️
+                            </div>
+
+                            후기 작성
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==============================
+                     체험 게시판
+                =============================== -->
+
+                <div class="menu-item">
+
+                    <span class="menu-title">
+
+                        📋 체험 게시판
+                        <small>⌄</small>
+
+                    </span>
+
+
+                    <div class="dropdown">
+
+
+                        <div class="dropdown-title">
+
+                            COMMUNITY
+
+                        </div>
+
+
+                        <a href="/board/question">
+
+                            <div class="dropdown-icon">
+                                ❓
+                            </div>
+
+                            체험 질문
+
+                        </a>
+
+
+                        <a href="/board/share">
+
+                            <div class="dropdown-icon">
+                                📤
+                            </div>
+
+                            체험 결과 공유
+
+                        </a>
+
+
+                        <a href="/board/free">
+
+                            <div class="dropdown-icon">
+                                💬
+                            </div>
+
+                            자유게시판
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==============================
+                     AI 프로젝트
+                =============================== -->
+
+                <div class="menu-item">
+
+                    <a href="/project"
+                       class="menu-title">
+
+                        🎯 AI 프로젝트
+
+                    </a>
+
+                </div>
+
+
+                <!-- ==============================
+                     교육과정
+                =============================== -->
+
+                <div class="menu-item">
+
+                    <a href="/course"
+                       class="menu-title">
+
+                        📚 교육과정
+
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        </nav>
+
+
+        <!-- ==============================
+             LOGIN
+        =============================== -->
+
+        <div class="auth">
+
+
+            <!-- 비로그인 -->
+
+            <a href="/member/login"
+               class="login">
+
+                🔐 로그인
+
+            </a>
+
+
+            <a href="/member/join"
+               class="join">
+
+                회원가입
+
+            </a>
+
+
+            <!--
+            로그인 후
+
+            👤 홍길동
+            마이페이지
+            로그아웃
+
+            으로 변경
+            -->
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<div class="hero">
+
+
+    <div class="hero-inner">
+
+
+        <div>
+
+
+            <div class="badge">
+
+                ✨ AI EXPERIENCE CENTER
+
+            </div>
+
+
+            <h1>
+
+                AI를 배우기 전에<br>
+
+                <span>
+                    직접 경험해 보세요.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                AI가 무엇을 할 수 있는지 궁금하다면<br>
+
+                어렵게 공부하지 말고<br>
+
+                지금 바로 재미있는 AI를 경험해 보세요.
+
+            </p>
+
+
+            <a href="/experience"
+               class="hero-btn">
+
+                🤖 AI 체험 시작하기 →
+
+            </a>
+
+
+        </div>
+
+
+        <div class="visual">
+
+
+            <div class="ai-orb"></div>
+
+
+            <div class="floating f1">
+
+                🤖 AI가 생각하고 있어요
+
+            </div>
+
+
+            <div class="floating f2">
+
+                🍳 AI 레시피 생성
+
+            </div>
+
+
+            <div class="floating f3">
+
+                💬 새로운 체험자가 참여했어요
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     AI EXPERIENCE
+===================================================== -->
+
+<section class="content">
+
+
+    <div class="title">
+
+        <small>
+            AI EXPERIENCE
+        </small>
+
+        <h2>
+            어떤 AI부터 경험해 볼까요?
+        </h2>
+
+        <p>
+            메뉴를 선택하고 직접 AI를 사용해 보세요.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+
+        <a href="/experience/question"
+           class="card">
+
+            <div class="icon">
+                🤖
+            </div>
+
+            <h3>
+                AI 질문
+            </h3>
+
+            <p>
+                궁금한 것을 AI에게 질문하고
+                답변을 직접 확인해 보세요.
+            </p>
+
+        </a>
+
+
+        <a href="/experience/recipe"
+           class="card">
+
+            <div class="icon">
+                🍳
+            </div>
+
+            <h3>
+                AI 레시피
+            </h3>
+
+            <p>
+                냉장고 속 재료를 입력하면
+                AI가 나만의 요리를 추천합니다.
+            </p>
+
+        </a>
+
+
+        <a href="/experience/restaurant"
+           class="card">
+
+            <div class="icon">
+                🍜
+            </div>
+
+            <h3>
+                AI 맛집
+            </h3>
+
+            <p>
+                내 취향에 맞는 맛집을
+                AI에게 추천받아 보세요.
+            </p>
+
+        </a>
+
+
+        <a href="/experience/travel"
+           class="card">
+
+            <div class="icon">
+                ✈️
+            </div>
+
+            <h3>
+                AI 여행
+            </h3>
+
+            <p>
+                여행 장소와 취향을 입력하면
+                AI가 여행 코스를 만들어 줍니다.
+            </p>
+
+        </a>
+
+
+        <a href="/experience/resume"
+           class="card">
+
+            <div class="icon">
+                📄
+            </div>
+
+            <h3>
+                AI 자기소개서
+            </h3>
+
+            <p>
+                나의 경험을 입력하고
+                AI의 도움으로 자기소개서를 만들어 보세요.
+            </p>
+
+        </a>
+
+
+        <a href="/experience/interview"
+           class="card">
+
+            <div class="icon">
+                🎤
+            </div>
+
+            <h3>
+                AI 면접
+            </h3>
+
+            <p>
+                AI 면접관과 실제 면접처럼
+                질문과 답변을 연습해 보세요.
+            </p>
+
+        </a>
+
+
+    </div>
+
+</section>
+
+
+</body>
+
+</html>
+

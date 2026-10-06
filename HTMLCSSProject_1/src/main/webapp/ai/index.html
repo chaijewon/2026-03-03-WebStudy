@@ -1,0 +1,3104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Developer Technology Lab</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, "Malgun Gothic", sans-serif;
+            background: #07111f;
+            color: #e5e7eb;
+            min-height: 100vh;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .header {
+            height: 70px;
+            padding: 0 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #0c1728;
+            border-bottom: 1px solid #26364d;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .logo span {
+            color: #38bdf8;
+        }
+
+        .header-info {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .hero {
+            padding: 50px 20px 35px;
+            text-align: center;
+            background:
+                radial-gradient(
+                    circle at top center,
+                    rgba(56, 189, 248, 0.18),
+                    transparent 45%
+                );
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            margin-bottom: 15px;
+            background: linear-gradient(
+                90deg,
+                #38bdf8,
+                #818cf8,
+                #c084fc
+            );
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            line-height: 1.8;
+        }
+
+        .tech-nav {
+            max-width: 1450px;
+            margin: auto;
+            padding: 20px 25px;
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 10px;
+        }
+
+        .tech-btn {
+            min-height: 65px;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            background: #101b2d;
+            color: #cbd5e1;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .tech-btn:hover {
+            transform: translateY(-2px);
+            border-color: #38bdf8;
+        }
+
+        .tech-btn.active {
+            color: #ffffff;
+            background: #12304a;
+            border-color: #38bdf8;
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.15);
+        }
+
+        .ai-panel {
+            display: none;
+            max-width: 1450px;
+            margin: 0 auto 20px;
+            padding: 0 25px 20px;
+        }
+
+        .ai-panel.show {
+            display: block;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .ai-header h2 {
+            font-size: 21px;
+        }
+
+        .ai-label {
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #7c3aed;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .ai-nav {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+        }
+
+        .ai-btn {
+            padding: 13px 7px;
+            border: 1px solid #3b2c63;
+            border-radius: 8px;
+            background: #15112a;
+            color: #c4b5fd;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .ai-btn:hover {
+            background: #211943;
+            border-color: #a78bfa;
+        }
+
+        .ai-btn.active {
+            background: #4c1d95;
+            border-color: #a78bfa;
+            color: white;
+        }
+
+        .container {
+            max-width: 1450px;
+            margin: auto;
+            padding: 0 25px 60px;
+        }
+
+        .title-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .title-area h2 {
+            font-size: 27px;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #0284c7;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .flow {
+            min-height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .flow-item {
+            padding: 11px 17px;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            background: #101b2d;
+            color: #dbeafe;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .flow-arrow {
+            color: #38bdf8;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .simulation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            overflow: hidden;
+            border: 1px solid #26364d;
+            border-radius: 14px;
+            background: #0d1728;
+        }
+
+        .card-header {
+            height: 50px;
+            padding: 0 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #132035;
+            border-bottom: 1px solid #26364d;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        pre {
+            margin: 0;
+        }
+
+        .code,
+        .result {
+            min-height: 360px;
+            padding: 20px;
+            background: #020617;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .code {
+            color: #dbeafe;
+        }
+
+        .result {
+            color: #67e8f9;
+        }
+
+        .button-area {
+            padding: 0 20px 20px;
+            background: #020617;
+        }
+
+        .run-btn {
+            padding: 11px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #0284c7;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .run-btn:hover {
+            background: #0369a1;
+        }
+
+        .run-btn:active {
+            transform: scale(0.98);
+        }
+
+        .terminal-card {
+            margin-top: 20px;
+        }
+
+        .terminal {
+            min-height: 190px;
+            padding: 20px;
+            background: #000000;
+            color: #4ade80;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .info-box {
+            padding: 20px;
+            border: 1px solid #26364d;
+            border-radius: 10px;
+            background: #0d1728;
+        }
+
+        .info-box h3 {
+            margin-bottom: 10px;
+            color: #38bdf8;
+            font-size: 14px;
+        }
+
+        .info-box p {
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+        .architecture {
+            display: none;
+            margin-top: 20px;
+            padding: 25px;
+            border: 1px solid #3b2c63;
+            border-radius: 14px;
+            background: #111827;
+        }
+
+        .architecture h3 {
+            margin-bottom: 18px;
+            color: #c4b5fd;
+            font-size: 16px;
+        }
+
+        .architecture-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .architecture-item {
+            padding: 12px 15px;
+            border: 1px solid #5b21b6;
+            border-radius: 8px;
+            background: #17112d;
+            color: #ddd6fe;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .architecture-arrow {
+            color: #a78bfa;
+            font-weight: bold;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #4ade80;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #4ade80;
+        }
+
+        @media (max-width: 1100px) {
+
+            .tech-nav {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .ai-nav {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .header {
+                padding: 0 15px;
+            }
+
+            .header-info {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 29px;
+            }
+
+            .tech-nav {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 15px;
+            }
+
+            .ai-panel {
+                padding: 0 15px 20px;
+            }
+
+            .ai-nav {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .container {
+                padding: 0 15px 50px;
+            }
+
+            .simulation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        AI <span>DEVELOPER LAB</span>
+    </div>
+
+    <div class="header-info">
+        JAVA · DATABASE · WEB · SPRING · AI · CLOUD
+    </div>
+
+</header>
+
+
+<section class="hero">
+
+    <h1>AI Developer Technology Lab</h1>
+
+    <p>
+        Java → Oracle → Web → JSP/MVC → Vue3 → Spring Boot
+        → 최신 AI 기술 확장 → CI/CD
+    </p>
+
+    <p>
+        개발 기술의 흐름을 하나의 화면에서 직접 체험합니다.
+    </p>
+
+</section>
+
+
+<nav class="tech-nav">
+
+    <button class="tech-btn active"
+            onclick="selectTech('java', this)">
+        ☕ Java
+    </button>
+
+    <button class="tech-btn"
+            onclick="selectTech('oracle', this)">
+        🗄 Oracle
+    </button>
+
+    <button class="tech-btn"
+            onclick="selectTech('html', this)">
+        🌐 HTML / CSS
+    </button>
+
+    <button class="tech-btn"
+            onclick="selectTech('javascript', this)">
+        ⚡ JavaScript
+    </button>
+
+    <button class="tech-btn"
+            onclick="selectTech('jsp', this)">
+        📄 JSP / MVC
+    </button>
+
+    <button class="tech-btn"
+            onclick="selectTech('vue', this)">
+        🟢 Vue3
+    </button>
+
+    <button class="tech-btn"
+            onclick="selectTech('spring', this)">
+        🍃 Spring Boot
+    </button>
+
+    <button class="tech-btn"
+            onclick="selectTech('ai', this)">
+        🤖 최신 AI<br>
+        기술 확장
+    </button>
+
+    <button class="tech-btn"
+            onclick="selectTech('cicd', this)">
+        🚀 CI / CD
+    </button>
+
+</nav>
+
+
+<section class="ai-panel" id="aiPanel">
+
+    <div class="ai-header">
+
+        <h2>
+            🤖 최신 AI 기술 확장
+        </h2>
+
+        <span class="ai-label">
+            12 MODULES
+        </span>
+
+    </div>
+
+
+    <div class="ai-nav">
+
+        <button class="ai-btn active"
+                onclick="selectAI('chatclient', this)">
+            💬 ChatClient
+        </button>
+
+        <button class="ai-btn"
+                onclick="selectAI('prompt', this)">
+            ✍ Prompt Engineering
+        </button>
+
+        <button class="ai-btn"
+                onclick="selectAI('embedding', this)">
+            🧬 Embedding
+        </button>
+
+        <button class="ai-btn"
+                onclick="selectAI('pgvector', this)">
+            🗄 PGVector
+        </button>
+
+        <button class="ai-btn"
+                onclick="selectAI('rag', this)">
+            🔎 RAG
+        </button>
+
+        <button class="ai-btn"
+                onclick="selectAI('toolcalling', this)">
+            🔧 Tool Calling
+        </button>
+
+        <button class="ai-btn"
+                onclick="selectAI('mcp', this)">
+            🔌 MCP
+        </button>
+
+        <button class="ai-btn"
+                onclick="selectAI('agentic', this)">
+            🧠 Agentic AI
+        </button>
+
+        <button class="ai-btn"
+                onclick="selectAI('memory', this)">
+            🗂 AI Memory
+        </button>
+
+        <button class="ai-btn"
+                onclick="selectAI('evaluation', this)">
+            📊 AI Evaluation
+        </button>
+
+        <button class="ai-btn"
+                onclick="selectAI('observability', this)">
+            👁 Observability
+        </button>
+
+        <button class="ai-btn"
+                onclick="selectAI('multiagent', this)">
+            🤖 Multi-Agent
+        </button>
+
+    </div>
+
+</section>
+
+
+<main class="container">
+
+    <div class="title-area">
+
+        <h2 id="title">
+            Java 시뮬레이션
+        </h2>
+
+        <span class="badge"
+              id="badge">
+            PROGRAMMING
+        </span>
+
+    </div>
+
+
+    <div class="flow"
+         id="flow">
+    </div>
+
+
+    <div class="simulation-grid">
+
+
+        <section class="card">
+
+            <div class="card-header">
+
+                <span>
+                    💻 SOURCE CODE
+                </span>
+
+                <span id="language">
+                    Java
+                </span>
+
+            </div>
+
+            <pre class="code"
+                 id="codeBox"></pre>
+
+            <div class="button-area">
+
+                <button class="run-btn"
+                        onclick="runSimulation()">
+
+                    ▶ 시뮬레이션 실행
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <section class="card">
+
+            <div class="card-header">
+
+                <span>
+                    🖥 EXECUTION RESULT
+                </span>
+
+                <span class="status">
+
+                    <span class="status-dot"></span>
+
+                    LIVE
+
+                </span>
+
+            </div>
+
+            <pre class="result"
+                 id="resultBox"></pre>
+
+        </section>
+
+    </div>
+
+
+    <section class="card terminal-card">
+
+        <div class="card-header">
+            Terminal
+        </div>
+
+        <pre class="terminal"
+             id="terminal"></pre>
+
+    </section>
+
+
+    <section class="info-grid">
+
+        <div class="info-box">
+
+            <h3>
+                📚 핵심 개념
+            </h3>
+
+            <p id="concept"></p>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <h3>
+                🔧 실무 확장
+            </h3>
+
+            <p id="practice"></p>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <h3>
+                🎯 학습 결과
+            </h3>
+
+            <p id="goal"></p>
+
+        </div>
+
+    </section>
+
+
+    <section class="architecture"
+             id="architecture">
+
+        <h3>
+            🤖 AI Application Architecture
+        </h3>
+
+        <div class="architecture-flow"
+             id="architectureFlow">
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   TECHNOLOGY DATA
+========================================================= */
+
+const technologies = {
+
+    java: {
+        title: "Java 시뮬레이션",
+        badge: "PROGRAMMING",
+        language: "Java",
+
+        flow: [
+            "Java Code",
+            "Compiler",
+            "JVM",
+            "Result"
+        ],
+
+        code:
+`public class Main {
+
+    public static void main(String[] args) {
+
+        int a = 10;
+        int b = 20;
+
+        int result = a + b;
+
+        System.out.println(
+            "RESULT = " + result
+        );
+    }
+}`,
+
+        result:
+`Java 프로그램 실행
+
+a = 10
+b = 20
+
+10 + 20
+
+RESULT = 30
+
+실행 완료.`,
+
+        terminal:
+`$ javac Main.java
+
+$ java Main
+
+RESULT = 30
+
+$ Process finished.`,
+
+        concept:
+`변수
+연산자
+제어문
+배열
+메소드
+클래스
+객체
+상속
+다형성
+JVM`,
+
+        practice:
+`Spring Boot
+MyBatis
+JPA
+Spring Security
+REST API
+WebSocket`,
+
+        goal:
+`Java 기초 문법에서
+객체지향 프로그래밍까지 이해하고
+Spring Boot Backend 개발로 연결`
+    },
+
+
+    oracle: {
+        title: "Oracle Database 시뮬레이션",
+        badge: "DATABASE",
+        language: "Oracle SQL",
+
+        flow: [
+            "SQL",
+            "Oracle",
+            "Optimizer",
+            "Database",
+            "Result"
+        ],
+
+        code:
+`SELECT
+    department_id,
+    COUNT(*) AS employee_count,
+    AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department_id
+ORDER BY department_id;`,
+
+        result:
+`DEPARTMENT
+--------------------------------
+
+10    COUNT = 3
+      AVG = 3500
+
+20    COUNT = 5
+      AVG = 4200
+
+30    COUNT = 4
+      AVG = 3900
+
+GROUP BY 실행 완료.`,
+
+        terminal:
+`SQL> SELECT COUNT(*)
+     FROM employees;
+
+COUNT(*)
+--------
+12
+
+SQL> Query executed.
+
+SQL> Execution completed.`,
+
+        concept:
+`SELECT
+WHERE
+JOIN
+GROUP BY
+ORDER BY
+SUBQUERY
+INDEX
+EXECUTION PLAN`,
+
+        practice:
+`Oracle 21c
+Spring Boot
+MyBatis
+Transaction
+Connection Pool
+SQL Optimization`,
+
+        goal:
+`Java Backend에서
+데이터를 조회하고
+분석하고 최적화하는 능력`
+    },
+
+
+    html: {
+        title: "HTML / CSS 시뮬레이션",
+        badge: "FRONTEND",
+        language: "HTML / CSS",
+
+        flow: [
+            "HTML",
+            "CSS",
+            "Browser",
+            "Rendering",
+            "UI"
+        ],
+
+        code:
+`<div class="card">
+
+    <h2>AI Developer</h2>
+
+    <p>
+        Spring Boot + AI
+    </p>
+
+    <button>
+        START
+    </button>
+
+</div>`,
+
+        result:
+`┌─────────────────────────────┐
+│                             │
+│       AI Developer          │
+│                             │
+│       Spring Boot + AI      │
+│                             │
+│          [ START ]           │
+│                             │
+└─────────────────────────────┘
+
+HTML + CSS Rendering 완료.`,
+
+        terminal:
+`$ HTML Parsing
+
+$ CSS Parsing
+
+$ Layout
+
+$ Paint
+
+$ UI READY`,
+
+        concept:
+`HTML
+CSS
+Selector
+Box Model
+Flex
+Grid
+Responsive Web`,
+
+        practice:
+`Login
+Dashboard
+Card UI
+Responsive UI
+Admin Page
+AI Web Interface`,
+
+        goal:
+`사용자가 보는
+웹 화면의 구조와
+디자인을 구현`
+    },
+
+
+    javascript: {
+        title: "JavaScript 시뮬레이션",
+        badge: "FRONTEND",
+        language: "JavaScript",
+
+        flow: [
+            "Event",
+            "JavaScript",
+            "DOM",
+            "State",
+            "UI"
+        ],
+
+        code:
+`const button =
+    document.querySelector("#btn");
+
+button.addEventListener(
+    "click",
+    function() {
+
+        document.querySelector(
+            "#result"
+        ).textContent =
+            "Hello JavaScript!";
+    }
+);`,
+
+        result:
+`[ BUTTON CLICK ]
+
+        ↓
+
+JavaScript Event 발생
+
+        ↓
+
+DOM 검색
+
+        ↓
+
+DOM 변경
+
+        ↓
+
+Hello JavaScript!
+
+화면 업데이트 완료.`,
+
+        terminal:
+`$ Browser Started
+
+$ Event Listener Registered
+
+$ Click Event
+
+$ DOM Updated
+
+$ UI Changed`,
+
+        concept:
+`변수
+함수
+배열
+객체
+DOM
+Event
+Fetch
+Promise
+Async / Await`,
+
+        practice:
+`REST API
+Fetch
+JSON
+Axios
+Vue3
+React
+Next.js`,
+
+        goal:
+`브라우저에서
+사용자 이벤트와
+서버 API를 처리`
+    },
+
+
+    jsp: {
+        title: "JSP / MVC 시뮬레이션",
+        badge: "WEB MVC",
+        language: "JSP / Java",
+
+        flow: [
+            "Browser",
+            "Controller",
+            "Service",
+            "DAO",
+            "Database",
+            "JSP"
+        ],
+
+        code:
+`@Controller
+public class BoardController {
+
+    @GetMapping("/board/list")
+    public String list(Model model) {
+
+        List<Board> list =
+            service.findAll();
+
+        model.addAttribute(
+            "list",
+            list
+        );
+
+        return "board/list";
+    }
+}`,
+
+        result:
+`Browser
+
+↓
+
+GET /board/list
+
+↓
+
+Controller
+
+↓
+
+Service
+
+↓
+
+DAO
+
+↓
+
+Database
+
+↓
+
+JSP
+
+↓
+
+HTML Response
+
+HTTP 200 OK`,
+
+        terminal:
+`GET /board/list
+
+Controller executed
+
+Service executed
+
+DAO executed
+
+Database queried
+
+JSP rendered
+
+200 OK`,
+
+        concept:
+`MVC
+Controller
+Service
+DAO
+Model
+JSP
+Request
+Response
+Session
+Cookie`,
+
+        practice:
+`Spring MVC
+MyBatis
+JSP
+게시판
+로그인
+회원관리
+파일업로드`,
+
+        goal:
+`웹 애플리케이션의
+MVC 구조를 이해하고
+Spring MVC 개발로 연결`
+    },
+
+
+    vue: {
+        title: "Vue3 시뮬레이션",
+        badge: "FRONTEND",
+        language: "Vue3",
+
+        flow: [
+            "State",
+            "Vue3",
+            "Reactive",
+            "Component",
+            "DOM"
+        ],
+
+        /*
+         * 중요:
+         * 바깥쪽 HTML의 script 태그와 충돌하지 않도록
+         * Vue의 script 종료 태그는 문자열 연결로 표시합니다.
+         */
+        code:
+`<script setup>
+
+import { ref } from "vue";
+
+const count = ref(0);
+
+function increment() {
+    count.value++;
+}
+
+` + "</" + `script>
+
+<template>
+
+    <h2>{{ count }}</h2>
+
+    <button @click="increment">
+        +1
+    </button>
+
+</template>`,
+
+        result:
+`Vue3 Application
+
+COUNT = 0
+
+[ +1 클릭 ]
+
+↓
+
+COUNT = 1
+
+[ +1 클릭 ]
+
+↓
+
+COUNT = 2
+
+[ +1 클릭 ]
+
+↓
+
+COUNT = 3
+
+Reactive UI Update 완료.`,
+
+        terminal:
+`$ Vue Application Start
+
+$ Composition API
+
+$ ref(0)
+
+$ Event Binding
+
+$ Reactive State Update
+
+$ DOM Update
+
+$ Vue3 READY.`,
+
+        concept:
+`Composition API
+ref
+reactive
+computed
+watch
+Component
+Props
+Event
+Lifecycle`,
+
+        practice:
+`Vue3
+Pinia
+Axios
+REST API
+Spring Boot
+SPA
+Dashboard
+Admin Page`,
+
+        goal:
+`Vue3의 반응형 구조를 이해하고
+Spring Boot REST API와 연결하여
+SPA를 구현`
+    },
+
+
+    spring: {
+        title: "Spring Boot 시뮬레이션",
+        badge: "BACKEND",
+        language: "Java / Spring Boot",
+
+        flow: [
+            "Client",
+            "Controller",
+            "Service",
+            "Repository",
+            "Database",
+            "Response"
+        ],
+
+        code:
+`@RestController
+@RequestMapping("/api")
+public class UserController {
+
+    @GetMapping("/hello")
+    public String hello() {
+
+        return "Hello Spring Boot!";
+    }
+}`,
+
+        result:
+`CLIENT
+
+GET /api/hello
+
+        ↓
+
+Controller
+
+        ↓
+
+Service
+
+        ↓
+
+Repository
+
+        ↓
+
+Database
+
+        ↓
+
+HTTP 200 OK
+
+{
+    "message":
+    "Hello Spring Boot!"
+}`,
+
+        terminal:
+`$ Spring Boot Starting...
+
+Tomcat started on port 8080
+
+$ GET /api/hello
+
+Controller executed
+
+200 OK
+
+$ Application Ready.`,
+
+        concept:
+`Spring Boot
+DI / IoC
+Bean
+AOP
+MVC
+REST API
+Configuration
+Validation`,
+
+        practice:
+`MyBatis
+JPA
+Security
+JWT
+WebSocket
+STOMP
+Kafka
+PostgreSQL`,
+
+        goal:
+`Java 기반의
+실무형 Backend REST API를
+구현`
+    },
+
+
+    cicd: {
+        title: "CI / CD 시뮬레이션",
+        badge: "DEVOPS / CLOUD",
+        language: "Git / Jenkins / Docker",
+
+        flow: [
+            "Git Push",
+            "Jenkins",
+            "Build",
+            "Docker",
+            "AWS",
+            "Deploy"
+        ],
+
+        code:
+`git add .
+
+git commit -m "AI service update"
+
+git push origin main
+
+Jenkins
+    ↓
+Gradle Build
+    ↓
+Test
+    ↓
+Docker Build
+    ↓
+Docker Push
+    ↓
+AWS Deploy`,
+
+        result:
+`Git Push
+
+↓
+
+Jenkins
+
+↓
+
+Gradle Build
+SUCCESS
+
+↓
+
+Test
+SUCCESS
+
+↓
+
+Docker Image
+SUCCESS
+
+↓
+
+AWS EC2
+
+↓
+
+Container Start
+
+↓
+
+Health Check
+
+↓
+
+APPLICATION ONLINE
+
+DEPLOY SUCCESS`,
+
+        terminal:
+`[Jenkins]
+
+Checkout SUCCESS
+
+Build SUCCESS
+
+Test SUCCESS
+
+Docker Build SUCCESS
+
+Docker Push SUCCESS
+
+AWS Deploy SUCCESS
+
+Health Check SUCCESS
+
+----------------------------
+
+APPLICATION STATUS
+
+● ONLINE`,
+
+        concept:
+`Git
+GitHub
+Jenkins
+Docker
+Docker Compose
+Nginx
+Health Check
+Blue / Green
+Zero Downtime`,
+
+        practice:
+`GitHub Actions
+Jenkins
+Docker
+AWS EC2
+Nginx
+Docker Compose
+CI/CD Pipeline`,
+
+        goal:
+`개발 → Git Push → Build
+→ Docker → AWS Deploy까지
+자동화`
+    }
+
+};
+
+
+/* =========================================================
+   AI DATA
+========================================================= */
+
+const aiTechnologies = {
+
+    chatclient: {
+        title: "ChatClient",
+
+        flow: [
+            "User",
+            "ChatClient",
+            "ChatModel",
+            "LLM",
+            "Response"
+        ],
+
+        code:
+`String answer =
+    chatClient
+        .prompt()
+        .user("Spring Boot란?")
+        .call()
+        .content();
+
+System.out.println(answer);`,
+
+        result:
+`USER
+
+Spring Boot란?
+
+↓
+
+ChatClient
+
+↓
+
+ChatModel
+
+↓
+
+LLM
+
+↓
+
+AI Response
+
+Spring 기반
+애플리케이션 개발을
+지원하는 프레임워크입니다.`,
+
+        terminal:
+`$ ChatClient
+
+Prompt created
+
+$ ChatModel
+
+Request sent
+
+$ LLM
+
+Response received
+
+$ DONE`,
+
+        concept:
+`ChatClient
+Prompt
+ChatModel
+System Message
+User Message
+Streaming`,
+
+        practice:
+`AI Chat
+AI Assistant
+REST API
+Streaming
+LLM Integration`,
+
+        goal:
+`Spring Boot에서
+LLM을 호출하는
+기본 구조 이해`
+    },
+
+
+    prompt: {
+        title: "Prompt Engineering",
+
+        flow: [
+            "User",
+            "Role",
+            "Instruction",
+            "Context",
+            "LLM",
+            "Output"
+        ],
+
+        code:
+`String prompt =
+    "역할: Java 전문 강사" +
+    "조건: 초보자가 이해할 수 있게 설명" +
+    "질문: Spring Boot란?";`,
+
+        result:
+`ROLE
+
+Java 전문 강사
+
+↓
+
+INSTRUCTION
+
+초보자에게 설명
+
+↓
+
+CONTEXT
+
+Spring Boot
+
+↓
+
+LLM
+
+↓
+
+STRUCTURED OUTPUT`,
+
+        terminal:
+`$ Prompt Created
+
+$ Role detected
+
+$ Instruction applied
+
+$ Context attached
+
+$ LLM processing
+
+$ Response generated`,
+
+        concept:
+`Role
+Instruction
+Context
+Few-shot
+Prompt Template
+Structured Output`,
+
+        practice:
+`AI Tutor
+AI 상담
+문서 요약
+코드 생성
+분류
+추천`,
+
+        goal:
+`AI에게 원하는 결과를
+안정적으로 전달하는
+프롬프트 설계`
+    },
+
+
+    embedding: {
+        title: "Embedding",
+
+        flow: [
+            "Text",
+            "Embedding Model",
+            "Vector",
+            "Vector DB",
+            "Search"
+        ],
+
+        code:
+`String text =
+    "Spring Boot는 Java 웹 프레임워크";
+
+float[] vector =
+    embeddingModel.embed(text);
+
+System.out.println(vector);`,
+
+        result:
+`TEXT
+
+Spring Boot는
+Java 웹 프레임워크
+
+↓
+
+Embedding Model
+
+↓
+
+[0.021,
+ -0.318,
+ 0.772,
+ ...]
+
+↓
+
+VECTOR
+
+↓
+
+Vector Database`,
+
+        terminal:
+`$ Text received
+
+$ Embedding started
+
+$ Vector generated
+
+$ Dimension detected
+
+$ Stored`,
+
+        concept:
+`Embedding
+Vector
+Dimension
+Similarity
+Cosine Similarity`,
+
+        practice:
+`RAG
+Semantic Search
+Recommendation
+Document Search
+Vector DB`,
+
+        goal:
+`텍스트를 벡터로 변환하여
+의미 기반 검색에 활용`
+    },
+
+
+    pgvector: {
+        title: "PGVector / Vector DB",
+
+        flow: [
+            "Question",
+            "Embedding",
+            "PostgreSQL",
+            "PGVector",
+            "Similarity",
+            "Context"
+        ],
+
+        code:
+`SELECT
+    id,
+    content,
+    embedding <=> :queryVector
+        AS distance
+FROM documents
+ORDER BY distance
+LIMIT 5;`,
+
+        result:
+`QUERY
+
+Spring Boot 배우기
+
+↓
+
+Vector Search
+
+↓
+
+TOP 3
+
+1. Spring Boot
+   distance = 0.12
+
+2. Spring MVC
+   distance = 0.18
+
+3. Java Backend
+   distance = 0.23
+
+↓
+
+Relevant Context`,
+
+        terminal:
+`$ PostgreSQL
+
+$ pgvector extension
+
+$ Query Vector created
+
+$ Similarity Search
+
+TOP 5 documents found
+
+$ Context READY`,
+
+        concept:
+`PostgreSQL
+PGVector
+Embedding
+Vector
+Similarity Search
+Metadata Filter`,
+
+        practice:
+`Spring AI
+RAG
+Recipe Search
+Document Search
+Recommendation`,
+
+        goal:
+`PostgreSQL + PGVector를
+이용한 AI 검색 구현`
+    },
+
+
+    rag: {
+        title: "RAG",
+
+        flow: [
+            "Question",
+            "Embedding",
+            "Vector Search",
+            "Context",
+            "LLM",
+            "Answer"
+        ],
+
+        code:
+`String question =
+    "우리 학원의 과정은?";
+
+List<Document> docs =
+    vectorStore
+        .similaritySearch(question);
+
+String answer =
+    chatClient
+        .prompt()
+        .user(question)
+        .call()
+        .content();`,
+
+        result:
+`QUESTION
+
+우리 학원의 과정은?
+
+↓
+
+Vector Search
+
+↓
+
+관련 문서 검색
+
+↓
+
+Context
+
+↓
+
+LLM
+
+↓
+
+AI ANSWER
+
+Java
+→ Oracle
+→ Spring Boot
+→ Vue3
+→ 최신 AI
+→ CI/CD`,
+
+        terminal:
+`$ Question received
+
+$ Embedding
+
+$ Retrieve documents
+
+5 documents found
+
+$ Context added
+
+$ Generate answer
+
+$ Answer READY`,
+
+        concept:
+`Retrieval
+Augmentation
+Generation
+Chunk
+Vector Store
+Context`,
+
+        practice:
+`교육 AI
+사내 문서 AI
+레시피 AI
+매뉴얼 AI
+검색 AI`,
+
+        goal:
+`내 데이터를 검색한 뒤
+LLM 답변에 활용`
+    },
+
+
+    toolcalling: {
+        title: "Tool Calling",
+
+        flow: [
+            "User",
+            "LLM",
+            "Tool Selection",
+            "Tool",
+            "Result",
+            "Answer"
+        ],
+
+        code:
+`@Tool(
+    description =
+    "현재 날씨를 조회합니다."
+)
+public String weather(String city) {
+
+    return "서울 22℃";
+}`,
+
+        result:
+`USER
+
+서울 날씨 알려줘
+
+↓
+
+LLM
+
+weather Tool 선택
+
+↓
+
+Tool Calling
+
+↓
+
+weather("서울")
+
+↓
+
+External API
+
+↓
+
+서울 22℃
+
+↓
+
+LLM
+
+↓
+
+최종 답변`,
+
+        terminal:
+`$ Tool registered
+
+weather()
+
+$ LLM requested tool
+
+$ Tool executing
+
+$ External API
+
+$ Result returned
+
+$ Final response`,
+
+        concept:
+`Tool
+Tool Definition
+Tool Calling
+Tool Execution
+Tool Result`,
+
+        practice:
+`날씨 API
+DB 조회
+상품 검색
+예약
+외부 API
+사내 시스템`,
+
+        goal:
+`LLM이 외부 기능을
+호출하는 구조 이해`
+    },
+
+
+    mcp: {
+        title: "MCP",
+
+        flow: [
+            "AI Client",
+            "MCP Client",
+            "MCP Server",
+            "Tool",
+            "Result"
+        ],
+
+        code:
+`@McpTool(
+    description =
+    "도시의 날씨를 조회합니다."
+)
+public String weather(String city) {
+
+    return "서울 22℃";
+}`,
+
+        result:
+`AI Client
+
+↓
+
+MCP Client
+
+↓
+
+MCP Server
+
+↓
+
+Weather Tool
+Search Tool
+Database Tool
+File Tool
+
+↓
+
+Tool Result
+
+↓
+
+AI Response`,
+
+        terminal:
+`$ MCP Client connected
+
+$ MCP Server discovered
+
+Tools:
+
+- weather
+- search
+- database
+- file
+
+$ Tool discovery READY`,
+
+        concept:
+`MCP
+MCP Client
+MCP Server
+Tools
+Resources
+Prompts`,
+
+        practice:
+`AI Agent
+Enterprise AI
+External Tools
+AI Infrastructure
+Tool Integration`,
+
+        goal:
+`AI와 외부 도구를
+표준화된 방식으로 연결`
+    },
+
+
+    agentic: {
+        title: "Agentic AI",
+
+        flow: [
+            "Goal",
+            "Plan",
+            "Tool",
+            "Observe",
+            "Re-plan",
+            "Answer"
+        ],
+
+        code:
+`Goal:
+"서울 맛집을 찾아서
+가격을 비교해줘"
+
+Agent
+
+1. 검색
+2. 정보 수집
+3. 가격 비교
+4. 결과 정리
+5. 답변`,
+
+        result:
+`GOAL
+
+서울 맛집 찾기
+
+↓
+
+PLAN
+
+① 검색
+
+↓
+
+OBSERVE
+
+검색 결과
+
+↓
+
+② 상세 정보 조회
+
+↓
+
+OBSERVE
+
+가격 정보
+
+↓
+
+③ 가격 비교
+
+↓
+
+FINAL ANSWER`,
+
+        terminal:
+`$ Agent started
+
+$ Goal received
+
+$ Planning
+
+Step 1
+
+$ Tool Call
+
+Search
+
+$ Observation
+
+$ Re-plan
+
+Step 2
+
+$ Final Answer`,
+
+        concept:
+`Agent
+Planning
+Reasoning
+Tool
+Observation
+Loop
+Goal`,
+
+        practice:
+`Research Agent
+Coding Agent
+Data Agent
+Education Agent
+Automation Agent`,
+
+        goal:
+`단순 Chatbot에서
+목표를 수행하는
+AI Agent로 확장`
+    },
+
+
+    memory: {
+        title: "AI Memory",
+
+        flow: [
+            "Conversation",
+            "Memory",
+            "Retrieve",
+            "Context",
+            "LLM",
+            "Response"
+        ],
+
+        code:
+`User:
+"나는 Java 강사야."
+
+Memory 저장
+
+User:
+"내 직업이 뭐지?"
+
+Memory 검색
+
+LLM
+
+"Java 강사라고
+말씀하셨습니다."`,
+
+        result:
+`CONVERSATION
+
+User Profile
+
+↓
+
+Memory Store
+
+↓
+
+Relevant Memory
+
+"Java 강사"
+
+↓
+
+Context
+
+↓
+
+LLM
+
+↓
+
+Personalized Answer`,
+
+        terminal:
+`$ Conversation started
+
+$ Memory Save
+
+conversation_id = 1001
+
+$ Memory Search
+
+1 relevant memory
+
+$ Context attached
+
+$ Response generated`,
+
+        concept:
+`Conversation Memory
+Short-term Memory
+Long-term Memory
+Context
+Session`,
+
+        practice:
+`AI Tutor
+Personal Assistant
+Customer AI
+Learning Assistant`,
+
+        goal:
+`대화 맥락을 유지하는
+AI 애플리케이션 구현`
+    },
+
+
+    evaluation: {
+        title: "AI Evaluation",
+
+        flow: [
+            "Input",
+            "AI Response",
+            "Evaluator",
+            "Score",
+            "Feedback"
+        ],
+
+        code:
+`Question:
+"Spring Boot란?"
+
+Answer:
+"Java 기반
+웹 애플리케이션
+개발 프레임워크"
+
+Evaluate:
+
+- Relevance
+- Correctness
+- Groundedness`,
+
+        result:
+`AI EVALUATION
+
+Relevance
+
+█████████░ 90
+
+Correctness
+
+██████████ 95
+
+Groundedness
+
+█████████░ 91
+
+Evaluation Complete`,
+
+        terminal:
+`$ Test Case #001
+
+$ Generate answer
+
+$ Evaluate
+
+Relevance: PASS
+
+Correctness: PASS
+
+Groundedness: PASS
+
+$ Evaluation DONE`,
+
+        concept:
+`Evaluation
+Relevance
+Correctness
+Groundedness
+Test Case
+Regression`,
+
+        practice:
+`RAG Evaluation
+AI QA
+Prompt Testing
+Regression Test
+Production AI`,
+
+        goal:
+`AI 결과를 측정하고
+지속적으로 개선`
+    },
+
+
+    observability: {
+        title: "AI Observability",
+
+        flow: [
+            "Request",
+            "Trace",
+            "Metrics",
+            "Token",
+            "Latency",
+            "Monitor"
+        ],
+
+        code:
+`AI Request
+
+traceId: abc-123
+
+model: gemini
+
+latency: 842ms
+
+inputTokens: 320
+
+outputTokens: 920
+
+status: SUCCESS`,
+
+        result:
+`AI REQUEST
+
+Trace ID
+abc-123
+
+Model
+Gemini
+
+Latency
+842 ms
+
+Input Tokens
+320
+
+Output Tokens
+920
+
+Total Tokens
+1,240
+
+STATUS
+● SUCCESS`,
+
+        terminal:
+`$ AI Request
+
+traceId=abc-123
+
+model=gemini
+
+latency=842ms
+
+tokens=1240
+
+$ Trace recorded
+
+$ Metrics recorded
+
+$ Monitoring READY`,
+
+        concept:
+`Trace
+Metrics
+Latency
+Token Usage
+Error
+Monitoring`,
+
+        practice:
+`Micrometer
+OpenTelemetry
+Production AI
+Cost Monitoring
+Performance`,
+
+        goal:
+`AI 시스템의
+성능과 오류를
+관찰하고 분석`
+    },
+
+
+    multiagent: {
+        title: "Multi-Agent",
+
+        flow: [
+            "Supervisor",
+            "Research Agent",
+            "Data Agent",
+            "Writer Agent",
+            "Final"
+        ],
+
+        code:
+`Supervisor Agent
+
+↓
+
+Research Agent
+자료 검색
+
+↓
+
+Data Agent
+데이터 분석
+
+↓
+
+Writer Agent
+문서 작성
+
+↓
+
+Supervisor
+
+↓
+
+Final Answer`,
+
+        result:
+`USER
+
+AI 교육과정을 분석해서
+보고서 작성
+
+↓
+
+SUPERVISOR
+
+↓
+
+Research Agent
+자료 수집
+
+↓
+
+Data Agent
+분석
+
+↓
+
+Writer Agent
+보고서 생성
+
+↓
+
+SUPERVISOR
+
+↓
+
+FINAL REPORT`,
+
+        terminal:
+`$ Supervisor started
+
+$ Research Agent
+
+DONE
+
+$ Data Agent
+
+DONE
+
+$ Writer Agent
+
+DONE
+
+$ Supervisor
+
+FINAL RESULT READY`,
+
+        concept:
+`Multi-Agent
+Supervisor
+Specialized Agent
+Delegation
+Workflow`,
+
+        practice:
+`Research
+Coding
+Data Analysis
+Report Generation
+Automation`,
+
+        goal:
+`역할별 AI Agent가
+협업하는 구조 이해`
+    }
+
+};
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentTech = "java";
+let currentAI = "chatclient";
+
+
+/* =========================================================
+   ELEMENT
+========================================================= */
+
+const titleElement =
+    document.getElementById("title");
+
+const badgeElement =
+    document.getElementById("badge");
+
+const languageElement =
+    document.getElementById("language");
+
+const codeElement =
+    document.getElementById("codeBox");
+
+const resultElement =
+    document.getElementById("resultBox");
+
+const terminalElement =
+    document.getElementById("terminal");
+
+const conceptElement =
+    document.getElementById("concept");
+
+const practiceElement =
+    document.getElementById("practice");
+
+const goalElement =
+    document.getElementById("goal");
+
+const flowElement =
+    document.getElementById("flow");
+
+const aiPanelElement =
+    document.getElementById("aiPanel");
+
+const architectureElement =
+    document.getElementById("architecture");
+
+const architectureFlowElement =
+    document.getElementById("architectureFlow");
+
+
+/* =========================================================
+   FLOW
+========================================================= */
+
+function renderFlow(items) {
+
+    flowElement.innerHTML = "";
+
+    items.forEach(
+        function(item, index) {
+
+            const element =
+                document.createElement("div");
+
+            element.className =
+                "flow-item";
+
+            element.textContent =
+                item;
+
+            flowElement.appendChild(
+                element
+            );
+
+
+            if (
+                index <
+                items.length - 1
+            ) {
+
+                const arrow =
+                    document.createElement("div");
+
+                arrow.className =
+                    "flow-arrow";
+
+                arrow.textContent =
+                    "→";
+
+                flowElement.appendChild(
+                    arrow
+                );
+            }
+        }
+    );
+}
+
+
+/* =========================================================
+   NORMAL TECHNOLOGY
+========================================================= */
+
+function renderTechnology(type) {
+
+    const data =
+        technologies[type];
+
+
+    titleElement.textContent =
+        data.title;
+
+    badgeElement.textContent =
+        data.badge;
+
+    languageElement.textContent =
+        data.language;
+
+    codeElement.textContent =
+        data.code;
+
+    resultElement.textContent =
+        data.result;
+
+    terminalElement.textContent =
+        data.terminal;
+
+    conceptElement.textContent =
+        data.concept;
+
+    practiceElement.textContent =
+        data.practice;
+
+    goalElement.textContent =
+        data.goal;
+
+
+    renderFlow(
+        data.flow
+    );
+}
+
+
+/* =========================================================
+   MAIN TECHNOLOGY BUTTON
+========================================================= */
+
+function selectTech(type, button) {
+
+    currentTech =
+        type;
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".tech-btn"
+        );
+
+
+    buttons.forEach(
+        function(btn) {
+
+            btn.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    button.classList.add(
+        "active"
+    );
+
+
+    if (type === "ai") {
+
+        aiPanelElement.classList.add(
+            "show"
+        );
+
+        architectureElement.style.display =
+            "block";
+
+
+        const activeAI =
+            document.querySelector(
+                ".ai-btn.active"
+            );
+
+
+        selectAI(
+            currentAI,
+            activeAI
+        );
+
+    } else {
+
+        aiPanelElement.classList.remove(
+            "show"
+        );
+
+        architectureElement.style.display =
+            "none";
+
+        renderTechnology(
+            type
+        );
+    }
+}
+
+
+/* =========================================================
+   AI BUTTON
+========================================================= */
+
+function selectAI(type, button) {
+
+    currentAI =
+        type;
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".ai-btn"
+        );
+
+
+    buttons.forEach(
+        function(btn) {
+
+            btn.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    if (button) {
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+
+    const data =
+        aiTechnologies[type];
+
+
+    titleElement.textContent =
+        "🤖 " + data.title;
+
+    badgeElement.textContent =
+        "LATEST AI EXTENSION";
+
+    languageElement.textContent =
+        "Spring AI";
+
+    codeElement.textContent =
+        data.code;
+
+    resultElement.textContent =
+        data.result;
+
+    terminalElement.textContent =
+        data.terminal;
+
+    conceptElement.textContent =
+        data.concept;
+
+    practiceElement.textContent =
+        data.practice;
+
+    goalElement.textContent =
+        data.goal;
+
+
+    renderFlow(
+        data.flow
+    );
+
+
+    renderArchitecture(
+        type
+    );
+}
+
+
+/* =========================================================
+   AI ARCHITECTURE
+========================================================= */
+
+function renderArchitecture(type) {
+
+    const architectureData = {
+
+        chatclient: [
+            "User",
+            "Spring Boot",
+            "ChatClient",
+            "ChatModel",
+            "LLM",
+            "Response"
+        ],
+
+        prompt: [
+            "Role",
+            "Instruction",
+            "Context",
+            "Prompt",
+            "LLM",
+            "Output"
+        ],
+
+        embedding: [
+            "Document",
+            "Chunk",
+            "Embedding",
+            "Vector",
+            "Vector DB"
+        ],
+
+        pgvector: [
+            "PostgreSQL",
+            "PGVector",
+            "Embedding",
+            "Similarity",
+            "Context"
+        ],
+
+        rag: [
+            "Question",
+            "Embedding",
+            "PGVector",
+            "Context",
+            "LLM",
+            "Answer"
+        ],
+
+        toolcalling: [
+            "User",
+            "LLM",
+            "Tool Calling",
+            "Tool",
+            "Result",
+            "Answer"
+        ],
+
+        mcp: [
+            "AI Client",
+            "MCP Client",
+            "MCP Server",
+            "Tools",
+            "Resources",
+            "Result"
+        ],
+
+        agentic: [
+            "Goal",
+            "Agent",
+            "Plan",
+            "Tool",
+            "Observe",
+            "Re-plan",
+            "Answer"
+        ],
+
+        memory: [
+            "Conversation",
+            "Memory",
+            "Retrieve",
+            "Context",
+            "LLM",
+            "Answer"
+        ],
+
+        evaluation: [
+            "Question",
+            "AI",
+            "Response",
+            "Evaluator",
+            "Score",
+            "Feedback"
+        ],
+
+        observability: [
+            "Request",
+            "Trace",
+            "Metrics",
+            "Token",
+            "Latency",
+            "Monitor"
+        ],
+
+        multiagent: [
+            "Supervisor",
+            "Research",
+            "Data",
+            "Writer",
+            "Supervisor",
+            "Final"
+        ]
+    };
+
+
+    const items =
+        architectureData[type];
+
+
+    architectureFlowElement.innerHTML =
+        "";
+
+
+    items.forEach(
+        function(item, index) {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+            element.className =
+                "architecture-item";
+
+            element.textContent =
+                item;
+
+            architectureFlowElement.appendChild(
+                element
+            );
+
+
+            if (
+                index <
+                items.length - 1
+            ) {
+
+                const arrow =
+                    document.createElement(
+                        "div"
+                    );
+
+                arrow.className =
+                    "architecture-arrow";
+
+                arrow.textContent =
+                    "→";
+
+                architectureFlowElement.appendChild(
+                    arrow
+                );
+            }
+        }
+    );
+}
+
+
+/* =========================================================
+   RUN SIMULATION
+========================================================= */
+
+function runSimulation() {
+
+    let data;
+
+
+    if (currentTech === "ai") {
+
+        data =
+            aiTechnologies[currentAI];
+
+    } else {
+
+        data =
+            technologies[currentTech];
+
+    }
+
+
+    resultElement.textContent =
+        "▶ 실행 중...\n\n" +
+        "시뮬레이션 데이터를 처리하고 있습니다.";
+
+
+    terminalElement.textContent =
+        "$ simulation starting...\n\n" +
+        "$ processing...\n\n" +
+        "$ please wait...";
+
+
+    setTimeout(
+        function() {
+
+            resultElement.textContent =
+                data.result;
+
+            terminalElement.textContent =
+                data.terminal;
+
+        },
+        800
+    );
+}
+
+
+/* =========================================================
+   INITIAL SCREEN
+========================================================= */
+
+renderTechnology(
+    "java"
+);
+
+</script>
+
+</body>
+</html>

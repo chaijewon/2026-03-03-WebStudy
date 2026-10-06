@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI LIFE | AI 맛집 & 여행 코스 체험관</title>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:Arial,"Noto Sans KR",sans-serif;background:#07111f;color:#eef6ff}
+button,select{font:inherit} button{cursor:pointer}
+.hero{padding:58px 20px 42px;text-align:center;background:radial-gradient(circle at 50% 0,#21496b,#07111f 65%)}
+.badge{display:inline-block;padding:8px 15px;border:1px solid #386487;border-radius:999px;background:#0b2035;color:#8fd8ff;font-size:13px}
+h1{font-size:clamp(34px,6vw,62px);letter-spacing:-3px;margin:18px 0 10px}.hero p{max-width:760px;margin:auto;color:#b1c2d4;line-height:1.7;font-size:17px}
+.wrap{max-width:1180px;margin:auto;padding:24px 20px 70px}
+.tabs{display:flex;gap:10px;justify-content:center;margin:10px 0 25px}.tab{padding:13px 25px;border-radius:12px;border:1px solid #294968;background:#102237;color:#bdd0e3;font-weight:700}.tab.active{background:#ff9900;color:#111;border-color:#ff9900}
+.panel{display:none}.panel.active{display:block}
+.form{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;background:#0c1929;border:1px solid #223c57;border-radius:18px;padding:20px}
+label{font-size:13px;color:#8fa7bf;margin-bottom:7px;display:block}select{width:100%;padding:13px;border-radius:10px;border:1px solid #29445f;background:#0b1726;color:#eaf3fc}
+.mainbtn{grid-column:1/-1;border:0;border-radius:12px;padding:15px;background:#ff9900;color:#111;font-weight:800;font-size:16px}
+.console{margin-top:18px;background:#050c14;border:1px solid #20384f;border-radius:16px;padding:17px;font-family:Consolas,monospace;min-height:145px;line-height:1.8}.info{color:#79caff}.ok{color:#5ae29c}.warn{color:#ffd166}
+.progress{margin-top:12px;height:9px;background:#182b40;border-radius:99px;overflow:hidden}.bar{width:0;height:100%;background:linear-gradient(90deg,#ff9900,#46d7ff);transition:.4s}
+.results{margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{background:#0c1929;border:1px solid #223c57;border-radius:16px;overflow:hidden}.pic{height:120px;display:grid;place-items:center;font-size:48px;background:linear-gradient(135deg,#142f49,#0c1725)}.body{padding:16px}.body h3{margin:0 0 7px}.meta{font-size:13px;color:#9bb0c4;line-height:1.7}.tag{display:inline-block;margin-top:10px;padding:5px 8px;border-radius:7px;background:#142c43;color:#8fd8ff;font-size:11px}
+.timeline{display:grid;gap:12px;margin-top:20px}.stop{display:grid;grid-template-columns:90px 50px 1fr;align-items:center;background:#0c1929;border:1px solid #223c57;border-radius:14px;padding:15px;opacity:.35;transform:translateX(-15px);transition:.5s}.stop.show{opacity:1;transform:none}.time{font-weight:800;color:#ffb52e}.ico{font-size:30px}.stop h3{margin:0 0 4px}.stop p{margin:0;color:#9eb1c5;font-size:13px}
+.summary{display:none;margin-top:20px;padding:22px;border-radius:16px;background:linear-gradient(135deg,#102b42,#0d1725);border:1px solid #2d5577}.summary h2{margin:0 0 8px}.summary p{color:#adc0d2;line-height:1.6}
+.tech{margin-top:35px;text-align:center;padding:28px;border-radius:18px;background:#0c1929;border:1px solid #223c57}.tech span{display:inline-block;padding:9px 12px;margin:5px;border-radius:9px;background:#122a40;color:#9edcff;font-size:13px}
+@media(max-width:800px){.form{grid-template-columns:repeat(2,1fr)}.results{grid-template-columns:1fr}.stop{grid-template-columns:70px 42px 1fr}}
+@media(max-width:500px){.form{grid-template-columns:1fr}.tabs{flex-direction:column}.tab{width:100%}}
+</style>
+</head>
+<body>
+<header class="hero">
+<span class="badge">AI LIFE · AI 체험관</span>
+<h1>🤖 AI 맛집 & 여행 코스</h1>
+<p>지역, 취향, 예산을 선택하면 AI가 조건을 분석하고 맛집을 찾고 여행 코스를 만드는 과정을 직접 체험해보세요.</p>
+</header>
+
+<main class="wrap">
+<div class="tabs">
+<button class="tab active" data-tab="food">🍴 AI 맛집 추천</button>
+<button class="tab" data-tab="trip">✈️ AI 여행 코스</button>
+</div>
+
+<section class="panel active" id="food">
+<div class="form">
+<div><label>📍 지역</label><select id="area"><option>홍대</option><option>연남동</option><option>마포</option><option>강남</option></select></div>
+<div><label>🍴 음식</label><select id="foodType"><option>고기</option><option>한식</option><option>카페</option><option>아무거나</option></select></div>
+<div><label>💰 예산</label><select id="budget"><option>1~2만원</option><option>2~3만원</option><option>3만원 이상</option></select></div>
+<div><label>❤️ 분위기</label><select id="mood"><option>데이트</option><option>친구</option><option>회식</option><option>혼밥</option></select></div>
+<button class="mainbtn" id="foodBtn">✨ AI 추천 시작</button>
+</div>
+<div class="console" id="foodLog"><div class="info">[AI] 맛집 추천 엔진 대기 중...</div><div>조건을 선택하고 시작 버튼을 눌러주세요.</div><div class="progress"><div class="bar" id="foodBar"></div></div></div>
+<div class="results" id="foodResults"></div>
+</section>
+
+<section class="panel" id="trip">
+<div class="form">
+<div><label>📍 여행지</label><select id="tripArea"><option>홍대·연남</option><option>마포</option><option>서울 도심</option><option>서울 전체</option></select></div>
+<div><label>⏱️ 기간</label><select id="duration"><option>당일치기</option><option>1박 2일</option><option>2박 3일</option></select></div>
+<div><label>🎯 스타일</label><select id="style"><option>맛집 + 카페</option><option>문화 + 사진</option><option>K-POP + 쇼핑</option><option>힐링 + 자연</option></select></div>
+<div><label>🚇 이동</label><select id="move"><option>대중교통</option><option>도보 중심</option><option>자동차</option></select></div>
+<button class="mainbtn" id="tripBtn">🗺️ AI 여행 코스 생성</button>
+</div>
+<div class="console" id="tripLog"><div class="info">[AI] 여행 코스 생성 엔진 대기 중...</div><div>조건을 선택하고 시작 버튼을 눌러주세요.</div><div class="progress"><div class="bar" id="tripBar"></div></div></div>
+<div class="timeline" id="timeline"></div>
+<div class="summary" id="summary"><h2>✨ AI가 코스를 완성했습니다</h2><p id="summaryText"></p></div>
+</section>
+
+<div class="tech">
+<strong>🎓 학원에서는 이렇게 구현합니다</strong><br>
+<span>Spring Boot</span><span>Spring AI</span><span>PostgreSQL</span><span>PGVector</span><span>Tool Calling</span><span>MCP</span><span>지도 API</span><span>Docker</span><span>AWS</span>
+</div>
+</main>
+
+<script>
+const foodData=[
+{name:"김숙성 홍대점",type:"고기",price:"2~3만원",mood:"데이트",icon:"🥩",desc:"홍익로3길에 위치한 고기구이 전문점"},
+{name:"홍대부대찌개",type:"한식",price:"1~2만원",mood:"친구",icon:"🍲",desc:"홍익로5안길의 부대찌개 전문점"},
+{name:"블루보틀 홍대 카페",type:"카페",price:"2~3만원",mood:"데이트",icon:"☕",desc:"양화로에 위치한 커피 전문점"},
+{name:"마포곱창타운",type:"고기",price:"2~3만원",mood:"회식",icon:"🔥",desc:"동교로27길의 곱창구이 전문점"},
+{name:"신이도가",type:"카페",price:"2~3만원",mood:"친구",icon:"🍰",desc:"잔다리로에 위치한 카페"}
+];
+
+const foodLog=document.getElementById("foodLog"), foodBar=document.getElementById("foodBar"), results=document.getElementById("foodResults");
+function addLog(box,msg,cls=""){let d=document.createElement("div");d.className=cls;d.textContent=msg;box.appendChild(d);box.scrollTop=box.scrollHeight}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));document.getElementById(b.dataset.tab).classList.add("active")});
+
+document.getElementById("foodBtn").onclick=async()=>{
+ results.innerHTML="";foodLog.innerHTML="";foodBar.style.width="0%";
+ const area=document.getElementById("area").value,type=document.getElementById("foodType").value,budget=document.getElementById("budget").value,mood=document.getElementById("mood").value;
+ addLog(foodLog,`[USER] ${area} / ${type} / ${budget} / ${mood}`);
+ await sleep(450);foodBar.style.width="25%";addLog(foodLog,"[AI] 사용자 취향 분석 중...","info");
+ await sleep(500);foodBar.style.width="50%";addLog(foodLog,"[SEARCH] 주변 음식점 데이터 검색...","info");
+ await sleep(500);foodBar.style.width="75%";addLog(foodLog,"[AI] 가격·분위기·음식 종류 필터링...","info");
+ await sleep(500);foodBar.style.width="100%";addLog(foodLog,"[AI] ✓ 추천 결과 생성 완료","ok");
+ let arr=foodData.filter(x=>(type==="아무거나"||x.type===type)&&(x.price===budget||budget==="3만원 이상")).slice(0,3);
+ if(arr.length<3) arr=foodData.filter(x=>x.mood===mood).slice(0,3);
+ if(!arr.length)arr=foodData.slice(0,3);
+ arr.forEach((x,i)=>{results.innerHTML+=`<article class="card"><div class="pic">${x.icon}</div><div class="body"><h3>${i+1}. ${x.name}</h3><div class="meta">${x.desc}<br>💰 ${x.price} · ❤️ ${x.mood}</div><span class="tag">AI MATCH ${96-i*4}%</span></div></article>`});
+};
+
+const trips={
+"홍대·연남":[["10:00","📍","홍대입구역","AI 여행 시작 — 이동 동선 분석"],["11:00","🎨","홍대 거리","거리 문화와 포토스팟 탐방"],["12:30","🍴","홍대 맛집","사용자 조건에 맞는 점심 추천"],["14:30","☕","연남동 카페","카페에서 휴식"],["16:00","🛍️","K-POP / 쇼핑","팝업·굿즈·쇼핑 체험"],["18:30","🌙","홍대 야간거리","저녁 식사와 야간 문화 체험"]],
+"마포":[["10:00","📍","마포 출발","AI가 이동시간을 계산합니다"],["11:00","🎬","DMC","IT·미디어 산업 클러스터 체험"],["13:00","🍴","마포 맛집","점심 식사"],["15:00","🌳","월드컵공원","자연·산책 코스"],["18:00","🌅","노을공원","전망과 산책"],["19:30","🍴","저녁","마포 주변 저녁 추천"]],
+"서울 도심":[["09:30","🏛️","광화문","서울 도심 문화 탐방"],["11:30","🏯","경복궁","역사·문화 체험"],["13:00","🍴","점심","AI 맛집 추천"],["15:00","☕","익선동","카페·골목 탐방"],["17:30","🛍️","명동","쇼핑·거리 체험"],["19:30","🌃","청계천","야간 산책"]]
+};
+
+document.getElementById("tripBtn").onclick=async()=>{
+ const area=document.getElementById("tripArea").value,log=document.getElementById("tripLog"),bar=document.getElementById("tripBar"),timeline=document.getElementById("timeline"),summary=document.getElementById("summary");
+ log.innerHTML="";timeline.innerHTML="";summary.style.display="none";bar.style.width="0%";
+ addLog(log,`[USER] ${area} / ${document.getElementById("duration").value} / ${document.getElementById("style").value}`);
+ await sleep(400);bar.style.width="20%";addLog(log,"[AI] 여행자 취향 분석...");
+ await sleep(500);bar.style.width="40%";addLog(log,"[TOOL] 관광지·맛집·카페 데이터 검색...");
+ await sleep(500);bar.style.width="65%";addLog(log,"[AI] 이동시간과 방문 순서 최적화...");
+ await sleep(500);bar.style.width="85%";addLog(log,"[VECTOR] 유사 여행 코스 검색...");
+ await sleep(500);bar.style.width="100%";addLog(log,"[AI] ✓ 여행 코스 생성 완료","ok");
+ const data=trips[area]||trips["홍대·연남"];
+ data.forEach((x,i)=>{setTimeout(()=>{const d=document.createElement("div");d.className="stop";d.innerHTML=`<div class="time">${x[0]}</div><div class="ico">${x[1]}</div><div><h3>${x[2]}</h3><p>${x[3]}</p></div>`;timeline.appendChild(d);setTimeout(()=>d.classList.add("show"),40)},i*350)});
+ setTimeout(()=>{summary.style.display="block";document.getElementById("summaryText").textContent=`${area} 지역을 기준으로 ${data.length}개의 방문 지점을 연결했습니다. 실제 서비스에서는 지도 API, 실시간 영업정보, 날씨, 교통정보와 Spring AI Tool Calling을 연결해 동적으로 코스를 생성할 수 있습니다.`},data.length*350+300);
+};
+</script>
+</body>
+</html>

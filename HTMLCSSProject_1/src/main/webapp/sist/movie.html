@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>AI 서비스 포스터 및 시연 영상</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .poster-container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .poster-part {
+            width: 100%;
+            display: block;
+        }
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            background: #000;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="poster-container">
+    <!-- 조각 1 -->
+    <img src="part1.png" class="poster-part" alt="포스터 상단">
+    
+    <!-- 조각 2 (클릭하면 바로 재생되는 썸네일 역할 대체 혹은 직접 동영상 재생) -->
+    <div class="video-wrapper">
+        <video controls autoplay muted loop playsinline>
+            <source src="시연.mp4" type="video/mp4">
+            지원되지 않는 브라우저입니다.
+        </video>
+    </div>
+
+    <!-- 조각 3 -->
+    <img src="part3.png" class="poster-part" alt="포스터 하단">
+</div>
+
+</body>
+</html>

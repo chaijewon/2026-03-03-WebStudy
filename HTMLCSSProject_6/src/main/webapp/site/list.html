@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>한식 레시피 공유 - IT EDU CENTER</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root { --brand-primary: #2563eb; --brand-accent: #ff6b35; --brand-dark: #0f172a; --card-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05); }
+  body { font-family: "Pretendard Variable", Pretendard, sans-serif; background-color: #f8fafc; color: #334155; }
+  .recipe-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 20px; overflow: hidden; transition: all 0.3s ease; box-shadow: var(--card-shadow); height: 100%; display: flex; flex-direction: column; }
+  .recipe-card:hover { transform: translateY(-5px); border-color: rgba(37, 99, 235, 0.3); }
+  .recipe-img-wrap { position: relative; padding-top: 65%; overflow: hidden; }
+  .recipe-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+</style>
+</head>
+<body>
+
+<div class="container py-5">
+  <div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+      <span class="text-primary fw-bold small text-uppercase">Recipe Sharing</span>
+      <h2 class="fw-extrabold m-0 text-dark">한식 레시피 공유 마당</h2>
+    </div>
+    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+      <div class="input-group" style="max-width: 350px; margin-left: auto;">
+        <input type="text" class="form-control rounded-start-pill ps-3" placeholder="재료 또는 요리명 검색...">
+        <button class="btn btn-primary rounded-end-pill px-4" type="button"><i class="bi bi-search"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- 레시피 아이템 1 -->
+    <div class="col-md-6 col-lg-4">
+      <div class="recipe-card">
+        <div class="recipe-img-wrap">
+          <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" class="recipe-img" alt="김치찌개">
+        </div>
+        <div class="p-4 d-flex flex-column flex-grow-1">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="badge bg-danger-subtle text-danger fw-bold">국/찌개</span>
+            <small class="text-muted"><i class="bi bi-heart-fill text-danger me-1"></i> 142</small>
+          </div>
+          <h5 class="fw-bold mb-2">얼큰 칼칼 진한 숙성 김치찌개</h5>
+          <p class="small text-muted mb-4">돼지고기 앞다리살과 잘 익은 김치로 깊은 맛을 낸 자취생 필수 레시피</p>
+          <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+            <small class="text-secondary">작성자: 요리왕초보</small>
+            <a href="recipe_detail.html" class="btn btn-outline-primary btn-sm rounded-pill px-3">레시피 보기</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 레시피 아이템 2 -->
+    <div class="col-md-6 col-lg-4">
+      <div class="recipe-card">
+        <div class="recipe-img-wrap">
+          <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=800&q=80" class="recipe-img" alt="불고기">
+        </div>
+        <div class="p-4 d-flex flex-column flex-grow-1">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="badge bg-warning-subtle text-warning-emphasis fw-bold">고기요리</span>
+            <small class="text-muted"><i class="bi bi-heart-fill text-danger me-1"></i> 98</small>
+          </div>
+          <h5 class="fw-bold mb-2">단짠단짠 부드러운 뚝배기 불고기</h5>
+          <p class="small text-muted mb-4">특제 간장 소스로 감칠맛을 극대화한 온가족 영양 만점 불고기 요리</p>
+          <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+            <small class="text-secondary">작성자: 셰프라이언</small>
+            <a href="recipe_detail.html" class="btn btn-outline-primary btn-sm rounded-pill px-3">레시피 보기</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

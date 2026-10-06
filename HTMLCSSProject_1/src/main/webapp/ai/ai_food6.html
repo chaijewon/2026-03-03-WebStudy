@@ -1,0 +1,2701 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI LIFE - AI 맞춤 맛집 추천</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        :root {
+            --navy: #071f4b;
+            --blue: #176ce4;
+            --purple: #6557f5;
+            --cyan: #76e4ff;
+            --bg: #f5f9ff;
+            --line: #dce8fb;
+            --text: #14366d;
+            --muted: #7185a7;
+            --orange: #ff7a18;
+            --orange-light: #fff4e9;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            font-family: Pretendard, "Noto Sans KR", sans-serif;
+            color: var(--text);
+        }
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+            min-height: 305px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+
+            background:
+                    linear-gradient(
+                            90deg,
+                            rgba(3, 27, 70, .95),
+                            rgba(10, 72, 145, .72),
+                            rgba(3, 20, 55, .25)
+                    ),
+                    url("https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1900&q=85")
+                    center / cover;
+        }
+
+        .hero-inner {
+            max-width: 1450px;
+            margin: auto;
+            padding: 40px 52px;
+            position: relative;
+        }
+
+        .hand {
+            font-size: 27px;
+            font-style: italic;
+        }
+
+        .hero h1 {
+            font-size: 60px;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: -3px;
+            margin: 8px 0 15px;
+
+            background: linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #9be6ff,
+                    #cbb8ff
+            );
+
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .callout {
+            position: absolute;
+            right: 5%;
+            top: 42px;
+
+            border-left: 2px solid white;
+            padding-left: 28px;
+
+            width: 340px;
+        }
+
+        .callout b {
+            font-size: 27px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .callout span {
+            line-height: 1.6;
+        }
+
+        /* =========================================================
+           TECH BAR
+        ========================================================= */
+
+        .stack {
+            max-width: 1390px;
+            margin: -48px auto 0;
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .techbar {
+            background: #fffefe;
+            border: 1px solid #d6e4f9;
+            border-radius: 22px;
+
+            padding: 13px;
+
+            display: flex;
+            gap: 10px;
+            align-items: center;
+
+            box-shadow: 0 10px 30px #235b9a1f;
+        }
+
+        .tech {
+            flex: 1;
+            min-height: 70px;
+
+            border: 1px solid #e3ecfa;
+            border-radius: 16px;
+
+            background: #fafdff;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 9px 14px;
+        }
+
+        .tech i {
+            font-size: 29px;
+        }
+
+        .tech b {
+            display: block;
+        }
+
+        .tech small {
+            color: #7086a8;
+        }
+
+        .arrow {
+            font-size: 23px;
+            color: #3772c6;
+        }
+
+        /* =========================================================
+           MAIN LAYOUT
+        ========================================================= */
+
+        .shell {
+            max-width: 1500px;
+
+            margin: 14px auto 30px;
+            padding: 0 22px;
+
+            display: grid;
+
+            grid-template-columns:
+                    185px
+                    minmax(0, 1fr)
+                    300px;
+
+            gap: 14px;
+        }
+
+        .side,
+        .main,
+        .info {
+            background: #fff;
+
+            border-radius: 20px;
+            border: 1px solid #e0eafa;
+
+            box-shadow: 0 8px 28px #285b9914;
+        }
+
+        /* =========================================================
+           SIDE
+        ========================================================= */
+
+        .side {
+            background: linear-gradient(
+                    180deg,
+                    #09275d,
+                    #071e45
+            );
+
+            color: white;
+
+            padding: 16px 10px;
+            min-height: 900px;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: 900;
+
+            padding: 8px 10px 18px;
+
+            border-bottom: 1px solid #ffffff22;
+        }
+
+        .side button {
+            width: 100%;
+
+            border: 0;
+            background: transparent;
+
+            color: white;
+
+            text-align: left;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            margin-top: 5px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .side button:hover,
+        .side button.active {
+            background: #176ce4;
+        }
+
+        .side-note {
+            margin-top: 300px;
+
+            text-align: center;
+
+            font-style: italic;
+
+            line-height: 1.7;
+
+            color: #d8e8ff;
+        }
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        .main {
+            padding: 20px;
+        }
+
+        .title {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .title .spark {
+            font-size: 28px;
+            color: #6757f4;
+        }
+
+        .title h2 {
+            font-size: 29px;
+            font-weight: 900;
+            margin: 0;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            margin: 4px 0 18px;
+        }
+
+        /* =========================================================
+           SEARCH FILTER
+        ========================================================= */
+
+        .filters {
+            display: grid;
+
+            grid-template-columns:
+                    repeat(4, 1fr)
+                    145px;
+
+            gap: 8px;
+
+            border-bottom: 1px solid #e5edf8;
+
+            padding-bottom: 14px;
+        }
+
+        .filter {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+
+            padding: 8px 11px;
+
+            background: #fbfdff;
+        }
+
+        .filter label {
+            display: block;
+
+            font-size: 11px;
+
+            color: #7186a7;
+
+            margin-bottom: 2px;
+        }
+
+        .filter select {
+            border: 0;
+
+            background: transparent;
+
+            width: 100%;
+
+            outline: 0;
+
+            font-weight: 700;
+
+            color: #173d77;
+        }
+
+        .search {
+            border: 0;
+
+            border-radius: 12px;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #5b54ef,
+                            #2f7ee9
+                    );
+
+            color: #fff;
+
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+        .search:hover {
+            opacity: .9;
+        }
+
+        /* =========================================================
+           EXTRA CONDITION AREA
+        ========================================================= */
+
+        .condition-panel {
+            margin-top: 16px;
+
+            padding: 18px;
+
+            border-radius: 16px;
+
+            border: 1px solid #dfeafb;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #fbfdff,
+                            #f2f7ff
+                    );
+        }
+
+        .condition-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 14px;
+        }
+
+        .condition-title h3 {
+            margin: 0;
+
+            font-size: 17px;
+
+            font-weight: 900;
+        }
+
+        .condition-title span {
+            font-size: 11px;
+
+            color: #7185a7;
+        }
+
+        .condition-group {
+            margin-bottom: 18px;
+        }
+
+        .condition-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .condition-group-title {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            font-size: 13px;
+
+            font-weight: 900;
+
+            margin-bottom: 8px;
+
+            color: #193f78;
+        }
+
+        .condition-group-title i {
+            color: #5c58ed;
+        }
+
+        .condition-list {
+            display: grid;
+
+            grid-template-columns:
+                    repeat(5, 1fr);
+
+            gap: 7px;
+        }
+
+        .condition {
+            border: 1px solid #d9e6f8;
+
+            background: white;
+
+            border-radius: 10px;
+
+            padding: 9px 5px;
+
+            text-align: center;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            color: #526f98;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .condition:hover {
+            border-color: #5b67ed;
+
+            color: #3f4de2;
+
+            background: #f3f5ff;
+
+            transform: translateY(-1px);
+        }
+
+        .condition.selected {
+            background:
+                    linear-gradient(
+                            135deg,
+                            #5b54ef,
+                            #287ce7
+                    );
+
+            color: white;
+
+            border-color: transparent;
+
+            box-shadow: 0 5px 12px #4e61e733;
+        }
+
+        /* =========================================================
+           SELECTED CONDITIONS
+        ========================================================= */
+
+        .selected-box {
+            margin-top: 12px;
+
+            padding: 12px;
+
+            border-radius: 12px;
+
+            background: white;
+
+            border: 1px dashed #b8cbe7;
+        }
+
+        .selected-title {
+            font-size: 12px;
+
+            font-weight: 900;
+
+            color: #385d8f;
+
+            margin-bottom: 7px;
+        }
+
+        .selected-tags {
+            display: flex;
+
+            gap: 6px;
+
+            flex-wrap: wrap;
+        }
+
+        .selected-tag {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            padding: 6px 9px;
+
+            background: #edf4ff;
+
+            color: #2867b9;
+
+            border-radius: 99px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .selected-tag i {
+            font-size: 9px;
+        }
+
+        /* =========================================================
+           RESULT
+        ========================================================= */
+
+        .result-head {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin: 20px 0 10px;
+        }
+
+        .result-head h3 {
+            font-size: 18px;
+
+            font-weight: 900;
+
+            margin: 0;
+        }
+
+        .toggle button {
+            border: 0;
+
+            border-radius: 8px;
+
+            padding: 7px 12px;
+
+            color: #5275a5;
+
+            background: #edf3fb;
+        }
+
+        .toggle .active {
+            background: #2777e7;
+
+            color: white;
+        }
+
+        /* =========================================================
+           RESTAURANT CARDS
+        ========================================================= */
+
+        .cards {
+            display: grid;
+
+            grid-template-columns:
+                    repeat(3, 1fr);
+
+            gap: 12px;
+        }
+
+        .card {
+            border: 1px solid var(--line);
+
+            border-radius: 13px;
+
+            overflow: hidden;
+
+            background: white;
+
+            box-shadow: 0 5px 15px #285b9912;
+        }
+
+        .pic {
+            height: 150px;
+
+            background-size: cover;
+
+            background-position: center;
+
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+
+            top: 8px;
+            left: 8px;
+
+            background: #5253eb;
+
+            color: white;
+
+            border-radius: 7px;
+
+            padding: 4px 8px;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .body {
+            padding: 11px;
+        }
+
+        .body h4 {
+            font-size: 16px;
+
+            font-weight: 900;
+
+            margin: 0 0 5px;
+        }
+
+        .meta {
+            display: flex;
+
+            justify-content: space-between;
+
+            color: #7185a7;
+
+            font-size: 12px;
+        }
+
+        .score {
+            color: #f0a800;
+
+            font-weight: 900;
+        }
+
+        .tags {
+            display: flex;
+
+            gap: 4px;
+
+            flex-wrap: wrap;
+
+            margin: 7px 0;
+        }
+
+        .tag {
+            background: #edf5ff;
+
+            color: #4474ae;
+
+            border-radius: 99px;
+
+            padding: 3px 7px;
+
+            font-size: 10px;
+        }
+
+        .desc {
+            font-size: 11px;
+
+            color: #7185a6;
+
+            line-height: 1.5;
+
+            margin: 0;
+        }
+
+        /* =========================================================
+           MAP
+        ========================================================= */
+
+        .map {
+            height: 260px;
+
+            margin-top: 12px;
+
+            border: 1px solid #d9e7f7;
+
+            border-radius: 15px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #e9f5ec,
+                            #d9ecfa
+                    ),
+                    repeating-linear-gradient(
+                            35deg,
+                            transparent 0 20px,
+                            #bdd0e4 21px 22px
+                    );
+        }
+
+        .map-title {
+            position: absolute;
+
+            top: 12px;
+            left: 12px;
+
+            z-index: 5;
+
+            background: white;
+
+            padding: 9px 13px;
+
+            border-radius: 10px;
+
+            box-shadow: 0 4px 12px #285b9920;
+
+            font-size: 12px;
+
+            font-weight: 900;
+        }
+
+        .road {
+            position: absolute;
+
+            height: 4px;
+
+            background: #397de0;
+
+            border-radius: 5px;
+
+            transform-origin: left;
+        }
+
+        .r1 {
+            width: 70%;
+
+            left: 8%;
+
+            top: 35%;
+
+            transform: rotate(12deg);
+        }
+
+        .r2 {
+            width: 45%;
+
+            left: 30%;
+
+            top: 65%;
+
+            transform: rotate(-25deg);
+        }
+
+        .r3 {
+            width: 35%;
+
+            left: 55%;
+
+            top: 25%;
+
+            transform: rotate(43deg);
+        }
+
+        .pin {
+            position: absolute;
+
+            width: 29px;
+
+            height: 29px;
+
+            background: #5262eb;
+
+            border-radius: 50% 50% 50% 0;
+
+            transform: rotate(-45deg);
+
+            display: grid;
+
+            place-items: center;
+
+            color: white;
+
+            font-weight: 900;
+
+            box-shadow: 0 4px 10px #293d9c44;
+        }
+
+        .pin span {
+            transform: rotate(45deg);
+        }
+
+        .pin1 {
+            left: 18%;
+            top: 23%;
+        }
+
+        .pin2 {
+            left: 49%;
+            top: 51%;
+        }
+
+        .pin3 {
+            left: 72%;
+            top: 34%;
+
+            background: #ef8a25;
+        }
+
+        /* =========================================================
+           RIGHT INFORMATION
+        ========================================================= */
+
+        .info {
+            padding: 20px;
+
+            min-height: 900px;
+        }
+
+        .info h3 {
+            font-size: 20px;
+
+            font-weight: 900;
+
+            margin-bottom: 17px;
+        }
+
+        .info-row {
+            display: flex;
+
+            gap: 12px;
+
+            margin: 18px 0;
+        }
+
+        .info-icon {
+            width: 46px;
+
+            height: 46px;
+
+            flex: 0 0 46px;
+
+            border-radius: 50%;
+
+            display: grid;
+
+            place-items: center;
+
+            background: #f0f6ff;
+
+            color: #4e59ed;
+
+            font-size: 22px;
+        }
+
+        .info-row b {
+            display: block;
+
+            margin-bottom: 4px;
+        }
+
+        .info-row p {
+            font-size: 12px;
+
+            color: #7185a7;
+
+            line-height: 1.55;
+
+            margin: 0;
+        }
+
+        .ai-score {
+            margin-top: 20px;
+
+            padding: 14px;
+
+            border-radius: 13px;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #f4f2ff,
+                            #edf7ff
+                    );
+
+            border: 1px solid #dedcff;
+        }
+
+        .ai-score-title {
+            font-size: 12px;
+
+            font-weight: 900;
+
+            margin-bottom: 8px;
+        }
+
+        .score-bar {
+            height: 9px;
+
+            background: #e5ebf5;
+
+            border-radius: 99px;
+
+            overflow: hidden;
+        }
+
+        .score-value {
+            width: 94%;
+
+            height: 100%;
+
+            background:
+                    linear-gradient(
+                            90deg,
+                            #5c54ee,
+                            #277ce8
+                    );
+        }
+
+        .score-text {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 7px;
+
+            font-size: 11px;
+
+            color: #7185a7;
+        }
+
+        .scribble {
+            text-align: center;
+
+            color: #5a50ed;
+
+            font-style: italic;
+
+            font-size: 18px;
+
+            margin-top: 48px;
+
+            transform: rotate(-3deg);
+        }
+
+        /* =========================================================
+           QUICK THEMES
+        ========================================================= */
+
+        .quick-theme {
+            margin-top: 16px;
+
+            padding: 14px;
+
+            border-radius: 14px;
+
+            background: #fff;
+
+            border: 1px solid var(--line);
+        }
+
+        .quick-theme h4 {
+            font-size: 14px;
+
+            font-weight: 900;
+
+            margin-bottom: 10px;
+        }
+
+        .quick-theme-list {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 6px;
+        }
+
+        .quick-theme-item {
+            padding: 7px 10px;
+
+            border-radius: 99px;
+
+            background: #f2f6fc;
+
+            color: #56749e;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .quick-theme-item:hover {
+            background: #e8f1ff;
+
+            color: #286ac4;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 1250px) {
+
+            .shell {
+                grid-template-columns:
+                        170px
+                        minmax(0, 1fr);
+            }
+
+            .info {
+                display: none;
+            }
+
+            .condition-list {
+                grid-template-columns:
+                        repeat(4, 1fr);
+            }
+
+        }
+
+        @media (max-width: 1000px) {
+
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .callout {
+                display: none;
+            }
+
+            .techbar {
+                overflow-x: auto;
+            }
+
+            .tech {
+                min-width: 210px;
+            }
+
+            .arrow {
+                flex: 0 0 auto;
+            }
+
+            .filters {
+                grid-template-columns:
+                        repeat(2, 1fr);
+            }
+
+            .search {
+                min-height: 50px;
+            }
+
+            .cards {
+                grid-template-columns:
+                        repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .hero {
+                min-height: 270px;
+            }
+
+            .hero-inner {
+                padding: 30px 20px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+
+                letter-spacing: -2px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .hand {
+                font-size: 20px;
+            }
+
+            .stack {
+                padding: 0 10px;
+            }
+
+            .techbar {
+                border-radius: 15px;
+            }
+
+            .shell {
+                grid-template-columns: 1fr;
+
+                padding: 0 10px;
+            }
+
+            .side {
+                min-height: auto;
+
+                padding: 10px;
+            }
+
+            .side button {
+                width: auto;
+
+                display: inline-block;
+
+                margin: 2px;
+            }
+
+            .side-note {
+                display: none;
+            }
+
+            .main {
+                padding: 14px;
+            }
+
+            .title h2 {
+                font-size: 23px;
+            }
+
+            .filters {
+                grid-template-columns:
+                        1fr 1fr;
+            }
+
+            .condition-panel {
+                padding: 12px;
+            }
+
+            .condition-list {
+                grid-template-columns:
+                        repeat(3, 1fr);
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .pic {
+                height: 190px;
+            }
+
+            .map {
+                height: 220px;
+            }
+
+        }
+
+        @media (max-width: 450px) {
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .condition-list {
+                grid-template-columns:
+                        repeat(2, 1fr);
+            }
+
+            .tech {
+                min-width: 190px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<header class="hero">
+
+    <div class="hero-inner">
+
+        <div class="hand">
+            AI가 찾아주는
+        </div>
+
+        <h1>
+            나만의 맞춤 맛집 추천
+        </h1>
+
+        <p>
+            Spring AI와 PostgreSQL + pgVector로<br>
+            당신의 취향에 딱 맞는 맛집을 찾아드립니다.
+        </p>
+
+        <div class="callout">
+
+            <b>
+                오늘, 무엇을 먹을까?
+            </b>
+
+            <span>
+                AI가 당신의 취향을 분석해<br>
+                최고의 맛집을 추천합니다.
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     TECH STACK
+========================================================= -->
+
+<div class="stack">
+
+    <div class="techbar">
+
+        <div class="tech">
+
+            <i class="bi bi-database"
+               style="color:#d52b2b"></i>
+
+            <div>
+                <b>Oracle</b>
+                <small>맛집 데이터</small>
+            </div>
+
+        </div>
+
+        <span class="arrow">→</span>
+
+
+        <div class="tech">
+
+            <i class="bi bi-leaf"
+               style="color:#36a866"></i>
+
+            <div>
+                <b>Spring AI</b>
+                <small>Embedding & AI</small>
+            </div>
+
+        </div>
+
+        <span class="arrow">→</span>
+
+
+        <div class="tech">
+
+            <i class="bi bi-database-fill"></i>
+
+            <div>
+                <b>PostgreSQL</b>
+                <small>데이터 저장</small>
+            </div>
+
+        </div>
+
+        <span class="arrow">→</span>
+
+
+        <div class="tech">
+
+            <i class="bi bi-diagram-3"></i>
+
+            <div>
+                <b>pgVector</b>
+                <small>유사도 검색</small>
+            </div>
+
+        </div>
+
+        <span class="arrow">→</span>
+
+
+        <div class="tech">
+
+            <i class="bi bi-window"
+               style="color:#159252"></i>
+
+            <div>
+                <b>Thymeleaf</b>
+                <small>AI 맛집 화면</small>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<div class="shell">
+
+
+    <!-- =====================================================
+         SIDE MENU
+    ====================================================== -->
+
+    <aside class="side">
+
+        <div class="brand">
+            🍴 AI 맛집
+        </div>
+
+        <button class="active">
+            ⌂ 맛집 추천
+        </button>
+
+        <button>
+            ⌖ 지역별 맛집
+        </button>
+
+        <button>
+            ◈ 테마별 맛집
+        </button>
+
+        <button>
+            ♨ 메뉴별 맛집
+        </button>
+
+        <button>
+            ★ 인기 맛집
+        </button>
+
+        <button>
+            ♙ 내 취향 관리
+        </button>
+
+        <button>
+            ♡ 즐겨찾기
+        </button>
+
+        <button>
+            🕘 최근 방문
+        </button>
+
+        <div class="side-note">
+
+            AI가 추천하는<br>
+
+            당신만의<br>
+
+            맛집 리스트!
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main">
+
+
+        <div class="title">
+
+            <span class="spark">
+                ✦
+            </span>
+
+            <div>
+
+                <h2>
+                    AI 맞춤 맛집 추천
+                </h2>
+
+                <div class="subtitle">
+                    지역, 음식, 날씨, 분위기, 가격, 동행, 취향 등을
+                    선택하면 AI가 맞춤 맛집을 추천합니다.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             기본 검색 조건
+        ================================================== -->
+
+        <div class="filters">
+
+
+            <div class="filter">
+
+                <label>
+                    📍 지역
+                </label>
+
+                <select>
+
+                    <option>서울 강남구</option>
+                    <option>서울 마포구</option>
+                    <option>서울 종로구</option>
+                    <option>서울 송파구</option>
+                    <option>서울 용산구</option>
+                    <option>서울 성동구</option>
+                    <option>서울 영등포구</option>
+                    <option>경기 수원시</option>
+                    <option>경기 화성시</option>
+                    <option>부산 해운대구</option>
+                    <option>제주도</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="filter">
+
+                <label>
+                    🍴 음식
+                </label>
+
+                <select>
+
+                    <option>전체 음식</option>
+                    <option>한식</option>
+                    <option>중식</option>
+                    <option>일식</option>
+                    <option>양식</option>
+                    <option>분식</option>
+                    <option>치킨</option>
+                    <option>고기</option>
+                    <option>해산물</option>
+                    <option>카페</option>
+                    <option>베이커리</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="filter">
+
+                <label>
+                    💰 가격대
+                </label>
+
+                <select>
+
+                    <option>전체</option>
+                    <option>1만원 이하</option>
+                    <option>1만원 ~ 2만원</option>
+                    <option>2만원 ~ 3만원</option>
+                    <option>3만원 ~ 5만원</option>
+                    <option>5만원 이상</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="filter">
+
+                <label>
+                    🚗 거리
+                </label>
+
+                <select>
+
+                    <option>전체</option>
+                    <option>500m 이내</option>
+                    <option>1km 이내</option>
+                    <option>3km 이내</option>
+                    <option>5km 이내</option>
+                    <option>10km 이내</option>
+
+                </select>
+
+            </div>
+
+
+            <button class="search">
+                🔎 맛집 찾기
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             상세 선택 조건
+        ================================================== -->
+
+        <div class="condition-panel">
+
+
+            <div class="condition-title">
+
+                <h3>
+                    ✦ AI 추천 조건을 선택하세요
+                </h3>
+
+                <span>
+                    여러 조건을 함께 선택할 수 있습니다.
+                </span>
+
+            </div>
+
+
+            <!-- =================================================
+                 날씨
+            ================================================== -->
+
+            <div class="condition-group">
+
+                <div class="condition-group-title">
+
+                    <i class="bi bi-cloud-sun"></i>
+
+                    날씨 / 계절
+
+                </div>
+
+
+                <div class="condition-list">
+
+                    <div class="condition selected">
+                        ☀ 맑은 날
+                    </div>
+
+                    <div class="condition">
+                        🌧 비오는 날
+                    </div>
+
+                    <div class="condition">
+                        ❄ 눈오는 날
+                    </div>
+
+                    <div class="condition">
+                        🥶 추운 날
+                    </div>
+
+                    <div class="condition">
+                        🥵 더운 날
+                    </div>
+
+                    <div class="condition">
+                        🌙 늦은 밤
+                    </div>
+
+                    <div class="condition">
+                        🌸 봄
+                    </div>
+
+                    <div class="condition">
+                        🌿 여름
+                    </div>
+
+                    <div class="condition">
+                        🍂 가을
+                    </div>
+
+                    <div class="condition">
+                        ⛄ 겨울
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 맛
+            ================================================== -->
+
+            <div class="condition-group">
+
+                <div class="condition-group-title">
+
+                    <i class="bi bi-emoji-smile"></i>
+
+                    맛 / 음식 취향
+
+                </div>
+
+
+                <div class="condition-list">
+
+                    <div class="condition">
+                        🌶 매운맛
+                    </div>
+
+                    <div class="condition">
+                        🍯 달달한 맛
+                    </div>
+
+                    <div class="condition">
+                        🧂 짭짤한 맛
+                    </div>
+
+                    <div class="condition">
+                        🥜 고소한 맛
+                    </div>
+
+                    <div class="condition">
+                        🍋 새콤한 맛
+                    </div>
+
+                    <div class="condition">
+                        🥗 담백한 맛
+                    </div>
+
+                    <div class="condition">
+                        🧈 느끼한 맛
+                    </div>
+
+                    <div class="condition">
+                        🔥 뜨끈한 음식
+                    </div>
+
+                    <div class="condition">
+                        🧊 시원한 음식
+                    </div>
+
+                    <div class="condition">
+                        🍖 육즙 가득
+                    </div>
+
+                    <div class="condition">
+                        🧀 치즈 듬뿍
+                    </div>
+
+                    <div class="condition">
+                        🍜 국물 음식
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 음식 종류
+            ================================================== -->
+
+            <div class="condition-group">
+
+                <div class="condition-group-title">
+
+                    <i class="bi bi-cup-hot"></i>
+
+                    음식 종류
+
+                </div>
+
+
+                <div class="condition-list">
+
+                    <div class="condition">
+                        🍚 한식
+                    </div>
+
+                    <div class="condition">
+                        🥟 중식
+                    </div>
+
+                    <div class="condition">
+                        🍣 일식
+                    </div>
+
+                    <div class="condition">
+                        🍝 양식
+                    </div>
+
+                    <div class="condition">
+                        🍗 치킨
+                    </div>
+
+                    <div class="condition">
+                        🥩 고기
+                    </div>
+
+                    <div class="condition">
+                        🐟 해산물
+                    </div>
+
+                    <div class="condition">
+                        🍜 면요리
+                    </div>
+
+                    <div class="condition">
+                        🍲 찌개
+                    </div>
+
+                    <div class="condition">
+                        🍱 도시락
+                    </div>
+
+                    <div class="condition">
+                        🍔 패스트푸드
+                    </div>
+
+                    <div class="condition">
+                        ☕ 카페
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 상황
+            ================================================== -->
+
+            <div class="condition-group">
+
+                <div class="condition-group-title">
+
+                    <i class="bi bi-people"></i>
+
+                    상황 / 동행
+
+                </div>
+
+
+                <div class="condition-list">
+
+                    <div class="condition">
+                        👤 혼밥
+                    </div>
+
+                    <div class="condition">
+                        💕 데이트
+                    </div>
+
+                    <div class="condition">
+                        👨‍👩‍👧 가족 외식
+                    </div>
+
+                    <div class="condition">
+                        👫 친구 모임
+                    </div>
+
+                    <div class="condition">
+                        🏢 직장인 회식
+                    </div>
+
+                    <div class="condition">
+                        🎂 생일
+                    </div>
+
+                    <div class="condition">
+                        💍 기념일
+                    </div>
+
+                    <div class="condition">
+                        💘 소개팅
+                    </div>
+
+                    <div class="condition">
+                        👨‍👩‍👦 아이와 함께
+                    </div>
+
+                    <div class="condition">
+                        🧑‍💻 직장인 점심
+                    </div>
+
+                    <div class="condition">
+                        🌙 야식
+                    </div>
+
+                    <div class="condition">
+                        🍺 술자리
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 분위기
+            ================================================== -->
+
+            <div class="condition-group">
+
+                <div class="condition-group-title">
+
+                    <i class="bi bi-stars"></i>
+
+                    분위기 / 장소
+
+                </div>
+
+
+                <div class="condition-list">
+
+                    <div class="condition">
+                        💰 가성비
+                    </div>
+
+                    <div class="condition">
+                        💎 고급 맛집
+                    </div>
+
+                    <div class="condition">
+                        🔥 핫플
+                    </div>
+
+                    <div class="condition">
+                        💎 숨은 맛집
+                    </div>
+
+                    <div class="condition">
+                        📸 사진 맛집
+                    </div>
+
+                    <div class="condition">
+                        🌃 야경 맛집
+                    </div>
+
+                    <div class="condition">
+                        🌊 뷰 좋은 곳
+                    </div>
+
+                    <div class="condition">
+                        🌳 야외 테라스
+                    </div>
+
+                    <div class="condition">
+                        🕯 조용한 곳
+                    </div>
+
+                    <div class="condition">
+                        🎵 음악 좋은 곳
+                    </div>
+
+                    <div class="condition">
+                        🏠 분위기 좋은 곳
+                    </div>
+
+                    <div class="condition">
+                        🚗 주차 편한 곳
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 시간
+            ================================================== -->
+
+            <div class="condition-group">
+
+                <div class="condition-group-title">
+
+                    <i class="bi bi-clock"></i>
+
+                    시간 / 방문 목적
+
+                </div>
+
+
+                <div class="condition-list">
+
+                    <div class="condition">
+                        🌅 아침
+                    </div>
+
+                    <div class="condition">
+                        ☀ 점심
+                    </div>
+
+                    <div class="condition">
+                        🌇 저녁
+                    </div>
+
+                    <div class="condition">
+                        🌙 야간
+                    </div>
+
+                    <div class="condition">
+                        🌃 늦은 밤
+                    </div>
+
+                    <div class="condition">
+                        ☕ 브런치
+                    </div>
+
+                    <div class="condition">
+                        🍻 2차
+                    </div>
+
+                    <div class="condition">
+                        🥡 포장
+                    </div>
+
+                    <div class="condition">
+                        🛵 배달
+                    </div>
+
+                    <div class="condition">
+                        ⚡ 빠른 식사
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 건강 / 식습관
+            ================================================== -->
+
+            <div class="condition-group">
+
+                <div class="condition-group-title">
+
+                    <i class="bi bi-heart-pulse"></i>
+
+                    건강 / 식습관
+
+                </div>
+
+
+                <div class="condition-list">
+
+                    <div class="condition">
+                        🥗 건강식
+                    </div>
+
+                    <div class="condition">
+                        🥩 고단백
+                    </div>
+
+                    <div class="condition">
+                        🥬 채식
+                    </div>
+
+                    <div class="condition">
+                        🌱 비건
+                    </div>
+
+                    <div class="condition">
+                        🧘 저칼로리
+                    </div>
+
+                    <div class="condition">
+                        🍚 저염식
+                    </div>
+
+                    <div class="condition">
+                        🥑 다이어트
+                    </div>
+
+                    <div class="condition">
+                        💪 운동 후
+                    </div>
+
+                    <div class="condition">
+                        🥛 가벼운 식사
+                    </div>
+
+                    <div class="condition">
+                        🍖 든든한 식사
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 시설
+            ================================================== -->
+
+            <div class="condition-group">
+
+                <div class="condition-group-title">
+
+                    <i class="bi bi-building"></i>
+
+                    시설 / 편의
+
+                </div>
+
+
+                <div class="condition-list">
+
+                    <div class="condition">
+                        🚗 주차 가능
+                    </div>
+
+                    <div class="condition">
+                        🅿 무료 주차
+                    </div>
+
+                    <div class="condition">
+                        👶 아기의자
+                    </div>
+
+                    <div class="condition">
+                        🐶 반려동물
+                    </div>
+
+                    <div class="condition">
+                        📶 와이파이
+                    </div>
+
+                    <div class="condition">
+                        🔌 콘센트
+                    </div>
+
+                    <div class="condition">
+                        🏠 룸 있음
+                    </div>
+
+                    <div class="condition">
+                        🚬 흡연 공간
+                    </div>
+
+                    <div class="condition">
+                        ♿ 접근성 좋음
+                    </div>
+
+                    <div class="condition">
+                        💳 카드 결제
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 AI 추천 테마
+            ================================================== -->
+
+            <div class="condition-group">
+
+                <div class="condition-group-title">
+
+                    <i class="bi bi-magic"></i>
+
+                    AI 추천 테마
+
+                </div>
+
+
+                <div class="condition-list">
+
+                    <div class="condition">
+                        ⭐ 오늘의 인기
+                    </div>
+
+                    <div class="condition">
+                        🔥 SNS 인기
+                    </div>
+
+                    <div class="condition">
+                        📸 인스타 맛집
+                    </div>
+
+                    <div class="condition">
+                        🏆 평점 높은 곳
+                    </div>
+
+                    <div class="condition">
+                        💬 리뷰 많은 곳
+                    </div>
+
+                    <div class="condition">
+                        ❤️ 재방문 많은 곳
+                    </div>
+
+                    <div class="condition">
+                        💎 현지인 추천
+                    </div>
+
+                    <div class="condition">
+                        🗺 관광객 추천
+                    </div>
+
+                    <div class="condition">
+                        🤫 나만 알고 싶은 곳
+                    </div>
+
+                    <div class="condition">
+                        🆕 신규 맛집
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SELECTED
+            ================================================== -->
+
+            <div class="selected-box">
+
+                <div class="selected-title">
+                    현재 선택한 조건
+                </div>
+
+                <div class="selected-tags">
+
+                    <span class="selected-tag">
+                        ☀ 맑은 날
+                        <i class="bi bi-x"></i>
+                    </span>
+
+                    <span class="selected-tag">
+                        💕 데이트
+                        <i class="bi bi-x"></i>
+                    </span>
+
+                    <span class="selected-tag">
+                        🕯 조용한 곳
+                        <i class="bi bi-x"></i>
+                    </span>
+
+                    <span class="selected-tag">
+                        💰 가성비
+                        <i class="bi bi-x"></i>
+                    </span>
+
+                    <span class="selected-tag">
+                        📸 사진 맛집
+                        <i class="bi bi-x"></i>
+                    </span>
+
+                    <span class="selected-tag">
+                        🚗 주차 가능
+                        <i class="bi bi-x"></i>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             AI RESULT
+        ================================================== -->
+
+        <div class="result-head">
+
+            <h3>
+                ✦ AI 추천 맛집
+            </h3>
+
+            <div class="toggle">
+
+                <button class="active">
+                    ✦ 지도 보기
+                </button>
+
+                <button>
+                    ☷ 목록 보기
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             RESTAURANT CARDS
+        ================================================== -->
+
+        <div class="cards">
+
+
+            <!-- CARD 1 -->
+
+            <div class="card">
+
+                <div class="pic"
+                     style="
+                     background-image:
+                     url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=700&q=80');
+                     ">
+
+                    <span class="badge">
+                        AI 추천 1위
+                    </span>
+
+                </div>
+
+                <div class="body">
+
+                    <h4>
+                        강남화로집
+                    </h4>
+
+                    <div class="meta">
+
+                        <span class="score">
+                            ★ 4.8 (1,243)
+                        </span>
+
+                        <span>
+                            1.2km
+                        </span>
+
+                    </div>
+
+                    <div class="tags">
+
+                        <span class="tag">
+                            한식
+                        </span>
+
+                        <span class="tag">
+                            고기
+                        </span>
+
+                        <span class="tag">
+                            데이트
+                        </span>
+
+                        <span class="tag">
+                            주차
+                        </span>
+
+                    </div>
+
+                    <p class="desc">
+                        숯향 좋은 한우와 깔끔한 분위기의
+                        강남 대표 맛집입니다.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- CARD 2 -->
+
+            <div class="card">
+
+                <div class="pic"
+                     style="
+                     background-image:
+                     url('https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=700&q=80');
+                     ">
+
+                    <span class="badge">
+                        AI 추천 2위
+                    </span>
+
+                </div>
+
+                <div class="body">
+
+                    <h4>
+                        스시하나
+                    </h4>
+
+                    <div class="meta">
+
+                        <span class="score">
+                            ★ 4.7 (856)
+                        </span>
+
+                        <span>
+                            2.1km
+                        </span>
+
+                    </div>
+
+                    <div class="tags">
+
+                        <span class="tag">
+                            일식
+                        </span>
+
+                        <span class="tag">
+                            초밥
+                        </span>
+
+                        <span class="tag">
+                            데이트
+                        </span>
+
+                        <span class="tag">
+                            조용한
+                        </span>
+
+                    </div>
+
+                    <p class="desc">
+                        신선한 재료와 정통 스시를 맛볼 수 있는
+                        분위기 좋은 레스토랑입니다.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- CARD 3 -->
+
+            <div class="card">
+
+                <div class="pic"
+                     style="
+                     background-image:
+                     url('https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=700&q=80');
+                     ">
+
+                    <span class="badge">
+                        AI 추천 3위
+                    </span>
+
+                </div>
+
+                <div class="body">
+
+                    <h4>
+                        파스타노아
+                    </h4>
+
+                    <div class="meta">
+
+                        <span class="score">
+                            ★ 4.6 (742)
+                        </span>
+
+                        <span>
+                            1.8km
+                        </span>
+
+                    </div>
+
+                    <div class="tags">
+
+                        <span class="tag">
+                            양식
+                        </span>
+
+                        <span class="tag">
+                            파스타
+                        </span>
+
+                        <span class="tag">
+                            분위기
+                        </span>
+
+                        <span class="tag">
+                            사진 맛집
+                        </span>
+
+                    </div>
+
+                    <p class="desc">
+                        부드러운 크림과 감각적인 분위기가
+                        매력적인 레스토랑입니다.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             MAP
+        ================================================== -->
+
+        <div class="map">
+
+            <div class="map-title">
+                📍 AI 추천 맛집 위치
+            </div>
+
+            <div class="road r1"></div>
+
+            <div class="road r2"></div>
+
+            <div class="road r3"></div>
+
+            <div class="pin pin1">
+                <span>1</span>
+            </div>
+
+            <div class="pin pin2">
+                <span>2</span>
+            </div>
+
+            <div class="pin pin3">
+                <span>3</span>
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         RIGHT AI INFORMATION
+    ====================================================== -->
+
+    <aside class="info">
+
+        <h3>
+            🧠 AI가 추천하는 이유
+        </h3>
+
+
+        <div class="info-row">
+
+            <div class="info-icon">
+                ♙
+            </div>
+
+            <div>
+
+                <b>
+                    취향 분석
+                </b>
+
+                <p>
+                    사용자의 선호도, 리뷰,
+                    방문 이력 등을 분석합니다.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <div class="info-icon">
+                ✦
+            </div>
+
+            <div>
+
+                <b>
+                    벡터 유사도 검색
+                </b>
+
+                <p>
+                    pgVector를 활용하여
+                    유사한 맛집을 빠르게 찾습니다.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <div class="info-icon">
+                ☁
+            </div>
+
+            <div>
+
+                <b>
+                    상황 분석
+                </b>
+
+                <p>
+                    날씨, 시간, 동행,
+                    방문 목적을 추천 조건에 반영합니다.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <div class="info-icon">
+                ♨
+            </div>
+
+            <div>
+
+                <b>
+                    음식 취향 분석
+                </b>
+
+                <p>
+                    매운맛, 담백함, 국물,
+                    고기 등 세부 취향을 분석합니다.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <div class="info-icon">
+                ₩
+            </div>
+
+            <div>
+
+                <b>
+                    가격 조건
+                </b>
+
+                <p>
+                    사용자가 선택한 예산에 맞는
+                    맛집을 우선적으로 추천합니다.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <div class="info-icon">
+                🚗
+            </div>
+
+            <div>
+
+                <b>
+                    거리 / 편의시설
+                </b>
+
+                <p>
+                    거리, 주차, 와이파이,
+                    가족 편의시설 등을 함께 고려합니다.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- AI SCORE -->
+
+        <div class="ai-score">
+
+            <div class="ai-score-title">
+                ✦ AI 추천 적합도
+            </div>
+
+            <div class="score-bar">
+
+                <div class="score-value"></div>
+
+            </div>
+
+            <div class="score-text">
+
+                <span>
+                    선택 조건 일치
+                </span>
+
+                <b>
+                    94%
+                </b>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUICK THEME -->
+
+        <div class="quick-theme">
+
+            <h4>
+                🔥 이런 테마도 추천해요
+            </h4>
+
+            <div class="quick-theme-list">
+
+                <span class="quick-theme-item">
+                    비오는 날
+                </span>
+
+                <span class="quick-theme-item">
+                    데이트
+                </span>
+
+                <span class="quick-theme-item">
+                    혼밥
+                </span>
+
+                <span class="quick-theme-item">
+                    가족 외식
+                </span>
+
+                <span class="quick-theme-item">
+                    가성비
+                </span>
+
+                <span class="quick-theme-item">
+                    야경
+                </span>
+
+                <span class="quick-theme-item">
+                    숨은 맛집
+                </span>
+
+                <span class="quick-theme-item">
+                    현지인 맛집
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="scribble">
+
+            AI가 추천하는<br>
+
+            지금 꼭 가야할 맛집! 🍴
+
+        </div>
+
+
+    </aside>
+
+
+</div>
+
+</body>
+
+</html>

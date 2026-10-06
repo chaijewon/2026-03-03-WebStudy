@@ -1,0 +1,844 @@
+```html
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>YouTube 동영상 검색</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+
+            background: #f7f8fa;
+
+            font-family:
+                Arial, sans-serif;
+
+            color: #273044;
+        }
+
+
+        /* 전체 */
+
+        .youtube-page {
+
+            width: 1200px;
+
+            max-width:
+                calc(100% - 40px);
+
+            margin: 0 auto;
+
+            padding-bottom: 80px;
+        }
+
+
+        /* 제목 */
+
+        .youtube-header {
+
+            margin-top: 45px;
+
+        }
+
+
+        .youtube-title h1 {
+
+            margin: 0;
+
+            font-size: 28px;
+
+            color: #172033;
+
+        }
+
+
+        .youtube-title p {
+
+            margin-top: 10px;
+
+            color: #929aaa;
+
+            font-size: 13px;
+
+        }
+
+
+        /* 검색 */
+
+        .youtube-search {
+
+            margin-top: 35px;
+
+        }
+
+
+        .youtube-search-box {
+
+            height: 58px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding:
+                6px 7px 6px 20px;
+
+            background: #fff;
+
+            border:
+                1px solid #e5e9f0;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(30, 50, 90, 0.06);
+
+        }
+
+
+        .youtube-search-box span {
+
+            font-size: 18px;
+
+            color: #ff315b;
+
+        }
+
+
+        .youtube-search-box input {
+
+            flex: 1;
+
+            border: 0;
+
+            outline: 0;
+
+            padding: 0 14px;
+
+            font-size: 14px;
+
+        }
+
+
+        .youtube-search-box button {
+
+            height: 44px;
+
+            padding: 0 25px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            background: #ff315b;
+
+            color: #fff;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+        }
+
+
+        .youtube-search-box button:hover {
+
+            background: #e9274d;
+
+        }
+
+
+        /* 결과 */
+
+        .youtube-result-header {
+
+            margin-top: 40px;
+
+            margin-bottom: 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content:
+                space-between;
+
+        }
+
+
+        .youtube-result-header strong {
+
+            font-size: 18px;
+
+            color: #172033;
+
+        }
+
+
+        .youtube-result-header span {
+
+            color: #929aaa;
+
+            font-size: 13px;
+
+        }
+
+
+        /* 목록 */
+
+        .youtube-list {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+
+        }
+
+
+        /* 카드 */
+
+        .youtube-card {
+
+            overflow: hidden;
+
+            background: #fff;
+
+            border:
+                1px solid #e5e9f0;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(30, 50, 90, 0.05);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+
+            cursor: pointer;
+
+        }
+
+
+        .youtube-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 15px 35px
+                rgba(30, 50, 90, 0.10);
+
+        }
+
+
+        /* 썸네일 */
+
+        .youtube-thumbnail {
+
+            position: relative;
+
+            width: 100%;
+
+            aspect-ratio: 16 / 9;
+
+            overflow: hidden;
+
+            background: #eee;
+
+        }
+
+
+        .youtube-thumbnail img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+        }
+
+
+        /* 재생 버튼 */
+
+        .youtube-play {
+
+            position: absolute;
+
+            top: 50%;
+
+            left: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            width: 55px;
+
+            height: 55px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255, 49, 91, 0.95);
+
+            color: #fff;
+
+            font-size: 20px;
+
+        }
+
+
+        /* 내용 */
+
+        .youtube-content {
+
+            padding: 18px;
+
+        }
+
+
+        .youtube-card-title {
+
+            height: 42px;
+
+            overflow: hidden;
+
+            color: #273044;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            line-height: 1.45;
+
+            display: -webkit-box;
+
+            -webkit-line-clamp: 2;
+
+            -webkit-box-orient: vertical;
+
+        }
+
+
+        .youtube-channel {
+
+            margin-top: 13px;
+
+            color: #555f70;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .youtube-date {
+
+            margin-top: 6px;
+
+            color: #929aaa;
+
+            font-size: 11px;
+
+        }
+
+
+        /* 없음 */
+
+        .youtube-empty {
+
+            display: none;
+
+            padding: 70px 20px;
+
+            background: #fff;
+
+            border:
+                1px solid #e5e9f0;
+
+            border-radius: 16px;
+
+            color: #929aaa;
+
+            text-align: center;
+
+            font-size: 14px;
+
+        }
+
+
+        /* 로딩 */
+
+        .youtube-loading {
+
+            display: none;
+
+            padding: 70px 20px;
+
+            text-align: center;
+
+            color: #929aaa;
+
+            font-size: 14px;
+
+        }
+
+
+        /* 반응형 */
+
+        @media(max-width: 900px) {
+
+            .youtube-list {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media(max-width: 600px) {
+
+            .youtube-page {
+
+                max-width:
+                    calc(100% - 20px);
+
+            }
+
+            .youtube-list {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="youtube-page">
+
+
+    <!-- 제목 -->
+
+    <div class="youtube-header">
+
+        <div class="youtube-title">
+
+            <h1>
+                YouTube 동영상
+            </h1>
+
+            <p>
+                원하는 동영상을 검색해보세요.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- 검색 -->
+
+    <div class="youtube-search">
+
+        <div class="youtube-search-box">
+
+            <span>
+                🔍
+            </span>
+
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="검색어를 입력하세요"
+                onkeydown="searchEnter(event)"
+            >
+
+
+            <button
+                onclick="searchYoutube()">
+
+                검색
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- 결과 제목 -->
+
+    <div class="youtube-result-header">
+
+        <strong>
+            검색 결과
+        </strong>
+
+        <span id="resultCount">
+            0개
+        </span>
+
+    </div>
+
+
+    <!-- 로딩 -->
+
+    <div
+        class="youtube-loading"
+        id="loading">
+
+        YouTube 동영상을 검색하고 있습니다...
+
+    </div>
+
+
+    <!-- 동영상 목록 -->
+
+    <div
+        class="youtube-list"
+        id="youtubeList">
+
+    </div>
+
+
+    <!-- 결과 없음 -->
+
+    <div
+        class="youtube-empty"
+        id="empty">
+
+        검색된 동영상이 없습니다.
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+// =================================================
+// Enter 검색
+// =================================================
+
+function searchEnter(event) {
+
+    if (event.key === "Enter") {
+
+        searchYoutube();
+
+    }
+
+}
+
+
+// =================================================
+// YouTube 검색
+// =================================================
+
+async function searchYoutube() {
+
+
+    // 1. 검색어 가져오기
+
+    const input =
+        document.querySelector(
+            "#searchInput"
+        );
+
+
+    const query =
+        input.value.trim();
+
+
+    // 2. 검색어 확인
+
+    if (!query) {
+
+        alert(
+            "검색어를 입력하세요."
+        );
+
+        input.focus();
+
+        return;
+
+    }
+
+
+    // 3. HTML 요소 가져오기
+
+    const list =
+        document.querySelector(
+            "#youtubeList"
+        );
+
+    const empty =
+        document.querySelector(
+            "#empty"
+        );
+
+    const loading =
+        document.querySelector(
+            "#loading"
+        );
+
+    const count =
+        document.querySelector(
+            "#resultCount"
+        );
+
+
+    // 4. 초기화
+
+    list.innerHTML = "";
+
+    empty.style.display = "none";
+
+    loading.style.display = "block";
+
+    count.textContent = "검색 중";
+
+
+    try {
+
+
+        // 5. Node.js 호출
+
+        const response =
+            await fetch(
+                "/youtube/search?query="
+                + encodeURIComponent(query)
+            );
+
+
+        // 6. JSON 변환
+
+        const data =
+            await response.json();
+
+
+        // 7. 결과 확인
+
+        if (
+            !data.list ||
+            data.list.length === 0
+        ) {
+
+            empty.style.display =
+                "block";
+
+            count.textContent =
+                "0개";
+
+            return;
+
+        }
+
+
+        // 8. 결과 개수
+
+        count.textContent =
+            data.list.length + "개";
+
+
+        // 9. 동영상 카드 출력
+
+        data.list.forEach(
+            item => {
+
+
+                // 카드 생성
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "youtube-card";
+
+
+                // 카드 HTML
+
+                card.innerHTML = `
+
+                    <div
+                        class="youtube-thumbnail">
+
+                        <img
+                            src="${item.thumbnail}"
+                            alt="${item.title}">
+
+
+                        <div
+                            class="youtube-play">
+
+                            ▶
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="youtube-content">
+
+                        <div
+                            class="youtube-card-title">
+
+                            ${item.title}
+
+                        </div>
+
+
+                        <div
+                            class="youtube-channel">
+
+                            ${item.channelTitle}
+
+                        </div>
+
+
+                        <div
+                            class="youtube-date">
+
+                            ${formatDate(
+                                item.publishedAt
+                            )}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                // 클릭하면 YouTube 이동
+
+                card.onclick =
+                    function() {
+
+                        window.open(
+
+                            "https://www.youtube.com/watch?v="
+                            + item.videoId,
+
+                            "_blank"
+
+                        );
+
+                    };
+
+
+                // 목록에 추가
+
+                list.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+        alert(
+            "YouTube 검색 중 오류가 발생했습니다."
+        );
+
+    }
+    finally {
+
+        loading.style.display =
+            "none";
+
+    }
+
+}
+
+
+// =================================================
+// 날짜 변환
+// =================================================
+
+function formatDate(date) {
+
+    return new Date(date)
+        .toLocaleDateString(
+            "ko-KR"
+        );
+
+}
+
+
+// =================================================
+// 처음 실행
+// =================================================
+
+// 처음에는 JavaScript 동영상 검색 결과 출력
+
+window.onload =
+    function() {
+
+        document.querySelector(
+            "#searchInput"
+        ).value = "Java";
+
+        searchYoutube();
+
+    };
+
+
+</script>
+
+
+</body>
+
+</html>
+```

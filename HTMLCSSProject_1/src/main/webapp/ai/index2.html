@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>풀스택 & 클라우드 배포 시뮬레이터</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & Babel CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const steps = [
+            { id: 1, name: "1. Java", icon: "☕", title: "자바 기초 & 객체지향", desc: "안정적인 백엔드의 뼈대가 되는 자바 문법과 OOP 개념을 학습합니다." },
+            { id: 2, name: "2. Oracle", icon: "🗄️", title: "데이터베이스 (Oracle)", desc: "기업용 핵심 DBMS인 오라클을 통해 대용량 데이터를 설계하고 관리합니다." },
+            { id: 3, name: "3. WEB", icon: "🌐", title: "웹 표준 (HTML/CSS/JS)", desc: "사용자가 마주하는 프론트엔드 UI/UX와 동적 웹페이지를 구현합니다." },
+            { id: 4, name: "4. JSP", icon: "📄", title: "서버사이드 (JSP)", desc: "자바와 웹을 연결하는 기초 서버 사이드 로직을 완성합니다." },
+            { id: 5, name: "5. Spring Boot", icon: "🍃", title: "모던 프레임워크", desc: "업계 표준인 스프링 부트로 강력하고 확장 가능한 REST API를 구축합니다." },
+            { id: 6, name: "6. AWS", icon: "☁️", title: "클라우드 인프라 (AWS)", desc: "EC2, RDS 등 AWS 클라우드 환경에 서비스를 안전하게 올립니다." },
+            { id: 7, name: "7. CI/CD", icon: "🚀", title: "자동 배포 파이프라인", desc: "Git Push 단 한 번으로 빌드부터 테스트, 배포까지 완전 자동화합니다." }
+        ];
+
+        function App() {
+            const [currentStep, setCurrentStep] = React.useState(1);
+            const [isCompleted, setIsCompleted] = React.useState(false);
+
+            const handleNext = () => {
+                if (currentStep < steps.length) {
+                    setCurrentStep(currentStep + 1);
+                } else {
+                    setIsCompleted(true);
+                }
+            };
+
+            const handleReset = () => {
+                setCurrentStep(1);
+                setIsCompleted(false);
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col items-center justify-center p-6">
+                    <div className="max-w-3xl w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
+                        <div className="text-center mb-8">
+                            <span className="bg-indigo-500/10 text-indigo-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">교육센터 홍보 체험 시뮬레이터</span>
+                            <h1 className="text-2xl md:text-3xl font-bold mt-3">자바부터 AWS 자동 배포까지</h1>
+                            <p className="text-slate-400 text-sm mt-1">버튼을 눌러 풀스택 개발 과정의 흐름을 직접 체험해 보세요.</p>
+                        </div>
+
+                        {/* 스텝 네비게이션 바 */}
+                        <div className="grid grid-cols-4 md:grid-cols-7 gap-2 mb-8">
+                            {steps.map((s) => (
+                                <button
+                                    key={s.id}
+                                    onClick={() => { setCurrentStep(s.id); setIsCompleted(false); }}
+                                    className={`flex flex-col items-center p-2 rounded-xl transition-all ${
+                                        currentStep === s.id && !isCompleted
+                                            ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 scale-105'
+                                            : currentStep > s.id || isCompleted
+                                            ? 'bg-slate-800 text-indigo-300 border border-indigo-500/30'
+                                            : 'bg-slate-800/50 text-slate-500'
+                                    }`}
+                                >
+                                    <span className="text-lg">{s.icon}</span>
+                                    <span className="text-xs font-medium mt-1">{s.name.split('.')[1]}</span>
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* 메인 콘텐츠 영역 */}
+                        {!isCompleted ? (
+                            <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-6 mb-8 text-center min-h-[180px] flex flex-col justify-center animate-fade-in">
+                                <div className="text-4xl mb-3">{steps[currentStep - 1].icon}</div>
+                                <h3 className="text-xl font-bold text-white">{steps[currentStep - 1].title}</h3>
+                                <p className="text-slate-300 text-sm mt-2 max-w-lg mx-auto">{steps[currentStep - 1].desc}</p>
+                            </div>
+                        ) : (
+                            <div className="bg-gradient-to-r from-indigo-900/40 to-purple-900/40 border border-indigo-500/40 rounded-xl p-6 mb-8 text-center">
+                                <span className="text-4xl">🎉</span>
+                                <h3 className="text-2xl font-bold text-white mt-2">풀스택 배포 완료!</h3>
+                                <p className="text-indigo-200 text-sm mt-2">축하합니다! 자바 백엔드부터 AWS CI/CD 자동 배포까지의 모든 흐름을 마스터하셨습니다.</p>
+                                <div className="mt-4">
+                                    <a href="#consult" onClick={(e) => { e.preventDefault(); alert("상담 신청 페이지로 연결됩니다!"); }} className="inline-block bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-6 py-2.5 rounded-xl transition shadow-lg shadow-indigo-600/30 text-sm">
+                                        🚀 정규 커리큘럼 수강 상담 신청하기
+                                    </a>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* 하단 조작 버튼 */}
+                        <div className="flex justify-between items-center">
+                            <button
+                                onClick={handleReset}
+                                className="text-slate-400 hover:text-white text-xs underline transition"
+                            >
+                                처음부터 다시 체험하기
+                            </button>
+                            {!isCompleted && (
+                                <button
+                                    onClick={handleNext}
+                                    className="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-6 py-2.5 rounded-xl transition text-sm shadow-lg shadow-indigo-600/20 flex items-center gap-2"
+                                >
+                                    {currentStep === steps.length ? "배포 완료하기 🚀" : "다음 단계 진행하기 ➡️"}
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

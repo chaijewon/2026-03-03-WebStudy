@@ -1,0 +1,2350 @@
+<!DOCTYPE html>
+
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>AI 맛집 찾기 - Emoji Theme</title>
+
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+
+    body {
+
+        margin: 0;
+
+        font-family:
+            "Noto Sans KR",
+            "Apple SD Gothic Neo",
+            Arial,
+            sans-serif;
+
+        background: #f7f8fa;
+
+        color: #222;
+    }
+
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    .header {
+
+        height: 72px;
+
+        background: #fff;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        padding: 0 32px;
+
+        border-bottom: 1px solid #eee;
+    }
+
+
+    .logo-area {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+    }
+
+
+    .logo-icon {
+
+        font-size: 32px;
+    }
+
+
+    .logo {
+
+        font-size: 25px;
+
+        font-weight: 900;
+
+        color: #ff641e;
+    }
+
+
+    .logo-sub {
+
+        margin-left: 12px;
+
+        color: #777;
+
+        font-size: 14px;
+    }
+
+
+    .header-menu {
+
+        display: flex;
+
+        gap: 28px;
+
+        color: #555;
+
+        font-size: 14px;
+
+        cursor: pointer;
+    }
+
+
+    /* =====================================================
+       MAIN
+    ===================================================== */
+
+    .container {
+
+        width: 1500px;
+
+        max-width: calc(100% - 40px);
+
+        margin: 24px auto;
+
+        display: grid;
+
+        grid-template-columns: 520px 1fr;
+
+        gap: 18px;
+    }
+
+
+    .card {
+
+        background: #fff;
+
+        border-radius: 16px;
+
+        border: 1px solid #e8e8e8;
+
+        padding: 24px;
+
+        box-shadow:
+            0 3px 12px rgba(0,0,0,.04);
+    }
+
+
+    /* =====================================================
+       TITLE
+    ===================================================== */
+
+    .title {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        font-size: 20px;
+
+        font-weight: 800;
+
+        margin-bottom: 18px;
+    }
+
+
+    .count {
+
+        background: #fff0e8;
+
+        color: #ff641e;
+
+        border-radius: 20px;
+
+        padding: 6px 12px;
+
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    .search {
+
+        position: relative;
+
+        margin-bottom: 14px;
+    }
+
+
+    .search input {
+
+        width: 100%;
+
+        height: 48px;
+
+        border: 1px solid #ddd;
+
+        border-radius: 10px;
+
+        padding: 0 45px 0 15px;
+
+        font-size: 14px;
+
+        outline: none;
+    }
+
+
+    .search input:focus {
+
+        border-color: #ff641e;
+    }
+
+
+    .search-icon {
+
+        position: absolute;
+
+        right: 15px;
+
+        top: 12px;
+
+        font-size: 20px;
+    }
+
+
+    /* =====================================================
+       CATEGORY
+    ===================================================== */
+
+    .categories {
+
+        display: flex;
+
+        gap: 8px;
+
+        margin-bottom: 16px;
+
+        flex-wrap: wrap;
+    }
+
+
+    .category {
+
+        padding: 8px 14px;
+
+        border: 1px solid #ddd;
+
+        background: white;
+
+        border-radius: 20px;
+
+        font-size: 13px;
+
+        cursor: pointer;
+
+        transition: .2s;
+    }
+
+
+    .category:hover {
+
+        border-color: #ff641e;
+
+        transform: translateY(-1px);
+    }
+
+
+    .category.active {
+
+        background: #ff641e;
+
+        color: white;
+
+        border-color: #ff641e;
+    }
+
+
+    /* =====================================================
+       SELECTED
+    ===================================================== */
+
+    .selected-box {
+
+        border: 1px solid #e3e3e3;
+
+        border-radius: 10px;
+
+        padding: 14px;
+
+        margin-bottom: 18px;
+    }
+
+
+    .selected-header {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        margin-bottom: 12px;
+
+        font-weight: 700;
+
+        font-size: 14px;
+    }
+
+
+    .delete-btn {
+
+        background: white;
+
+        border: 1px solid #ddd;
+
+        border-radius: 6px;
+
+        padding: 6px 10px;
+
+        font-size: 12px;
+
+        cursor: pointer;
+    }
+
+
+    .selected-list {
+
+        display: flex;
+
+        gap: 8px;
+
+        flex-wrap: wrap;
+    }
+
+
+    .selected-item {
+
+        background: #fff7f2;
+
+        border: 1px solid #ffd7c5;
+
+        color: #e95719;
+
+        padding: 7px 11px;
+
+        border-radius: 20px;
+
+        font-size: 13px;
+
+        cursor: pointer;
+    }
+
+
+    /* =====================================================
+       FOOD GRID
+    ===================================================== */
+
+    .food-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 10px;
+    }
+
+
+    .food {
+
+        height: 95px;
+
+        border: 1px solid #e2e2e2;
+
+        border-radius: 12px;
+
+        background: white;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        align-items: center;
+
+        position: relative;
+
+        cursor: pointer;
+
+        transition: .2s;
+    }
+
+
+    .food:hover {
+
+        transform: translateY(-3px);
+
+        border-color: #ff641e;
+
+        box-shadow:
+            0 5px 15px rgba(255,100,30,.12);
+    }
+
+
+    .food.selected {
+
+        border: 2px solid #ff641e;
+
+        background: #fffaf7;
+    }
+
+
+    .food-icon {
+
+        font-size: 32px;
+
+        margin-bottom: 5px;
+    }
+
+
+    .food-name {
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    .check {
+
+        position: absolute;
+
+        right: 5px;
+
+        top: 5px;
+
+        width: 21px;
+
+        height: 21px;
+
+        border-radius: 50%;
+
+        background: #ff641e;
+
+        color: white;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-size: 12px;
+    }
+
+
+    /* =====================================================
+       RECOMMEND BUTTON
+    ===================================================== */
+
+    .recommend-btn {
+
+        width: 100%;
+
+        height: 54px;
+
+        margin-top: 20px;
+
+        border: none;
+
+        border-radius: 10px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #ff641e,
+                #ff7100
+            );
+
+        color: white;
+
+        font-size: 17px;
+
+        font-weight: 800;
+
+        cursor: pointer;
+
+        transition: .2s;
+    }
+
+
+    .recommend-btn:hover {
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 6px 15px rgba(255,100,30,.25);
+    }
+
+
+    .recommend-btn:disabled {
+
+        opacity: .6;
+
+        cursor: wait;
+    }
+
+
+    /* =====================================================
+       RESULT
+    ===================================================== */
+
+    .result-title {
+
+        font-size: 20px;
+
+        font-weight: 800;
+
+        margin-bottom: 18px;
+    }
+
+
+    .loading {
+
+        display: none;
+
+        padding: 40px;
+
+        text-align: center;
+
+        color: #777;
+    }
+
+
+    .loading-emoji {
+
+        font-size: 50px;
+
+        animation:
+            bounce 1s infinite;
+    }
+
+
+    @keyframes bounce {
+
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+
+    .empty {
+
+        padding: 60px 20px;
+
+        text-align: center;
+
+        color: #999;
+
+        border: 1px dashed #ddd;
+
+        border-radius: 12px;
+
+        font-size: 15px;
+    }
+
+
+    .empty-icon {
+
+        font-size: 55px;
+
+        margin-bottom: 15px;
+    }
+
+
+    /* =====================================================
+       RESTAURANT CARD
+    ===================================================== */
+
+    .restaurant {
+
+        border: 1px solid #e5e5e5;
+
+        border-radius: 14px;
+
+        padding: 18px;
+
+        margin-bottom: 18px;
+
+        transition: .2s;
+    }
+
+
+    .restaurant:hover {
+
+        box-shadow:
+            0 5px 18px rgba(0,0,0,.07);
+
+        transform: translateY(-2px);
+    }
+
+
+    .restaurant-header {
+
+        display: grid;
+
+        grid-template-columns:
+            1fr 220px;
+
+        gap: 18px;
+
+        margin-bottom: 15px;
+    }
+
+
+    .restaurant-name {
+
+        font-size: 23px;
+
+        font-weight: 900;
+
+        margin-bottom: 10px;
+    }
+
+
+    .restaurant-icon {
+
+        font-size: 30px;
+    }
+
+
+    .restaurant-image {
+
+        width: 100%;
+
+        height: 150px;
+
+        object-fit: cover;
+
+        border-radius: 12px;
+    }
+
+
+    /* =====================================================
+       RESTAURANT INFO
+    ===================================================== */
+
+    .restaurant-info {
+
+        color: #666;
+
+        font-size: 13px;
+
+        line-height: 1.8;
+
+        margin-bottom: 12px;
+    }
+
+
+    .info-row {
+
+        display: flex;
+
+        gap: 7px;
+    }
+
+
+    /* =====================================================
+       SCORE
+    ===================================================== */
+
+    .scores {
+
+        display: flex;
+
+        gap: 8px;
+
+        flex-wrap: wrap;
+    }
+
+
+    .score {
+
+        padding: 8px 12px;
+
+        border-radius: 10px;
+
+        font-size: 12px;
+
+        font-weight: 700;
+    }
+
+
+    .score strong {
+
+        font-size: 17px;
+
+        margin-left: 5px;
+    }
+
+
+    .score.orange {
+
+        background: #fff4ed;
+
+        border: 1px solid #ffd5c1;
+
+        color: #e95719;
+    }
+
+
+    .score.yellow {
+
+        background: #fffbea;
+
+        border: 1px solid #ffe49a;
+
+        color: #b17a00;
+    }
+
+
+    .score.green {
+
+        background: #effaf3;
+
+        border: 1px solid #c9ead4;
+
+        color: #159447;
+    }
+
+
+    /* =====================================================
+       TAG
+    ===================================================== */
+
+    .tags {
+
+        display: flex;
+
+        gap: 7px;
+
+        flex-wrap: wrap;
+
+        margin-top: 12px;
+    }
+
+
+    .tag {
+
+        background: #fafafa;
+
+        border: 1px solid #ddd;
+
+        padding: 6px 11px;
+
+        border-radius: 20px;
+
+        font-size: 12px;
+    }
+
+
+    /* =====================================================
+       RESTAURANT BUTTON
+    ===================================================== */
+
+    .restaurant-actions {
+
+        display: flex;
+
+        gap: 8px;
+
+        margin-top: 15px;
+    }
+
+
+    .action-btn {
+
+        flex: 1;
+
+        height: 40px;
+
+        border-radius: 8px;
+
+        border: 1px solid #ddd;
+
+        background: white;
+
+        cursor: pointer;
+
+        font-size: 13px;
+
+        transition: .2s;
+    }
+
+
+    .action-btn:hover {
+
+        border-color: #ff641e;
+
+        color: #ff641e;
+    }
+
+
+    .action-btn.primary {
+
+        background: #ff641e;
+
+        border-color: #ff641e;
+
+        color: white;
+    }
+
+
+    /* =====================================================
+       MAP
+    ===================================================== */
+
+    .map-box {
+
+        height: 230px;
+
+        margin-top: 18px;
+
+        border-radius: 12px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #eef6ea,
+                #f9f4e9
+            );
+
+        border: 1px solid #ddd;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        text-align: center;
+    }
+
+
+    .map-content {
+
+        font-size: 15px;
+
+        color: #666;
+    }
+
+
+    .map-icon {
+
+        font-size: 50px;
+
+        margin-bottom: 10px;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media(max-width:1100px) {
+
+        .container {
+
+            width: 95%;
+
+            grid-template-columns: 1fr;
+        }
+
+
+        .restaurant-header {
+
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    @media(max-width:700px) {
+
+        .container {
+
+            max-width:
+                calc(100% - 20px);
+        }
+
+
+        .food-grid {
+
+            grid-template-columns:
+                repeat(3, 1fr);
+        }
+
+
+        .header-menu {
+
+            display: none;
+        }
+
+
+        .logo-sub {
+
+            display: none;
+        }
+    }
+
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="header">
+
+<div class="logo-area">
+
+    <div class="logo-icon">
+        🤖
+    </div>
+
+    <div class="logo">
+        AI 맛집
+    </div>
+
+    <div class="logo-sub">
+        오늘 뭐 먹지? AI가 찾아드려요 🍽️
+    </div>
+
+</div>
+
+
+<div class="header-menu">
+
+    <span>
+        📍 내 주변 맛집
+    </span>
+
+    <span>
+        ❤️ 찜한 맛집
+    </span>
+
+    <span>
+        🕘 최근 검색
+    </span>
+
+    <span>
+        ⚙️ 설정
+    </span>
+
+</div>
+
+</header>
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="container">
+
+<!-- =====================================================
+     LEFT
+====================================================== -->
+
+<section class="card">
+
+
+    <div class="title">
+
+        <span>
+            🔍 어떤 맛집을 찾으세요?
+        </span>
+
+        <span
+            class="count"
+            id="selectedCount">
+
+            0개 선택
+
+        </span>
+
+    </div>
+
+
+    <!-- 검색 -->
+
+    <div class="search">
+
+        <input
+            type="text"
+            id="restaurantSearch"
+            placeholder="맛집, 메뉴를 검색하세요 (예: 삼겹살, 파스타)">
+
+        <span class="search-icon">
+            🔍
+        </span>
+
+    </div>
+
+
+    <!-- 카테고리 -->
+
+    <div class="categories">
+
+        <button
+            type="button"
+            class="category active"
+            data-category="all">
+
+            🍽️ 전체
+
+        </button>
+
+
+        <button
+            type="button"
+            class="category"
+            data-category="korean">
+
+            🍚 한식
+
+        </button>
+
+
+        <button
+            type="button"
+            class="category"
+            data-category="chinese">
+
+            🥟 중식
+
+        </button>
+
+
+        <button
+            type="button"
+            class="category"
+            data-category="japanese">
+
+            🍣 일식
+
+        </button>
+
+
+        <button
+            type="button"
+            class="category"
+            data-category="western">
+
+            🍝 양식
+
+        </button>
+
+
+        <button
+            type="button"
+            class="category"
+            data-category="chicken">
+
+            🍗 치킨
+
+        </button>
+
+
+        <button
+            type="button"
+            class="category"
+            data-category="cafe">
+
+            ☕ 카페
+
+        </button>
+
+    </div>
+
+
+    <!-- 선택한 조건 -->
+
+    <div class="selected-box">
+
+        <div class="selected-header">
+
+            <span>
+                ❤️ 내가 원하는 맛집
+            </span>
+
+            <button
+                type="button"
+                class="delete-btn"
+                id="deleteAll">
+
+                🗑 전체 삭제
+
+            </button>
+
+        </div>
+
+
+        <div
+            class="selected-list"
+            id="selectedList">
+
+            <span
+                style="color:#999;font-size:13px;">
+
+                원하는 메뉴를 선택해주세요.
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         FOOD LIST
+    ================================================== -->
+
+    <div
+        class="food-grid"
+        id="foodGrid">
+
+
+        <div
+            class="food"
+            data-name="삼겹살"
+            data-category="korean">
+
+            <div class="food-icon">
+                🥓
+            </div>
+
+            <div class="food-name">
+                삼겹살
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="김치찌개"
+            data-category="korean">
+
+            <div class="food-icon">
+                🍲
+            </div>
+
+            <div class="food-name">
+                김치찌개
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="비빔밥"
+            data-category="korean">
+
+            <div class="food-icon">
+                🍚
+            </div>
+
+            <div class="food-name">
+                비빔밥
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="냉면"
+            data-category="korean">
+
+            <div class="food-icon">
+                🍜
+            </div>
+
+            <div class="food-name">
+                냉면
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="짜장면"
+            data-category="chinese">
+
+            <div class="food-icon">
+                🍜
+            </div>
+
+            <div class="food-name">
+                짜장면
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="짬뽕"
+            data-category="chinese">
+
+            <div class="food-icon">
+                🍜
+            </div>
+
+            <div class="food-name">
+                짬뽕
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="초밥"
+            data-category="japanese">
+
+            <div class="food-icon">
+                🍣
+            </div>
+
+            <div class="food-name">
+                초밥
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="돈카츠"
+            data-category="japanese">
+
+            <div class="food-icon">
+                🍱
+            </div>
+
+            <div class="food-name">
+                돈카츠
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="파스타"
+            data-category="western">
+
+            <div class="food-icon">
+                🍝
+            </div>
+
+            <div class="food-name">
+                파스타
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="피자"
+            data-category="western">
+
+            <div class="food-icon">
+                🍕
+            </div>
+
+            <div class="food-name">
+                피자
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="햄버거"
+            data-category="western">
+
+            <div class="food-icon">
+                🍔
+            </div>
+
+            <div class="food-name">
+                햄버거
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="치킨"
+            data-category="chicken">
+
+            <div class="food-icon">
+                🍗
+            </div>
+
+            <div class="food-name">
+                치킨
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="커피"
+            data-category="cafe">
+
+            <div class="food-icon">
+                ☕
+            </div>
+
+            <div class="food-name">
+                커피
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="케이크"
+            data-category="cafe">
+
+            <div class="food-icon">
+                🍰
+            </div>
+
+            <div class="food-name">
+                케이크
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="디저트"
+            data-category="cafe">
+
+            <div class="food-icon">
+                🍨
+            </div>
+
+            <div class="food-name">
+                디저트
+            </div>
+
+        </div>
+
+
+        <div
+            class="food"
+            data-name="브런치"
+            data-category="cafe">
+
+            <div class="food-icon">
+                🥪
+            </div>
+
+            <div class="food-name">
+                브런치
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 추천 -->
+
+    <button
+        type="button"
+        class="recommend-btn"
+        id="recommendButton">
+
+        🤖 AI 맛집 추천받기 ✨
+
+    </button>
+
+</section>
+
+
+<!-- =====================================================
+     RIGHT
+====================================================== -->
+
+<section class="card">
+
+
+    <div class="result-title">
+
+        2. AI 맛집 추천 결과 ✨
+
+    </div>
+
+
+    <!-- 로딩 -->
+
+    <div
+        class="loading"
+        id="loading">
+
+        <div class="loading-emoji">
+            🤖
+        </div>
+
+        <div>
+
+            AI가 취향을 분석해서
+            <br>
+
+            🍽️ 딱 맞는 맛집을 찾고 있습니다...
+
+        </div>
+
+    </div>
+
+
+    <!-- 결과 -->
+
+    <div id="resultArea">
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                🍽️
+            </div>
+
+            맛집 메뉴를 선택하고
+
+            <br>
+
+            <strong>
+                🤖 AI 맛집 추천받기
+            </strong>
+
+            버튼을 눌러주세요.
+
+        </div>
+
+    </div>
+
+
+</section>
+
+</main>
+
+<script>
+
+
+/* ============================================================
+   선택된 메뉴
+============================================================ */
+
+let selectedFoods = [];
+
+
+/* ============================================================
+   음식 클릭
+============================================================ */
+
+document
+    .querySelectorAll(".food")
+    .forEach(function(item) {
+
+        item.addEventListener(
+            "click",
+            function() {
+
+                const name =
+                    item.dataset.name;
+
+
+                /*
+                 * 이미 선택되어 있으면 제거
+                 */
+
+                if (
+                    selectedFoods.includes(name)
+                ) {
+
+                    selectedFoods =
+                        selectedFoods.filter(
+                            function(value) {
+
+                                return value !== name;
+
+                            }
+                        );
+
+
+                    item.classList.remove(
+                        "selected"
+                    );
+
+                }
+
+
+                /*
+                 * 선택되어 있지 않으면 추가
+                 */
+
+                else {
+
+                    selectedFoods.push(name);
+
+                    item.classList.add(
+                        "selected"
+                    );
+
+                }
+
+
+                updateSelectedList();
+
+            }
+        );
+
+    });
+
+
+/* ============================================================
+   선택 목록 갱신
+============================================================ */
+
+function updateSelectedList() {
+
+    const list =
+        document.getElementById(
+            "selectedList"
+        );
+
+
+    const count =
+        document.getElementById(
+            "selectedCount"
+        );
+
+
+    count.textContent =
+        selectedFoods.length
+        + "개 선택";
+
+
+    list.innerHTML = "";
+
+
+    if (
+        selectedFoods.length === 0
+    ) {
+
+        list.innerHTML =
+            '<span style="color:#999;font-size:13px;">'
+            + '원하는 메뉴를 선택해주세요.'
+            + '</span>';
+
+        return;
+    }
+
+
+    selectedFoods
+        .forEach(function(name) {
+
+            const item =
+                document.createElement(
+                    "span"
+                );
+
+
+            item.className =
+                "selected-item";
+
+
+            item.textContent =
+                "😋 " + name + " ×";
+
+
+            item.addEventListener(
+                "click",
+                function() {
+
+                    selectedFoods =
+                        selectedFoods.filter(
+                            function(value) {
+
+                                return value !== name;
+
+                            }
+                        );
+
+
+                    document
+                        .querySelectorAll(
+                            ".food"
+                        )
+                        .forEach(
+                            function(food) {
+
+                                if (
+                                    food.dataset.name
+                                    === name
+                                ) {
+
+                                    food.classList
+                                        .remove(
+                                            "selected"
+                                        );
+
+                                }
+
+                            }
+                        );
+
+
+                    updateSelectedList();
+
+                }
+            );
+
+
+            list.appendChild(item);
+
+        });
+
+}
+
+
+/* ============================================================
+   전체 삭제
+============================================================ */
+
+document
+    .getElementById("deleteAll")
+    .addEventListener(
+        "click",
+        function() {
+
+            selectedFoods = [];
+
+
+            document
+                .querySelectorAll(
+                    ".food.selected"
+                )
+                .forEach(
+                    function(item) {
+
+                        item.classList
+                            .remove(
+                                "selected"
+                            );
+
+                    }
+                );
+
+
+            updateSelectedList();
+
+        }
+    );
+
+
+/* ============================================================
+   카테고리
+============================================================ */
+
+document
+    .querySelectorAll(".category")
+    .forEach(
+        function(button) {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    document
+                        .querySelectorAll(
+                            ".category"
+                        )
+                        .forEach(
+                            function(btn) {
+
+                                btn.classList
+                                    .remove(
+                                        "active"
+                                    );
+
+                            }
+                        );
+
+
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    const category =
+                        button.dataset.category;
+
+
+                    document
+                        .querySelectorAll(
+                            ".food"
+                        )
+                        .forEach(
+                            function(item) {
+
+                                if (
+                                    category === "all"
+                                    ||
+                                    item.dataset.category
+                                    === category
+                                ) {
+
+                                    item.style.display =
+                                        "flex";
+
+                                }
+
+                                else {
+
+                                    item.style.display =
+                                        "none";
+
+                                }
+
+                            }
+                        );
+
+                }
+            );
+
+        }
+    );
+
+
+/* ============================================================
+   맛집 검색
+============================================================ */
+
+document
+    .getElementById("restaurantSearch")
+    .addEventListener(
+        "input",
+        function() {
+
+            const keyword =
+                this.value
+                    .trim()
+                    .toLowerCase();
+
+
+            document
+                .querySelectorAll(
+                    ".food"
+                )
+                .forEach(
+                    function(item) {
+
+                        const name =
+                            item.dataset.name
+                                .toLowerCase();
+
+
+                        if (
+                            name.includes(keyword)
+                        ) {
+
+                            item.style.display =
+                                "flex";
+
+                        }
+
+                        else {
+
+                            item.style.display =
+                                "none";
+
+                        }
+
+                    }
+                );
+
+        }
+    );
+
+
+/* ============================================================
+   AI 맛집 추천
+============================================================ */
+
+document
+    .getElementById("recommendButton")
+    .addEventListener(
+        "click",
+        recommendRestaurant
+    );
+
+
+/* ============================================================
+   AJAX → Spring Boot
+============================================================ */
+
+async function recommendRestaurant() {
+
+
+    if (
+        selectedFoods.length === 0
+    ) {
+
+        alert(
+            "메뉴를 한 개 이상 선택해주세요."
+        );
+
+        return;
+    }
+
+
+    const button =
+        document.getElementById(
+            "recommendButton"
+        );
+
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+
+    const resultArea =
+        document.getElementById(
+            "resultArea"
+        );
+
+
+    button.disabled = true;
+
+
+    loading.style.display =
+        "block";
+
+
+    resultArea.innerHTML =
+        "";
+
+
+    try {
+
+
+        /*
+         * Spring Boot API
+         */
+
+        const response =
+            await fetch(
+                "/restaurant/recommand",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            foods:
+                                selectedFoods
+
+                        })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            resultArea.innerHTML =
+                '<div class="empty">'
+                + '⚠️ '
+                + escapeHtml(
+                    data.message
+                    ||
+                    "맛집 검색에 실패했습니다."
+                )
+                + '</div>';
+
+            return;
+        }
+
+
+        const restaurants =
+            data.restaurants || [];
+
+
+        if (
+            restaurants.length === 0
+        ) {
+
+            resultArea.innerHTML =
+                '<div class="empty">'
+                + '<div class="empty-icon">😢</div>'
+                + '조건에 맞는 맛집을 찾지 못했습니다.'
+                + '</div>';
+
+            return;
+        }
+
+
+        resultArea.innerHTML =
+            restaurants
+                .map(
+                    function(
+                        restaurant,
+                        index
+                    ) {
+
+                        return createRestaurantHtml(
+                            restaurant,
+                            index
+                        );
+
+                    }
+                )
+                .join("");
+
+
+    }
+
+
+    catch (error) {
+
+        console.error(error);
+
+
+        resultArea.innerHTML =
+            '<div class="empty">'
+            + '<div class="empty-icon">❌</div>'
+            + '서버와 통신할 수 없습니다.'
+            + '<br><br>'
+            + 'Spring Boot 서버가 실행 중인지 확인해주세요.'
+            + '</div>';
+
+    }
+
+
+    finally {
+
+        loading.style.display =
+            "none";
+
+        button.disabled = false;
+
+    }
+
+}
+
+
+/* ============================================================
+   맛집 HTML 생성
+============================================================ */
+
+function createRestaurantHtml(
+    restaurant,
+    index
+) {
+
+
+    const similarity =
+        Number(
+            restaurant.similarity || 0
+        );
+
+
+    const similarityPercent =
+        Math.round(
+            similarity * 1000
+        ) / 10;
+
+
+    const rating =
+        restaurant.rating || 0;
+
+
+    const reviewCount =
+        restaurant.reviewCount || 0;
+
+
+    const restaurantName =
+        restaurant.name
+        ||
+        "AI 추천 맛집";
+
+
+    const type =
+        restaurant.type
+        ||
+        "맛집";
+
+
+    const address =
+        restaurant.address
+        ||
+        "주소 정보 없음";
+
+
+    const phone =
+        restaurant.phone
+        ||
+        "전화번호 정보 없음";
+
+
+    const content =
+        restaurant.content
+        ||
+        "AI가 추천한 맛집입니다.";
+
+
+    let image =
+        restaurant.image;
+
+
+    if (
+        !image
+        ||
+        !image.startsWith("http")
+    ) {
+
+        image =
+            "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80";
+
+    }
+
+
+    const tags =
+        restaurant.tags
+        ||
+        [
+            type,
+            "AI 추천",
+            "인기 맛집"
+        ];
+
+
+    const tagsHtml =
+        tags
+            .map(
+                function(tag) {
+
+                    return `
+                        <span class="tag">
+                            ${escapeHtml(tag)}
+                        </span>
+                    `;
+
+                }
+            )
+            .join("");
+
+
+    return `
+
+        <div class="restaurant">
+
+
+            <!-- RESTAURANT HEADER -->
+
+            <div class="restaurant-header">
+
+
+                <div>
+
+                    <div class="restaurant-name">
+
+                        <span class="restaurant-icon">
+                            🍽️
+                        </span>
+
+                        ${escapeHtml(
+                            restaurantName
+                        )}
+
+                    </div>
+
+
+                    <div class="restaurant-info">
+
+                        <div class="info-row">
+                            📍
+                            ${escapeHtml(address)}
+                        </div>
+
+                        <div class="info-row">
+                            ☎️
+                            ${escapeHtml(phone)}
+                        </div>
+
+                        <div class="info-row">
+                            😋
+                            ${escapeHtml(content)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="scores">
+
+
+                        <div class="score orange">
+
+                            AI 유사도
+
+                            <strong>
+                                ${similarityPercent}%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="score yellow">
+
+                            ⭐ 평점
+
+                            <strong>
+                                ${escapeHtml(rating)}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="score green">
+
+                            💬 리뷰
+
+                            <strong>
+                                ${escapeHtml(reviewCount)}
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="tags">
+
+                        ${tagsHtml}
+
+                    </div>
+
+                </div>
+
+
+                <img
+                    class="restaurant-image"
+                    src="${escapeHtml(image)}"
+                    alt="${escapeHtml(
+                        restaurantName
+                    )}"
+                    onerror="
+                        this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80'
+                    "
+                >
+
+            </div>
+
+
+            <!-- ACTION -->
+
+            <div class="restaurant-actions">
+
+
+                <button
+                    class="action-btn primary"
+                    onclick="showMap(
+                        '${escapeHtml(address)}'
+                    )">
+
+                    🗺️ 지도 보기
+
+                </button>
+
+
+                <button
+                    class="action-btn"
+                    onclick="favoriteRestaurant(
+                        '${escapeHtml(
+                            restaurantName
+                        )}'
+                    )">
+
+                    ❤️ 찜하기
+
+                </button>
+
+
+                <button
+                    class="action-btn"
+                    onclick="shareRestaurant(
+                        '${escapeHtml(
+                            restaurantName
+                        )}'
+                    )">
+
+                    📤 공유
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    `;
+
+}
+
+
+/* ============================================================
+   지도
+============================================================ */
+
+function showMap(address) {
+
+    alert(
+        "🗺️ 지도에서 확인합니다.\n\n"
+        + address
+        + "\n\n"
+        + "Kakao Map / Naver Map API와 연결할 수 있습니다."
+    );
+
+}
+
+
+/* ============================================================
+   찜
+============================================================ */
+
+function favoriteRestaurant(name) {
+
+    alert(
+        "❤️ "
+        + name
+        + "\n\n찜 목록에 저장했습니다."
+    );
+
+}
+
+
+/* ============================================================
+   공유
+============================================================ */
+
+function shareRestaurant(name) {
+
+    alert(
+        "📤 "
+        + name
+        + "\n\n맛집 정보를 공유합니다."
+    );
+
+}
+
+
+/* ============================================================
+   XSS 방지
+============================================================ */
+
+function escapeHtml(value) {
+
+    if (
+        value === null
+        ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+</script>
+
+</body>
+
+</html>

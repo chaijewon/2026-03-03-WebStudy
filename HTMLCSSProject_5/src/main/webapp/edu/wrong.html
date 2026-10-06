@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>AI 오답노트</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet">
+
+
+<style>
+
+    /* =========================
+       기본
+    ========================= */
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+
+        margin: 0;
+
+        font-family:
+            Pretendard,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+
+        background:
+            linear-gradient(
+                135deg,
+                #f5f7ff 0%,
+                #eef2ff 50%,
+                #f8f9ff 100%
+            );
+
+        color: #1f2937;
+
+        min-height: 100vh;
+    }
+
+
+    /* =========================
+       전체 Wrapper
+    ========================= */
+
+    .wrong-wrapper {
+
+        max-width: 1050px;
+
+        margin: 0 auto;
+
+        padding:
+            40px 20px 80px;
+    }
+
+
+    /* =========================
+       Header
+    ========================= */
+
+    .page-header {
+
+        position: relative;
+
+        padding:
+            30px 35px;
+
+        border-radius: 23px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #111827,
+                #312e81 55%,
+                #4f46e5
+            );
+
+        color: white;
+
+        overflow: hidden;
+
+        box-shadow:
+            0 18px 45px
+            rgba(49,46,129,.22);
+
+        margin-bottom: 22px;
+    }
+
+
+    .page-header::before {
+
+        content: "";
+
+        position: absolute;
+
+        width: 240px;
+        height: 240px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(255,255,255,.07);
+
+        right: -80px;
+
+        top: -120px;
+    }
+
+
+    .page-header::after {
+
+        content: "";
+
+        position: absolute;
+
+        width: 150px;
+        height: 150px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(139,92,246,.18);
+
+        left: 40%;
+
+        bottom: -90px;
+    }
+
+
+    .header-content {
+
+        position: relative;
+
+        z-index: 2;
+    }
+
+
+    .header-icon {
+
+        width: 55px;
+        height: 55px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 17px;
+
+        background:
+            rgba(255,255,255,.14);
+
+        font-size: 27px;
+
+        margin-bottom: 16px;
+    }
+
+
+    .page-header h1 {
+
+        font-size: 27px;
+
+        font-weight: 800;
+
+        margin-bottom: 7px;
+    }
+
+
+    .page-header p {
+
+        margin: 0;
+
+        color:
+            rgba(255,255,255,.72);
+
+        font-size: 13px;
+    }
+
+
+    /* =========================
+       Summary
+    ========================= */
+
+    .summary-card {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 14px;
+
+        margin-bottom: 22px;
+    }
+
+
+    .summary-item {
+
+        background: white;
+
+        border-radius: 16px;
+
+        padding: 18px;
+
+        border:
+            1px solid #edf0f5;
+
+        box-shadow:
+            0 7px 22px
+            rgba(31,41,55,.05);
+    }
+
+
+    .summary-label {
+
+        color: #9ca3af;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        margin-bottom: 7px;
+    }
+
+
+    .summary-value {
+
+        color: #111827;
+
+        font-size: 21px;
+
+        font-weight: 800;
+    }
+
+
+    .summary-value.danger {
+
+        color: #ef4444;
+    }
+
+
+    /* =========================
+       오답 카드
+    ========================= */
+
+    .wrong-card {
+
+        background: white;
+
+        border:
+            1px solid #edf0f5;
+
+        border-radius: 20px;
+
+        padding: 24px;
+
+        margin-bottom: 18px;
+
+        box-shadow:
+            0 8px 26px
+            rgba(31,41,55,.055);
+
+        transition: .2s;
+    }
+
+
+    .wrong-card:hover {
+
+        transform:
+            translateY(-2px);
+
+        box-shadow:
+            0 13px 32px
+            rgba(31,41,55,.08);
+    }
+
+
+    /* =========================
+       Card Header
+    ========================= */
+
+    .wrong-header {
+
+        display: flex;
+
+        justify-content:
+            space-between;
+
+        align-items: center;
+
+        margin-bottom: 17px;
+    }
+
+
+    .question-number {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 9px;
+
+        color: #4f46e5;
+
+        font-size: 13px;
+
+        font-weight: 800;
+    }
+
+
+    .number-circle {
+
+        width: 34px;
+        height: 34px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background: #eef2ff;
+
+        color: #4f46e5;
+
+        font-weight: 800;
+    }
+
+
+    .wrong-badge {
+
+        padding:
+            6px 11px;
+
+        border-radius: 20px;
+
+        background: #fef2f2;
+
+        color: #dc2626;
+
+        font-size: 11px;
+
+        font-weight: 800;
+    }
+
+
+    /* =========================
+       문제
+    ========================= */
+
+    .question-title {
+
+        font-size: 17px;
+
+        line-height: 1.7;
+
+        font-weight: 750;
+
+        color: #111827;
+
+        margin-bottom: 18px;
+    }
+
+
+    /* =========================
+       답안 비교
+    ========================= */
+
+    .answer-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 12px;
+
+        margin-bottom: 17px;
+    }
+
+
+    .answer-box {
+
+        padding: 15px;
+
+        border-radius: 13px;
+    }
+
+
+    .answer-box.my-answer {
+
+        background: #fff7f7;
+
+        border:
+            1px solid #fee2e2;
+    }
+
+
+    .answer-box.correct-answer {
+
+        background: #f0fdf4;
+
+        border:
+            1px solid #dcfce7;
+    }
+
+
+    .answer-label {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 6px;
+
+        font-size: 11px;
+
+        font-weight: 800;
+
+        margin-bottom: 7px;
+    }
+
+
+    .my-answer
+    .answer-label {
+
+        color: #dc2626;
+    }
+
+
+    .correct-answer
+    .answer-label {
+
+        color: #16a34a;
+    }
+
+
+    .answer-text {
+
+        font-size: 14px;
+
+        font-weight: 700;
+
+        line-height: 1.5;
+    }
+
+
+    /* =========================
+       메타 정보
+    ========================= */
+
+    .question-meta {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 7px;
+
+        margin-bottom: 17px;
+    }
+
+
+    .meta-badge {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 5px;
+
+        padding:
+            6px 10px;
+
+        border-radius: 20px;
+
+        background: #f8fafc;
+
+        border:
+            1px solid #e5e7eb;
+
+        color: #6b7280;
+
+        font-size: 11px;
+
+        font-weight: 700;
+    }
+
+
+    /* =========================
+       AI 해설 버튼
+    ========================= */
+
+    .ai-button {
+
+        width: 100%;
+
+        height: 45px;
+
+        border:
+            1px solid #c7d2fe;
+
+        border-radius: 11px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #eef2ff,
+                #f5f3ff
+            );
+
+        color: #4f46e5;
+
+        font-size: 13px;
+
+        font-weight: 800;
+
+        transition: .2s;
+    }
+
+
+    .ai-button:hover {
+
+        background:
+            linear-gradient(
+                135deg,
+                #e0e7ff,
+                #ede9fe
+            );
+
+        border-color: #818cf8;
+
+        transform:
+            translateY(-1px);
+    }
+
+
+    /* =========================
+       AI 해설
+    ========================= */
+
+    .ai-explanation {
+
+        display: none;
+
+        margin-top: 14px;
+
+        padding: 18px;
+
+        border-radius: 14px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #fafaff,
+                #f5f3ff
+            );
+
+        border:
+            1px solid #e0e7ff;
+    }
+
+
+    .ai-explanation.show {
+
+        display: block;
+
+        animation:
+            fadeIn .25s ease;
+    }
+
+
+    @keyframes fadeIn {
+
+        from {
+
+            opacity: 0;
+
+            transform:
+                translateY(-5px);
+        }
+
+        to {
+
+            opacity: 1;
+
+            transform:
+                translateY(0);
+        }
+
+    }
+
+
+    .ai-title {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        color: #4f46e5;
+
+        font-size: 13px;
+
+        font-weight: 800;
+
+        margin-bottom: 10px;
+    }
+
+
+    .ai-title-icon {
+
+        width: 28px;
+        height: 28px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background: #6366f1;
+
+        color: white;
+
+        font-size: 13px;
+    }
+
+
+    .ai-content {
+
+        color: #4b5563;
+
+        font-size: 13px;
+
+        line-height: 1.75;
+
+        white-space: pre-line;
+    }
+
+
+    /* =========================
+       빈 오답노트
+    ========================= */
+
+    .empty-card {
+
+        background: white;
+
+        border-radius: 22px;
+
+        padding:
+            80px 20px;
+
+        text-align: center;
+
+        box-shadow:
+            0 8px 28px
+            rgba(31,41,55,.06);
+    }
+
+
+    .empty-icon {
+
+        width: 80px;
+        height: 80px;
+
+        margin:
+            0 auto 20px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 24px;
+
+        background: #ecfdf5;
+
+        color: #10b981;
+
+        font-size: 36px;
+    }
+
+
+    .empty-card h4 {
+
+        font-size: 19px;
+
+        font-weight: 800;
+
+        color: #111827;
+
+        margin-bottom: 8px;
+    }
+
+
+    .empty-card p {
+
+        margin: 0;
+
+        color: #9ca3af;
+
+        font-size: 13px;
+
+        line-height: 1.7;
+    }
+
+
+    /* =========================
+       하단
+    ========================= */
+
+    .bottom-area {
+
+        text-align: center;
+
+        margin-top: 25px;
+    }
+
+
+    .back-button {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 7px;
+
+        padding:
+            11px 18px;
+
+        border:
+            1px solid #e5e7eb;
+
+        border-radius: 11px;
+
+        background: white;
+
+        color: #6b7280;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        transition: .2s;
+    }
+
+
+    .back-button:hover {
+
+        color: #4f46e5;
+
+        border-color: #c7d2fe;
+
+        background: #eef2ff;
+    }
+
+
+    /* =========================
+       Responsive
+    ========================= */
+
+    @media(max-width: 700px) {
+
+        .wrong-wrapper {
+
+            padding:
+                20px 12px 60px;
+        }
+
+
+        .page-header {
+
+            padding: 25px;
+        }
+
+
+        .page-header h1 {
+
+            font-size: 23px;
+        }
+
+
+        .summary-card {
+
+            grid-template-columns:
+                1fr;
+        }
+
+
+        .answer-grid {
+
+            grid-template-columns:
+                1fr;
+        }
+
+
+        .wrong-card {
+
+            padding: 19px;
+        }
+
+    }
+
+</style>
+</head>
+<body>
+<div class="wrong-wrapper">
+<!-- =====================================
+     Header
+====================================== -->
+
+<div class="page-header">
+
+    <div class="header-content">
+
+        <div class="header-icon">
+
+            <i class="bi bi-journal-x"></i>
+
+        </div>
+
+
+        <h1>
+            AI 오답노트
+        </h1>
+
+
+        <p>
+            틀린 문제를 다시 확인하고
+            AI 해설을 통해 부족한 부분을 학습해보세요.
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     오답 통계
+====================================== -->
+
+<div
+    th:unless="${#lists.isEmpty(list)}"
+    class="summary-card">
+
+
+    <div class="summary-item">
+
+        <div class="summary-label">
+            전체 오답
+        </div>
+
+        <div class="summary-value danger">
+
+            <span
+                th:text="${#lists.size(list)}">
+
+                5
+
+            </span>
+
+            문제
+
+        </div>
+
+    </div>
+
+
+    <div class="summary-item">
+
+        <div class="summary-label">
+            학습 상태
+        </div>
+
+        <div class="summary-value">
+
+            복습 필요
+
+        </div>
+
+    </div>
+
+
+    <div class="summary-item">
+
+        <div class="summary-label">
+            AI 학습
+        </div>
+
+        <div class="summary-value">
+
+            AI 해설
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     오답이 없는 경우
+====================================== -->
+
+<div
+    th:if="${#lists.isEmpty(list)}"
+    class="empty-card">
+
+
+    <div class="empty-icon">
+
+        <i class="bi bi-check-circle-fill"></i>
+
+    </div>
+
+
+    <h4>
+        🎉 틀린 문제가 없습니다!
+    </h4>
+
+
+    <p>
+        모든 문제를 정확하게 풀었습니다.<br>
+        지금의 학습 상태를 유지해보세요.
+    </p>
+
+</div>
+
+
+
+<!-- =====================================
+     오답 목록
+====================================== -->
+
+<div
+    th:each="w,stat : ${list}"
+    class="wrong-card">
+
+
+    <!-- Header -->
+
+    <div class="wrong-header">
+
+
+        <div class="question-number">
+
+            <span class="number-circle"
+                  th:text="${stat.count}">
+
+                1
+
+            </span>
+
+            오답 문제
+
+        </div>
+
+
+        <span class="wrong-badge">
+
+            <i class="bi bi-x-circle me-1"></i>
+
+            오답
+
+        </span>
+
+    </div>
+
+
+
+    <!-- 문제 -->
+
+    <div class="question-title">
+
+        <span th:text="${w.questionTitle}">
+
+            Spring Security에서
+            인증을 담당하는 객체는?
+
+        </span>
+
+    </div>
+
+
+
+    <!-- 내 답 / 정답 -->
+
+    <div class="answer-grid">
+
+
+        <div class="answer-box my-answer">
+
+            <div class="answer-label">
+
+                <i class="bi bi-x-circle-fill"></i>
+
+                내 답
+
+            </div>
+
+
+            <div class="answer-text">
+
+                <span th:text="${w.userAnswer}">
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="answer-box correct-answer">
+
+            <div class="answer-label">
+
+                <i class="bi bi-check-circle-fill"></i>
+
+                정답
+
+            </div>
+
+
+            <div class="answer-text">
+
+                <span th:text="${w.correctAnswer}">
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- 문제 정보 -->
+
+    <div class="question-meta">
+
+
+        <span class="meta-badge">
+
+            <i class="bi bi-bar-chart"></i>
+
+            난이도
+
+            <strong
+                th:text="${w.difficulty}">
+
+                중
+
+            </strong>
+
+        </span>
+
+
+        <span class="meta-badge">
+
+            <i class="bi bi-tag"></i>
+
+            주제
+
+            <strong
+                th:text="${w.theme}">
+
+                Spring Security
+
+            </strong>
+
+        </span>
+
+    </div>
+
+
+
+    <!-- AI 해설 버튼 -->
+
+    <button
+        type="button"
+        class="ai-button"
+        th:attr="data-question-no=${w.questionNo}"
+        onclick="loadExplanation(this)">
+
+        <i class="bi bi-stars me-1"></i>
+
+        AI 해설 보기
+
+    </button>
+
+
+
+    <!-- AI 해설 영역 -->
+
+    <div
+        class="ai-explanation">
+
+
+        <div class="ai-title">
+
+            <span class="ai-title-icon">
+
+                <i class="bi bi-robot"></i>
+
+            </span>
+
+            AI 학습 해설
+
+        </div>
+
+
+        <div class="ai-content">
+
+            <!-- AI 해설이 여기에 출력됩니다. -->
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================
+     하단
+====================================== -->
+
+<div
+    th:unless="${#lists.isEmpty(list)}"
+    class="bottom-area">
+
+    <a
+        href="/student/dashboard"
+        class="back-button">
+
+        <i class="bi bi-arrow-left"></i>
+
+        학습 대시보드로 돌아가기
+
+    </a>
+
+</div>
+</div>
+
+<script> /* ========================================== AI 해설 ========================================== */ async function loadExplanation(button) { const card = button.closest(".wrong-card"); const explanation = card.querySelector( ".ai-explanation" ); const content = card.querySelector( ".ai-content" ); /* 이미 열려 있으면 닫기 */ if ( explanation.classList.contains("show") ) { explanation.classList.remove( "show" ); button.innerHTML = ` <i class="bi bi-stars me-1"></i> AI 해설 보기 `; return; } /* Loading */ button.disabled = true; button.innerHTML = ` <span class="spinner-border spinner-border-sm me-2"> </span> AI가 해설을 작성하고 있습니다... `; try { /* * 실제 Spring Boot API * * 예: * * POST * /exam/wrong/ai/explanation * */ const questionNo = button.dataset.questionNo; const response = await fetch( "/exam/wrong/ai/explanation", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionNo: questionNo }) } ); if (!response.ok) { throw new Error( "AI 해설 생성 실패" ); } const data = await response.json(); /* * 서버 응답 예: * * { * explanation: * "Spring Security에서..." * } */ content.textContent = data.explanation; explanation.classList.add( "show" ); button.innerHTML = ` <i class="bi bi-chevron-up me-1"></i> AI 해설 닫기 `; } catch(error) { console.error(error); /* * API가 아직 없는 경우 * 테스트용 메시지 */ content.textContent = "AI 해설을 불러오는 중 오류가 발생했습니다. " + "Spring AI 서버와 API를 확인해주세요."; explanation.classList.add( "show" ); button.innerHTML = ` <i class="bi bi-chevron-up me-1"></i> AI 해설 닫기 `; } finally { button.disabled = false; } } </script>
+</body>
+</html>

@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI LIFE - AI 음성 체험</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                    "Pretendard",
+                    "Noto Sans KR",
+                    Arial,
+                    sans-serif;
+
+            background:
+                    radial-gradient(
+                            circle at 20% 20%,
+                            rgba(96, 165, 250, .18),
+                            transparent 30%
+                    ),
+                    radial-gradient(
+                            circle at 80% 30%,
+                            rgba(168, 85, 247, .18),
+                            transparent 30%
+                    ),
+                    linear-gradient(
+                            135deg,
+                            #050816,
+                            #0b1026 50%,
+                            #080b18
+                    );
+
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 72px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 60px;
+
+            background: rgba(5, 8, 22, .72);
+
+            backdrop-filter: blur(20px);
+
+            border-bottom:
+                1px solid rgba(255,255,255,.08);
+
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #60a5fa,
+                    #a855f7
+                );
+
+            box-shadow:
+                0 0 25px rgba(96,165,250,.5);
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: .25s;
+        }
+
+        nav a:hover {
+            color: white;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            max-width: 1250px;
+
+            margin: auto;
+
+            padding:
+                130px 30px 80px;
+        }
+
+        .hero {
+            text-align: center;
+
+            margin-bottom: 55px;
+        }
+
+        .badge {
+            display: inline-flex;
+
+            padding: 8px 16px;
+
+            border-radius: 30px;
+
+            background:
+                rgba(96,165,250,.12);
+
+            border:
+                1px solid rgba(96,165,250,.25);
+
+            color: #93c5fd;
+
+            font-size: 13px;
+
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 5vw, 70px);
+
+            line-height: 1.05;
+
+            letter-spacing: -4px;
+
+            margin-bottom: 22px;
+        }
+
+        .gradient {
+            background:
+                linear-gradient(
+                    90deg,
+                    #60a5fa,
+                    #a855f7,
+                    #f472b6
+                );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: #94a3b8;
+
+            font-size: 17px;
+
+            line-height: 1.7;
+        }
+
+        /* =========================
+           EXPERIENCE
+        ========================= */
+
+        .experience {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 25px;
+        }
+
+        .panel {
+
+            background:
+                rgba(255,255,255,.055);
+
+            border:
+                1px solid rgba(255,255,255,.1);
+
+            border-radius: 28px;
+
+            padding: 30px;
+
+            backdrop-filter: blur(20px);
+
+            box-shadow:
+                0 30px 80px rgba(0,0,0,.25);
+        }
+
+        .panel-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 25px;
+        }
+
+        .panel-title-icon {
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                rgba(96,165,250,.15);
+
+            font-size: 21px;
+        }
+
+        .panel-title h2 {
+            font-size: 19px;
+        }
+
+        .panel-title p {
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            margin-top: 4px;
+        }
+
+        /* =========================
+           MICROPHONE
+        ========================= */
+
+        .mic-area {
+
+            min-height: 350px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+        .mic-button {
+
+            position: relative;
+
+            width: 150px;
+            height: 150px;
+
+            border-radius: 50%;
+
+            border: none;
+
+            cursor: pointer;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #3b82f6,
+                    #8b5cf6
+                );
+
+            color: white;
+
+            font-size: 55px;
+
+            box-shadow:
+                0 0 50px rgba(96,165,250,.4);
+
+            transition: .3s;
+        }
+
+        .mic-button:hover {
+
+            transform: scale(1.05);
+
+            box-shadow:
+                0 0 80px rgba(139,92,246,.65);
+        }
+
+        .mic-button.recording {
+
+            animation:
+                pulse 1.3s infinite;
+        }
+
+        @keyframes pulse {
+
+            0% {
+                box-shadow:
+                    0 0 0 0 rgba(239,68,68,.5);
+            }
+
+            70% {
+                box-shadow:
+                    0 0 0 35px rgba(239,68,68,0);
+            }
+
+            100% {
+                box-shadow:
+                    0 0 0 0 rgba(239,68,68,0);
+            }
+        }
+
+        .mic-status {
+
+            margin-top: 25px;
+
+            color: #94a3b8;
+
+            font-size: 14px;
+        }
+
+        .recording-text {
+
+            color: #f87171;
+
+            font-weight: 600;
+        }
+
+        /* =========================
+           WAVE
+        ========================= */
+
+        .wave {
+
+            height: 45px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 4px;
+
+            margin-top: 20px;
+        }
+
+        .wave span {
+
+            display: block;
+
+            width: 4px;
+
+            height: 15px;
+
+            border-radius: 5px;
+
+            background:
+                linear-gradient(
+                    #60a5fa,
+                    #a855f7
+                );
+
+            animation:
+                wave 1s infinite ease-in-out;
+        }
+
+        .wave span:nth-child(2) {
+            animation-delay: .1s;
+        }
+
+        .wave span:nth-child(3) {
+            animation-delay: .2s;
+        }
+
+        .wave span:nth-child(4) {
+            animation-delay: .3s;
+        }
+
+        .wave span:nth-child(5) {
+            animation-delay: .4s;
+        }
+
+        @keyframes wave {
+
+            0%,100% {
+                height: 12px;
+            }
+
+            50% {
+                height: 40px;
+            }
+        }
+
+        /* =========================
+           TEXT RESULT
+        ========================= */
+
+        .result-box {
+
+            min-height: 145px;
+
+            padding: 20px;
+
+            border-radius: 18px;
+
+            background:
+                rgba(0,0,0,.2);
+
+            border:
+                1px solid rgba(255,255,255,.07);
+
+            margin-bottom: 18px;
+        }
+
+        .result-label {
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            margin-bottom: 10px;
+        }
+
+        .result-text {
+
+            color: #e2e8f0;
+
+            line-height: 1.7;
+
+            font-size: 15px;
+        }
+
+        .ai-answer {
+
+            min-height: 160px;
+
+            padding: 20px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(96,165,250,.08),
+                    rgba(168,85,247,.08)
+                );
+
+            border:
+                1px solid rgba(139,92,246,.18);
+        }
+
+        /* =========================
+           AUDIO BUTTON
+        ========================= */
+
+        .audio-button {
+
+            width: 100%;
+
+            margin-top: 20px;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,255,255,.08);
+
+            color: white;
+
+            cursor: pointer;
+
+            transition: .25s;
+        }
+
+        .audio-button:hover {
+
+            background:
+                rgba(255,255,255,.14);
+        }
+
+        /* =========================
+           PROCESS
+        ========================= */
+
+        .process {
+
+            margin-top: 35px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+        }
+
+        .process-item {
+
+            padding: 20px;
+
+            text-align: center;
+
+            border-radius: 18px;
+
+            background:
+                rgba(255,255,255,.04);
+
+            border:
+                1px solid rgba(255,255,255,.07);
+        }
+
+        .process-number {
+
+            width: 32px;
+            height: 32px;
+
+            margin:
+                0 auto 12px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(96,165,250,.15);
+
+            color: #93c5fd;
+
+            font-size: 13px;
+        }
+
+        .process-item h3 {
+
+            font-size: 14px;
+
+            margin-bottom: 7px;
+        }
+
+        .process-item p {
+
+            color: #64748b;
+
+            font-size: 11px;
+        }
+
+        /* =========================
+           EXAMPLE
+        ========================= */
+
+        .examples {
+
+            margin-top: 35px;
+        }
+
+        .examples h2 {
+
+            font-size: 18px;
+
+            margin-bottom: 15px;
+        }
+
+        .example-list {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+        }
+
+        .example {
+
+            padding: 11px 16px;
+
+            border-radius: 30px;
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            background:
+                rgba(255,255,255,.04);
+
+            color: #cbd5e1;
+
+            font-size: 13px;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .example:hover {
+
+            background:
+                rgba(96,165,250,.12);
+
+            border-color:
+                rgba(96,165,250,.3);
+
+            color: white;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            text-align: center;
+
+            padding: 40px;
+
+            color: #475569;
+
+            font-size: 12px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width: 800px) {
+
+            header {
+
+                padding: 0 20px;
+            }
+
+            nav {
+
+                display: none;
+            }
+
+            .experience {
+
+                grid-template-columns: 1fr;
+            }
+
+            .process {
+
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+            .hero h1 {
+
+                letter-spacing: -2px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-mark">
+            AI
+        </div>
+
+        AI LIFE
+
+    </div>
+
+
+    <nav>
+
+        <a href="/">메인</a>
+
+        <a href="/ai">AI 체험</a>
+
+        <a href="/review">체험 후기</a>
+
+        <a href="/project">AI 프로젝트</a>
+
+        <a href="/education">교육과정</a>
+
+        <a href="/mypage">마이페이지</a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="badge">
+
+            🎤 AI VOICE EXPERIENCE
+
+        </div>
+
+
+        <h1>
+
+            말하면
+            <span class="gradient">
+                AI가 대답합니다
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            키보드 없이 AI와 대화해 보세요.<br>
+
+            내 목소리를 이해하고
+            AI가 답변을 만들어 드립니다.
+
+        </p>
+
+    </section>
+
+
+
+    <!-- EXPERIENCE -->
+
+    <section class="experience">
+
+
+        <!-- =========================
+             VOICE INPUT
+        ========================= -->
+
+        <div class="panel">
+
+
+            <div class="panel-title">
+
+                <div class="panel-title-icon">
+                    🎤
+                </div>
+
+                <div>
+
+                    <h2>
+                        음성 질문
+                    </h2>
+
+                    <p>
+                        마이크 버튼을 눌러 질문하세요
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="mic-area">
+
+
+                <button
+                        id="micButton"
+                        class="mic-button">
+
+                    🎤
+
+                </button>
+
+
+                <div
+                        id="micStatus"
+                        class="mic-status">
+
+                    마이크 버튼을 눌러 시작하세요
+
+                </div>
+
+
+                <div
+                        id="wave"
+                        class="wave"
+                        style="display:none;">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =========================
+             AI RESULT
+        ========================= -->
+
+        <div class="panel">
+
+
+            <div class="panel-title">
+
+                <div class="panel-title-icon">
+                    🤖
+                </div>
+
+                <div>
+
+                    <h2>
+                        AI 답변
+                    </h2>
+
+                    <p>
+                        AI Agent가 질문을 분석합니다
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STT -->
+
+            <div class="result-box">
+
+                <div class="result-label">
+                    🎤 내가 말한 내용
+                </div>
+
+                <div
+                        id="transcript"
+                        class="result-text">
+
+                    음성 질문이 여기에 표시됩니다.
+
+                </div>
+
+            </div>
+
+
+
+            <!-- AI -->
+
+            <div class="ai-answer">
+
+                <div class="result-label">
+                    🤖 AI LIFE
+                </div>
+
+                <div
+                        id="answer"
+                        class="result-text">
+
+                    AI 답변이 여기에 표시됩니다.
+
+                </div>
+
+            </div>
+
+
+
+            <button
+                    id="playButton"
+                    class="audio-button"
+                    disabled>
+
+                🔊 AI 답변 듣기
+
+            </button>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         PROCESS
+    ========================= -->
+
+    <section class="process">
+
+
+        <div class="process-item">
+
+            <div class="process-number">
+                01
+            </div>
+
+            <h3>
+                음성 입력
+            </h3>
+
+            <p>
+                사용자의 목소리를 녹음합니다.
+            </p>
+
+        </div>
+
+
+
+        <div class="process-item">
+
+            <div class="process-number">
+                02
+            </div>
+
+            <h3>
+                STT
+            </h3>
+
+            <p>
+                음성을 텍스트로 변환합니다.
+            </p>
+
+        </div>
+
+
+
+        <div class="process-item">
+
+            <div class="process-number">
+                03
+            </div>
+
+            <h3>
+                AI Agent
+            </h3>
+
+            <p>
+                질문을 분석하고 답변합니다.
+            </p>
+
+        </div>
+
+
+
+        <div class="process-item">
+
+            <div class="process-number">
+                04
+            </div>
+
+            <h3>
+                TTS
+            </h3>
+
+            <p>
+                AI 답변을 음성으로 들려줍니다.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         EXAMPLES
+    ========================= -->
+
+    <section class="examples">
+
+        <h2>
+            💡 이렇게 질문해 보세요
+        </h2>
+
+
+        <div class="example-list">
+
+
+            <div
+                    class="example"
+                    onclick="setExample(this)">
+
+                오늘 서울 날씨에 맞는 맛집 추천해줘
+
+            </div>
+
+
+            <div
+                    class="example"
+                    onclick="setExample(this)">
+
+                냉장고에 계란과 김치가 있는데 뭐 먹을까?
+
+            </div>
+
+
+            <div
+                    class="example"
+                    onclick="setExample(this)">
+
+                서울 하루 여행 코스 추천해줘
+
+            </div>
+
+
+            <div
+                    class="example"
+                    onclick="setExample(this)">
+
+                개발자가 되려면 무엇부터 공부해야 해?
+
+            </div>
+
+
+            <div
+                    class="example"
+                    onclick="setExample(this)">
+
+                자기소개서 작성 도와줘
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<footer>
+
+    AI LIFE · AI 체험관 ·
+    AI를 배우기 전에 직접 경험하세요.
+
+</footer>
+
+
+
+<script>
+
+    /*
+     * ============================================
+     * AI LIFE VOICE EXPERIENCE
+     *
+     * 브라우저
+     *      ↓
+     * MediaRecorder
+     *      ↓
+     * Spring Boot
+     *      ↓
+     * STT
+     *      ↓
+     * AI Agent
+     *      ↓
+     * TTS
+     *      ↓
+     * Browser Audio
+     * ============================================
+     */
+
+
+    const micButton =
+        document.getElementById("micButton");
+
+    const micStatus =
+        document.getElementById("micStatus");
+
+    const wave =
+        document.getElementById("wave");
+
+    const transcript =
+        document.getElementById("transcript");
+
+    const answer =
+        document.getElementById("answer");
+
+    const playButton =
+        document.getElementById("playButton");
+
+
+    let mediaRecorder;
+
+    let audioChunks = [];
+
+    let audioUrl = null;
+
+
+
+    /*
+     * ============================================
+     * 마이크 버튼
+     * ============================================
+     */
+
+    micButton.addEventListener(
+        "click",
+        async () => {
+
+            /*
+             * 녹음 중이면 종료
+             */
+
+            if (
+                mediaRecorder &&
+                mediaRecorder.state === "recording"
+            ) {
+
+                mediaRecorder.stop();
+
+                return;
+            }
+
+
+            /*
+             * 마이크 권한 요청
+             */
+
+            try {
+
+                const stream =
+                    await navigator
+                        .mediaDevices
+                        .getUserMedia({
+                            audio: true
+                        });
+
+
+                audioChunks = [];
+
+
+                /*
+                 * MediaRecorder 생성
+                 */
+
+                mediaRecorder =
+                    new MediaRecorder(stream);
+
+
+                /*
+                 * 음성 데이터 수집
+                 */
+
+                mediaRecorder.ondataavailable =
+                    event => {
+
+                        if (
+                            event.data.size > 0
+                        ) {
+
+                            audioChunks.push(
+                                event.data
+                            );
+
+                        }
+
+                    };
+
+
+                /*
+                 * 녹음 종료
+                 */
+
+                mediaRecorder.onstop =
+                    async () => {
+
+                        stream
+                            .getTracks()
+                            .forEach(
+                                track =>
+                                    track.stop()
+                            );
+
+
+                        const audioBlob =
+                            new Blob(
+                                audioChunks,
+                                {
+                                    type:
+                                        "audio/webm"
+                                }
+                            );
+
+
+                        await sendVoice(
+                            audioBlob
+                        );
+
+                    };
+
+
+                /*
+                 * 녹음 시작
+                 */
+
+                mediaRecorder.start();
+
+
+                micButton.classList.add(
+                    "recording"
+                );
+
+
+                micStatus.innerHTML =
+                    "<span class='recording-text'>" +
+                    "🔴 듣고 있습니다..." +
+                    "</span>";
+
+
+                wave.style.display =
+                    "flex";
+
+
+            } catch(error) {
+
+                console.error(error);
+
+
+                micStatus.innerText =
+                    "마이크 권한을 허용해주세요.";
+
+            }
+
+        }
+    );
+
+
+
+    /*
+     * ============================================
+     * 음성 파일 전송
+     * ============================================
+     */
+
+    async function sendVoice(
+        audioBlob
+    ) {
+
+
+        micButton.classList.remove(
+            "recording"
+        );
+
+
+        wave.style.display =
+            "none";
+
+
+        micStatus.innerText =
+            "🤖 AI가 음성을 분석하고 있습니다...";
+
+
+        transcript.innerText =
+            "음성을 텍스트로 변환하는 중...";
+
+
+        answer.innerText =
+            "AI가 질문을 분석하고 있습니다...";
+
+
+        playButton.disabled =
+            true;
+
+
+
+        /*
+         * FormData
+         */
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "audio",
+            audioBlob,
+            "voice.webm"
+        );
+
+
+
+        try {
+
+
+            /*
+             * Spring Boot API 호출
+             *
+             * POST
+             * /api/voice-agent
+             */
+
+            const response =
+                await fetch(
+                    "/api/voice-agent",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "AI Voice API Error"
+                );
+
+            }
+
+
+            /*
+             * JSON 응답
+             */
+
+            const data =
+                await response.json();
+
+
+
+            /*
+             * STT 결과
+             */
+
+            transcript.innerText =
+                data.transcript
+                || "음성을 인식하지 못했습니다.";
+
+
+
+            /*
+             * AI 답변
+             */
+
+            answer.innerText =
+                data.answer
+                || "AI 답변이 없습니다.";
+
+
+
+            /*
+             * TTS 결과
+             */
+
+            if (data.audio) {
+
+
+                audioUrl =
+                    "data:audio/mpeg;base64," +
+                    data.audio;
+
+
+                playButton.disabled =
+                    false;
+
+
+                /*
+                 * 자동 재생
+                 */
+
+                const audio =
+                    new Audio(audioUrl);
+
+
+                audio.play()
+                    .catch(() => {
+
+                        /*
+                         * 브라우저 자동재생
+                         * 제한 시 버튼으로 재생
+                         */
+
+                    });
+
+            }
+
+
+            micStatus.innerText =
+                "✅ AI 답변이 완성되었습니다.";
+
+
+        } catch(error) {
+
+            console.error(error);
+
+
+            transcript.innerText =
+                "음성 처리 중 오류가 발생했습니다.";
+
+
+            answer.innerText =
+                "잠시 후 다시 시도해주세요.";
+
+
+            micStatus.innerText =
+                "❌ AI Voice 처리 실패";
+
+        }
+
+    }
+
+
+
+    /*
+     * ============================================
+     * AI 음성 다시 듣기
+     * ============================================
+     */
+
+    playButton.addEventListener(
+        "click",
+        () => {
+
+            if (!audioUrl) {
+
+                return;
+
+            }
+
+
+            const audio =
+                new Audio(audioUrl);
+
+
+            audio.play();
+
+        }
+    );
+
+
+
+    /*
+     * ============================================
+     * 예제 질문
+     * ============================================
+     */
+
+    function setExample(element) {
+
+        const text =
+            element.innerText.trim();
+
+
+        /*
+         * 현재는 예제 문장을
+         * 화면에 표시
+         *
+         * 실제 구현에서는
+         * TTS / Chat API와 연결 가능
+         */
+
+        transcript.innerText =
+            text;
+
+
+        answer.innerText =
+            "이 질문을 음성으로 직접 말해보세요. " +
+            "AI LIFE가 답변해 드립니다.";
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

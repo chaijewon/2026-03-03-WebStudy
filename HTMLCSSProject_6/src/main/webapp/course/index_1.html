@@ -1,0 +1,2561 @@
+<!DOCTYPE html>
+
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+```
+<title>EduAI Campus - AI 기반 실무 교육 플랫폼</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<!-- Pretendard -->
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+<style>
+
+    :root {
+        --primary: #4f46e5;
+        --primary-hover: #4338ca;
+
+        --purple: #7c3aed;
+        --cyan: #06b6d4;
+
+        --dark: #111827;
+        --dark-2: #1f2937;
+
+        --background: #f8fafc;
+        --card: #ffffff;
+
+        --text: #1e293b;
+        --muted: #64748b;
+
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+
+        --shadow:
+            0 10px 30px -5px rgba(15, 23, 42, 0.08);
+
+        --shadow-hover:
+            0 20px 45px -10px rgba(79, 70, 229, 0.18);
+    }
+
+
+    * {
+        box-sizing: border-box;
+    }
+
+
+    body {
+        margin: 0;
+
+        font-family:
+            "Pretendard Variable",
+            Pretendard,
+            -apple-system,
+            BlinkMacSystemFont,
+            system-ui,
+            sans-serif;
+
+        background: var(--background);
+        color: var(--text);
+
+        word-break: keep-all;
+
+        -webkit-font-smoothing: antialiased;
+    }
+
+
+    a {
+        text-decoration: none;
+    }
+
+
+    /* =========================================
+       NAVBAR
+    ========================================= */
+
+    .navbar {
+
+        background: rgba(255,255,255,0.88);
+
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+
+        border-bottom:
+            1px solid rgba(15,23,42,0.06);
+
+        box-shadow:
+            0 2px 15px rgba(15,23,42,0.03);
+    }
+
+
+    .logo {
+
+        font-size: 1.35rem;
+
+        font-weight: 900;
+
+        letter-spacing: -0.7px;
+
+        color: var(--primary);
+    }
+
+
+    .logo i {
+        font-size: 1.45rem;
+    }
+
+
+    .nav-link {
+
+        color: #475569 !important;
+
+        font-weight: 600;
+
+        padding:
+            0.6rem 0.9rem !important;
+
+        transition:
+            color .2s ease;
+    }
+
+
+    .nav-link:hover {
+        color: var(--primary) !important;
+    }
+
+
+    /* =========================================
+       HERO
+    ========================================= */
+
+    .hero {
+
+        position: relative;
+
+        overflow: hidden;
+
+        border-radius: 32px;
+
+        padding:
+            4.5rem 3.5rem;
+
+        color: white;
+
+        background:
+            radial-gradient(
+                circle at 80% 20%,
+                rgba(6,182,212,.30),
+                transparent 30%
+            ),
+
+            radial-gradient(
+                circle at 20% 90%,
+                rgba(124,58,237,.35),
+                transparent 35%
+            ),
+
+            linear-gradient(
+                135deg,
+                #111827 0%,
+                #312e81 55%,
+                #4f46e5 100%
+            );
+
+        box-shadow:
+            0 25px 50px rgba(30,41,59,.18);
+    }
+
+
+    .hero::before {
+
+        content: "";
+
+        position: absolute;
+
+        width: 350px;
+        height: 350px;
+
+        right: -100px;
+        top: -100px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(255,255,255,.08);
+
+        filter: blur(2px);
+    }
+
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+
+    .hero-badge {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        padding:
+            8px 15px;
+
+        border-radius: 50px;
+
+        background:
+            rgba(255,255,255,.14);
+
+        border:
+            1px solid rgba(255,255,255,.18);
+
+        backdrop-filter: blur(10px);
+
+        font-size: .85rem;
+
+        font-weight: 700;
+    }
+
+
+    .hero h1 {
+
+        font-weight: 900;
+
+        letter-spacing: -1.5px;
+
+        line-height: 1.25;
+    }
+
+
+    .hero-description {
+
+        color:
+            rgba(255,255,255,.72);
+
+        font-size: 1.08rem;
+
+        line-height: 1.7;
+    }
+
+
+    .hero-search {
+
+        display: flex;
+
+        align-items: center;
+
+        padding: 7px;
+
+        background:
+            rgba(255,255,255,.96);
+
+        border-radius: 20px;
+
+        box-shadow:
+            0 20px 40px rgba(0,0,0,.2);
+    }
+
+
+    .hero-search input {
+
+        border: none;
+
+        outline: none;
+
+        background: transparent;
+
+        box-shadow: none !important;
+
+        padding:
+            12px 15px;
+    }
+
+
+    .hero-search input:focus {
+        outline: none;
+    }
+
+
+    .btn-primary-custom {
+
+        border: none;
+
+        color: white;
+
+        background:
+            var(--primary);
+
+        font-weight: 700;
+
+        transition:
+            all .25s ease;
+    }
+
+
+    .btn-primary-custom:hover {
+
+        color: white;
+
+        background:
+            var(--primary-hover);
+
+        transform:
+            translateY(-2px);
+    }
+
+
+    /* =========================================
+       SECTION
+    ========================================= */
+
+    .section-title-sub {
+
+        color: var(--primary);
+
+        font-size: .78rem;
+
+        font-weight: 900;
+
+        letter-spacing: 1.4px;
+    }
+
+
+    .section-title {
+
+        font-weight: 900;
+
+        letter-spacing: -0.8px;
+    }
+
+
+    /* =========================================
+       COURSE CARD
+    ========================================= */
+
+    .course-card {
+
+        height: 100%;
+
+        overflow: hidden;
+
+        background: white;
+
+        border:
+            1px solid rgba(15,23,42,.05);
+
+        border-radius: 24px;
+
+        box-shadow:
+            var(--shadow);
+
+        transition:
+            all .3s
+            cubic-bezier(.16,1,.3,1);
+    }
+
+
+    .course-card:hover {
+
+        transform:
+            translateY(-7px);
+
+        box-shadow:
+            var(--shadow-hover);
+    }
+
+
+    .course-img-wrapper {
+
+        position: relative;
+
+        overflow: hidden;
+
+        padding-top: 58%;
+    }
+
+
+    .course-img {
+
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+
+        transition:
+            transform .5s ease;
+    }
+
+
+    .course-card:hover
+    .course-img {
+
+        transform:
+            scale(1.06);
+    }
+
+
+    .course-badge {
+
+        position: absolute;
+
+        left: 14px;
+        top: 14px;
+
+        padding:
+            6px 11px;
+
+        border-radius: 50px;
+
+        color: white;
+
+        background:
+            rgba(17,24,39,.78);
+
+        backdrop-filter:
+            blur(8px);
+
+        font-size: .75rem;
+
+        font-weight: 700;
+    }
+
+
+    .course-body {
+        padding: 1.25rem;
+    }
+
+
+    .course-title {
+
+        font-size: 1.02rem;
+
+        font-weight: 800;
+
+        color: var(--dark);
+
+        margin-bottom: 8px;
+    }
+
+
+    .course-description {
+
+        color: var(--muted);
+
+        font-size: .88rem;
+
+        line-height: 1.5;
+
+        min-height: 42px;
+    }
+
+
+    .course-meta {
+
+        display: flex;
+
+        justify-content:
+            space-between;
+
+        align-items: center;
+
+        border-top:
+            1px solid #f1f5f9;
+
+        padding-top:
+            12px;
+
+        margin-top:
+            14px;
+
+        font-size: .8rem;
+
+        color: var(--muted);
+    }
+
+
+    /* =========================================
+       MY LEARNING
+    ========================================= */
+
+    .learning-container {
+
+        background:
+            linear-gradient(
+                145deg,
+                #eef2ff 0%,
+                #f5f3ff 50%,
+                #ecfeff 100%
+            );
+
+        border:
+            1px solid #e0e7ff;
+
+        border-radius: 32px;
+
+        padding:
+            2rem;
+    }
+
+
+    .stat-card {
+
+        background:
+            rgba(255,255,255,.92);
+
+        border:
+            1px solid rgba(255,255,255,.7);
+
+        border-radius: 20px;
+
+        padding:
+            1.25rem;
+
+        height: 100%;
+
+        box-shadow:
+            0 8px 20px rgba(79,70,229,.05);
+
+        transition:
+            transform .2s ease;
+    }
+
+
+    .stat-card:hover {
+        transform:
+            translateY(-4px);
+    }
+
+
+    .stat-icon {
+
+        width: 45px;
+        height: 45px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 14px;
+
+        font-size: 1.2rem;
+
+        background:
+            #eef2ff;
+
+        color:
+            var(--primary);
+    }
+
+
+    .stat-number {
+
+        font-size: 1.5rem;
+
+        font-weight: 900;
+
+        color: var(--dark);
+    }
+
+
+    .progress {
+
+        height: 8px;
+
+        border-radius: 50px;
+
+        background:
+            #e2e8f0;
+    }
+
+
+    .progress-bar {
+
+        border-radius: 50px;
+
+        background:
+            linear-gradient(
+                90deg,
+                var(--primary),
+                var(--purple)
+            );
+    }
+
+
+    /* =========================================
+       AI COACH
+    ========================================= */
+
+    .ai-card {
+
+        position: relative;
+
+        overflow: hidden;
+
+        height: 100%;
+
+        border-radius: 28px;
+
+        padding: 2rem;
+
+        color: white;
+
+        background:
+            linear-gradient(
+                135deg,
+                #312e81,
+                #7c3aed
+            );
+
+        box-shadow:
+            0 20px 40px rgba(124,58,237,.18);
+    }
+
+
+    .ai-card::after {
+
+        content: "AI";
+
+        position: absolute;
+
+        right: -20px;
+        bottom: -65px;
+
+        font-size: 11rem;
+
+        font-weight: 900;
+
+        color:
+            rgba(255,255,255,.06);
+    }
+
+
+    .ai-icon {
+
+        width: 58px;
+        height: 58px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 18px;
+
+        background:
+            rgba(255,255,255,.13);
+
+        font-size: 1.5rem;
+    }
+
+
+    .ai-item {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        padding:
+            12px;
+
+        margin-bottom:
+            9px;
+
+        border-radius: 14px;
+
+        background:
+            rgba(255,255,255,.09);
+    }
+
+
+    /* =========================================
+       EXAM
+    ========================================= */
+
+    .exam-card {
+
+        height: 100%;
+
+        background: white;
+
+        border-radius: 24px;
+
+        padding: 1.4rem;
+
+        border:
+            1px solid #eef2f7;
+
+        box-shadow:
+            var(--shadow);
+
+        transition:
+            all .25s ease;
+    }
+
+
+    .exam-card:hover {
+
+        transform:
+            translateY(-5px);
+
+        box-shadow:
+            var(--shadow-hover);
+    }
+
+
+    .exam-icon {
+
+        width: 52px;
+        height: 52px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 16px;
+
+        background:
+            #ecfeff;
+
+        color:
+            #0891b2;
+
+        font-size: 1.35rem;
+    }
+
+
+    /* =========================================
+       JOB
+    ========================================= */
+
+    .employment-container {
+
+        border-radius: 32px;
+
+        padding: 2rem;
+
+        color: white;
+
+        background:
+            linear-gradient(
+                135deg,
+                #0f172a,
+                #1e293b
+            );
+    }
+
+
+    .employment-stat {
+
+        padding: 1.3rem;
+
+        border-radius: 20px;
+
+        background:
+            rgba(255,255,255,.07);
+
+        border:
+            1px solid rgba(255,255,255,.08);
+    }
+
+
+    /* =========================================
+       NOTICE
+    ========================================= */
+
+    .notice-container {
+
+        background: white;
+
+        border-radius: 28px;
+
+        padding: 1.5rem;
+
+        box-shadow:
+            var(--shadow);
+
+        border:
+            1px solid #f1f5f9;
+    }
+
+
+    .notice-row {
+
+        display: flex;
+
+        justify-content:
+            space-between;
+
+        align-items: center;
+
+        padding:
+            15px 8px;
+
+        border-bottom:
+            1px solid #f1f5f9;
+    }
+
+
+    .notice-row:last-child {
+        border-bottom: none;
+    }
+
+
+    .notice-title {
+
+        font-weight: 700;
+
+        color: #334155;
+    }
+
+
+    .notice-date {
+
+        font-size: .8rem;
+
+        color: #94a3b8;
+    }
+
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+
+    .footer {
+
+        margin-top: 5rem;
+
+        color: #94a3b8;
+
+        background:
+            #0f172a;
+
+        border-top:
+            1px solid #1e293b;
+    }
+
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+
+    @media(max-width: 991px) {
+
+        .hero {
+            padding:
+                3rem 2rem;
+        }
+
+        .hero h1 {
+            font-size:
+                2.3rem;
+        }
+    }
+
+
+    @media(max-width: 576px) {
+
+        .hero {
+            border-radius: 22px;
+            padding:
+                2.5rem 1.4rem;
+        }
+
+        .hero-search {
+            flex-direction:
+                column;
+            align-items:
+                stretch;
+        }
+
+        .hero-search button {
+            width: 100%;
+        }
+
+        .learning-container,
+        .employment-container {
+            border-radius: 24px;
+            padding: 1.25rem;
+        }
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-expand-lg sticky-top py-3">
+
+```
+<div class="container">
+
+    <a class="navbar-brand logo d-flex align-items-center"
+       th:href="@{/}">
+
+        <i class="bi bi-mortarboard-fill me-2"></i>
+
+        EduAI Campus
+
+    </a>
+
+
+    <button class="navbar-toggler border-0"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNav">
+
+        <i class="bi bi-list fs-2"></i>
+
+    </button>
+
+
+    <div class="collapse navbar-collapse"
+         id="mainNav">
+
+        <ul class="navbar-nav ms-auto
+                   align-items-lg-center
+                   gap-lg-2
+                   my-3 my-lg-0">
+
+            <li class="nav-item">
+
+                <a class="nav-link"
+                   th:href="@{/}">
+
+                    교육센터
+
+                </a>
+
+            </li>
+
+
+            <li class="nav-item">
+
+                <a class="nav-link"
+                   th:href="@{/course/list}">
+
+                    교육과정
+
+                </a>
+
+            </li>
+
+
+            <li class="nav-item">
+
+                <a class="nav-link"
+                   th:href="@{/exam/list}">
+
+                    온라인 시험
+
+                </a>
+
+            </li>
+
+
+            <li class="nav-item">
+
+                <a class="nav-link"
+                   th:href="@{/learning}">
+
+                    AI 학습
+
+                </a>
+
+            </li>
+
+
+            <li class="nav-item">
+
+                <a class="nav-link"
+                   th:href="@{/employment}">
+
+                    취업지원
+
+                </a>
+
+            </li>
+
+        </ul>
+
+
+        <div class="d-flex
+                    align-items-center
+                    gap-2
+                    ms-lg-3">
+
+            <a th:href="@{/login}"
+               class="btn btn-light
+                      rounded-pill
+                      px-3
+                      fw-semibold">
+
+                로그인
+
+            </a>
+
+
+            <a th:href="@{/member/join}"
+               class="btn btn-primary-custom
+                      rounded-pill
+                      px-4">
+
+                회원가입
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</nav>
+
+<main class="container py-4 py-lg-5">
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero mb-5">
+
+```
+<div class="hero-content">
+
+    <div class="col-lg-7">
+
+        <span class="hero-badge mb-3">
+
+            <i class="bi bi-stars"></i>
+
+            AI 기반 실무 교육 플랫폼
+
+        </span>
+
+
+        <h1 class="display-4 mb-3">
+
+            오늘의 학습이
+            <br>
+
+            내일의 실력이 됩니다.
+
+        </h1>
+
+
+        <p class="hero-description mb-4">
+
+            Java부터 Spring Boot, AI·RAG,
+            클라우드까지 실무 중심 교육으로
+            여러분의 성장을 함께합니다.
+
+        </p>
+
+
+        <div class="hero-search mb-4">
+
+            <i class="bi bi-search
+                      text-secondary
+                      fs-5
+                      ms-3"></i>
+
+
+            <input type="text"
+                   class="form-control"
+                   placeholder="배우고 싶은 기술을 검색해보세요.">
+
+
+            <button class="btn
+                           btn-primary-custom
+                           btn-lg
+                           rounded-pill
+                           px-4">
+
+                검색
+
+            </button>
+
+        </div>
+
+
+        <div class="d-flex
+                    gap-2
+                    flex-wrap">
+
+            <a th:href="@{/course/list}"
+               class="btn btn-light
+                      rounded-pill
+                      px-4
+                      fw-bold">
+
+                <i class="bi bi-book me-1"></i>
+
+                교육과정 보기
+
+            </a>
+
+
+            <a th:href="@{/exam/list}"
+               class="btn btn-outline-light
+                      rounded-pill
+                      px-4">
+
+                <i class="bi bi-pencil-square me-1"></i>
+
+                시험 바로가기
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<!-- =====================================================
+     POPULAR COURSE
+===================================================== -->
+
+<section class="mb-5">
+
+```
+<div class="d-flex
+            justify-content-between
+            align-items-end
+            mb-4">
+
+    <div>
+
+        <p class="section-title-sub mb-1">
+
+            POPULAR COURSES
+
+        </p>
+
+        <h2 class="section-title m-0">
+
+            인기 교육과정
+
+        </h2>
+
+    </div>
+
+
+    <a th:href="@{/course/list}"
+       class="text-secondary
+              fw-semibold">
+
+        전체보기
+
+        <i class="bi bi-chevron-right"></i>
+
+    </a>
+
+</div>
+
+
+
+<div class="row g-4">
+
+
+    <!-- COURSE 1 -->
+
+    <div class="col-12
+                col-sm-6
+                col-lg-3">
+
+        <a th:href="@{/course/detail(id=1)}"
+           class="text-decoration-none">
+
+            <div class="course-card">
+
+                <div class="course-img-wrapper">
+
+                    <img class="course-img"
+                         src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=80"
+                         alt="Java">
+
+                    <span class="course-badge">
+
+                        JAVA
+
+                    </span>
+
+                </div>
+
+
+                <div class="course-body">
+
+                    <h5 class="course-title">
+
+                        Java 객체지향 프로그래밍
+
+                    </h5>
+
+
+                    <p class="course-description">
+
+                        객체지향의 핵심 개념부터
+                        컬렉션, 예외처리까지 학습합니다.
+
+                    </p>
+
+
+                    <div class="course-meta">
+
+                        <span>
+
+                            <i class="bi bi-clock me-1"></i>
+                            120시간
+
+                        </span>
+
+                        <span class="text-success fw-bold">
+
+                            초급
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- COURSE 2 -->
+
+    <div class="col-12
+                col-sm-6
+                col-lg-3">
+
+        <a th:href="@{/course/detail(id=2)}"
+           class="text-decoration-none">
+
+            <div class="course-card">
+
+                <div class="course-img-wrapper">
+
+                    <img class="course-img"
+                         src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
+                         alt="Spring Boot">
+
+                    <span class="course-badge">
+
+                        SPRING BOOT
+
+                    </span>
+
+                </div>
+
+
+                <div class="course-body">
+
+                    <h5 class="course-title">
+
+                        Spring Boot 백엔드 개발
+
+                    </h5>
+
+
+                    <p class="course-description">
+
+                        MVC부터 JPA, Security,
+                        REST API까지 실무 프로젝트로 학습합니다.
+
+                    </p>
+
+
+                    <div class="course-meta">
+
+                        <span>
+
+                            <i class="bi bi-clock me-1"></i>
+                            160시간
+
+                        </span>
+
+                        <span class="text-warning fw-bold">
+
+                            중급
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- COURSE 3 -->
+
+    <div class="col-12
+                col-sm-6
+                col-lg-3">
+
+        <a th:href="@{/course/detail(id=3)}"
+           class="text-decoration-none">
+
+            <div class="course-card">
+
+                <div class="course-img-wrapper">
+
+                    <img class="course-img"
+                         src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=800&q=80"
+                         alt="AI">
+
+                    <span class="course-badge">
+
+                        AI / RAG
+
+                    </span>
+
+                </div>
+
+
+                <div class="course-body">
+
+                    <h5 class="course-title">
+
+                        생성형 AI & RAG
+
+                    </h5>
+
+
+                    <p class="course-description">
+
+                        Embedding, Vector DB,
+                        RAG와 생성형 AI 서비스를 구축합니다.
+
+                    </p>
+
+
+                    <div class="course-meta">
+
+                        <span>
+
+                            <i class="bi bi-clock me-1"></i>
+                            72시간
+
+                        </span>
+
+                        <span class="text-danger fw-bold">
+
+                            고급
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- COURSE 4 -->
+
+    <div class="col-12
+                col-sm-6
+                col-lg-3">
+
+        <a th:href="@{/course/detail(id=4)}"
+           class="text-decoration-none">
+
+            <div class="course-card">
+
+                <div class="course-img-wrapper">
+
+                    <img class="course-img"
+                         src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80"
+                         alt="AWS Docker">
+
+                    <span class="course-badge">
+
+                        CLOUD
+
+                    </span>
+
+                </div>
+
+
+                <div class="course-body">
+
+                    <h5 class="course-title">
+
+                        AWS & Docker 클라우드
+
+                    </h5>
+
+
+                    <p class="course-description">
+
+                        Linux, Docker, AWS,
+                        Nginx를 이용한 배포 환경을 구축합니다.
+
+                    </p>
+
+
+                    <div class="course-meta">
+
+                        <span>
+
+                            <i class="bi bi-clock me-1"></i>
+                            96시간
+
+                        </span>
+
+                        <span class="text-warning fw-bold">
+
+                            중급
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<!-- =====================================================
+     MY LEARNING
+===================================================== -->
+
+<section class="learning-container mb-5">
+
+```
+<div class="row g-4 align-items-center">
+
+    <div class="col-lg-4">
+
+        <span class="badge
+                     bg-dark
+                     rounded-pill
+                     px-3 py-2 mb-3">
+
+            MY LEARNING
+
+        </span>
+
+
+        <h2 class="fw-bold mb-3">
+
+            나의 학습 현황
+
+        </h2>
+
+
+        <p class="text-secondary">
+
+            학습 진도와 시험점수,
+            출석률을 한눈에 확인하고
+            효율적으로 학습하세요.
+
+        </p>
+
+
+        <a th:href="@{/learning}"
+           class="btn btn-dark
+                  rounded-pill
+                  px-4">
+
+            학습 대시보드
+
+            <i class="bi bi-arrow-right ms-1"></i>
+
+        </a>
+
+    </div>
+
+
+
+    <div class="col-lg-8">
+
+        <div class="row g-3">
+
+
+            <div class="col-6">
+
+                <div class="stat-card">
+
+                    <div class="d-flex
+                                justify-content-between
+                                mb-3">
+
+                        <div class="stat-icon">
+
+                            <i class="bi bi-bar-chart-fill"></i>
+
+                        </div>
+
+                        <span class="text-success
+                                     fw-bold
+                                     small">
+
+                            +8%
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="text-secondary small">
+
+                        전체 학습 진도
+
+                    </div>
+
+                    <div class="stat-number">
+
+                        78%
+
+                    </div>
+
+
+                    <div class="progress mt-2">
+
+                        <div class="progress-bar"
+                             style="width:78%"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-6">
+
+                <div class="stat-card">
+
+                    <div class="d-flex
+                                justify-content-between
+                                mb-3">
+
+                        <div class="stat-icon">
+
+                            <i class="bi bi-calendar-check"></i>
+
+                        </div>
+
+                        <span class="text-success
+                                     fw-bold
+                                     small">
+
+                            우수
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="text-secondary small">
+
+                        출석률
+
+                    </div>
+
+                    <div class="stat-number">
+
+                        94.5%
+
+                    </div>
+
+
+                    <div class="progress mt-2">
+
+                        <div class="progress-bar"
+                             style="width:94.5%"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-6">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon mb-3">
+
+                        <i class="bi bi-pencil-square"></i>
+
+                    </div>
+
+                    <div class="text-secondary small">
+
+                        시험 평균점수
+
+                    </div>
+
+                    <div class="stat-number">
+
+                        87.4점
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-6">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon mb-3">
+
+                        <i class="bi bi-hourglass-split"></i>
+
+                    </div>
+
+                    <div class="text-secondary small">
+
+                        누적 학습시간
+
+                    </div>
+
+                    <div class="stat-number">
+
+                        146시간
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<!-- =====================================================
+     AI COACH + TODAY EXAM
+===================================================== -->
+
+<section class="mb-5">
+
+```
+<div class="row g-4">
+
+
+    <!-- AI COACH -->
+
+    <div class="col-lg-6">
+
+        <div class="ai-card">
+
+            <div class="ai-icon mb-3">
+
+                <i class="bi bi-stars"></i>
+
+            </div>
+
+
+            <h2 class="fw-bold mb-2">
+
+                AI 학습 코치
+
+            </h2>
+
+
+            <p class="text-white-50 mb-4">
+
+                여러분의 학습 데이터를 분석해서
+                부족한 영역과 다음 학습 내용을 추천합니다.
+
+            </p>
+
+
+            <div class="ai-item">
+
+                <i class="bi bi-exclamation-circle"></i>
+
+                <div>
+
+                    <strong>
+                        JPA 연관관계
+                    </strong>
+
+                    <div class="small text-white-50">
+
+                        추가 학습이 필요합니다.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="ai-item">
+
+                <i class="bi bi-lightbulb"></i>
+
+                <div>
+
+                    <strong>
+                        Spring Security
+                    </strong>
+
+                    <div class="small text-white-50">
+
+                        다음 학습 주제로 추천합니다.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="ai-item">
+
+                <i class="bi bi-trophy"></i>
+
+                <div>
+
+                    <strong>
+                        현재 학습 수준
+                    </strong>
+
+                    <div class="small text-white-50">
+
+                        백엔드 개발자 중급
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <a th:href="@{/learning/ai-coach}"
+               class="btn btn-light
+                      rounded-pill
+                      px-4
+                      mt-3
+                      fw-bold">
+
+                AI 분석 보기
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- TODAY EXAM -->
+
+    <div class="col-lg-6">
+
+        <div class="d-flex
+                    justify-content-between
+                    align-items-end
+                    mb-3">
+
+            <div>
+
+                <p class="section-title-sub mb-1">
+
+                    TODAY'S TEST
+
+                </p>
+
+                <h2 class="section-title m-0">
+
+                    오늘의 AI 문제
+
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="exam-card mb-3">
+
+            <div class="d-flex
+                        align-items-center
+                        gap-3">
+
+                <div class="exam-icon">
+
+                    <i class="bi bi-code-slash"></i>
+
+                </div>
+
+
+                <div class="flex-grow-1">
+
+                    <h6 class="fw-bold mb-1">
+
+                        Java 객체지향 핵심 문제
+
+                    </h6>
+
+                    <div class="text-secondary small">
+
+                        10문제 · 약 15분
+
+                    </div>
+
+                </div>
+
+
+                <span class="badge
+                             bg-success-subtle
+                             text-success
+                             rounded-pill">
+
+                    쉬움
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="exam-card mb-3">
+
+            <div class="d-flex
+                        align-items-center
+                        gap-3">
+
+                <div class="exam-icon">
+
+                    <i class="bi bi-server"></i>
+
+                </div>
+
+
+                <div class="flex-grow-1">
+
+                    <h6 class="fw-bold mb-1">
+
+                        Spring Boot 실전 문제
+
+                    </h6>
+
+                    <div class="text-secondary small">
+
+                        15문제 · 약 25분
+
+                    </div>
+
+                </div>
+
+
+                <span class="badge
+                             bg-warning-subtle
+                             text-warning-emphasis
+                             rounded-pill">
+
+                    보통
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="exam-card">
+
+            <div class="d-flex
+                        align-items-center
+                        gap-3">
+
+                <div class="exam-icon">
+
+                    <i class="bi bi-database"></i>
+
+                </div>
+
+
+                <div class="flex-grow-1">
+
+                    <h6 class="fw-bold mb-1">
+
+                        SQL & Database
+
+                    </h6>
+
+                    <div class="text-secondary small">
+
+                        10문제 · 약 20분
+
+                    </div>
+
+                </div>
+
+
+                <span class="badge
+                             bg-danger-subtle
+                             text-danger
+                             rounded-pill">
+
+                    어려움
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<!-- =====================================================
+     EMPLOYMENT
+===================================================== -->
+
+<section class="employment-container mb-5">
+
+```
+<div class="row g-4 align-items-center">
+
+    <div class="col-lg-5">
+
+        <p class="text-info
+                  fw-bold
+                  small
+                  mb-2">
+
+            EMPLOYMENT SUPPORT
+
+        </p>
+
+
+        <h2 class="fw-bold mb-3">
+
+            학습에서 취업까지
+            <br>
+
+            함께합니다.
+
+        </h2>
+
+
+        <p class="text-white-50">
+
+            학습 데이터와 프로젝트 결과를 분석하여
+            여러분에게 적합한 직무와 취업 준비 방향을
+            추천합니다.
+
+        </p>
+
+
+        <a th:href="@{/employment}"
+           class="btn btn-light
+                  rounded-pill
+                  px-4
+                  fw-bold">
+
+            취업 준비도 확인
+
+            <i class="bi bi-arrow-right ms-1"></i>
+
+        </a>
+
+    </div>
+
+
+    <div class="col-lg-7">
+
+        <div class="row g-3">
+
+
+            <div class="col-4">
+
+                <div class="employment-stat text-center">
+
+                    <div class="text-white-50 small">
+
+                        기술 역량
+
+                    </div>
+
+                    <div class="fs-3 fw-bold mt-2">
+
+                        82%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-4">
+
+                <div class="employment-stat text-center">
+
+                    <div class="text-white-50 small">
+
+                        프로젝트
+
+                    </div>
+
+                    <div class="fs-3 fw-bold mt-2">
+
+                        4개
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-4">
+
+                <div class="employment-stat text-center">
+
+                    <div class="text-white-50 small">
+
+                        취업 준비도
+
+                    </div>
+
+                    <div class="fs-3 fw-bold mt-2 text-info">
+
+                        A
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+<!-- =====================================================
+     NOTICE
+===================================================== -->
+
+<section class="mb-5">
+
+```
+<div class="row g-4">
+
+
+    <div class="col-lg-8">
+
+        <div class="d-flex
+                    justify-content-between
+                    align-items-end
+                    mb-3">
+
+            <div>
+
+                <p class="section-title-sub mb-1">
+
+                    NOTICE
+
+                </p>
+
+                <h2 class="section-title m-0">
+
+                    교육센터 공지사항
+
+                </h2>
+
+            </div>
+
+
+            <a th:href="@{/notice/list}"
+               class="text-secondary fw-semibold">
+
+                전체보기
+
+                <i class="bi bi-chevron-right"></i>
+
+            </a>
+
+        </div>
+
+
+        <div class="notice-container">
+
+
+            <a th:href="@{/notice/detail(id=1)}"
+               class="notice-row">
+
+                <span class="notice-title">
+
+                    9월 정규 교육과정 모집 안내
+
+                </span>
+
+                <span class="notice-date">
+
+                    2026.09.01
+
+                </span>
+
+            </a>
+
+
+            <a th:href="@{/notice/detail(id=2)}"
+               class="notice-row">
+
+                <span class="notice-title">
+
+                    온라인 CBT 시험 일정 안내
+
+                </span>
+
+                <span class="notice-date">
+
+                    2026.08.30
+
+                </span>
+
+            </a>
+
+
+            <a th:href="@{/notice/detail(id=3)}"
+               class="notice-row">
+
+                <span class="notice-title">
+
+                    AI 프로젝트 발표회 안내
+
+                </span>
+
+                <span class="notice-date">
+
+                    2026.08.28
+
+                </span>
+
+            </a>
+
+
+            <a th:href="@{/notice/detail(id=4)}"
+               class="notice-row">
+
+                <span class="notice-title">
+
+                    취업 특강 및 기업 설명회 안내
+
+                </span>
+
+                <span class="notice-date">
+
+                    2026.08.25
+
+                </span>
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- QUICK MENU -->
+
+    <div class="col-lg-4">
+
+        <div class="d-flex
+                    align-items-end
+                    mb-3">
+
+            <div>
+
+                <p class="section-title-sub mb-1">
+
+                    QUICK MENU
+
+                </p>
+
+                <h2 class="section-title m-0">
+
+                    빠른 메뉴
+
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="row g-3">
+
+
+            <div class="col-6">
+
+                <a th:href="@{/exam/list}"
+                   class="exam-card
+                          d-block
+                          text-dark">
+
+                    <div class="exam-icon mb-3">
+
+                        <i class="bi bi-pencil-square"></i>
+
+                    </div>
+
+                    <h6 class="fw-bold">
+
+                        시험보기
+
+                    </h6>
+
+                    <small class="text-secondary">
+
+                        CBT 시험
+
+                    </small>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-6">
+
+                <a th:href="@{/mypage/wrong}"
+                   class="exam-card
+                          d-block
+                          text-dark">
+
+                    <div class="exam-icon mb-3">
+
+                        <i class="bi bi-journal-x"></i>
+
+                    </div>
+
+                    <h6 class="fw-bold">
+
+                        오답노트
+
+                    </h6>
+
+                    <small class="text-secondary">
+
+                        틀린 문제
+
+                    </small>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-6">
+
+                <a th:href="@{/mypage}"
+                   class="exam-card
+                          d-block
+                          text-dark">
+
+                    <div class="exam-icon mb-3">
+
+                        <i class="bi bi-person"></i>
+
+                    </div>
+
+                    <h6 class="fw-bold">
+
+                        마이페이지
+
+                    </h6>
+
+                    <small class="text-secondary">
+
+                        학습 관리
+
+                    </small>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-6">
+
+                <a th:href="@{/community}"
+                   class="exam-card
+                          d-block
+                          text-dark">
+
+                    <div class="exam-icon mb-3">
+
+                        <i class="bi bi-chat-dots"></i>
+
+                    </div>
+
+                    <h6 class="fw-bold">
+
+                        커뮤니티
+
+                    </h6>
+
+                    <small class="text-secondary">
+
+                        학습자 소통
+
+                    </small>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+</main>
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer py-5">
+
+```
+<div class="container">
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6">
+
+            <h5 class="fw-bold text-white mb-3">
+
+                <i class="bi bi-mortarboard-fill
+                          me-2"></i>
+
+                EduAI Campus
+
+            </h5>
+
+
+            <p class="small mb-0">
+
+                AI와 함께 성장하는
+                실무 중심 IT 교육 플랫폼입니다.
+
+                <br>
+
+                Java, Spring Boot, AI,
+                Cloud까지 현장 중심의 교육을 제공합니다.
+
+            </p>
+
+        </div>
+
+
+        <div class="col-md-6 text-md-end">
+
+            <div class="d-flex
+                        justify-content-md-end
+                        gap-3
+                        mb-3
+                        flex-wrap">
+
+                <a th:href="@{/about}"
+                   class="text-secondary
+                          small">
+
+                    교육센터 소개
+
+                </a>
+
+
+                <a th:href="@{/terms}"
+                   class="text-secondary
+                          small">
+
+                    이용약관
+
+                </a>
+
+
+                <a th:href="@{/privacy}"
+                   class="text-secondary
+                          small">
+
+                    개인정보처리방침
+
+                </a>
+
+
+                <a th:href="@{/contact}"
+                   class="text-secondary
+                          small">
+
+                    고객센터
+
+                </a>
+
+            </div>
+
+
+            <p class="small text-secondary mb-0">
+
+                © 2026 EduAI Campus.
+                All rights reserved.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</footer>
+
+<!-- Bootstrap JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+<script>
+
+    /*
+     * 교육과정 검색
+     */
+
+    document
+        .querySelector('.hero-search button')
+        .addEventListener('click', function () {
+
+            const keyword =
+                document
+                    .querySelector('.hero-search input')
+                    .value
+                    .trim();
+
+            if (!keyword) {
+
+                alert('검색어를 입력해주세요.');
+
+                return;
+            }
+
+            location.href =
+                '/course/list?keyword='
+                + encodeURIComponent(keyword);
+
+        });
+
+
+    /*
+     * Enter 검색
+     */
+
+    document
+        .querySelector('.hero-search input')
+        .addEventListener('keydown', function (event) {
+
+            if (event.key === 'Enter') {
+
+                document
+                    .querySelector('.hero-search button')
+                    .click();
+
+            }
+
+        });
+
+</script>
+
+</body>
+</html>

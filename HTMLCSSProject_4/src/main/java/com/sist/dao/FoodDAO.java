@@ -25,7 +25,7 @@ public class FoodDAO {
    // 필요한 객체 => 공통으로 사용 
    private Connection conn;
    private PreparedStatement ps;
-   private final String URL="jdbc:oracle:thin:@localhost:1521:XE";
+   private final String URL="jdbc:oracle:thin:@211.238.142.45:1521:XE";
    
    // 1. 드라이버 등록 
    public FoodDAO()
@@ -202,6 +202,34 @@ public class FoodDAO {
 		   disConnection();
 	   }
 	   return vo;
+   }
+   public List<String> question()
+   {
+	   List<String> list=new ArrayList<String>();
+	   try
+	   {
+		   getConnection();
+		   String sql="SELECT title FROM EXAM_QUESTION";
+		   ps=conn.prepareStatement(sql);
+		   ResultSet rs=ps.executeQuery();
+		   while(rs.next())
+		   {
+			   System.out.println(rs.getString(1));
+		   }
+		   rs.close();
+	   }catch(Exception ex)
+	   {
+		   ex.printStackTrace();
+	   }
+	   finally
+	   {
+		   disConnection();
+	   }
+	   return list;
+   }
+   public static void main(String[] args) {
+	   FoodDAO dao=new FoodDAO();
+	   dao.question();
    }
 }
 

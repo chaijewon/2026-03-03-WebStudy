@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+```
+<title>교육과정 | EduAI Campus</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<!-- Pretendard -->
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+<style>
+    :root {
+        --primary: #4f46e5;
+        --primary-hover: #4338ca;
+        --purple: #7c3aed;
+        --cyan: #06b6d4;
+        --dark: #111827;
+        --dark-2: #1f2937;
+        --background: #f8fafc;
+        --card: #ffffff;
+        --text: #1e293b;
+        --muted: #64748b;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --shadow: 0 10px 30px -5px rgba(15, 23, 42, .08);
+        --shadow-hover: 0 20px 45px -10px rgba(79, 70, 229, .18);
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: "Pretendard Variable",
+        Pretendard,
+        -apple-system,
+        BlinkMacSystemFont,
+        system-ui,
+        sans-serif;
+        background: var(--background);
+        color: var(--text);
+        word-break: keep-all;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    /* =========================
+       NAVBAR
+    ========================= */
+
+    .navbar {
+        background: rgba(255,255,255,.88);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(15,23,42,.06);
+        box-shadow: 0 2px 15px rgba(15,23,42,.03);
+    }
+
+    .logo {
+        font-size: 1.35rem;
+        font-weight: 900;
+        letter-spacing: -.7px;
+        color: var(--primary);
+    }
+
+    .logo i {
+        font-size: 1.45rem;
+    }
+
+    .nav-link {
+        color: #475569 !important;
+        font-weight: 600;
+        padding: .6rem .9rem !important;
+        transition: color .2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        color: var(--primary) !important;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .course-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 32px;
+        padding: 4rem 3.5rem;
+        color: white;
+
+        background:
+            radial-gradient(
+                circle at 85% 20%,
+                rgba(6,182,212,.30),
+                transparent 30%
+            ),
+            radial-gradient(
+                circle at 15% 90%,
+                rgba(124,58,237,.35),
+                transparent 35%
+            ),
+            linear-gradient(
+                135deg,
+                #111827 0%,
+                #312e81 55%,
+                #4f46e5 100%
+            );
+
+        box-shadow: 0 25px 50px rgba(30,41,59,.18);
+    }
+
+    .course-hero::before {
+        content: "";
+        position: absolute;
+        width: 350px;
+        height: 350px;
+        right: -100px;
+        top: -120px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.08);
+    }
+
+    .course-hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 15px;
+        border-radius: 50px;
+        background: rgba(255,255,255,.14);
+        border: 1px solid rgba(255,255,255,.18);
+        backdrop-filter: blur(10px);
+        font-size: .85rem;
+        font-weight: 700;
+    }
+
+    .course-hero h1 {
+        font-weight: 900;
+        letter-spacing: -1.5px;
+        line-height: 1.25;
+    }
+
+    .hero-description {
+        color: rgba(255,255,255,.72);
+        font-size: 1.05rem;
+        line-height: 1.7;
+        max-width: 700px;
+    }
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    .search-box {
+        display: flex;
+        align-items: center;
+        background: white;
+        border-radius: 18px;
+        padding: 6px;
+        box-shadow: 0 15px 35px rgba(0,0,0,.18);
+    }
+
+    .search-box input {
+        border: none;
+        outline: none;
+        box-shadow: none !important;
+        padding: 12px 15px;
+    }
+
+    .search-box button {
+        border: none;
+        border-radius: 13px;
+        background: var(--primary);
+        color: white;
+        font-weight: 700;
+        padding: 12px 25px;
+    }
+
+    .search-box button:hover {
+        background: var(--primary-hover);
+    }
+
+    /* =========================
+       SECTION
+    ========================= */
+
+    .section-title-sub {
+        color: var(--primary);
+        font-size: .78rem;
+        font-weight: 900;
+        letter-spacing: 1.4px;
+    }
+
+    .section-title {
+        font-weight: 900;
+        letter-spacing: -.8px;
+    }
+
+    /* =========================
+       FILTER
+    ========================= */
+
+    .filter-container {
+        background: white;
+        border: 1px solid #eef2f7;
+        border-radius: 22px;
+        padding: 12px;
+        box-shadow: var(--shadow);
+    }
+
+    .filter-btn {
+        border: none;
+        background: transparent;
+        color: #64748b;
+        border-radius: 14px;
+        padding: 10px 18px;
+        font-weight: 700;
+        transition: all .2s ease;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+        color: white;
+        background: linear-gradient(
+            135deg,
+            var(--primary),
+            var(--purple)
+        );
+    }
+
+    /* =========================
+       COURSE CARD
+    ========================= */
+
+    .course-card {
+        height: 100%;
+        overflow: hidden;
+        background: white;
+        border: 1px solid rgba(15,23,42,.05);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        transition: all .3s cubic-bezier(.16,1,.3,1);
+    }
+
+    .course-card:hover {
+        transform: translateY(-7px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .course-img-wrapper {
+        position: relative;
+        overflow: hidden;
+        padding-top: 57%;
+    }
+
+    .course-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .5s ease;
+    }
+
+    .course-card:hover .course-img {
+        transform: scale(1.06);
+    }
+
+    .course-badge {
+        position: absolute;
+        left: 14px;
+        top: 14px;
+        padding: 6px 11px;
+        border-radius: 50px;
+        color: white;
+        background: rgba(17,24,39,.78);
+        backdrop-filter: blur(8px);
+        font-size: .75rem;
+        font-weight: 700;
+    }
+
+    .course-body {
+        padding: 1.35rem;
+    }
+
+    .course-title {
+        font-size: 1.08rem;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 8px;
+    }
+
+    .course-description {
+        color: var(--muted);
+        font-size: .88rem;
+        line-height: 1.55;
+        min-height: 44px;
+    }
+
+    .course-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 12px;
+        margin-top: 14px;
+        font-size: .8rem;
+        color: var(--muted);
+    }
+
+    .rating {
+        color: #f59e0b;
+        font-weight: 800;
+    }
+
+    /* =========================
+       PROJECT
+    ========================= */
+
+    .project-card {
+        height: 100%;
+        overflow: hidden;
+        background: white;
+        border-radius: 24px;
+        border: 1px solid #eef2f7;
+        box-shadow: var(--shadow);
+        transition: all .3s ease;
+    }
+
+    .project-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .project-image {
+        height: 190px;
+        overflow: hidden;
+    }
+
+    .project-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .5s ease;
+    }
+
+    .project-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .project-body {
+        padding: 1.4rem;
+    }
+
+    .project-tech {
+        display: inline-block;
+        background: #eef2ff;
+        color: var(--primary);
+        padding: 5px 9px;
+        border-radius: 8px;
+        font-size: .72rem;
+        font-weight: 700;
+        margin: 2px;
+    }
+
+    /* =========================
+       REVIEW
+    ========================= */
+
+    .review-card {
+        height: 100%;
+        background: white;
+        border-radius: 22px;
+        border: 1px solid #eef2f7;
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+    }
+
+    .review-user {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .review-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 800;
+        background: linear-gradient(
+            135deg,
+            var(--primary),
+            var(--purple)
+        );
+    }
+
+    .review-stars {
+        color: #f59e0b;
+        letter-spacing: 2px;
+    }
+
+    .review-text {
+        color: #475569;
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    /* =========================
+       CTA
+    ========================= */
+
+    .cta-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 30px;
+        padding: 3rem;
+        color: white;
+
+        background:
+            radial-gradient(
+                circle at 90% 10%,
+                rgba(6,182,212,.25),
+                transparent 30%
+            ),
+            linear-gradient(
+                135deg,
+                #111827,
+                #312e81
+            );
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .footer {
+        margin-top: 5rem;
+        color: #94a3b8;
+        background: #0f172a;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media(max-width: 991px) {
+        .course-hero {
+            padding: 3rem 2rem;
+        }
+    }
+
+    @media(max-width: 576px) {
+        .course-hero {
+            border-radius: 22px;
+            padding: 2.5rem 1.4rem;
+        }
+
+        .search-box {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .search-box button {
+            width: 100%;
+        }
+
+        .filter-container {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .cta-container {
+            border-radius: 22px;
+            padding: 2rem 1.4rem;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-expand-lg sticky-top py-3">
+
+```
+<div class="container">
+
+    <a class="navbar-brand logo d-flex align-items-center"
+       th:href="@{/}">
+
+        <i class="bi bi-mortarboard-fill me-2"></i>
+        EduAI Campus
+
+    </a>
+
+    <button class="navbar-toggler border-0"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNav">
+
+        <i class="bi bi-list fs-2"></i>
+
+    </button>
+
+    <div class="collapse navbar-collapse"
+         id="mainNav">
+
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2 my-3 my-lg-0">
+
+            <li class="nav-item">
+                <a class="nav-link"
+                   th:href="@{/}">
+                    교육센터
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active"
+                   th:href="@{/course/list}">
+                    교육과정
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link"
+                   th:href="@{/exam/list}">
+                    온라인 시험
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link"
+                   th:href="@{/learning}">
+                    AI 학습
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link"
+                   th:href="@{/mypage}">
+                    마이페이지
+                </a>
+            </li>
+
+        </ul>
+
+        <div class="d-flex align-items-center gap-2 ms-lg-3">
+
+            <a th:href="@{/login}"
+               class="btn btn-light rounded-pill px-3 fw-semibold">
+                로그인
+            </a>
+
+            <a th:href="@{/member/join}"
+               class="btn btn-primary rounded-pill px-4 fw-semibold">
+                회원가입
+            </a>
+
+        </div>
+
+    </div>
+</div>
+```
+
+</nav>
+
+<main class="container py-4 py-lg-5">
+
+```
+<!-- =================================================
+     HERO
+================================================= -->
+
+<section class="course-hero mb-5">
+
+    <div class="course-hero-content">
+
+        <span class="hero-badge mb-3">
+            <i class="bi bi-stars"></i>
+            AI 기반 실무 교육
+        </span>
+
+        <h1 class="display-4 mb-3">
+            실무에서 바로 사용하는
+            <br>
+            IT 교육과정을 만나보세요.
+        </h1>
+
+        <p class="hero-description mb-4">
+            Java, Spring Boot, Database, AI·RAG,
+            Docker, AWS까지 실제 프로젝트를 통해
+            개발자의 핵심 역량을 만들어갑니다.
+        </p>
+
+        <form class="search-box"
+              method="get"
+              th:action="@{/course/list}">
+
+            <i class="bi bi-search text-secondary fs-5 ms-3"></i>
+
+            <input type="text"
+                   name="keyword"
+                   class="form-control"
+                   th:value="${keyword}"
+                   placeholder="배우고 싶은 기술을 검색해보세요.">
+
+            <button type="submit">
+                검색
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- =================================================
+     FILTER
+================================================= -->
+
+<section class="mb-5">
+
+    <div class="filter-container d-flex flex-wrap gap-2">
+
+        <a th:href="@{/course/list}"
+           class="filter-btn active">
+            전체
+        </a>
+
+        <a th:href="@{/course/list(category='JAVA')}"
+           class="filter-btn">
+            Java
+        </a>
+
+        <a th:href="@{/course/list(category='SPRING')}"
+           class="filter-btn">
+            Spring
+        </a>
+
+        <a th:href="@{/course/list(category='DATABASE')}"
+           class="filter-btn">
+            Database
+        </a>
+
+        <a th:href="@{/course/list(category='AI')}"
+           class="filter-btn">
+            AI / RAG
+        </a>
+
+        <a th:href="@{/course/list(category='CLOUD')}"
+           class="filter-btn">
+            Cloud
+        </a>
+
+        <a th:href="@{/course/list(category='FRONTEND')}"
+           class="filter-btn">
+            Frontend
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =================================================
+     COURSE LIST
+================================================= -->
+
+<section class="mb-5">
+
+    <div class="d-flex justify-content-between align-items-end mb-4">
+
+        <div>
+
+            <p class="section-title-sub mb-1">
+                ALL COURSES
+            </p>
+
+            <h2 class="section-title m-0">
+                교육과정
+            </h2>
+
+        </div>
+
+        <span class="text-secondary small"
+              th:if="${courseList != null}">
+            총 <strong th:text="${#lists.size(courseList)}">12</strong>개 과정
+        </span>
+
+    </div>
+
+
+    <!-- 동적 데이터 -->
+
+    <div class="row g-4"
+         th:if="${courseList != null and !#lists.isEmpty(courseList)}">
+
+        <div class="col-12 col-sm-6 col-lg-4"
+             th:each="course : ${courseList}">
+
+            <a th:href="@{/course/detail(id=${course.id})}"
+               class="text-decoration-none">
+
+                <div class="course-card">
+
+                    <div class="course-img-wrapper">
+
+                        <img class="course-img"
+                             th:src="${course.imageUrl}"
+                             th:alt="${course.title}">
+
+                        <span class="course-badge"
+                              th:text="${course.category}">
+                            JAVA
+                        </span>
+
+                    </div>
+
+                    <div class="course-body">
+
+                        <h5 class="course-title"
+                            th:text="${course.title}">
+                            Java 객체지향 프로그래밍
+                        </h5>
+
+                        <p class="course-description"
+                           th:text="${course.description}">
+                            객체지향의 핵심 개념부터
+                            컬렉션과 예외처리까지 학습합니다.
+                        </p>
+
+                        <div class="d-flex gap-2 mb-2">
+
+                            <span class="badge bg-light text-dark"
+                                  th:text="${course.level}">
+                                초급
+                            </span>
+
+                            <span class="badge bg-light text-dark">
+                                <i class="bi bi-clock"></i>
+                                <span th:text="${course.hours}">
+                                    120
+                                </span>시간
+                            </span>
+
+                        </div>
+
+                        <div class="course-meta">
+
+                            <span>
+                                <i class="bi bi-people me-1"></i>
+                                <span th:text="${course.studentCount}">
+                                    128
+                                </span>명 수강
+                            </span>
+
+                            <span class="rating">
+                                <i class="bi bi-star-fill"></i>
+                                <span th:text="${course.rating}">
+                                    4.9
+                                </span>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- 데이터가 없을 경우 -->
+
+    <div class="text-center py-5"
+         th:if="${courseList == null or #lists.isEmpty(courseList)}">
+
+        <div class="mb-3">
+            <i class="bi bi-book display-4 text-secondary"></i>
+        </div>
+
+        <h5 class="fw-bold">
+            검색된 교육과정이 없습니다.
+        </h5>
+
+        <p class="text-secondary">
+            다른 검색어를 입력해보세요.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =================================================
+     SAMPLE COURSE
+     개발 초기 테스트용
+================================================= -->
+
+<section class="mb-5"
+         th:if="${courseList == null}">
+
+    <div class="row g-4">
+
+        <!-- JAVA -->
+
+        <div class="col-12 col-sm-6 col-lg-4">
+
+            <a th:href="@{/course/detail(id=1)}">
+
+                <div class="course-card">
+
+                    <div class="course-img-wrapper">
+
+                        <img class="course-img"
+                             src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=900&q=80"
+                             alt="Java">
+
+                        <span class="course-badge">
+                            JAVA
+                        </span>
+
+                    </div>
+
+                    <div class="course-body">
+
+                        <h5 class="course-title">
+                            Java 객체지향 프로그래밍
+                        </h5>
+
+                        <p class="course-description">
+                            객체지향의 핵심 개념부터
+                            컬렉션, 예외처리, 테스트까지 학습합니다.
+                        </p>
+
+                        <div class="d-flex gap-2 mb-2">
+
+                            <span class="badge bg-success-subtle text-success">
+                                초급
+                            </span>
+
+                            <span class="badge bg-light text-dark">
+                                120시간
+                            </span>
+
+                        </div>
+
+                        <div class="course-meta">
+
+                            <span>
+                                <i class="bi bi-people"></i>
+                                128명
+                            </span>
+
+                            <span class="rating">
+                                ★ 4.9
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- SPRING -->
+
+        <div class="col-12 col-sm-6 col-lg-4">
+
+            <a th:href="@{/course/detail(id=2)}">
+
+                <div class="course-card">
+
+                    <div class="course-img-wrapper">
+
+                        <img class="course-img"
+                             src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=80"
+                             alt="Spring Boot">
+
+                        <span class="course-badge">
+                            SPRING BOOT
+                        </span>
+
+                    </div>
+
+                    <div class="course-body">
+
+                        <h5 class="course-title">
+                            Spring Boot 백엔드 개발
+                        </h5>
+
+                        <p class="course-description">
+                            MVC, JPA, Security, REST API를
+                            실제 프로젝트를 통해 학습합니다.
+                        </p>
+
+                        <div class="d-flex gap-2 mb-2">
+
+                            <span class="badge bg-warning-subtle text-warning-emphasis">
+                                중급
+                            </span>
+
+                            <span class="badge bg-light text-dark">
+                                160시간
+                            </span>
+
+                        </div>
+
+                        <div class="course-meta">
+
+                            <span>
+                                <i class="bi bi-people"></i>
+                                156명
+                            </span>
+
+                            <span class="rating">
+                                ★ 4.9
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- AI -->
+
+        <div class="col-12 col-sm-6 col-lg-4">
+
+            <a th:href="@{/course/detail(id=3)}">
+
+                <div class="course-card">
+
+                    <div class="course-img-wrapper">
+
+                        <img class="course-img"
+                             src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=900&q=80"
+                             alt="AI RAG">
+
+                        <span class="course-badge">
+                            AI / RAG
+                        </span>
+
+                    </div>
+
+                    <div class="course-body">
+
+                        <h5 class="course-title">
+                            생성형 AI & RAG
+                        </h5>
+
+                        <p class="course-description">
+                            Embedding, Vector DB, RAG를 이용하여
+                            AI 서비스를 구축합니다.
+                        </p>
+
+                        <div class="d-flex gap-2 mb-2">
+
+                            <span class="badge bg-danger-subtle text-danger">
+                                고급
+                            </span>
+
+                            <span class="badge bg-light text-dark">
+                                72시간
+                            </span>
+
+                        </div>
+
+                        <div class="course-meta">
+
+                            <span>
+                                <i class="bi bi-people"></i>
+                                94명
+                            </span>
+
+                            <span class="rating">
+                                ★ 4.8
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- DATABASE -->
+
+        <div class="col-12 col-sm-6 col-lg-4">
+
+            <a th:href="@{/course/detail(id=4)}">
+
+                <div class="course-card">
+
+                    <div class="course-img-wrapper">
+
+                        <img class="course-img"
+                             src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=900&q=80"
+                             alt="Database">
+
+                        <span class="course-badge">
+                            DATABASE
+                        </span>
+
+                    </div>
+
+                    <div class="course-body">
+
+                        <h5 class="course-title">
+                            데이터베이스 & SQL
+                        </h5>
+
+                        <p class="course-description">
+                            Oracle과 PostgreSQL을 이용하여
+                            실무 SQL과 데이터 모델링을 학습합니다.
+                        </p>
+
+                        <div class="d-flex gap-2 mb-2">
+
+                            <span class="badge bg-success-subtle text-success">
+                                초급
+                            </span>
+
+                            <span class="badge bg-light text-dark">
+                                64시간
+                            </span>
+
+                        </div>
+
+                        <div class="course-meta">
+
+                            <span>
+                                <i class="bi bi-people"></i>
+                                142명
+                            </span>
+
+                            <span class="rating">
+                                ★ 4.8
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- CLOUD -->
+
+        <div class="col-12 col-sm-6 col-lg-4">
+
+            <a th:href="@{/course/detail(id=5)}">
+
+                <div class="course-card">
+
+                    <div class="course-img-wrapper">
+
+                        <img class="course-img"
+                             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=80"
+                             alt="AWS Docker">
+
+                        <span class="course-badge">
+                            CLOUD
+                        </span>
+
+                    </div>
+
+                    <div class="course-body">
+
+                        <h5 class="course-title">
+                            AWS & Docker 클라우드
+                        </h5>
+
+                        <p class="course-description">
+                            Linux, Docker, Docker Compose,
+                            AWS와 Nginx 배포까지 학습합니다.
+                        </p>
+
+                        <div class="d-flex gap-2 mb-2">
+
+                            <span class="badge bg-warning-subtle text-warning-emphasis">
+                                중급
+                            </span>
+
+                            <span class="badge bg-light text-dark">
+                                96시간
+                            </span>
+
+                        </div>
+
+                        <div class="course-meta">
+
+                            <span>
+                                <i class="bi bi-people"></i>
+                                87명
+                            </span>
+
+                            <span class="rating">
+                                ★ 4.9
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- FRONTEND -->
+
+        <div class="col-12 col-sm-6 col-lg-4">
+
+            <a th:href="@{/course/detail(id=6)}">
+
+                <div class="course-card">
+
+                    <div class="course-img-wrapper">
+
+                        <img class="course-img"
+                             src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=900&q=80"
+                             alt="Frontend">
+
+                        <span class="course-badge">
+                            FRONTEND
+                        </span>
+
+                    </div>
+
+                    <div class="course-body">
+
+                        <h5 class="course-title">
+                            웹 프론트엔드 개발
+                        </h5>
+
+                        <p class="course-description">
+                            HTML, CSS, JavaScript와
+                            API 연동을 이용한 웹 개발을 학습합니다.
+                        </p>
+
+                        <div class="d-flex gap-2 mb-2">
+
+                            <span class="badge bg-success-subtle text-success">
+                                초급
+                            </span>
+
+                            <span class="badge bg-light text-dark">
+                                80시간
+                            </span>
+
+                        </div>
+
+                        <div class="course-meta">
+
+                            <span>
+                                <i class="bi bi-people"></i>
+                                113명
+                            </span>
+
+                            <span class="rating">
+                                ★ 4.8
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =================================================
+     STUDENT PROJECT
+================================================= -->
+
+<section class="mb-5">
+
+    <div class="d-flex justify-content-between align-items-end mb-4">
+
+        <div>
+
+            <p class="section-title-sub mb-1">
+                STUDENT PROJECT
+            </p>
+
+            <h2 class="section-title m-0">
+                수강생 프로젝트
+            </h2>
+
+            <p class="text-secondary mt-2 mb-0">
+                배운 기술을 실제 서비스로 구현한
+                수강생들의 프로젝트입니다.
+            </p>
+
+        </div>
+
+        <a th:href="@{/project/list}"
+           class="text-secondary fw-semibold">
+            전체보기
+            <i class="bi bi-chevron-right"></i>
+        </a>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- PROJECT 1 -->
+
+        <div class="col-12 col-md-6 col-lg-4">
+
+            <div class="project-card">
+
+                <div class="project-image">
+
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80"
+                         alt="온라인 쇼핑몰 프로젝트">
+
+                </div>
+
+                <div class="project-body">
+
+                    <span class="badge bg-primary-subtle text-primary mb-2">
+                        Spring Boot
+                    </span>
+
+                    <h5 class="fw-bold">
+                        AI 쇼핑몰 추천 시스템
+                    </h5>
+
+                    <p class="text-secondary small">
+                        상품 데이터와 AI 추천 기능을 결합한
+                        온라인 쇼핑몰 프로젝트입니다.
+                    </p>
+
+                    <div>
+                        <span class="project-tech">Java</span>
+                        <span class="project-tech">Spring Boot</span>
+                        <span class="project-tech">JPA</span>
+                        <span class="project-tech">AI</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROJECT 2 -->
+
+        <div class="col-12 col-md-6 col-lg-4">
+
+            <div class="project-card">
+
+                <div class="project-image">
+
+                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=900&q=80"
+                         alt="교육 플랫폼 프로젝트">
+
+                </div>
+
+                <div class="project-body">
+
+                    <span class="badge bg-info-subtle text-info mb-2">
+                        AI / RAG
+                    </span>
+
+                    <h5 class="fw-bold">
+                        AI 교육 학습관리 플랫폼
+                    </h5>
+
+                    <p class="text-secondary small">
+                        학습 데이터를 분석하여
+                        맞춤형 문제와 학습 내용을 추천합니다.
+                    </p>
+
+                    <div>
+                        <span class="project-tech">Spring Boot</span>
+                        <span class="project-tech">RAG</span>
+                        <span class="project-tech">Vector DB</span>
+                        <span class="project-tech">Redis</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROJECT 3 -->
+
+        <div class="col-12 col-md-6 col-lg-4">
+
+            <div class="project-card">
+
+                <div class="project-image">
+
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80"
+                         alt="재고관리 프로젝트">
+
+                </div>
+
+                <div class="project-body">
+
+                    <span class="badge bg-success-subtle text-success mb-2">
+                        Full Stack
+                    </span>
+
+                    <h5 class="fw-bold">
+                        입고·재고관리 시스템
+                    </h5>
+
+                    <p class="text-secondary small">
+                        상품 입고부터 재고관리까지
+                        실무 업무 프로세스를 구현했습니다.
+                    </p>
+
+                    <div>
+                        <span class="project-tech">Java</span>
+                        <span class="project-tech">Oracle</span>
+                        <span class="project-tech">Spring</span>
+                        <span class="project-tech">JavaScript</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =================================================
+     STUDENT REVIEW
+================================================= -->
+
+<section class="mb-5">
+
+    <div class="text-center mb-4">
+
+        <p class="section-title-sub mb-1">
+            STUDENT REVIEW
+        </p>
+
+        <h2 class="section-title">
+            수강생 후기
+        </h2>
+
+        <p class="text-secondary">
+            실제 수강생들이 경험한
+            EduAI Campus 교육 이야기를 확인해보세요.
+        </p>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- REVIEW 1 -->
+
+        <div class="col-12 col-md-6 col-lg-4">
+
+            <div class="review-card">
+
+                <div class="review-user mb-3">
+
+                    <div class="review-avatar">
+                        김
+                    </div>
+
+                    <div>
+
+                        <div class="fw-bold">
+                            김민수
+                        </div>
+
+                        <div class="text-secondary small">
+                            Spring Boot 과정
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="review-stars mb-3">
+                    ★★★★★
+                </div>
+
+                <p class="review-text mb-0">
+                    단순히 문법만 배우는 것이 아니라
+                    실제 서비스를 처음부터 끝까지 만들어보면서
+                    Spring Boot에 대한 이해도가 크게 높아졌습니다.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- REVIEW 2 -->
+
+        <div class="col-12 col-md-6 col-lg-4">
+
+            <div class="review-card">
+
+                <div class="review-user mb-3">
+
+                    <div class="review-avatar">
+                        이
+                    </div>
+
+                    <div>
+
+                        <div class="fw-bold">
+                            이서연
+                        </div>
+
+                        <div class="text-secondary small">
+                            AI / RAG 과정
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="review-stars mb-3">
+                    ★★★★★
+                </div>
+
+                <p class="review-text mb-0">
+                    RAG가 무엇인지 개념으로만 알고 있었는데
+                    Vector DB와 실제 데이터를 연결해서
+                    직접 구현해보니 확실하게 이해할 수 있었습니다.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- REVIEW 3 -->
+
+        <div class="col-12 col-md-6 col-lg-4">
+
+            <div class="review-card">
+
+                <div class="review-user mb-3">
+
+                    <div class="review-avatar">
+                        박
+                    </div>
+
+                    <div>
+
+                        <div class="fw-bold">
+                            박준혁
+                        </div>
+
+                        <div class="text-secondary small">
+                            Java & Backend 과정
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="review-stars mb-3">
+                    ★★★★★
+                </div>
+
+                <p class="review-text mb-0">
+                    프로젝트를 진행하면서 Git, DB,
+                    Spring Boot, Docker까지 연결해서
+                    실무 개발 흐름을 경험할 수 있었던 점이 좋았습니다.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =================================================
+     CTA
+================================================= -->
+
+<section class="cta-container mb-5">
+
+    <div class="row align-items-center">
+
+        <div class="col-lg-8">
+
+            <span class="badge bg-light text-dark rounded-pill px-3 py-2 mb-3">
+                START LEARNING
+            </span>
+
+            <h2 class="fw-bold mb-3">
+                지금 시작하면
+                <br>
+                실무 개발자가 가까워집니다.
+            </h2>
+
+            <p class="text-white-50 mb-0">
+                여러분의 목표에 맞는 교육과정을 선택하고
+                프로젝트를 통해 실력을 완성해보세요.
+            </p>
+
+        </div>
+
+        <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+            <a th:href="@{/member/join}"
+               class="btn btn-light btn-lg rounded-pill px-4 fw-bold">
+
+                무료 회원가입
+
+                <i class="bi bi-arrow-right ms-1"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+```
+
+</main>
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer py-5">
+
+```
+<div class="container">
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+
+            <h5 class="fw-bold text-white mb-3">
+
+                <i class="bi bi-mortarboard-fill me-2"></i>
+                EduAI Campus
+
+            </h5>
+
+            <p class="small mb-0">
+                AI와 함께 성장하는
+                실무 중심 IT 교육 플랫폼입니다.
+                <br>
+                Java, Spring Boot, AI, Cloud까지
+                현장 중심의 교육을 제공합니다.
+            </p>
+
+        </div>
+
+        <div class="col-md-6 text-md-end">
+
+            <div class="d-flex justify-content-md-end gap-3 mb-3 flex-wrap">
+
+                <a th:href="@{/about}"
+                   class="text-secondary small">
+                    교육센터 소개
+                </a>
+
+                <a th:href="@{/terms}"
+                   class="text-secondary small">
+                    이용약관
+                </a>
+
+                <a th:href="@{/privacy}"
+                   class="text-secondary small">
+                    개인정보처리방침
+                </a>
+
+                <a th:href="@{/contact}"
+                   class="text-secondary small">
+                    고객센터
+                </a>
+
+            </div>
+
+            <p class="small text-secondary mb-0">
+                © 2026 EduAI Campus.
+                All rights reserved.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+</html>

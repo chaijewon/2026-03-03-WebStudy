@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI LIFE | Technology Experience</title>
+<style>
+*{box-sizing:border-box}
+:root{
+ --bg:#f5f8ff;
+ --bg2:#ffffff;
+ --panel:rgba(255,255,255,.88);
+ --panel2:#f8faff;
+ --line:#e2e9f5;
+ --text:#18243d;
+ --muted:#71809a;
+ --blue:#3978ff;
+ --cyan:#25b8e6;
+ --purple:#7657e8;
+ --pink:#e968b8;
+ --green:#20b981;
+ --yellow:#e9a92b;
+ --shadow:0 18px 55px rgba(48,76,126,.10);
+ --shadow2:0 8px 28px rgba(48,76,126,.08);
+}
+html{scroll-behavior:smooth}
+body{
+ margin:0;
+ color:var(--text);
+ font-family:Arial,"Noto Sans KR",sans-serif;
+ min-height:100vh;
+ background:
+ radial-gradient(circle at 8% 0%,rgba(72,143,255,.16),transparent 27%),
+ radial-gradient(circle at 92% 5%,rgba(181,113,255,.13),transparent 26%),
+ linear-gradient(180deg,#f9fbff 0%,#f2f6fd 100%);
+}
+body:before{
+ content:"";
+ position:fixed;inset:0;pointer-events:none;z-index:-1;
+ background-image:radial-gradient(#cfd9ea 1px,transparent 1px);
+ background-size:28px 28px;opacity:.23;
+}
+button{font:inherit;cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+.header{
+ position:sticky;top:0;z-index:20;
+ background:rgba(255,255,255,.82);
+ backdrop-filter:blur(20px);
+ border-bottom:1px solid rgba(197,211,232,.72);
+ box-shadow:0 4px 25px rgba(52,77,119,.06);
+}
+.nav{
+ max-width:1400px;margin:auto;padding:14px 22px;
+ display:flex;align-items:center;gap:20px;
+}
+.logo{
+ font-size:24px;font-weight:950;letter-spacing:-1.5px;
+ color:#17243d;white-space:nowrap;
+}
+.logo span{
+ background:linear-gradient(90deg,#3978ff,#7357e8,#d45bb0);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.nav-scroll{display:flex;gap:7px;overflow:auto;flex:1;padding-bottom:2px}
+.nav-btn{
+ white-space:nowrap;border:1px solid #e0e7f2;background:#fff;
+ color:#65748c;border-radius:12px;padding:9px 12px;
+ font-weight:800;transition:.2s;
+}
+.nav-btn:hover{
+ transform:translateY(-1px);border-color:#b8caf1;
+ color:#285fcf;background:#f7faff;
+ box-shadow:0 7px 20px rgba(58,107,202,.10);
+}
+.nav-btn.active{
+ border-color:#82aaff;color:#2159ca;
+ background:linear-gradient(135deg,#edf5ff,#f5f0ff);
+ box-shadow:0 8px 24px rgba(67,113,224,.13);
+}
+
+.wrap{max-width:1400px;margin:auto;padding:34px 22px 70px}
+
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:20px;margin-bottom:25px}
+.hero-main,.hero-side,.card{
+ background:var(--panel);
+ border:1px solid rgba(214,224,239,.9);
+ box-shadow:var(--shadow);
+ border-radius:26px;
+}
+.hero-main{
+ padding:48px;
+ position:relative;overflow:hidden;
+}
+.hero-main:after{
+ content:"";
+ position:absolute;width:270px;height:270px;border-radius:50%;
+ right:-100px;top:-130px;
+ background:linear-gradient(135deg,rgba(63,133,255,.18),rgba(157,93,237,.12));
+ filter:blur(2px);
+}
+.eyebrow{
+ display:inline-flex;gap:8px;align-items:center;
+ padding:8px 13px;border-radius:999px;
+ border:1px solid #cfe0ff;background:#f2f7ff;
+ color:#3973df;font-size:12px;font-weight:900;
+ letter-spacing:.5px;
+}
+h1{
+ font-size:clamp(36px,5vw,70px);line-height:1.03;
+ letter-spacing:-4px;margin:20px 0 16px;
+}
+.hero-main p{
+ max-width:800px;color:var(--muted);
+ font-size:17px;line-height:1.85;margin:0;
+}
+.hero-main p b{color:#315fb8}
+.hero-side{
+ padding:25px;display:flex;flex-direction:column;justify-content:center;
+ background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(245,249,255,.95));
+}
+.metric{
+ display:flex;justify-content:space-between;align-items:center;
+ padding:17px 0;border-bottom:1px solid #e7edf6;
+}
+.metric:last-child{border-bottom:0}
+.metric b{
+ font-size:18px;
+ background:linear-gradient(90deg,#3778ee,#7357df);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.metric span{color:#7b89a0;font-size:13px;font-weight:700}
+
+.tech-head{
+ display:flex;justify-content:space-between;gap:20px;
+ align-items:end;margin:24px 0 16px;
+}
+.tech-title{font-size:32px;font-weight:950;letter-spacing:-1.7px}
+.role{color:#3972df;font-weight:800;margin-top:6px}
+.badge{
+ border:1px solid #d6e1f5;background:#fff;
+ padding:9px 13px;border-radius:999px;
+ color:#54709a;font-size:12px;font-weight:900;
+ box-shadow:0 5px 16px rgba(62,91,140,.07);
+}
+
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.info-card{
+ position:relative;overflow:hidden;
+ background:rgba(255,255,255,.92);
+ border:1px solid #e0e8f5;border-radius:20px;
+ padding:23px;min-height:184px;
+ box-shadow:var(--shadow2);
+ transition:.25s;
+}
+.info-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(50,85,145,.12)}
+.info-card:before{
+ content:"";position:absolute;left:0;top:0;right:0;height:4px;
+ background:linear-gradient(90deg,#3d80ff,#42c5e7,#8a61e9);
+}
+.info-card .num{font-size:11px;color:#4a7fe3;font-weight:900;letter-spacing:1px}
+.info-card h3{margin:11px 0 10px;font-size:20px;letter-spacing:-.5px}
+.info-card p{color:#72819a;line-height:1.78;margin:0;font-size:14px}
+
+.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:18px 0}
+.flow-item{
+ padding:10px 14px;background:#fff;border:1px solid #dce6f4;
+ border-radius:12px;font-weight:800;font-size:13px;color:#52637e;
+ box-shadow:0 5px 15px rgba(54,81,126,.06);
+}
+.arrow{color:#9aabd0;font-weight:900}
+
+.experience{margin-top:19px}
+.experience .card{padding:23px;background:rgba(255,255,255,.9)}
+.exp-top{
+ display:flex;justify-content:space-between;gap:12px;
+ align-items:center;margin-bottom:16px;
+}
+.exp-top h2{margin:0;font-size:21px;letter-spacing:-.5px}
+.hint{color:#8794aa;font-size:12px}
+
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.btn{
+ border:1px solid #d6e1f0;background:#fff;color:#52647f;
+ border-radius:11px;padding:10px 14px;font-weight:900;
+ box-shadow:0 4px 12px rgba(52,80,124,.05);transition:.18s;
+}
+.btn:hover{transform:translateY(-2px);border-color:#9db9ed;box-shadow:0 8px 20px rgba(57,105,196,.11)}
+.btn.primary{
+ background:linear-gradient(135deg,#397cff,#6d59df);
+ border-color:transparent;color:#fff;
+ box-shadow:0 8px 20px rgba(65,106,225,.22);
+}
+.btn.good{background:#effbf6;border-color:#bfe9d6;color:#16845d}
+.btn.warn{background:#fff8e8;border-color:#f0d89b;color:#a76d08}
+
+.sim{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.editor,.screen,.terminal,.memory,.preview,.steps{
+ background:#f8faff;border:1px solid #dce5f2;border-radius:15px;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+}
+.editor textarea{
+ width:100%;height:300px;resize:vertical;border:0;outline:0;
+ background:transparent;color:#293b58;padding:17px;
+ font:14px/1.65 Consolas,monospace;
+}
+.screen{padding:18px;min-height:300px}
+.terminal{
+ height:300px;overflow:auto;padding:16px;
+ font:13px/1.65 Consolas,monospace;color:#536b89;
+ white-space:pre-wrap;background:#f6f9fd;
+}
+.log-good{color:#139765}.log-info{color:#397ddc}.log-warn{color:#b77b13}
+
+.steps{
+ padding:14px;display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;
+ background:#f8faff;
+}
+.step{
+ padding:9px 11px;border-radius:10px;border:1px solid #d9e3f0;
+ color:#9aa8bb;background:#fff;font-size:12px;font-weight:900;
+}
+.step.active{
+ color:#2667d5;border-color:#87b0f4;
+ background:#edf5ff;box-shadow:0 0 0 3px rgba(75,130,231,.08);
+}
+.step.done{color:#16885f;border-color:#a9ddca;background:#effbf6}
+
+.memory{
+ display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px;
+}
+.mem-box{min-height:130px;border:1px solid #dce5f2;border-radius:12px;padding:12px;background:#fff}
+.mem-box h4{margin:0 0 9px;color:#3979db}
+.slot{
+ background:#f3f7fd;border:1px solid #d9e4f2;border-radius:8px;
+ padding:7px;margin:6px 0;font:12px Consolas,monospace;color:#52657f;
+}
+
+.oracle-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sql-result{overflow:auto}
+.sql-result table{width:100%;border-collapse:collapse;font-size:13px}
+.sql-result th,.sql-result td{padding:9px;border-bottom:1px solid #e2e9f3;text-align:left}
+.sql-result th{color:#3e72cc;background:#f0f6ff}
+.plan{display:grid;gap:7px}
+.plan div{
+ padding:10px;border-left:3px solid #5b8ff0;
+ background:#f3f7fd;color:#60728d;border-radius:7px;
+}
+.plan div span{color:#149363;font-weight:900}
+
+.web-demo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.browser{
+ background:white;color:#162033;border-radius:14px;overflow:hidden;
+ min-height:300px;border:1px solid #dce4ef;box-shadow:0 10px 25px rgba(53,80,123,.08);
+}
+.browser-bar{padding:10px 14px;background:#eef3f9;color:#718099;font-size:12px;border-bottom:1px solid #dce5ef}
+.browser-body{padding:25px}
+.fake-btn{display:inline-block;padding:11px 16px;background:linear-gradient(135deg,#397bff,#7658dc);color:white;border-radius:9px}
+.dom-box{
+ padding:20px;border:2px dashed #a8c1e8;border-radius:14px;
+ text-align:center;margin-top:14px;background:#f6f9ff;color:#58708f;
+}
+
+.mvc{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:center}
+.mvc .node{
+ padding:18px 8px;text-align:center;background:#fff;
+ border:1px solid #dbe5f1;border-radius:12px;font-weight:900;
+ box-shadow:0 7px 18px rgba(56,84,129,.06);
+}
+.mvc .arrow{text-align:center}
+.mvc .node small{display:block;color:#8a99ae;margin-top:6px;font-weight:600}
+
+.deploy{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.deploy .node{
+ padding:18px 10px;background:#fff;border:1px solid #dbe5f1;
+ border-radius:12px;text-align:center;font-weight:900;
+ box-shadow:0 7px 18px rgba(56,84,129,.06);
+}
+.node small{display:block;color:#8797ad;margin-top:6px;font-weight:600}
+
+.ai-demo{display:grid;grid-template-columns:.8fr 1.2fr;gap:14px}
+.prompt{
+ width:100%;height:180px;background:#f8faff;
+ border:1px solid #d7e2f0;color:#405470;border-radius:12px;
+ padding:14px;resize:vertical;outline:none;
+}
+.prompt:focus{border-color:#8eafe8;box-shadow:0 0 0 4px rgba(66,120,229,.08)}
+.ai-output{
+ min-height:220px;padding:18px;background:linear-gradient(145deg,#f7faff,#fbf8ff);
+ border:1px solid #dbe3f0;border-radius:12px;line-height:1.8;color:#63738c;
+}
+.note{margin-top:12px;color:#8795aa;font-size:12px;line-height:1.6}
+
+@media(max-width:900px){
+ .hero,.sim,.oracle-grid,.web-demo,.ai-demo{grid-template-columns:1fr}
+ .info-grid{grid-template-columns:1fr}
+ .mvc,.deploy{grid-template-columns:1fr}
+ .wrap{padding:20px 14px 50px}
+ .hero-main{padding:30px}
+ h1{letter-spacing:-2px}
+ .tech-head{align-items:flex-start;flex-direction:column}
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <nav class="nav">
+    <div class="logo">SIST <span>쌍용교육센터</span></div>
+    <div class="nav-scroll" id="nav"></div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="hero-main">
+      <div class="eyebrow">✦ TECHNOLOGY EXPERIENCE CENTER</div>
+      <h1>배우기 전에<br><span style="color:var(--accent)">직접 체험합니다.</span></h1>
+      <p>각 기술을 단순히 설명하는 대신 <b>언제 사용하는지</b>, <b>무엇을 배우는지</b>, 그리고 <b>실제로 어떻게 동작하는지</b>를 한 화면에서 확인합니다.</p>
+    </div>
+    <div class="hero-side">
+      <div class="metric"><span>교육 구조</span><b>WHEN → LEARN → TRY</b></div>
+      <div class="metric"><span>기술 연결</span><b>WEB → SERVER → DB</b></div>
+      <div class="metric"><span>실무 확장</span><b>CI/CD + 최신 AI</b></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="tech-head">
+      <div><div class="tech-title" id="techTitle">Java</div><div class="role" id="techRole">웹 서버와 백엔드의 기본 언어</div></div>
+      <div class="badge" id="techBadge">CORE BACKEND</div>
+    </div>
+    <div class="info-grid">
+      <article class="info-card"><div class="num">01 · WHEN</div><h3>언제 사용하는가?</h3><p id="whenText"></p></article>
+      <article class="info-card"><div class="num">02 · LEARN</div><h3>무엇을 교육하는가?</h3><p id="learnText"></p></article>
+      <article class="info-card"><div class="num">03 · TRY</div><h3>무엇을 체험하는가?</h3><p id="tryText"></p></article>
+    </div>
+    <div class="flow" id="flow"></div>
+  </section>
+
+  <section class="experience">
+    <div class="card">
+      <div class="exp-top"><h2 id="expTitle">🧪 Java JVM 실행 체험</h2><span class="hint">직접 눌러보며 동작 원리를 확인하세요.</span></div>
+      <div id="experienceArea"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const data={
+ Java:{role:"웹 서버와 백엔드의 기본 언어",badge:"CORE BACKEND",
+ when:"웹 애플리케이션, 기업용 시스템, Spring 기반 백엔드 서버를 만들 때 사용합니다.",
+ learn:"변수 → 연산자 → 제어문 → 배열 → 메소드 → 클래스 → 객체지향 → 예외처리 → 컬렉션의 흐름을 교육합니다.",
+ try:"소스 코드가 javac → classloader → JVM → Stack/Heap → Console로 이어지는 실행 과정을 체험합니다.",
+ flow:["Java Source","javac","ClassLoader","JVM","Stack / Heap","Console"]},
+ Oracle:{role:"데이터를 저장하고 검색하는 데이터베이스",badge:"DATABASE",
+ when:"회원, 상품, 주문, 게시판처럼 서버에서 지속적으로 데이터를 관리할 때 사용합니다.",
+ learn:"SELECT → WHERE → JOIN → GROUP BY → INDEX → 실행계획을 중심으로 SQL과 DB 동작을 교육합니다.",
+ try:"SQL 실행부터 PARSE → OPTIMIZER → PLAN → TABLE/INDEX → RESULT까지 체험합니다.",
+ flow:["SQL","PARSE","OPTIMIZER","PLAN","TABLE / INDEX","RESULT"]},
+ "HTML/CSS":{role:"웹 화면의 구조와 디자인",badge:"FRONTEND",
+ when:"브라우저에 웹 페이지의 구조를 만들고 화면을 디자인할 때 사용합니다.",
+ learn:"HTML 구조, CSS 선택자, 박스모델, Flex, Grid, 반응형 화면을 교육합니다.",
+ try:"HTML 요소와 CSS 스타일을 바꾸면 브라우저 화면이 즉시 변경되는 과정을 체험합니다.",
+ flow:["HTML","DOM","CSS","Layout","Browser"]},
+ JavaScript:{role:"브라우저를 움직이는 프로그래밍 언어",badge:"FRONTEND",
+ when:"버튼 클릭, 검색, AJAX, DOM 변경, API 통신처럼 웹 화면을 동적으로 만들 때 사용합니다.",
+ learn:"변수 → 함수 → 배열/객체 → DOM → 이벤트 → 비동기 → Fetch/API를 교육합니다.",
+ try:"버튼 클릭 → 이벤트 발생 → DOM 변경 과정을 직접 확인합니다.",
+ flow:["Click","Event","JavaScript","DOM","UI Update"]},
+ "JSP/MVC":{role:"웹 요청을 서버 코드와 화면으로 연결",badge:"WEB MVC",
+ when:"브라우저 요청을 Controller에서 받고 Service/DAO/DB를 거쳐 결과 화면을 만들 때 사용합니다.",
+ learn:"HTTP 요청, JSP, Servlet, MVC, Controller → Service → DAO 구조를 교육합니다.",
+ try:"브라우저 요청이 Controller → Service → DAO → DB → View로 이동하는 흐름을 체험합니다.",
+ flow:["Browser","Controller","Service","DAO","DB","JSP"]},
+ Vue3:{role:"컴포넌트 기반 프론트엔드 개발",badge:"FRONTEND",
+ when:"화면을 여러 컴포넌트로 나누고 데이터가 바뀔 때 UI를 자동으로 갱신해야 할 때 사용합니다.",
+ learn:"Component, ref, reactive, computed, watch, props, emit, Pinia의 기본 구조를 교육합니다.",
+ try:"상태값을 변경하면 Reactive UI가 자동으로 다시 렌더링되는 과정을 체험합니다.",
+ flow:["State","Reactive","Component","Render","UI Update"]},
+ "Spring Boot":{role:"Java 백엔드 웹 애플리케이션 개발",badge:"BACKEND",
+ when:"REST API, 로그인, 게시판, 주문, 데이터 처리 같은 실제 서버를 개발할 때 사용합니다.",
+ learn:"Controller → Service → Repository/Mapper → DB 구조와 REST API, DI를 교육합니다.",
+ try:"HTTP Request가 Controller부터 DB를 거쳐 JSON Response로 돌아오는 흐름을 체험합니다.",
+ flow:["HTTP","Controller","Service","Repository","DB","JSON"]},
+ "Git / Branch":{role:"소스코드 버전과 협업 관리",badge:"COLLABORATION",
+ when:"여러 개발자가 하나의 프로젝트에서 기능을 나누어 개발하고 변경 이력을 관리할 때 사용합니다.",
+ learn:"commit, branch, merge, pull request, feature branch 전략을 교육합니다.",
+ try:"main → feature/login → commit → merge 흐름을 시각적으로 체험합니다.",
+ flow:["main","feature","commit","PR","merge"]},
+ "GitHub Actions":{role:"Git 이벤트를 기준으로 자동화",badge:"CI/CD",
+ when:"코드가 push될 때 자동 테스트, 빌드, 배포를 실행하고 싶을 때 사용합니다.",
+ learn:"workflow, trigger, job, step, build, test, deploy 개념을 교육합니다.",
+ try:"Push → Build → Test → Docker → Deploy 자동화 흐름을 체험합니다.",
+ flow:["Push","Build","Test","Docker","Deploy"]},
+ Docker:{role:"애플리케이션을 동일한 환경으로 실행",badge:"CONTAINER",
+ when:"개발 PC와 서버의 환경 차이를 줄이고 애플리케이션을 컨테이너로 배포할 때 사용합니다.",
+ learn:"Image, Container, Dockerfile, Port, Volume, Network, Compose를 교육합니다.",
+ try:"Dockerfile → Image → Container → Port 연결을 시각적으로 체험합니다.",
+ flow:["Dockerfile","Image","Container","Port","Server"]},
+ Jenkins:{role:"서버에서 CI/CD를 자동 실행",badge:"CI/CD",
+ when:"사내 서버나 AWS에서 빌드·테스트·배포 파이프라인을 자동화할 때 사용합니다.",
+ learn:"Pipeline, Stage, Agent, Build, Docker, Deploy 개념을 교육합니다.",
+ try:"Checkout → Build → Test → Deploy 파이프라인을 단계별로 체험합니다.",
+ flow:["Checkout","Build","Test","Docker","Deploy"]},
+ Nginx:{role:"웹 서버와 Reverse Proxy",badge:"SERVER",
+ when:"사용자 요청을 Spring 서버로 전달하거나 정적 파일을 서비스하고 무중단 배포를 구성할 때 사용합니다.",
+ learn:"Web Server, Reverse Proxy, upstream, proxy_pass, Blue/Green 구조를 교육합니다.",
+ try:"사용자 → Nginx → Blue/Green Spring 서버로 연결되는 흐름을 체험합니다.",
+ flow:["Client","Nginx","upstream","Blue","Green"]},
+ "최신 AI 기술 확장":{role:"기존 개발 과정에 최신 AI 기술을 연결하는 확장 영역",badge:"AI EXTENSION",
+ when:"기존 웹·백엔드·CI/CD 기술에 AI 기능을 붙여 AI 서비스를 만들어 보고 싶을 때 활용합니다.",
+ learn:"프롬프트, LLM, RAG, Vector DB, Tool Calling, Agent 등 최신 AI 기술의 연결 개념을 체험 중심으로 소개합니다.",
+ try:"질문 → AI 모델 → 지식 검색 → 도구 호출 → 결과 생성의 흐름을 체험합니다.",
+ flow:["Prompt","LLM","RAG","Tool","Response"]}
+};
+
+const nav=document.getElementById("nav");
+Object.keys(data).forEach((name,i)=>{
+ const b=document.createElement("button");b.className="nav-btn"+(i===0?" active":"");b.textContent=name;
+ b.onclick=()=>selectTech(name,b);nav.appendChild(b);
+});
+function selectTech(name,btn){
+ document.querySelectorAll(".nav-btn").forEach(x=>x.classList.remove("active"));btn.classList.add("active");
+ const d=data[name];
+ techTitle.textContent=name;techRole.textContent=d.role;techBadge.textContent=d.badge;
+ whenText.textContent=d.when;learnText.textContent=d.learn;tryText.textContent=d.try;
+ flow.innerHTML=d.flow.map((x,i)=>`<div class="flow-item">${x}</div>${i<d.flow.length-1?'<div class="arrow">→</div>':''}`).join("");
+ renderExperience(name);
+}
+function logLine(text,cls=""){
+ const d=document.createElement("div");d.className=cls;d.textContent=text;return d;
+}
+function renderExperience(name){
+ const area=document.getElementById("experienceArea");
+ const title=document.getElementById("expTitle");
+ if(name==="Java"){title.textContent="🧪 Java JVM 실행 체험";area.innerHTML=javaHTML();bindJava();}
+ else if(name==="Oracle"){title.textContent="🗄️ Oracle 21c SQL 실행 체험";area.innerHTML=oracleHTML();bindOracle();}
+ else if(name==="HTML/CSS"){title.textContent="🎨 HTML / CSS 실시간 화면 체험";area.innerHTML=htmlHTML();bindHTML();}
+ else if(name==="JavaScript"){title.textContent="⚡ JavaScript DOM / Event 체험";area.innerHTML=jsHTML();bindJS();}
+ else if(name==="JSP/MVC"){title.textContent="🔄 JSP / MVC 요청 흐름 체험";area.innerHTML=mvcHTML();bindMVC();}
+ else if(name==="Vue3"){title.textContent="💚 Vue3 Reactive UI 체험";area.innerHTML=vueHTML();bindVue();}
+ else if(name==="Spring Boot"){title.textContent="🍃 Spring Boot REST API 체험";area.innerHTML=springHTML();bindSpring();}
+ else if(["Git / Branch","GitHub Actions","Docker","Jenkins","Nginx"].includes(name)){title.textContent="🚀 CI/CD 실무 흐름 체험";area.innerHTML=deployHTML(name);bindDeploy();}
+ else {title.textContent="✨ 최신 AI 기술 확장 체험";area.innerHTML=aiHTML();bindAI();}
+}
+function javaHTML(){return `
+<div class="toolbar"><button class="btn primary" id="jrun">▶ 실행</button><button class="btn" id="js1">① 변수</button><button class="btn" id="js2">② 반복문</button><button class="btn" id="js3">③ 객체</button><button class="btn" id="jreset">↻ 초기화</button></div>
+<div class="steps" id="jsteps">${["SOURCE","JAVAC","CLASSLOADER","JVM","MEMORY","CONSOLE"].map(x=>`<div class="step">${x}</div>`).join("")}</div>
+<div class="sim"><div class="editor"><textarea id="jcode">public class Main {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 20;
+        int sum = a + b;
+        System.out.println(sum);
+    }
+}</textarea></div><div class="terminal" id="jlog"></div></div>
+<div class="memory"><div class="mem-box"><h4>STACK</h4><div id="stack"></div></div><div class="mem-box"><h4>HEAP</h4><div id="heap"></div></div></div>
+<div class="note">※ 실제 javac/JVM을 실행하는 것이 아니라 브라우저에서 핵심 실행 원리를 시뮬레이션합니다.</div>`}
+function bindJava(){
+ const log=document.getElementById("jlog"),steps=[...document.querySelectorAll("#jsteps .step")];
+ const stack=document.getElementById("stack"),heap=document.getElementById("heap");
+ function clear(){steps.forEach(x=>x.className="step");log.innerHTML="";stack.innerHTML="";heap.innerHTML=""}
+ async function run(){clear();const code=document.getElementById("jcode").value;for(let i=0;i<6;i++){steps[i].className="step active";await new Promise(r=>setTimeout(r,300));let t=["[SOURCE] main() 분석","[JAVAC] Main.java → Main.class","[CLASSLOADER] Class Loaded","[JVM] main() 호출","[MEMORY] Stack Frame 생성","[CONSOLE] 출력 완료"][i];log.appendChild(logLine(t,"log-info"));if(i===4){["main()","a = 10","b = 20","sum = 30"].forEach(x=>{const d=document.createElement("div");d.className="slot";d.textContent=x;stack.appendChild(d)});if(code.includes("new ")){const d=document.createElement("div");d.className="slot";d.textContent="객체 인스턴스";heap.appendChild(d)}}if(i===5){let out=code.includes("for")?"1  2  3  4  5":code.includes("Student")?"Student{name='Java', age=20}":"30";log.appendChild(logLine("→ "+out,"log-good"))}steps[i].className="step done"}}
+ document.getElementById("jrun").onclick=run;document.getElementById("jreset").onclick=clear;
+ document.getElementById("js1").onclick=()=>document.getElementById("jcode").value=`public class Main {
+ public static void main(String[] args) {
+  int a = 10; int b = 20; int sum = a + b;
+  System.out.println(sum);
+ }
+}`;document.getElementById("js2").onclick=()=>document.getElementById("jcode").value=`public class Main {
+ public static void main(String[] args) {
+  for(int i=1;i<=5;i++) System.out.println(i);
+ }
+}`;document.getElementById("js3").onclick=()=>document.getElementById("jcode").value=`class Student { String name="Java"; int age=20; }
+public class Main {
+ public static void main(String[] args) {
+  Student s=new Student(); System.out.println(s);
+ }
+}`;
+}
+function oracleHTML(){return `
+<div class="toolbar"><button class="btn primary" id="orun">▶ SQL 실행</button><button class="btn" id="ojoin">JOIN</button><button class="btn" id="ogroup">GROUP BY</button><button class="btn warn" id="ofull">FULL SCAN</button><button class="btn good" id="orange">INDEX SCAN</button></div>
+<div class="oracle-grid"><div class="editor"><textarea id="sql">SELECT s.id, s.name, d.department_name, s.score
+FROM student s JOIN department d
+ON s.department_id=d.department_id
+WHERE s.score >= 80
+ORDER BY s.score DESC;</textarea></div><div class="terminal" id="olog"></div></div>
+<div class="oracle-grid" style="margin-top:14px"><div class="screen"><h3>Execution Plan</h3><div class="plan" id="oplan"><div>SQL을 실행하면 실행계획이 표시됩니다.</div></div></div><div class="screen sql-result" id="otable"><h3>Query Result</h3></div></div>
+<div class="note">핵심 체험: SQL 문장 → PARSE → OPTIMIZER → 실행계획 → TABLE/INDEX → RESULT</div>`}
+function bindOracle(){
+ const sql=document.getElementById("sql"),log=document.getElementById("olog"),plan=document.getElementById("oplan"),table=document.getElementById("otable");
+ const rows=[["101","김자바","컴퓨터공학과","95"],["102","이오라클","AI소프트웨어과","91"],["103","박스프링","정보통신과","88"]];
+ function run(access="INDEX RANGE SCAN"){log.innerHTML="";["[PARSE] SQL 문법 분석 완료","[OPTIMIZER] 실행경로 계산","[PLAN] "+access,"[TABLE] STUDENT / DEPARTMENT","[RESULT] 3 rows"].forEach((x,i)=>log.appendChild(logLine(x,i===2?"log-warn":"log-info")));plan.innerHTML=`<div>SELECT STATEMENT <span>COST 7</span></div><div>${access} <span>ROWS 3</span></div><div>TABLE ACCESS BY INDEX ROWID <span>OK</span></div>`;table.innerHTML="<h3>Query Result</h3><table><tr><th>ID</th><th>NAME</th><th>DEPARTMENT</th><th>SCORE</th></tr>"+rows.map(r=>"<tr>"+r.map(c=>`<td>${c}</td>`).join("")+"</tr>").join("")+"</table>"}
+ document.getElementById("orun").onclick=()=>run();document.getElementById("ofull").onclick=()=>run("TABLE ACCESS FULL");document.getElementById("orange").onclick=()=>run("INDEX RANGE SCAN");
+ document.getElementById("ojoin").onclick=()=>sql.value=`SELECT s.id,s.name,d.department_name,s.score
+FROM student s JOIN department d ON s.department_id=d.department_id
+WHERE s.score >= 80 ORDER BY s.score DESC;`;
+ document.getElementById("ogroup").onclick=()=>sql.value=`SELECT category, COUNT(*) count, SUM(amount) total_amount
+FROM orders GROUP BY category;`;
+}
+function htmlHTML(){return `<div class="web-demo"><div><textarea class="editor" style="width:100%;height:300px" id="hcode"><h2 id="title">AI LIFE</h2>
+<p>HTML 구조와 CSS를 체험하세요.</p>
+<button class="fake-btn">체험 버튼</button></textarea><div class="toolbar" style="margin-top:10px"><button class="btn primary" id="happly">화면에 적용</button></div></div><div class="browser"><div class="browser-bar">AI LIFE / preview</div><div class="browser-body" id="hpreview"></div></div></div>`}
+function bindHTML(){const code=document.getElementById("hcode"),pre=document.getElementById("hpreview");const apply=()=>pre.innerHTML=code.value;document.getElementById("happly").onclick=apply;apply()}
+function jsHTML(){return `<div class="web-demo"><div class="screen"><h3>Event 흐름</h3><div class="steps" id="jsevents"><div class="step">CLICK</div><div class="step">EVENT</div><div class="step">JS</div><div class="step">DOM</div><div class="step">UPDATE</div></div><button class="btn primary" id="jsrun">버튼 클릭 시뮬레이션</button></div><div class="screen"><h3>DOM</h3><div class="dom-box" id="domBox">아직 이벤트가 발생하지 않았습니다.</div></div></div>`}
+function bindJS(){document.getElementById("jsrun").onclick=async()=>{const s=[...document.querySelectorAll("#jsevents .step")];for(let i=0;i<s.length;i++){s[i].className="step active";await new Promise(r=>setTimeout(r,300));s[i].className="step done"}document.getElementById("domBox").innerHTML="<b>DOM 변경 완료!</b><br>JavaScript가 화면 내용을 변경했습니다.";}}
+function mvcHTML(){return `<div class="mvc">${["Browser","Controller","Service","DAO","DB"].map((x,i)=>`<div class="node">${x}<small>${["요청","분기","업무처리","데이터접근","저장/조회"][i]}</small></div>${i<4?'<div class="arrow">→</div>':''}`).join("")}</div><div class="screen" style="margin-top:14px"><button class="btn primary" id="mvcrun">HTTP 요청 실행</button><div class="terminal" style="height:170px;margin-top:12px" id="mvclog"></div></div>`}
+function bindMVC(){document.getElementById("mvcrun").onclick=()=>{document.getElementById("mvclog").textContent="[Browser] GET /student/list\\n→ [Controller] list()\\n→ [Service] 학생 목록 조회\\n→ [DAO] SELECT 실행\\n→ [DB] 결과 반환\\n→ [JSP] 화면 렌더링\\n✓ Response 200 OK"}}
+function vueHTML(){return `<div class="web-demo"><div class="screen"><h3>Reactive State</h3><div class="metric"><span>count</span><b id="vcount">0</b></div><button class="btn primary" id="vplus">+ count</button></div><div class="screen"><h3>자동 UI Update</h3><div class="dom-box" id="vview">count = 0</div></div></div>`}
+function bindVue(){let n=0;document.getElementById("vplus").onclick=()=>{n++;document.getElementById("vcount").textContent=n;document.getElementById("vview").textContent=`Reactive UI Update 완료 → count = ${n}`}}
+function springHTML(){return `<div class="screen"><div class="deploy">${["HTTP Request","Controller","Service","Repository","DB"].map(x=>`<div class="node">${x}<small>Spring Boot</small></div>`).join("")}</div><div class="toolbar" style="margin-top:14px"><button class="btn primary" id="sprun">API 호출</button></div><div class="terminal" id="splog" style="height:160px"></div></div>`}
+function bindSpring(){document.getElementById("sprun").onclick=()=>document.getElementById("splog").textContent='GET /api/students\\n→ Controller\\n→ Service\\n→ Repository\\n→ Database\\n← JSON Response\\n\\n{"status":"OK","count":3}'}
+function deployHTML(name){return `<div class="deploy">${["Git","Build","Docker","Nginx","Server"].map((x,i)=>`<div class="node">${x}<small>${name==="Nginx"&&x==="Nginx"?"Reverse Proxy":i===4?"AWS / EC2":"CI/CD"}</small></div>`).join("")}</div><div class="screen" style="margin-top:14px"><button class="btn primary" id="deprun">파이프라인 실행</button><div class="steps" id="depsteps" style="margin-top:12px">${["CHECKOUT","BUILD","TEST","DOCKER","DEPLOY"].map(x=>`<div class="step">${x}</div>`).join("")}</div><div class="terminal" id="deplog" style="height:130px"></div></div>`}
+function bindDeploy(){document.getElementById("deprun").onclick=async()=>{const s=[...document.querySelectorAll("#depsteps .step")],log=document.getElementById("deplog");log.innerHTML="";for(let i=0;i<s.length;i++){s[i].className="step active";log.appendChild(logLine("["+s[i].textContent+"] 실행","log-info"));await new Promise(r=>setTimeout(r,350));s[i].className="step done"}log.appendChild(logLine("✓ 배포 완료 / 서비스 정상","log-good"))}}
+function aiHTML(){return `<div class="ai-demo"><div><textarea class="prompt" id="aiprompt">냉장고에 계란과 대파가 있어. 만들 수 있는 요리를 추천해줘.</textarea><div class="toolbar" style="margin-top:10px"><button class="btn primary" id="airun">✨ AI 흐름 실행</button></div></div><div class="ai-output" id="aiout">Prompt를 입력하고 실행하면<br><b>Prompt → LLM → RAG → Tool → Response</b><br>흐름을 체험할 수 있습니다.</div></div><div class="note">※ '최신 AI 기술 확장'은 기존 교육과정을 AI 과정으로 변경하는 것이 아니라, 기존 웹·백엔드·CI/CD 기술에 최신 AI 활용을 연결해 보는 체험 영역입니다.</div>`}
+function bindAI(){document.getElementById("airun").onclick=async()=>{const out=document.getElementById("aiout");out.textContent="";for(const x of ["① Prompt 입력","② LLM이 질문 이해","③ RAG / 지식 검색","④ Tool / 외부 기능 호출","⑤ 최종 Response 생성"]){out.innerHTML+=x+"<br>";await new Promise(r=>setTimeout(r,450))}out.innerHTML+="<br><b>추천 결과</b><br>계란 대파 볶음밥 · 계란 대파국 · 대파 계란말이"}}
+selectTech("Java",nav.querySelector(".nav-btn"));
+</script>
+</body>
+</html>

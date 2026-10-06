@@ -1,0 +1,749 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+    String no=request.getParameter("no");
+    String html="";
+    if(no==null)
+    	no="1";
+    switch(no)
+    {
+    case "1":
+    	html="java.html";
+    	break;
+    case "2":
+    	html="oracle.html";
+    	break;
+    case "3":
+    	html="html_css.html";
+    	break;
+    case "9":
+    	html="aws.html";
+    	break;
+    }
+%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SIST쌍용교육센터</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family:
+                "Pretendard",
+                "Noto Sans KR",
+                Arial,
+                sans-serif;
+
+            background: #0b1020;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            width: 100%;
+            height: 80px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 50px;
+
+            background: #11182d;
+            border-bottom: 1px solid #26314f;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: #6c8cff;
+        }
+
+        .header-text {
+            font-size: 13px;
+            color: #8f9bb7;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            width: 100%;
+            max-width: 1400px;
+
+            margin: 0 auto;
+            padding: 70px 40px;
+        }
+
+        .title-area {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .title-area .badge {
+            display: inline-block;
+
+            padding: 7px 16px;
+
+            border-radius: 30px;
+
+            background: #182345;
+            border: 1px solid #344575;
+
+            color: #8fa8ff;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            margin-bottom: 18px;
+        }
+
+        .title-area h1 {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 14px;
+        }
+
+        .title-area p {
+            color: #8995b1;
+            font-size: 16px;
+        }
+
+
+        /* =========================
+           TECHNOLOGY MENU
+        ========================= */
+
+        .menu-container {
+            background: #11182d;
+
+            border: 1px solid #273351;
+
+            border-radius: 24px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        .menu-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+        }
+
+        .menu-title h2 {
+            font-size: 20px;
+        }
+
+        .menu-title span {
+            color: #697693;
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           MAIN BUTTONS
+        ========================= */
+
+     .main-menu {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.main-btn {
+    width: 160px;
+    height: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    border: 1px solid #303d60;
+    border-radius: 14px;
+    background: #171f37;
+
+    color: #dce3f7;
+    font-size: 14px;
+    font-weight: 700;
+
+    text-decoration: none;
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        background 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+.main-btn:hover {
+    transform: translateY(-3px);
+    background: #202b4a;
+    border-color: #627dff;
+    color: #fff;
+
+    box-shadow: 0 10px 25px rgba(70, 100, 255, 0.15);
+}
+
+.main-btn.active {
+    background: #4059c9;
+    border-color: #7187ff;
+    color: #fff;
+
+    box-shadow: 0 10px 25px rgba(70, 100, 255, 0.25);
+}
+
+        /* =========================
+           AI MENU
+        ========================= */
+
+        .ai-panel {
+            margin-top: 25px;
+
+            padding: 25px;
+
+            background: #0d1427;
+
+            border: 1px solid #293656;
+
+            border-radius: 18px;
+
+            display: none;
+        }
+
+        .ai-panel.show {
+            display: block;
+            animation: slideDown 0.25s ease;
+        }
+
+        @keyframes slideDown {
+
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 18px;
+        }
+
+        .ai-header h3 {
+            font-size: 16px;
+        }
+
+        .ai-header span {
+            font-size: 12px;
+            color: #7683a2;
+        }
+
+
+        .ai-menu {
+            display: grid;
+
+            grid-template-columns:
+                repeat(6, 1fr);
+
+            gap: 10px;
+        }
+
+        .ai-btn {
+            height: 52px;
+
+            border-radius: 11px;
+
+            border: 1px solid #303c5d;
+
+            background: #151d34;
+
+            color: #b9c4df;
+
+            cursor: pointer;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            transition: all 0.2s;
+        }
+
+        .ai-btn:hover {
+            background: #222d4b;
+
+            color: #ffffff;
+
+            border-color: #687fff;
+
+            transform: translateY(-2px);
+        }
+
+        .ai-btn.active {
+            background: #30439b;
+
+            border-color: #6d82ff;
+
+            color: #ffffff;
+        }
+
+
+        /* =========================
+           BOTTOM AREA
+        ========================= */
+
+        .bottom-area {
+            margin-top: 35px;
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+        }
+
+        .small-text {
+            text-align: center;
+
+            color: #596580;
+
+            font-size: 12px;
+
+            margin-top: 35px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1200px) {
+
+            .main-menu {
+                grid-template-columns:
+                    repeat(5, 1fr);
+            }
+
+            .ai-menu {
+                grid-template-columns:
+                    repeat(4, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 768px) {
+
+            header {
+                height: auto;
+
+                padding: 20px;
+
+                flex-direction: column;
+
+                gap: 8px;
+            }
+
+            main {
+                padding: 40px 20px;
+            }
+
+            .title-area h1 {
+                font-size: 30px;
+            }
+
+            .menu-container {
+                padding: 20px;
+            }
+
+            .main-menu {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .ai-menu {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 450px) {
+
+            .main-menu {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-menu {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+    
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <span>쌍용</span> 교육센터
+    </div>
+
+    <div class="header-text">
+        JAVA · DATABASE · WEB · SPRING · FRONT · CI/CD
+    </div>
+
+</header>
+
+
+<main>
+
+    <div class="title-area">
+
+        <div class="badge">
+            FULL STACK · CLOUD
+        </div>
+
+        <h1>
+            쌍용교육센터
+        </h1>
+
+        <p>
+            Java부터 최신 WEB(BACK,FRONT) 기술과 CI/CD까지 한눈에
+        </p>
+
+    </div>
+
+
+    <section class="menu-container">
+
+        <div class="menu-title">
+
+            <h2>
+                Technology Roadmap
+            </h2>
+
+            <span>
+                원하는 기술을 선택하세요
+            </span>
+
+        </div>
+
+
+        <!-- =========================
+             MAIN MENU
+        ========================= -->
+
+        <div class="main-menu">
+
+            <a
+                class="main-btn active"
+                href="main.jsp?no=1"
+            >
+                Java
+            </a>
+
+            <a
+                class="main-btn"
+                href="main.jsp?no=2"
+            >
+                Oracle
+            </a>
+
+            <a
+                class="main-btn"
+                href="main.jsp?no=3"
+            >
+                HTML/CSS
+            </a>
+
+            <a
+                class="main-btn"
+                href="main.jsp?no=4"
+            >
+                JavaScript
+            </a>
+
+            <a
+                class="main-btn"
+                href="main.jsp?no=5"
+            >
+                JSP/MVC
+            </a>
+
+            <a
+                class="main-btn"
+                href="main.jsp?no=6"
+            >
+                Vue3
+            </a>
+
+            <a
+                class="main-btn"
+                href="main.jsp?no=7"
+            >
+                Spring Boot
+            </a>
+
+            <button
+                id="aiMainButton"
+                class="main-btn"
+                onclick="toggleAI(this)"
+            >
+                최신 AI 기술 확장
+            </button>
+
+            <a
+                class="main-btn"
+                href="main.jsp?no=9"
+            >
+                CI/CD
+            </a>
+
+        </div>
+
+
+        <!-- =========================
+             AI SUB MENU
+        ========================= -->
+
+        <div
+            id="aiPanel"
+            class="ai-panel"
+        >
+
+            <div class="ai-header">
+
+                <h3>
+                    최신 AI 기술 확장
+                </h3>
+
+                <span>
+                    Spring AI 기반 확장 기술
+                </span>
+
+            </div>
+
+
+            <div class="ai-menu">
+
+                <button
+                    class="ai-btn active"
+                    onclick="selectAI(this)"
+                >
+                    ChatClient
+                </button>
+
+                <button
+                    class="ai-btn"
+                    onclick="selectAI(this)"
+                >
+                    Prompt Engineering
+                </button>
+
+                <button
+                    class="ai-btn"
+                    onclick="selectAI(this)"
+                >
+                    Embedding
+                </button>
+
+                <button
+                    class="ai-btn"
+                    onclick="selectAI(this)"
+                >
+                    PGVector
+                </button>
+
+                <button
+                    class="ai-btn"
+                    onclick="selectAI(this)"
+                >
+                    RAG
+                </button>
+
+                <button
+                    class="ai-btn"
+                    onclick="selectAI(this)"
+                >
+                    Tool Calling
+                </button>
+
+                <button
+                    class="ai-btn"
+                    onclick="selectAI(this)"
+                >
+                    MCP
+                </button>
+
+                <button
+                    class="ai-btn"
+                    onclick="selectAI(this)"
+                >
+                    Agentic AI
+                </button>
+
+                <button
+                    class="ai-btn"
+                    onclick="selectAI(this)"
+                >
+                    AI Memory
+                </button>
+
+                <button
+                    class="ai-btn"
+                    onclick="selectAI(this)"
+                >
+                    AI Evaluation
+                </button>
+
+                <button
+                    class="ai-btn"
+                    onclick="selectAI(this)"
+                >
+                    AI Observability
+                </button>
+
+                <button
+                    class="ai-btn"
+                    onclick="selectAI(this)"
+                >
+                    Multi-Agent
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="small-text">
+            JAVA → DATABASE → WEB → SPRING → FRONT → CLOUD(AWS) → CI/CD
+        </div>
+
+    </section>
+    <div style="height: 10px"></div>
+    <section>
+      <jsp:include page="<%=html %>"></jsp:include>
+    </section>
+
+    <div class="bottom-area">
+
+        <span class="small-text">
+            쌍용교육센터 · Full Stack & AWS CI/CD Roadmap
+        </span>
+
+    </div>
+
+</main>
+
+
+<script>
+
+    /* =========================
+       일반 메뉴 선택
+    ========================= */
+
+    function selectMain(button) {
+
+        const buttons =
+            document.querySelectorAll(".main-btn");
+
+        buttons.forEach(function(btn) {
+
+            btn.classList.remove("active");
+
+        });
+
+        button.classList.add("active");
+
+    }
+
+
+    /* =========================
+       AI 메뉴 열기 / 닫기
+    ========================= */
+
+    function toggleAI(button) {
+
+        const panel =
+            document.getElementById("aiPanel");
+
+        const buttons =
+            document.querySelectorAll(".main-btn");
+
+        buttons.forEach(function(btn) {
+
+            btn.classList.remove("active");
+
+        });
+
+        button.classList.add("active");
+
+        panel.classList.toggle("show");
+
+    }
+
+
+    /* =========================
+       AI 세부 메뉴 선택
+    ========================= */
+
+    function selectAI(button) {
+
+        const buttons =
+            document.querySelectorAll(".ai-btn");
+
+        buttons.forEach(function(btn) {
+
+            btn.classList.remove("active");
+
+        });
+
+        button.classList.add("active");
+
+    }
+
+</script>
+
+</body>
+</html>

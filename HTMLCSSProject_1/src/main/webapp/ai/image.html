@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>AI LIFE | AI 이미지 에이전트</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family:
+            Inter,
+            Pretendard,
+            Arial,
+            sans-serif;
+
+        background:
+            radial-gradient(
+                circle at 20% 10%,
+                #1d1645,
+                transparent 30%
+            ),
+            radial-gradient(
+                circle at 80% 20%,
+                #003d52,
+                transparent 30%
+            ),
+            #05060a;
+
+        color: #ffffff;
+
+        min-height: 100vh;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+
+        position: sticky;
+
+        top: 0;
+
+        z-index: 100;
+
+        height: 72px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        padding: 0 50px;
+
+        background:
+            rgba(5, 6, 10, 0.75);
+
+        backdrop-filter: blur(20px);
+
+        border-bottom:
+            1px solid rgba(255,255,255,.08);
+    }
+
+    .logo {
+
+        font-size: 24px;
+
+        font-weight: 900;
+
+        letter-spacing: -1px;
+    }
+
+    .logo span {
+
+        background:
+            linear-gradient(
+                90deg,
+                #7c5cff,
+                #00d9ff
+            );
+
+        -webkit-background-clip: text;
+
+        color: transparent;
+    }
+
+    nav {
+
+        display: flex;
+
+        gap: 30px;
+    }
+
+    nav a {
+
+        color: #bfc3d2;
+
+        text-decoration: none;
+
+        font-size: 14px;
+
+        transition: .3s;
+    }
+
+    nav a:hover {
+
+        color: #ffffff;
+    }
+
+    .login {
+
+        padding: 10px 18px;
+
+        border-radius: 30px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #6956ff,
+                #00b8ff
+            );
+
+        color: white;
+
+        text-decoration: none;
+
+        font-weight: 700;
+
+        font-size: 13px;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+
+        text-align: center;
+
+        padding:
+            90px 20px 50px;
+    }
+
+    .badge {
+
+        display: inline-block;
+
+        padding: 8px 16px;
+
+        border-radius: 30px;
+
+        background:
+            rgba(124,92,255,.12);
+
+        border:
+            1px solid rgba(124,92,255,.35);
+
+        color: #9f8cff;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        margin-bottom: 20px;
+    }
+
+    .hero h1 {
+
+        font-size:
+            clamp(40px, 6vw, 76px);
+
+        line-height: 1.05;
+
+        letter-spacing: -4px;
+
+        margin-bottom: 20px;
+    }
+
+    .gradient {
+
+        background:
+            linear-gradient(
+                90deg,
+                #8c73ff,
+                #00d9ff
+            );
+
+        -webkit-background-clip: text;
+
+        color: transparent;
+    }
+
+    .hero p {
+
+        color: #9ba0b3;
+
+        font-size: 17px;
+
+        line-height: 1.7;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .container {
+
+        width: min(1250px, 92%);
+
+        margin: auto;
+
+        display: grid;
+
+        grid-template-columns:
+            420px 1fr;
+
+        gap: 25px;
+
+        padding-bottom: 100px;
+    }
+
+    .panel {
+
+        background:
+            rgba(255,255,255,.045);
+
+        border:
+            1px solid rgba(255,255,255,.09);
+
+        border-radius: 28px;
+
+        padding: 30px;
+
+        backdrop-filter: blur(20px);
+
+        box-shadow:
+            0 30px 80px
+            rgba(0,0,0,.35);
+    }
+
+    .panel h2 {
+
+        font-size: 20px;
+
+        margin-bottom: 8px;
+    }
+
+    .panel-description {
+
+        color: #8f94a8;
+
+        font-size: 13px;
+
+        margin-bottom: 25px;
+    }
+
+    /* =========================
+       INPUT
+    ========================= */
+
+    textarea {
+
+        width: 100%;
+
+        height: 150px;
+
+        resize: none;
+
+        border-radius: 18px;
+
+        border:
+            1px solid rgba(255,255,255,.1);
+
+        background:
+            rgba(0,0,0,.25);
+
+        color: white;
+
+        padding: 18px;
+
+        font-size: 14px;
+
+        outline: none;
+    }
+
+    textarea:focus {
+
+        border-color: #715cff;
+
+        box-shadow:
+            0 0 0 3px
+            rgba(113,92,255,.12);
+    }
+
+    .label {
+
+        margin-top: 22px;
+
+        margin-bottom: 10px;
+
+        font-size: 13px;
+
+        font-weight: 700;
+    }
+
+    /* =========================
+       OPTION
+    ========================= */
+
+    .options {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 8px;
+    }
+
+    .option {
+
+        border:
+            1px solid rgba(255,255,255,.1);
+
+        background:
+            rgba(255,255,255,.04);
+
+        color: #aeb2c2;
+
+        border-radius: 30px;
+
+        padding: 9px 14px;
+
+        cursor: pointer;
+
+        font-size: 12px;
+
+        transition: .25s;
+    }
+
+    .option.active {
+
+        color: white;
+
+        border-color: #7864ff;
+
+        background:
+            rgba(120,100,255,.2);
+
+        box-shadow:
+            0 0 20px
+            rgba(120,100,255,.15);
+    }
+
+    /* =========================
+       BUTTON
+    ========================= */
+
+    .generate-btn {
+
+        width: 100%;
+
+        margin-top: 30px;
+
+        border: none;
+
+        padding: 17px;
+
+        border-radius: 16px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #705cff,
+                #00bfff
+            );
+
+        color: white;
+
+        font-size: 15px;
+
+        font-weight: 800;
+
+        cursor: pointer;
+
+        transition: .3s;
+
+        box-shadow:
+            0 15px 35px
+            rgba(77,92,255,.25);
+    }
+
+    .generate-btn:hover {
+
+        transform:
+            translateY(-2px);
+
+        box-shadow:
+            0 20px 50px
+            rgba(77,92,255,.35);
+    }
+
+    /* =========================
+       RESULT
+    ========================= */
+
+    .result {
+
+        min-height: 620px;
+
+        display: flex;
+
+        flex-direction: column;
+    }
+
+    .result-header {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        margin-bottom: 20px;
+    }
+
+    .status {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        color: #72f1c4;
+
+        font-size: 12px;
+    }
+
+    .dot {
+
+        width: 8px;
+
+        height: 8px;
+
+        border-radius: 50%;
+
+        background: #45e6ae;
+
+        box-shadow:
+            0 0 15px #45e6ae;
+    }
+
+    .image-area {
+
+        flex: 1;
+
+        min-height: 420px;
+
+        border-radius: 24px;
+
+        background:
+            radial-gradient(
+                circle at center,
+                rgba(90,80,255,.2),
+                transparent 45%
+            ),
+            #080a12;
+
+        border:
+            1px solid rgba(255,255,255,.08);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        overflow: hidden;
+
+        position: relative;
+    }
+
+    .image-area::before {
+
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        background-image:
+            linear-gradient(
+                rgba(255,255,255,.025) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                90deg,
+                rgba(255,255,255,.025) 1px,
+                transparent 1px
+            );
+
+        background-size:
+            40px 40px;
+    }
+
+    .empty {
+
+        text-align: center;
+
+        position: relative;
+
+        z-index: 2;
+    }
+
+    .ai-orb {
+
+        width: 100px;
+
+        height: 100px;
+
+        margin: auto auto 25px;
+
+        border-radius: 50%;
+
+        background:
+            radial-gradient(
+                circle at 35% 30%,
+                white,
+                #8d74ff 20%,
+                #4427c7 45%,
+                #07101c 70%
+            );
+
+        box-shadow:
+            0 0 80px
+            rgba(113,91,255,.6);
+
+        animation:
+            pulse 2.5s infinite;
+    }
+
+    @keyframes pulse {
+
+        0%,100% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.08);
+        }
+    }
+
+    .empty h3 {
+
+        font-size: 19px;
+
+        margin-bottom: 8px;
+    }
+
+    .empty p {
+
+        color: #777d91;
+
+        font-size: 13px;
+    }
+
+    #resultImage {
+
+        display: none;
+
+        width: 100%;
+
+        height: 100%;
+
+        object-fit: contain;
+
+        position: relative;
+
+        z-index: 3;
+    }
+
+    /* =========================
+       PROCESS
+    ========================= */
+
+    .process {
+
+        margin-top: 20px;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4,1fr);
+
+        gap: 8px;
+    }
+
+    .step {
+
+        padding: 12px;
+
+        border-radius: 12px;
+
+        background:
+            rgba(255,255,255,.035);
+
+        color: #676d81;
+
+        text-align: center;
+
+        font-size: 11px;
+    }
+
+    .step.active {
+
+        color: white;
+
+        background:
+            rgba(96,83,255,.15);
+
+        border:
+            1px solid
+            rgba(96,83,255,.3);
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+
+        text-align: center;
+
+        padding: 35px;
+
+        color: #555b6e;
+
+        font-size: 12px;
+
+        border-top:
+            1px solid
+            rgba(255,255,255,.06);
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media(max-width:900px) {
+
+        header {
+
+            padding: 0 20px;
+        }
+
+        nav {
+
+            display: none;
+        }
+
+        .container {
+
+            grid-template-columns: 1fr;
+        }
+
+        .hero {
+
+            padding-top: 60px;
+        }
+
+        .hero h1 {
+
+            letter-spacing: -2px;
+        }
+    }
+
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">
+    <span>AI</span> LIFE
+</div>
+
+<nav>
+
+    <a href="/">메인</a>
+
+    <a href="/experience">AI 체험</a>
+
+    <a href="/review">체험 후기</a>
+
+    <a href="/board/question">체험 게시판</a>
+
+    <a href="/project">AI 프로젝트</a>
+
+    <a href="/course">교육과정</a>
+
+</nav>
+
+<a
+    href="/member/login"
+    class="login">
+    로그인
+</a>
+
+</header>
+
+<section class="hero">
+<div class="badge">
+    ✨ AI LIFE EXPERIENCE
+</div>
+
+<h1>
+    아이디어를
+    <span class="gradient">
+        이미지
+    </span>
+    로
+</h1>
+
+<p>
+    AI가 아이디어를 분석하고
+    프롬프트를 만들고
+    이미지를 생성합니다.
+    <br>
+    직접 경험해보세요.
+</p>
+
+</section>
+
+<main class="container">
+
+<!-- =========================
+     LEFT
+========================== -->
+
+<section class="panel">
+
+    <h2>
+        🎨 무엇을 만들까요?
+    </h2>
+
+    <p class="panel-description">
+        만들고 싶은 이미지를 자유롭게 설명해주세요.
+    </p>
+
+
+    <textarea
+        id="prompt"
+        placeholder="예) 미래형 AI 교육센터 홍보 포스터를 만들어줘"></textarea>
+
+
+    <div class="label">
+        이미지 스타일
+    </div>
+
+    <div class="options"
+         id="styleOptions">
+
+        <button
+            class="option active"
+            data-value="미래형 AI">
+            ✨ 미래형 AI
+        </button>
+
+        <button
+            class="option"
+            data-value="미니멀">
+            ◻ 미니멀
+        </button>
+
+        <button
+            class="option"
+            data-value="실사">
+            📷 실사
+        </button>
+
+        <button
+            class="option"
+            data-value="일러스트">
+            🎨 일러스트
+        </button>
+
+        <button
+            class="option"
+            data-value="3D">
+            🧊 3D
+        </button>
+
+    </div>
+
+
+    <div class="label">
+        이미지 비율
+    </div>
+
+    <div class="options"
+         id="ratioOptions">
+
+        <button
+            class="option active"
+            data-value="1:1">
+            1 : 1
+        </button>
+
+        <button
+            class="option"
+            data-value="4:5">
+            4 : 5
+        </button>
+
+        <button
+            class="option"
+            data-value="16:9">
+            16 : 9
+        </button>
+
+    </div>
+
+
+    <button
+        class="generate-btn"
+        onclick="generateImage()">
+
+        ✨ AI 이미지 만들기
+
+    </button>
+
+</section>
+
+
+<!-- =========================
+     RIGHT
+========================== -->
+
+<section class="panel result">
+
+    <div class="result-header">
+
+        <div>
+
+            <h2>
+                AI 생성 결과
+            </h2>
+
+        </div>
+
+        <div class="status">
+
+            <span class="dot"></span>
+
+            AI Agent Ready
+
+        </div>
+
+    </div>
+
+
+    <div class="image-area">
+
+        <div
+            class="empty"
+            id="emptyState">
+
+            <div class="ai-orb"></div>
+
+            <h3>
+                AI Agent가 기다리고 있습니다
+            </h3>
+
+            <p>
+                왼쪽에서 원하는 이미지를 입력해주세요.
+            </p>
+
+        </div>
+
+        <img
+            id="resultImage"
+            alt="AI Generated Image">
+
+    </div>
+
+
+    <div class="process">
+
+        <div
+            class="step active"
+            id="step1">
+
+            ① 요청 분석
+
+        </div>
+
+        <div
+            class="step"
+            id="step2">
+
+            ② 프롬프트
+
+        </div>
+
+        <div
+            class="step"
+            id="step3">
+
+            ③ 이미지 생성
+
+        </div>
+
+        <div
+            class="step"
+            id="step4">
+
+            ④ 결과 완성
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+AI LIFE © 2026
+· AI Experience Center
+
+</footer>
+
+<script>
+
+    /* =========================
+       옵션 선택
+    ========================== */
+
+    let selectedStyle = "미래형 AI";
+
+    let selectedRatio = "1:1";
+
+
+    document
+        .querySelectorAll("#styleOptions .option")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    document
+                        .querySelectorAll(
+                            "#styleOptions .option"
+                        )
+                        .forEach(
+                            item =>
+                                item.classList.remove(
+                                    "active"
+                                )
+                        );
+
+                    this.classList.add("active");
+
+                    selectedStyle =
+                        this.dataset.value;
+                }
+            );
+
+        });
+
+
+    document
+        .querySelectorAll("#ratioOptions .option")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    document
+                        .querySelectorAll(
+                            "#ratioOptions .option"
+                        )
+                        .forEach(
+                            item =>
+                                item.classList.remove(
+                                    "active"
+                                )
+                        );
+
+                    this.classList.add("active");
+
+                    selectedRatio =
+                        this.dataset.value;
+                }
+            );
+
+        });
+
+
+    /* =========================
+       AI IMAGE GENERATION
+    ========================== */
+
+    async function generateImage() {
+
+        const prompt =
+            document
+                .getElementById("prompt")
+                .value
+                .trim();
+
+
+        if (!prompt) {
+
+            alert(
+                "만들고 싶은 이미지를 입력해주세요."
+            );
+
+            return;
+        }
+
+
+        const button =
+            document.querySelector(
+                ".generate-btn"
+            );
+
+
+        button.disabled = true;
+
+        button.innerText =
+            "🤖 AI Agent 작업 중...";
+
+
+        // PROCESS 1
+        activateStep(1);
+
+
+        try {
+
+            // PROCESS 2
+            setTimeout(
+                () => activateStep(2),
+                700
+            );
+
+
+            const response =
+                await fetch(
+                    "/api/image-agent/generate",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            prompt: prompt,
+
+                            style:
+                                selectedStyle,
+
+                            ratio:
+                                selectedRatio
+
+                        })
+
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "AI 서버 오류"
+                );
+            }
+
+
+            // PROCESS 3
+            activateStep(3);
+
+
+            const data =
+                await response.json();
+
+
+            if (!data.success) {
+
+                throw new Error(
+                    "이미지 생성 실패"
+                );
+            }
+
+
+            // PROCESS 4
+            activateStep(4);
+
+
+            const image =
+                document
+                    .getElementById(
+                        "resultImage"
+                    );
+
+
+            image.src =
+                "data:image/png;base64,"
+                + data.result;
+
+
+            image.style.display =
+                "block";
+
+
+            document
+                .getElementById(
+                    "emptyState"
+                )
+                .style.display =
+                "none";
+
+
+        } catch(error) {
+
+            console.error(error);
+
+            alert(
+                "AI 이미지 생성 중 오류가 발생했습니다."
+            );
+
+        } finally {
+
+            button.disabled = false;
+
+            button.innerText =
+                "✨ AI 이미지 만들기";
+
+        }
+
+    }
+
+
+    /* =========================
+       PROCESS UI
+    ========================== */
+
+    function activateStep(number) {
+
+        for(
+            let i = 1;
+            i <= 4;
+            i++
+        ) {
+
+            const step =
+                document.getElementById(
+                    "step" + i
+                );
+
+            if(i <= number) {
+
+                step.classList.add(
+                    "active"
+                );
+
+            } else {
+
+                step.classList.remove(
+                    "active"
+                );
+            }
+        }
+
+    }
+
+</script>
+
+</body>
+
+</html>

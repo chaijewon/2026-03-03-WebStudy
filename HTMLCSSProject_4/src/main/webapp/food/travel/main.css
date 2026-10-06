@@ -1,0 +1,548 @@
+@charset "UTF-8";
+/* =========================================================
+   AI TRAVEL
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family:
+        "Pretendard",
+        "Noto Sans KR",
+        Arial,
+        sans-serif;
+
+    background: #f7f9ff;
+
+    color: #18213a;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    border: 0;
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* ================= HEADER ================= */
+
+.header {
+    height: 78px;
+
+    padding: 0 7%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: rgba(255,255,255,.85);
+
+    backdrop-filter: blur(20px);
+
+    border-bottom: 1px solid #e8ecf5;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.header nav {
+    display: flex;
+    gap: 32px;
+}
+
+.header nav a {
+    font-size: 14px;
+
+    color: #707a92;
+
+    font-weight: 700;
+}
+
+.header nav a:hover {
+    color: #5c67e8;
+}
+
+.login-btn {
+    padding: 11px 20px;
+
+    border-radius: 12px;
+
+    background: #202942;
+
+    color: white;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* ================= HERO ================= */
+
+.hero {
+    min-height: 700px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+
+    background:
+        linear-gradient(
+            120deg,
+            rgba(15,25,70,.92),
+            rgba(58,64,150,.75)
+        );
+
+    color: white;
+}
+
+.hero::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 75% 30%,
+            rgba(88,201,255,.55),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 20% 80%,
+            rgba(150,100,255,.45),
+            transparent 30%
+        );
+}
+
+.hero-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            rgba(20,25,65,.3),
+            rgba(20,25,65,.75)
+        );
+}
+
+.hero-content {
+    width: 100%;
+
+    max-width: 1400px;
+
+    margin: auto;
+
+    padding: 100px 7%;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+.badge {
+    display: inline-block;
+
+    padding: 9px 16px;
+
+    border-radius: 30px;
+
+    background: rgba(255,255,255,.12);
+
+    border: 1px solid rgba(255,255,255,.2);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.hero h1 {
+    margin-top: 27px;
+
+    font-size: clamp(45px, 6vw, 78px);
+
+    line-height: 1.1;
+
+    letter-spacing: -5px;
+}
+
+.hero h1 strong {
+    background:
+        linear-gradient(
+            90deg,
+            #8de8ff,
+            #b69aff
+        );
+
+    -webkit-background-clip: text;
+
+    color: transparent;
+}
+
+.hero p {
+    margin-top: 25px;
+
+    color: rgba(255,255,255,.72);
+
+    line-height: 1.8;
+
+    font-size: 17px;
+}
+
+
+/* ================= TRAVEL FORM ================= */
+
+.travel-form {
+    max-width: 1050px;
+
+    margin-top: 40px;
+
+    padding: 10px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr 1fr auto;
+
+    gap: 8px;
+
+    background: rgba(255,255,255,.13);
+
+    backdrop-filter: blur(20px);
+
+    border: 1px solid rgba(255,255,255,.2);
+
+    border-radius: 20px;
+}
+
+.form-item {
+    min-height: 72px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 0 20px;
+
+    border-radius: 14px;
+
+    background: rgba(255,255,255,.08);
+}
+
+.form-item > span {
+    font-size: 23px;
+}
+
+.form-item div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.form-item small {
+    color: rgba(255,255,255,.55);
+
+    font-size: 11px;
+}
+
+.form-item strong {
+    font-size: 14px;
+}
+
+.travel-form > button {
+    padding: 0 25px;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6d7cff,
+            #9b72ff
+        );
+
+    color: white;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 10px 30px rgba(90,100,255,.3);
+}
+
+
+/* ================= DESTINATION ================= */
+
+.destination {
+    max-width: 1400px;
+
+    margin: auto;
+
+    padding: 100px 7%;
+}
+
+.section-title span {
+    color: #6873e9;
+
+    font-size: 12px;
+    font-weight: 900;
+
+    letter-spacing: 2px;
+}
+
+.section-title h2 {
+    margin-top: 10px;
+
+    font-size: 38px;
+
+    letter-spacing: -2px;
+}
+
+.destination-list {
+    margin-top: 40px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 22px;
+}
+
+.destination-list article {
+    overflow: hidden;
+
+    background: white;
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 20px 50px rgba(40,50,100,.08);
+
+    transition: .3s;
+}
+
+.destination-list article:hover {
+    transform: translateY(-9px);
+}
+
+.destination-image {
+    height: 230px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 85px;
+}
+
+.seoul {
+    background: linear-gradient(135deg,#e7edff,#cbd8ff);
+}
+
+.jeju {
+    background: linear-gradient(135deg,#dcfff0,#a7f2d1);
+}
+
+.busan {
+    background: linear-gradient(135deg,#dff6ff,#a9dcff);
+}
+
+.gangneung {
+    background: linear-gradient(135deg,#fff1df,#ffd5a2);
+}
+
+.destination-list h3 {
+    padding: 20px 20px 5px;
+
+    font-size: 21px;
+}
+
+.destination-list p {
+    padding: 0 20px 22px;
+
+    color: #8a93a6;
+
+    font-size: 13px;
+}
+
+
+/* ================= AI PLAN ================= */
+
+.ai-plan {
+    max-width: 1260px;
+
+    margin: 20px auto 100px;
+
+    padding: 60px 70px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border-radius: 32px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #313b9a,
+            #7562d9
+        );
+
+    box-shadow:
+        0 25px 70px rgba(65,70,170,.25);
+}
+
+.ai-plan span {
+    font-size: 12px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    color: #bdefff;
+}
+
+.ai-plan h2 {
+    margin-top: 12px;
+
+    font-size: 34px;
+
+    line-height: 1.3;
+}
+
+.ai-plan p {
+    margin-top: 14px;
+
+    color: rgba(255,255,255,.7);
+
+    line-height: 1.7;
+}
+
+.ai-plan button {
+    padding: 17px 25px;
+
+    border-radius: 14px;
+
+    background: white;
+
+    color: #4d50a9;
+
+    font-weight: 900;
+}
+
+
+/* ================= FOOTER ================= */
+
+footer {
+    padding: 35px;
+
+    text-align: center;
+
+    color: #949caf;
+
+    font-size: 12px;
+
+    border-top: 1px solid #e5e9f2;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1000px) {
+
+    .header nav {
+        display: none;
+    }
+
+    .travel-form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .travel-form > button {
+        min-height: 60px;
+    }
+
+    .destination-list {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .ai-plan {
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .header {
+        padding: 0 20px;
+    }
+
+    .hero-content {
+        padding: 80px 25px;
+    }
+
+    .hero h1 {
+        font-size: 45px;
+    }
+
+    .travel-form {
+        grid-template-columns: 1fr;
+    }
+
+    .destination {
+        padding: 70px 20px;
+    }
+
+    .destination-list {
+        grid-template-columns: 1fr;
+    }
+
+    .ai-plan {
+        padding: 40px 30px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 30px;
+    }
+}
+

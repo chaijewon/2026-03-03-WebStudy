@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <!-- ==================================================
+         기본 설정
+    =================================================== -->
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI LIFE</title>
+
+
+    <!-- ==================================================
+         AI LIFE CSS
+    =================================================== -->
+
+    <link rel="stylesheet"
+          href="main.css">
+
+
+</head>
+
+
+<body>
+
+
+<div class="wrapper">
+
+
+    <!-- ==================================================
+         BACKGROUND
+    ================================================== -->
+
+    <div class="background">
+
+        <!-- 왼쪽 상단 Glow -->
+        <div class="glow one"></div>
+
+        <!-- 오른쪽 Glow -->
+        <div class="glow two"></div>
+
+        <!-- 하단 Glow -->
+        <div class="glow three"></div>
+
+        <!-- Grid -->
+        <div class="grid"></div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         HEADER
+    ================================================== -->
+
+    <header class="header">
+
+
+        <!-- ==================================================
+             LOGO
+        ================================================== -->
+
+        <div class="logo">
+
+            <div class="logoMark">
+                AI
+            </div>
+
+            <span>
+                AI LIFE
+            </span>
+
+        </div>
+
+
+
+        <!-- ==================================================
+             HEADER MENU
+        ================================================== -->
+
+        <div class="header-right">
+
+
+            <!-- 서비스 소개 -->
+
+            <span class="header-link"
+                  onclick="showServiceInfo()">
+
+                AI 서비스 소개
+
+            </span>
+
+
+            <!-- 이용 안내 -->
+
+            <span class="header-link"
+                  onclick="showGuide()">
+
+                이용 안내
+
+            </span>
+
+
+            <!-- 로그인 -->
+
+            <button class="login"
+                    onclick="login()">
+
+                로그인
+
+            </button>
+
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- ==================================================
+         CENTER
+    ================================================== -->
+
+    <section class="center">
+
+
+        <!-- Badge -->
+
+        <div class="badge">
+
+            ✦ AI와 함께하는 스마트 라이프
+
+        </div>
+
+
+        <!-- Main Title -->
+
+        <h1>
+
+            무엇을 도와드릴까요?
+
+            <br>
+
+            <span>
+                원하는 AI 서비스를 선택해 주세요.
+            </span>
+
+        </h1>
+
+
+        <!-- Description -->
+
+        <p class="center-description">
+
+            일상생활부터 쇼핑, 여행, 정보검색까지
+            <br>
+            AI가 당신의 선택을 도와드립니다.
+
+        </p>
+
+
+    </section>
+
+
+
+    <!-- ==================================================
+         AI SERVICE
+    ================================================== -->
+
+    <main class="choice">
+
+
+        <!-- ==================================================
+             1. AI RECIPE
+        ================================================== -->
+
+        <article class="card recipe"
+                 onclick="goRecipe()">
+
+
+            <!-- Icon -->
+
+            <div class="icon">
+
+                🍳
+
+            </div>
+
+
+            <!-- Background Artwork -->
+
+            <div class="card-art art-one">
+
+                🥦
+
+            </div>
+
+
+            <div class="card-art art-two">
+
+                🍅
+
+            </div>
+
+
+            <!-- Category -->
+
+            <small>
+
+                AI RECIPE & FOOD
+
+            </small>
+
+
+            <!-- Title -->
+
+            <h2>
+
+                AI 레시피
+
+            </h2>
+
+
+            <!-- Description -->
+
+            <p>
+
+                냉장고 속 재료를 AI가 분석하여
+
+                <br>
+
+                오늘 만들어 먹을 수 있는
+
+                <br>
+
+                맞춤 레시피를 추천해 드립니다.
+
+            </p>
+
+
+            <!-- Button -->
+
+            <button class="card-button">
+
+                레시피 시작하기
+
+                <span>
+                    →
+                </span>
+
+            </button>
+
+
+        </article>
+
+
+
+        <!-- ==================================================
+             2. AI RESTAURANT
+        ================================================== -->
+
+        <article class="card restaurant"
+                 onclick="goRestaurant()">
+
+
+            <!-- Icon -->
+
+            <div class="icon">
+
+                📍
+
+            </div>
+
+
+            <!-- Background Artwork -->
+
+            <div class="card-art art-one">
+
+                🍜
+
+            </div>
+
+
+            <div class="card-art art-two">
+
+                🍣
+
+            </div>
+
+
+            <!-- Category -->
+
+            <small>
+
+                AI RESTAURANT
+
+            </small>
+
+
+            <!-- Title -->
+
+            <h2>
+
+                AI 맛집
+
+            </h2>
+
+
+            <!-- Description -->
+
+            <p>
+
+                원하는 지역과 음식 종류를 선택하면
+
+                <br>
+
+                주변 맛집과 인기 메뉴를
+
+                <br>
+
+                AI가 추천해 드립니다.
+
+            </p>
+
+
+            <!-- Button -->
+
+            <button class="card-button">
+
+                맛집 찾아보기
+
+                <span>
+                    →
+                </span>
+
+            </button>
+
+
+        </article>
+
+
+
+        <!-- ==================================================
+             3. AI TRAVEL
+        ================================================== -->
+
+        <article class="card travel"
+                 onclick="goTravel()">
+
+
+            <!-- Icon -->
+
+            <div class="icon">
+
+                ✈️
+
+            </div>
+
+
+            <!-- Background Artwork -->
+
+            <div class="card-art art-one">
+
+                🗺️
+
+            </div>
+
+
+            <div class="card-art art-two">
+
+                🚗
+
+            </div>
+
+
+            <!-- Category -->
+
+            <small>
+
+                AI TRAVEL
+
+            </small>
+
+
+            <!-- Title -->
+
+            <h2>
+
+                AI 여행코스
+
+            </h2>
+
+
+            <!-- Description -->
+
+            <p>
+
+                여행 지역과 기간을 입력하면
+
+                <br>
+
+                이동 동선과 관광지,
+
+                <br>
+
+                맛집까지 AI가 추천합니다.
+
+            </p>
+
+
+            <!-- Button -->
+
+            <button class="card-button">
+
+                여행 계획하기
+
+                <span>
+                    →
+                </span>
+
+            </button>
+
+
+        </article>
+
+
+
+        <!-- ==================================================
+             4. AI LLM
+        ================================================== -->
+
+        <article class="card llm"
+                 onclick="goLLM()">
+
+
+            <!-- Icon -->
+
+            <div class="icon">
+
+                🤖
+
+            </div>
+
+
+            <!-- Background Artwork -->
+
+            <div class="card-art art-one">
+
+                💬
+
+            </div>
+
+
+            <div class="card-art art-two">
+
+                ✨
+
+            </div>
+
+
+            <!-- Category -->
+
+            <small>
+
+                AI LMS
+
+            </small>
+
+
+            <!-- Title -->
+
+            <h2>
+
+                AI LMS
+
+            </h2>
+
+
+            <!-- Description -->
+
+            <p>
+
+                궁금한 것을 질문하고
+
+                <br>
+
+                AI와 자연스럽게 대화하면서
+
+                <br>
+
+                필요한 정보를 얻어보세요.
+
+            </p>
+
+
+            <!-- Button -->
+
+            <button class="card-button">
+
+                AI와 대화하기
+
+                <span>
+                    →
+                </span>
+
+            </button>
+
+
+        </article>
+
+
+
+        <!-- ==================================================
+             5. AI SHOPPING
+        ================================================== -->
+
+        <article class="card shopping"
+                 onclick="goShopping()">
+
+
+            <!-- Icon -->
+
+            <div class="icon">
+
+                🛒
+
+            </div>
+
+
+            <!-- Background Artwork -->
+
+            <div class="card-art art-one">
+
+                📱
+
+            </div>
+
+
+            <div class="card-art art-two">
+
+                💳
+
+            </div>
+
+
+            <!-- Category -->
+
+            <small>
+
+                AI SHOPPING
+
+            </small>
+
+
+            <!-- Title -->
+
+            <h2>
+
+                AI 상품추천
+
+            </h2>
+
+
+            <!-- Description -->
+
+            <p>
+
+                원하는 상품과 예산을 입력하면
+
+                <br>
+
+                AI가 상품을 추천하고
+
+                <br>
+
+                가격 비교까지 도와드립니다.
+
+            </p>
+
+
+            <!-- Button -->
+
+            <button class="card-button">
+
+                상품 비교하기
+
+                <span>
+                    →
+                </span>
+
+            </button>
+
+
+        </article>
+
+
+    </main>
+
+
+
+    <!-- ==================================================
+         AI CAMPUS
+    ================================================== -->
+
+    <section class="campus-banner"
+             onclick="goCampus()">
+
+
+        <!-- Icon -->
+
+        <div class="campus-icon">
+
+            🎓
+
+        </div>
+
+
+        <!-- Content -->
+
+        <div class="campus-content">
+
+
+            <small>
+
+                AI EDUCATION CENTER
+
+            </small>
+
+
+            <h3>
+
+                AI CAMPUS
+
+            </h3>
+
+
+            <p>
+
+                시험 · 출석 · 오답 · AI 학습분석 · 맞춤학습
+
+            </p>
+
+
+        </div>
+
+
+        <!-- Arrow -->
+
+        <div class="campus-arrow">
+
+            →
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==================================================
+         FOOTER
+    ================================================== -->
+
+    <footer class="footer">
+
+
+        AI LIFE PLATFORM
+
+
+        <span>
+            •
+        </span>
+
+
+        AI RECIPE
+
+
+        <span>
+            •
+        </span>
+
+
+        AI RESTAURANT
+
+
+        <span>
+            •
+        </span>
+
+
+        AI TRAVEL
+
+
+        <span>
+            •
+        </span>
+
+
+        AI LMS
+
+
+        <span>
+            •
+        </span>
+
+
+        AI SHOPPING
+
+
+        <span>
+            •
+        </span>
+
+
+        AI CAMPUS
+
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- ==================================================
+     JAVASCRIPT
+================================================== -->
+
+<script>
+
+
+/* ==================================================
+   AI RECIPE
+================================================== */
+
+function goRecipe() {
+
+    location.href = "recipe.html";
+
+}
+
+
+
+/* ==================================================
+   AI RESTAURANT
+================================================== */
+
+function goRestaurant() {
+
+    location.href = "restaurant.html";
+
+}
+
+
+
+/* ==================================================
+   AI TRAVEL
+================================================== */
+
+function goTravel() {
+
+    location.href = "travel.html";
+
+}
+
+
+
+/* ==================================================
+   AI LLM
+================================================== */
+
+function goLLM() {
+
+    location.href = "llm.html";
+
+}
+
+
+
+/* ==================================================
+   AI SHOPPING
+================================================== */
+
+function goShopping() {
+
+    location.href = "shopping.html";
+
+}
+
+
+
+/* ==================================================
+   AI CAMPUS
+================================================== */
+
+function goCampus() {
+
+    location.href = "/edu/main";
+
+}
+
+
+
+/* ==================================================
+   LOGIN
+================================================== */
+
+function login() {
+
+    location.href = "/member/login";
+
+}
+
+
+
+/* ==================================================
+   SERVICE INFO
+================================================== */
+
+function showServiceInfo() {
+
+    alert(
+        "AI LIFE는 일상생활에 필요한 다양한 AI 서비스를 제공합니다."
+    );
+
+}
+
+
+
+/* ==================================================
+   GUIDE
+================================================== */
+
+function showGuide() {
+
+    alert(
+        "원하는 AI 서비스를 선택하면 해당 서비스로 이동합니다."
+    );
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI 시험문제 자동출제</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet">
+
+    <!-- Pretendard -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <style>
+
+        /* =========================
+           기본 설정
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                Pretendard,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f5f7ff 0%,
+                    #eef2ff 45%,
+                    #f8f9ff 100%
+                );
+
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           전체 레이아웃
+        ========================= */
+
+        .page-wrapper {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 45px 25px 80px;
+        }
+
+
+        /* =========================
+           상단 헤더
+        ========================= */
+
+        .page-header {
+            position: relative;
+
+            padding: 35px 40px;
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #111827,
+                    #312e81 55%,
+                    #4f46e5
+                );
+
+            color: white;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 50px rgba(49, 46, 129, 0.25);
+
+            margin-bottom: 30px;
+        }
+
+        .page-header::before {
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+            height: 260px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.08);
+
+            top: -120px;
+            right: -60px;
+        }
+
+        .page-header::after {
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            border-radius: 50%;
+
+            background: rgba(139,92,246,0.25);
+
+            bottom: -100px;
+            left: 40%;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-icon {
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background: rgba(255,255,255,0.15);
+
+            font-size: 28px;
+
+            margin-bottom: 18px;
+
+            backdrop-filter: blur(10px);
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            font-weight: 800;
+
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            margin: 0;
+
+            color: rgba(255,255,255,0.75);
+
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           메인 Grid
+        ========================= */
+
+        .main-grid {
+            display: grid;
+
+            grid-template-columns:
+                380px
+                1fr;
+
+            gap: 25px;
+
+            align-items: start;
+        }
+
+
+        /* =========================
+           카드
+        ========================= */
+
+        .card-custom {
+            background: rgba(255,255,255,0.88);
+
+            border: 1px solid rgba(255,255,255,0.8);
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 12px 35px rgba(31,41,55,0.08);
+
+            backdrop-filter: blur(15px);
+
+            overflow: hidden;
+        }
+
+        .card-header-custom {
+            padding: 24px 25px 10px;
+
+            background: transparent;
+
+            border: 0;
+        }
+
+        .card-header-custom h4 {
+            font-size: 18px;
+            font-weight: 800;
+
+            margin: 0;
+        }
+
+        .card-header-custom p {
+            color: #8a94a6;
+
+            font-size: 13px;
+
+            margin-top: 5px;
+            margin-bottom: 0;
+        }
+
+        .card-body-custom {
+            padding: 20px 25px 28px;
+        }
+
+
+        /* =========================
+           Form
+        ========================= */
+
+        .form-group {
+            margin-bottom: 21px;
+        }
+
+        .form-label-custom {
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+            color: #374151;
+        }
+
+        .form-control-custom,
+        .form-select-custom {
+
+            height: 50px;
+
+            border-radius: 12px;
+
+            border: 1px solid #e3e7ef;
+
+            background: #f9fafc;
+
+            padding: 0 15px;
+
+            font-size: 14px;
+
+            transition: all .2s ease;
+        }
+
+        .form-control-custom:focus,
+        .form-select-custom:focus {
+
+            background: white;
+
+            border-color: #6366f1;
+
+            box-shadow:
+                0 0 0 4px rgba(99,102,241,.10);
+        }
+
+
+        /* =========================
+           난이도
+        ========================= */
+
+        .difficulty-box {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 8px;
+        }
+
+        .difficulty-item {
+            position: relative;
+        }
+
+        .difficulty-item input {
+            display: none;
+        }
+
+        .difficulty-item label {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            height: 46px;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 11px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            background: #f9fafb;
+
+            transition: .2s;
+        }
+
+        .difficulty-item input:checked + label {
+
+            color: #4f46e5;
+
+            border-color: #6366f1;
+
+            background: #eef2ff;
+
+            box-shadow:
+                inset 0 0 0 1px #6366f1;
+        }
+
+
+        /* =========================
+           문제 수
+        ========================= */
+
+        .count-wrapper {
+            position: relative;
+        }
+
+        .count-wrapper .form-control-custom {
+            padding-right: 70px;
+        }
+
+        .count-unit {
+
+            position: absolute;
+
+            right: 15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            font-size: 13px;
+
+            color: #9ca3af;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           AI 생성 버튼
+        ========================= */
+
+        .generate-btn {
+
+            width: 100%;
+
+            height: 54px;
+
+            border: 0;
+
+            border-radius: 14px;
+
+            color: white;
+
+            font-weight: 800;
+
+            font-size: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #8b5cf6
+                );
+
+            box-shadow:
+                0 10px 25px
+                rgba(99,102,241,.25);
+
+            transition: all .2s ease;
+        }
+
+        .generate-btn:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 14px 30px
+                rgba(99,102,241,.35);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .generate-btn i {
+            margin-right: 6px;
+        }
+
+
+        /* =========================
+           AI 안내
+        ========================= */
+
+        .ai-info {
+
+            display: flex;
+
+            gap: 12px;
+
+            padding: 14px;
+
+            margin-top: 18px;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f5f3ff,
+                    #eef2ff
+                );
+
+            border: 1px solid #e5e7ff;
+        }
+
+        .ai-info-icon {
+
+            width: 35px;
+            height: 35px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #6366f1;
+
+            color: white;
+        }
+
+        .ai-info strong {
+
+            display: block;
+
+            font-size: 13px;
+
+            margin-bottom: 3px;
+        }
+
+        .ai-info span {
+
+            font-size: 12px;
+
+            color: #7b8494;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           결과 영역
+        ========================= */
+
+        .result-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 15px;
+        }
+
+        .result-title {
+
+            font-size: 19px;
+
+            font-weight: 800;
+
+            margin: 0;
+        }
+
+        .result-count {
+
+            padding: 6px 11px;
+
+            border-radius: 20px;
+
+            background: #eef2ff;
+
+            color: #4f46e5;
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+
+        /* =========================
+           문제 카드
+        ========================= */
+
+        .question-card {
+
+            background: white;
+
+            border: 1px solid #edf0f5;
+
+            border-radius: 18px;
+
+            padding: 22px;
+
+            margin-bottom: 15px;
+
+            box-shadow:
+                0 7px 20px rgba(31,41,55,.05);
+
+            transition: .2s;
+        }
+
+        .question-card:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 28px
+                rgba(31,41,55,.08);
+        }
+
+        .question-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 15px;
+        }
+
+        .question-number {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: #4f46e5;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+        .question-number span {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: #eef2ff;
+        }
+
+        .difficulty-badge {
+
+            font-size: 11px;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            background: #f3f4f6;
+
+            color: #6b7280;
+
+            font-weight: 700;
+        }
+
+        .question-title {
+
+            font-size: 16px;
+
+            line-height: 1.6;
+
+            font-weight: 750;
+
+            color: #111827;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =========================
+           보기
+        ========================= */
+
+        .option {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 11px 13px;
+
+            margin-bottom: 7px;
+
+            border-radius: 10px;
+
+            background: #f8fafc;
+
+            font-size: 13px;
+
+            color: #4b5563;
+
+            border: 1px solid transparent;
+        }
+
+        .option-number {
+
+            width: 25px;
+            height: 25px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 7px;
+
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            color: #6b7280;
+        }
+
+
+        /* =========================
+           정답
+        ========================= */
+
+        .answer-box {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 15px;
+
+            padding: 12px 14px;
+
+            border-radius: 11px;
+
+            background: #ecfdf5;
+
+            border: 1px solid #d1fae5;
+
+            color: #047857;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        .answer-icon {
+
+            width: 25px;
+            height: 25px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #10b981;
+
+            color: white;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           빈 결과
+        ========================= */
+
+        .empty-result {
+
+            min-height: 450px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            color: #9ca3af;
+        }
+
+        .empty-icon {
+
+            width: 75px;
+            height: 75px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 22px;
+
+            background: #eef2ff;
+
+            color: #6366f1;
+
+            font-size: 34px;
+
+            margin-bottom: 18px;
+        }
+
+        .empty-result h5 {
+
+            color: #374151;
+
+            font-weight: 800;
+
+            margin-bottom: 8px;
+        }
+
+        .empty-result p {
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            margin: 0;
+        }
+
+
+        /* =========================
+           Loading
+        ========================= */
+
+        .loading {
+
+            text-align: center;
+
+            padding: 80px 20px;
+        }
+
+        .ai-spinner {
+
+            width: 48px;
+            height: 48px;
+
+            border: 4px solid #e5e7eb;
+
+            border-top-color: #6366f1;
+
+            border-radius: 50%;
+
+            animation:
+                spin 0.8s linear infinite;
+
+            margin: 0 auto 18px;
+        }
+
+        @keyframes spin {
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        /* =========================
+           반응형
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .main-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+        @media (max-width: 576px) {
+
+            .page-wrapper {
+
+                padding:
+                    20px 15px 50px;
+
+            }
+
+            .page-header {
+
+                padding: 28px 25px;
+
+            }
+
+            .page-header h1 {
+
+                font-size: 24px;
+
+            }
+
+            .difficulty-box {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="page-wrapper">
+
+
+    <!-- =========================
+         페이지 Header
+    ========================== -->
+
+    <div class="page-header">
+
+        <div class="header-content">
+
+            <div class="header-icon">
+                <i class="bi bi-stars"></i>
+            </div>
+
+            <h1>
+                AI 시험문제 자동출제
+            </h1>
+
+            <p>
+                강의 내용과 시험 주제를 기반으로
+                AI가 맞춤형 객관식 문제를 자동으로 생성합니다.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         Main
+    ========================== -->
+
+    <div class="main-grid">
+
+
+        <!-- =====================
+             왼쪽 설정
+        ====================== -->
+
+        <div class="card-custom">
+
+            <div class="card-header-custom">
+
+                <h4>
+                    <i class="bi bi-sliders me-2"></i>
+                    출제 조건
+                </h4>
+
+                <p>
+                    AI 문제 생성을 위한 조건을 설정하세요.
+                </p>
+
+            </div>
+
+
+            <div class="card-body-custom">
+
+
+                <!-- 강의명 -->
+
+                <div class="form-group">
+
+                    <label class="form-label-custom">
+                        강의명
+                    </label>
+
+                    <input
+                        id="courseTitle"
+                        class="form-control form-control-custom"
+                        value="Spring Boot"
+                        placeholder="강의명을 입력하세요">
+
+                </div>
+
+
+                <!-- 시험 주제 -->
+
+                <div class="form-group">
+
+                    <label class="form-label-custom">
+                        시험 주제
+                    </label>
+
+                    <input
+                        id="theme"
+                        class="form-control form-control-custom"
+                        value="Spring Security"
+                        placeholder="예: Spring Security">
+
+                </div>
+
+
+                <!-- 난이도 -->
+
+                <div class="form-group">
+
+                    <label class="form-label-custom">
+                        난이도
+                    </label>
+
+                    <div class="difficulty-box">
+
+                        <div class="difficulty-item">
+
+                            <input
+                                type="radio"
+                                name="difficulty"
+                                id="difficulty1"
+                                value="1">
+
+                            <label for="difficulty1">
+                                하
+                            </label>
+
+                        </div>
+
+
+                        <div class="difficulty-item">
+
+                            <input
+                                type="radio"
+                                name="difficulty"
+                                id="difficulty2"
+                                value="2"
+                                checked>
+
+                            <label for="difficulty2">
+                                중
+                            </label>
+
+                        </div>
+
+
+                        <div class="difficulty-item">
+
+                            <input
+                                type="radio"
+                                name="difficulty"
+                                id="difficulty3"
+                                value="3">
+
+                            <label for="difficulty3">
+                                상
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 문제 수 -->
+
+                <div class="form-group">
+
+                    <label class="form-label-custom">
+                        문제 수
+                    </label>
+
+                    <div class="count-wrapper">
+
+                        <input
+                            id="count"
+                            type="number"
+                            min="1"
+                            max="50"
+                            class="form-control form-control-custom"
+                            value="5">
+
+                        <span class="count-unit">
+                            문제
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 생성 버튼 -->
+
+                <button
+                    id="generateBtn"
+                    onclick="generateQuestions()"
+                    class="generate-btn">
+
+                    <i class="bi bi-stars"></i>
+
+                    AI 문제 생성
+
+                </button>
+
+
+                <!-- AI 안내 -->
+
+                <div class="ai-info">
+
+                    <div class="ai-info-icon">
+
+                        <i class="bi bi-robot"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            AI 자동 출제
+                        </strong>
+
+                        <span>
+                            강의명, 시험 주제, 난이도를 분석하여
+                            객관식 문제와 보기를 자동 생성합니다.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             오른쪽 결과
+        ====================== -->
+
+        <div>
+
+            <div class="result-header">
+
+                <h4 class="result-title">
+                    생성된 문제
+                </h4>
+
+                <span
+                    id="resultCount"
+                    class="result-count">
+
+                    0문제
+
+                </span>
+
+            </div>
+
+
+            <div
+                id="result"
+                class="card-custom">
+
+                <!-- 초기 화면 -->
+
+                <div class="empty-result">
+
+                    <div class="empty-icon">
+
+                        <i class="bi bi-file-earmark-text"></i>
+
+                    </div>
+
+                    <h5>
+                        아직 생성된 문제가 없습니다.
+                    </h5>
+
+                    <p>
+                        왼쪽에서 출제 조건을 설정한 후<br>
+                        <strong>AI 문제 생성</strong> 버튼을 눌러주세요.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* ==========================================
+       AI 시험문제 생성
+    ========================================== */
+
+    async function generateQuestions() {
+
+        const courseTitle =
+            document.querySelector("#courseTitle").value;
+
+        const theme =
+            document.querySelector("#theme").value;
+
+        const difficulty =
+            Number(
+                document.querySelector(
+                    'input[name="difficulty"]:checked'
+                ).value
+            );
+
+        const count =
+            Number(
+                document.querySelector("#count").value
+            );
+
+
+        /* 입력값 검사 */
+
+        if (!courseTitle.trim()) {
+
+            alert("강의명을 입력해주세요.");
+
+            return;
+
+        }
+
+        if (!theme.trim()) {
+
+            alert("시험 주제를 입력해주세요.");
+
+            return;
+
+        }
+
+        if (count < 1 || count > 50) {
+
+            alert("문제 수는 1~50 사이로 입력해주세요.");
+
+            return;
+
+        }
+
+
+        /* 버튼 Loading */
+
+        const button =
+            document.querySelector("#generateBtn");
+
+        button.disabled = true;
+
+        button.innerHTML = `
+            <span
+                class="spinner-border spinner-border-sm me-2">
+            </span>
+            AI가 문제를 생성하고 있습니다...
+        `;
+
+
+        /* 결과 Loading */
+
+        document.querySelector("#result").innerHTML = `
+
+            <div class="loading">
+
+                <div class="ai-spinner"></div>
+
+                <h5 class="fw-bold">
+                    AI 문제 생성 중...
+                </h5>
+
+                <p class="text-muted small">
+                    강의 내용과 시험 주제를 분석하고 있습니다.
+                </p>
+
+            </div>
+
+        `;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/admin/exam/ai/generate",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                courseTitle:
+                                    courseTitle,
+
+                                theme:
+                                    theme,
+
+                                difficulty:
+                                    difficulty,
+
+                                count:
+                                    count
+
+                            })
+
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "문제 생성에 실패했습니다."
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            renderQuestions(
+                result.questions
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            document.querySelector("#result").innerHTML = `
+
+                <div class="empty-result">
+
+                    <div
+                        class="empty-icon"
+                        style="
+                            background:#fef2f2;
+                            color:#ef4444;
+                        ">
+
+                        <i class="bi bi-exclamation-triangle"></i>
+
+                    </div>
+
+                    <h5>
+                        문제 생성 실패
+                    </h5>
+
+                    <p>
+                        서버 또는 AI API를 확인해주세요.
+                    </p>
+
+                </div>
+
+            `;
+
+            document.querySelector("#resultCount")
+                .textContent = "오류";
+
+
+        } finally {
+
+            button.disabled = false;
+
+            button.innerHTML = `
+                <i class="bi bi-stars"></i>
+                AI 문제 생성
+            `;
+
+        }
+
+    }
+
+
+    /* ==========================================
+       문제 출력
+    ========================================== */
+
+    function renderQuestions(questions) {
+
+        let html = "";
+
+        if (!questions || questions.length === 0) {
+
+            document.querySelector("#result").innerHTML = `
+
+                <div class="empty-result">
+
+                    <div class="empty-icon">
+
+                        <i class="bi bi-question-circle"></i>
+
+                    </div>
+
+                    <h5>
+                        생성된 문제가 없습니다.
+                    </h5>
+
+                    <p>
+                        다른 시험 주제를 입력해보세요.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        questions.forEach(
+            (q, index) => {
+
+                html += `
+
+                    <div class="question-card">
+
+                        <!-- 문제 Header -->
+
+                        <div class="question-top">
+
+                            <div class="question-number">
+
+                                <span>
+                                    ${index + 1}
+                                </span>
+
+                                문제 ${index + 1}
+
+                            </div>
+
+                            <span
+                                class="difficulty-badge">
+
+                                객관식
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- 문제 -->
+
+                        <div class="question-title">
+
+                            ${q.title}
+
+                        </div>
+
+
+                        <!-- 보기 -->
+
+                        <div class="option">
+
+                            <span class="option-number">
+                                ①
+                            </span>
+
+                            ${q.option1}
+
+                        </div>
+
+
+                        <div class="option">
+
+                            <span class="option-number">
+                                ②
+                            </span>
+
+                            ${q.option2}
+
+                        </div>
+
+
+                        <div class="option">
+
+                            <span class="option-number">
+                                ③
+                            </span>
+
+                            ${q.option3}
+
+                        </div>
+
+
+                        <div class="option">
+
+                            <span class="option-number">
+                                ④
+                            </span>
+
+                            ${q.option4}
+
+                        </div>
+
+
+                        <!-- 정답 -->
+
+                        <div class="answer-box">
+
+                            <span class="answer-icon">
+
+                                <i class="bi bi-check"></i>
+
+                            </span>
+
+                            정답
+
+                            <strong>
+                                ${q.answer}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+
+        document.querySelector("#result").innerHTML =
+            `<div style="padding:5px">${html}</div>`;
+
+
+        document.querySelector("#resultCount")
+            .textContent =
+            `${questions.length}문제`;
+
+    }
+
+</script>
+
+
+</body>
+</html>

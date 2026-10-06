@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI LIFE | Java 실행 체험관</title>
+<style>
+button,textarea{font:inherit}button{cursor:pointer}
+.hero{text-align:center;padding:55px 20px 38px;background:radial-gradient(circle at 50% 0,#244b6c,#07111f 65%)}
+.badge{display:inline-block;padding:8px 15px;border:1px solid #386487;border-radius:999px;color:#8fd8ff;background:#0b2035;font-size:13px}
+h1{font-size:clamp(35px,6vw,62px);letter-spacing:-3px;margin:18px 0 10px}.hero p{color:#adc0d2;line-height:1.7;max-width:780px;margin:auto}
+.wrap{max-width:1200px;margin:auto;padding:25px 20px 70px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.btn{border:0;border-radius:11px;padding:12px 18px;font-weight:800}.run{background:#ff9900;color:#111}.secondary{background:#12263b;color:#d9eaff;border:1px solid #294866}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:#0c1929;border:1px solid #223d58;border-radius:18px;padding:18px}.card h2{margin:0 0 14px;font-size:18px}
+textarea{width:100%;height:320px;resize:vertical;background:#050c14;color:#d9edff;border:1px solid #29445f;border-radius:12px;padding:16px;font-family:Consolas,monospace;line-height:1.6;outline:none}
+.code-line{white-space:pre}.kw{color:#ff9d4d}.type{color:#62d7ff}.str{color:#86e6a7}.num{color:#ffd166}
+.flow{grid-column:1/-1;display:grid;grid-template-columns:repeat(6,1fr);gap:9px}.step{padding:14px 8px;text-align:center;background:#0d1b2d;border:1px solid #243f59;border-radius:13px;color:#8098af;transition:.35s}.step b{display:block;color:#dcecff;margin-bottom:5px}.step.active{border-color:#ff9900;color:#fff;transform:translateY(-4px);box-shadow:0 0 25px #ff990033}.step.done{border-color:#2bd576;color:#76edaa;background:#0a241a}
+.console{height:140px;background:#050b12;border-radius:12px;padding:14px;overflow:auto;font:13px/1.8 Consolas,monospace}.info{color:#7bcaff}.ok{color:#5ce49c}.warn{color:#ffd166}.err{color:#ff6877}
+.progress{height:9px;background:#182b40;border-radius:99px;overflow:hidden;margin-top:12px}.bar{width:0;height:100%;background:linear-gradient(90deg,#ff9900,#4bd8ff);transition:.4s}
+.memory{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.memorybox{background:#07111d;border:1px solid #203a52;border-radius:13px;padding:14px;min-height:190px}.memorybox h3{margin:0 0 10px;font-size:14px;color:#8fd8ff}.slot{padding:9px;margin:6px 0;background:#102439;border-radius:8px;font-family:Consolas,monospace;opacity:0;transform:translateX(-10px);transition:.35s}.slot.show{opacity:1;transform:none}.result{margin-top:14px;padding:16px;background:#071d16;border:1px solid #238b5b;border-radius:12px;display:none}.result strong{color:#6af0aa;font-size:20px}
+.mission{margin-top:18px;display:flex;gap:9px;flex-wrap:wrap}.mini{padding:9px 12px;border-radius:9px;border:1px solid #294866;background:#102439;color:#dcecff}
+.tech{text-align:center;margin-top:22px;padding:25px;border-radius:17px;background:#0c1929;border:1px solid #223d58}.tech span{display:inline-block;background:#122a40;color:#9ddcff;border-radius:8px;padding:8px 10px;margin:4px;font-size:12px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.flow{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:500px){.flow{grid-template-columns:repeat(2,1fr)}.memory{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<!-- <header class="hero">
+<span class="badge">AI LIFE · JAVA 체험관</span>
+<h1>☕ Java 실행 시뮬레이터</h1>
+<p>Java 코드를 입력하고 실행해 보세요. 소스 코드 → 컴파일 → JVM → Stack / Heap → Bytecode → Console까지 실행 과정을 애니메이션으로 체험합니다.</p>
+</header> -->
+
+<main class="wrap">
+<div class="toolbar">
+<button class="btn run" id="run">▶ Java 실행</button>
+<button class="btn secondary" id="reset">↻ 초기화</button>
+<button class="btn secondary" id="sample1">변수 예제</button>
+<button class="btn secondary" id="sample2">반복문 예제</button>
+<button class="btn secondary" id="sample3">객체 예제</button>
+</div>
+
+<section class="layout">
+<div class="card">
+<h2>📝 Java Source</h2>
+<textarea id="code">public class Main {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 20;
+        int sum = a + b;
+
+        System.out.println(sum);
+    }
+}</textarea>
+</div>
+
+<div class="card">
+<h2>⚙️ JVM 실행 콘솔</h2>
+<div class="console" id="console"><div class="info">[SYSTEM] Java 실행 환경 준비 완료</div><div>[SYSTEM] ▶ Java 실행을 눌러주세요.</div></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+</div>
+
+<div class="flow">
+<div class="step" data-i="0"><b>① SOURCE</b>Java Code</div>
+<div class="step" data-i="1"><b>② COMPILE</b>.java → .class</div>
+<div class="step" data-i="2"><b>③ CLASS LOADER</b>Class Load</div>
+<div class="step" data-i="3"><b>④ JVM</b>Bytecode</div>
+<div class="step" data-i="4"><b>⑤ MEMORY</b>Stack / Heap</div>
+<div class="step" data-i="5"><b>⑥ CONSOLE</b>Output</div>
+</div>
+
+<div class="card">
+<h2>🧠 JVM Memory</h2>
+<div class="memory">
+<div class="memorybox"><h3>STACK · 메소드 실행 영역</h3><div id="stack"></div></div>
+<div class="memorybox"><h3>HEAP · 객체 저장 영역</h3><div id="heap"></div></div>
+</div>
+</div>
+
+<div class="card">
+<h2>📺 실행 결과</h2>
+<div class="result" id="result"><strong id="output">30</strong><br><br><span id="explain">System.out.println()이 콘솔에 결과를 출력했습니다.</span></div>
+<div class="mission">
+<button class="mini" onclick="explain('변수는 값을 저장하는 공간입니다.')">변수란?</button>
+<button class="mini" onclick="explain('Stack은 현재 실행 중인 메소드와 지역변수 정보를 관리합니다.')">Stack이란?</button>
+<button class="mini" onclick="explain('Heap은 new로 생성된 객체가 저장되는 영역입니다.')">Heap이란?</button>
+<button class="mini" onclick="explain('JVM은 Java Bytecode를 실행하는 가상 머신입니다.')">JVM이란?</button>
+</div>
+</div>
+</section>
+
+<div class="tech">
+<strong>🎓 Java → Spring → AI → AWS 학습 연결</strong><br>
+<span>Java</span><span>OOP</span><span>JVM</span><span>Spring Boot</span><span>Spring AI</span><span>PostgreSQL</span><span>PGVector</span><span>Docker</span><span>Jenkins</span><span>AWS</span>
+</div>
+</main>
+
+<script>
+const steps=[...document.querySelectorAll(".step")],consoleBox=document.getElementById("console"),bar=document.getElementById("bar");
+const stack=document.getElementById("stack"),heap=document.getElementById("heap"),result=document.getElementById("result");
+const code=document.getElementById("code");
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+function log(t,c=""){const d=document.createElement("div");d.className=c;d.textContent=t;consoleBox.appendChild(d);consoleBox.scrollTop=consoleBox.scrollHeight}
+function slot(box,text){const d=document.createElement("div");d.className="slot";d.textContent=text;box.appendChild(d);setTimeout(()=>d.classList.add("show"),50)}
+function clearAll(){steps.forEach(x=>x.className="step");consoleBox.innerHTML="";bar.style.width="0%";stack.innerHTML="";heap.innerHTML="";result.style.display="none"}
+async function run(){
+ clearAll();log("[SOURCE] Main.java 분석 시작","info");
+ for(let i=0;i<6;i++){
+   steps[i].classList.add("active");
+   bar.style.width=((i+1)*16.66)+"%";
+   if(i===0){log("[SOURCE] main() 메소드 발견","info")}
+   if(i===1){await sleep(500);log("[JAVAC] Main.java → Main.class","ok");log("[JAVAC] Bytecode 생성 완료","ok")}
+   if(i===2){await sleep(500);log("[CLASSLOADER] Main.class Loading...","info");log("[CLASSLOADER] Class Loaded","ok")}
+   if(i===3){await sleep(500);log("[JVM] Bytecode 실행 시작","info");log("[JVM] main() 호출","ok")}
+   if(i===4){
+      await sleep(500);log("[MEMORY] Stack Frame 생성","info");
+      slot(stack,"main()");await sleep(250);slot(stack,"a = 10");await sleep(250);slot(stack,"b = 20");await sleep(250);slot(stack,"sum = 30");
+      if(code.value.includes("new ")){slot(heap,"객체 인스턴스");}
+      log("[MEMORY] Stack / Heap 상태 구성 완료","ok");
+   }
+   if(i===5){
+      await sleep(500);
+      let out="30";
+      if(code.value.includes("for(")||code.value.includes("for ("))out="1\\n2\\n3\\n4\\n5";
+      if(code.value.includes("Student"))out="Student{name='Java', age=20}";
+      document.getElementById("output").textContent=out;
+      document.getElementById("explain").textContent="System.out.println() → JVM Console 출력 완료";
+      result.style.display="block";log("[CONSOLE] "+out.replaceAll("\\n"," | "),"ok");
+   }
+   await sleep(450);steps[i].classList.remove("active");steps[i].classList.add("done");
+ }
+ log("[SYSTEM] ✓ Java 실행 체험 완료","ok");bar.style.width="100%";
+}
+function sample(n){
+ if(n===1)code.value=`public class Main {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 20;
+        int sum = a + b;
+        System.out.println(sum);
+    }
+}`;
+ if(n===2)code.value=`public class Main {
+    public static void main(String[] args) {
+        for(int i = 1; i <= 5; i++) {
+            System.out.println(i);
+        }
+    }
+}`;
+ if(n===3)code.value=`class Student {
+    String name = "Java";
+    int age = 20;
+}
+public class Main {
+    public static void main(String[] args) {
+        Student s = new Student();
+        System.out.println(s);
+    }
+}`;
+ clearAll();log("[SYSTEM] 예제 코드가 준비되었습니다.","info")
+}
+function explain(t){alert(t)}
+document.getElementById("run").onclick=run;
+document.getElementById("reset").onclick=()=>{clearAll();log("[SYSTEM] 초기화 완료","info")};
+document.getElementById("sample1").onclick=()=>sample(1);
+document.getElementById("sample2").onclick=()=>sample(2);
+document.getElementById("sample3").onclick=()=>sample(3);
+</script>
+</body>
+</html>

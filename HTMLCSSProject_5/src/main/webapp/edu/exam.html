@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title th:text="${exam.title}">
+    시험
+</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet">
+
+
+<style>
+
+    /* =========================
+       기본
+    ========================= */
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+
+        margin: 0;
+
+        font-family:
+            Pretendard,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+
+        background:
+            linear-gradient(
+                135deg,
+                #f5f7ff,
+                #eef2ff,
+                #f8f9ff
+            );
+
+        color: #1f2937;
+
+        min-height: 100vh;
+    }
+
+
+    /* =========================
+       전체
+    ========================= */
+
+    .exam-wrapper {
+
+        max-width: 1050px;
+
+        margin: 0 auto;
+
+        padding:
+            35px 20px 80px;
+    }
+
+
+    /* =========================
+       시험 Header
+    ========================= */
+
+    .exam-header {
+
+        position: relative;
+
+        padding: 28px 32px;
+
+        border-radius: 22px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #111827,
+                #312e81 55%,
+                #4f46e5
+            );
+
+        color: white;
+
+        box-shadow:
+            0 18px 45px
+            rgba(49,46,129,.22);
+
+        overflow: hidden;
+
+        margin-bottom: 20px;
+    }
+
+
+    .exam-header::after {
+
+        content: "";
+
+        position: absolute;
+
+        width: 220px;
+        height: 220px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(255,255,255,.08);
+
+        right: -80px;
+        top: -110px;
+    }
+
+
+    .exam-header-content {
+
+        position: relative;
+
+        z-index: 2;
+    }
+
+
+    .exam-label {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 6px;
+
+        padding: 6px 10px;
+
+        border-radius: 20px;
+
+        background:
+            rgba(255,255,255,.13);
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        margin-bottom: 10px;
+    }
+
+
+    .exam-header h1 {
+
+        font-size: 25px;
+
+        font-weight: 800;
+
+        margin: 0 0 7px;
+    }
+
+
+    .exam-header p {
+
+        margin: 0;
+
+        font-size: 13px;
+
+        color:
+            rgba(255,255,255,.7);
+    }
+
+
+    /* =========================
+       상단 정보
+    ========================= */
+
+    .exam-info {
+
+        display: flex;
+
+        justify-content:
+            space-between;
+
+        align-items: center;
+
+        gap: 15px;
+
+        margin-top: 22px;
+    }
+
+
+    .info-item {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        font-size: 13px;
+
+        color:
+            rgba(255,255,255,.8);
+    }
+
+
+    .info-item i {
+
+        font-size: 16px;
+    }
+
+
+    /* =========================
+       Timer
+    ========================= */
+
+    .timer-box {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        padding:
+            9px 15px;
+
+        border-radius: 12px;
+
+        background:
+            rgba(255,255,255,.14);
+
+        border:
+            1px solid
+            rgba(255,255,255,.15);
+
+        backdrop-filter:
+            blur(10px);
+
+        font-weight: 800;
+
+        font-size: 16px;
+    }
+
+
+    .timer-box.warning {
+
+        background:
+            rgba(239,68,68,.25);
+
+        animation:
+            timerPulse 1s infinite;
+    }
+
+
+    @keyframes timerPulse {
+
+        50% {
+            transform: scale(1.03);
+        }
+
+    }
+
+
+    /* =========================
+       진행률
+    ========================= */
+
+    .progress-card {
+
+        background: white;
+
+        border-radius: 17px;
+
+        padding: 17px 20px;
+
+        margin-bottom: 20px;
+
+        box-shadow:
+            0 8px 25px
+            rgba(31,41,55,.06);
+    }
+
+
+    .progress-top {
+
+        display: flex;
+
+        justify-content:
+            space-between;
+
+        margin-bottom: 9px;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        color: #6b7280;
+    }
+
+
+    .progress {
+
+        height: 7px;
+
+        border-radius: 10px;
+
+        background: #eef0f5;
+    }
+
+
+    .progress-bar {
+
+        border-radius: 10px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #6366f1,
+                #8b5cf6
+            );
+
+        transition:
+            width .3s ease;
+    }
+
+
+    /* =========================
+       문제 카드
+    ========================= */
+
+    .question-card {
+
+        background: white;
+
+        border: 1px solid
+            #edf0f5;
+
+        border-radius: 20px;
+
+        padding: 25px;
+
+        margin-bottom: 18px;
+
+        box-shadow:
+            0 8px 25px
+            rgba(31,41,55,.055);
+
+        transition: .2s;
+    }
+
+
+    .question-card:hover {
+
+        box-shadow:
+            0 12px 32px
+            rgba(31,41,55,.08);
+    }
+
+
+    /* =========================
+       문제 Header
+    ========================= */
+
+    .question-header {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content:
+            space-between;
+
+        margin-bottom: 18px;
+    }
+
+
+    .question-number {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 9px;
+
+        color: #4f46e5;
+
+        font-size: 13px;
+
+        font-weight: 800;
+    }
+
+
+    .number-circle {
+
+        width: 34px;
+        height: 34px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background: #eef2ff;
+
+        font-size: 13px;
+    }
+
+
+    .question-type {
+
+        padding:
+            5px 9px;
+
+        border-radius: 20px;
+
+        background: #f3f4f6;
+
+        color: #6b7280;
+
+        font-size: 11px;
+
+        font-weight: 700;
+    }
+
+
+    /* =========================
+       문제 제목
+    ========================= */
+
+    .question-title {
+
+        font-size: 17px;
+
+        font-weight: 750;
+
+        line-height: 1.7;
+
+        color: #111827;
+
+        margin-bottom: 22px;
+    }
+
+
+    /* =========================
+       보기
+    ========================= */
+
+    .option-list {
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 9px;
+    }
+
+
+    .option {
+
+        position: relative;
+    }
+
+
+    .option input {
+
+        position: absolute;
+
+        opacity: 0;
+    }
+
+
+    .option label {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 13px;
+
+        width: 100%;
+
+        padding:
+            13px 15px;
+
+        border:
+            1px solid #e5e7eb;
+
+        border-radius: 12px;
+
+        background: #fafbfc;
+
+        cursor: pointer;
+
+        transition: .2s;
+
+        font-size: 14px;
+
+        color: #4b5563;
+    }
+
+
+    .option label:hover {
+
+        border-color: #a5b4fc;
+
+        background: #f8f8ff;
+    }
+
+
+    /* 선택된 보기 */
+
+    .option input:checked + label {
+
+        border-color: #6366f1;
+
+        background: #eef2ff;
+
+        color: #3730a3;
+
+        font-weight: 700;
+
+        box-shadow:
+            0 0 0 2px
+            rgba(99,102,241,.08);
+    }
+
+
+    .option-number {
+
+        width: 30px;
+        height: 30px;
+
+        flex-shrink: 0;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 9px;
+
+        background: white;
+
+        border: 1px solid #e5e7eb;
+
+        font-size: 12px;
+
+        font-weight: 800;
+
+        color: #6b7280;
+    }
+
+
+    .option input:checked + label
+    .option-number {
+
+        background: #6366f1;
+
+        color: white;
+
+        border-color: #6366f1;
+    }
+
+
+    /* =========================
+       하단 제출
+    ========================= */
+
+    .submit-area {
+
+        position: sticky;
+
+        bottom: 15px;
+
+        z-index: 10;
+
+        margin-top: 25px;
+
+        padding: 15px 18px;
+
+        background:
+            rgba(255,255,255,.9);
+
+        border:
+            1px solid #e5e7eb;
+
+        border-radius: 17px;
+
+        backdrop-filter:
+            blur(15px);
+
+        box-shadow:
+            0 10px 35px
+            rgba(31,41,55,.12);
+    }
+
+
+    .submit-inner {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content:
+            space-between;
+
+        gap: 15px;
+    }
+
+
+    .submit-info {
+
+        font-size: 12px;
+
+        color: #6b7280;
+    }
+
+
+    .submit-info strong {
+
+        color: #374151;
+    }
+
+
+    .submit-btn {
+
+        min-width: 150px;
+
+        height: 48px;
+
+        border: 0;
+
+        border-radius: 12px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #6366f1,
+                #8b5cf6
+            );
+
+        color: white;
+
+        font-weight: 800;
+
+        box-shadow:
+            0 8px 20px
+            rgba(99,102,241,.25);
+
+        transition: .2s;
+    }
+
+
+    .submit-btn:hover {
+
+        transform:
+            translateY(-2px);
+
+        box-shadow:
+            0 12px 25px
+            rgba(99,102,241,.35);
+    }
+
+
+    /* =========================
+       반응형
+    ========================= */
+
+    @media(max-width: 650px) {
+
+        .exam-wrapper {
+
+            padding:
+                20px 12px 60px;
+        }
+
+
+        .exam-header {
+
+            padding: 23px;
+        }
+
+
+        .exam-header h1 {
+
+            font-size: 21px;
+        }
+
+
+        .exam-info {
+
+            flex-direction: column;
+
+            align-items: flex-start;
+        }
+
+
+        .question-card {
+
+            padding: 19px;
+        }
+
+
+        .question-title {
+
+            font-size: 15px;
+        }
+
+
+        .submit-inner {
+
+            flex-direction: column;
+
+            align-items: stretch;
+        }
+
+
+        .submit-btn {
+
+            width: 100%;
+        }
+
+    }
+
+</style>
+</head>
+<body>
+<div class="exam-wrapper">
+<!-- =====================================
+     시험 Header
+====================================== -->
+
+<div class="exam-header">
+
+    <div class="exam-header-content">
+
+        <div class="exam-label">
+
+            <i class="bi bi-journal-check"></i>
+
+            ONLINE EXAM
+
+        </div>
+
+
+        <h1 th:text="${exam.title}">
+
+            Spring Security 평가시험
+
+        </h1>
+
+
+        <p>
+
+            문제를 모두 확인한 후 답안을 제출해주세요.
+
+        </p>
+
+
+        <div class="exam-info">
+
+            <div class="info-item">
+
+                <i class="bi bi-list-check"></i>
+
+                총
+                <strong
+                    th:text="${#lists.size(exam.questions)}">
+
+                    10
+
+                </strong>
+                문제
+
+            </div>
+
+
+            <div class="info-item">
+
+                <i class="bi bi-clock"></i>
+
+                제한시간 30분
+
+            </div>
+
+
+            <!-- Timer -->
+
+            <div class="timer-box"
+                 id="timerBox">
+
+                <i class="bi bi-stopwatch"></i>
+
+                <span id="timer">
+                    30:00
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     진행률
+====================================== -->
+
+<div class="progress-card">
+
+    <div class="progress-top">
+
+        <span>
+
+            시험 진행률
+
+        </span>
+
+        <span>
+
+            <span id="answeredCount">
+                0
+            </span>
+            /
+            <span
+                th:text="${#lists.size(exam.questions)}">
+                10
+            </span>
+
+        </span>
+
+    </div>
+
+
+    <div class="progress">
+
+        <div
+            id="progressBar"
+            class="progress-bar"
+            role="progressbar"
+            style="width: 0%">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     시험 문제
+====================================== -->
+
+<form id="examForm">
+
+
+    <div
+        th:each="q,stat : ${exam.questions}"
+        class="question-card">
+
+
+        <!-- 문제 Header -->
+
+        <div class="question-header">
+
+            <div class="question-number">
+
+                <span class="number-circle"
+                      th:text="${stat.count}">
+
+                    1
+
+                </span>
+
+                문제
+                <span th:text="${stat.count}">
+                    1
+                </span>
+
+            </div>
+
+
+            <span class="question-type">
+
+                객관식
+
+            </span>
+
+        </div>
+
+
+
+        <!-- 문제 -->
+
+        <div class="question-title">
+
+            <span th:text="${q.title}">
+
+                Spring Security에서 인증을 담당하는 객체는?
+
+            </span>
+
+        </div>
+
+
+
+        <!-- 보기 -->
+
+        <div class="option-list">
+
+
+            <!-- ① -->
+
+            <div class="option">
+
+                <input
+                    class="form-check-input"
+                    type="radio"
+
+                    th:id="'q' + ${q.no} + '_1'"
+
+                    th:name="'question_' + ${q.no}"
+
+                    value="1">
+
+                <label
+                    th:for="'q' + ${q.no} + '_1'">
+
+                    <span class="option-number">
+                        ①
+                    </span>
+
+                    <span th:text="${q.option1}">
+                        Authentication
+                    </span>
+
+                </label>
+
+            </div>
+
+
+
+            <!-- ② -->
+
+            <div class="option">
+
+                <input
+                    class="form-check-input"
+                    type="radio"
+
+                    th:id="'q' + ${q.no} + '_2'"
+
+                    th:name="'question_' + ${q.no}"
+
+                    value="2">
+
+                <label
+                    th:for="'q' + ${q.no} + '_2'">
+
+                    <span class="option-number">
+                        ②
+                    </span>
+
+                    <span th:text="${q.option2}">
+                        Authorization
+                    </span>
+
+                </label>
+
+            </div>
+
+
+
+            <!-- ③ -->
+
+            <div class="option">
+
+                <input
+                    class="form-check-input"
+                    type="radio"
+
+                    th:id="'q' + ${q.no} + '_3'"
+
+                    th:name="'question_' + ${q.no}"
+
+                    value="3">
+
+                <label
+                    th:for="'q' + ${q.no} + '_3'">
+
+                    <span class="option-number">
+                        ③
+                    </span>
+
+                    <span th:text="${q.option3}">
+                        SecurityContext
+                    </span>
+
+                </label>
+
+            </div>
+
+
+
+            <!-- ④ -->
+
+            <div class="option">
+
+                <input
+                    class="form-check-input"
+                    type="radio"
+
+                    th:id="'q' + ${q.no} + '_4'"
+
+                    th:name="'question_' + ${q.no}"
+
+                    value="4">
+
+                <label
+                    th:for="'q' + ${q.no} + '_4'">
+
+                    <span class="option-number">
+                        ④
+                    </span>
+
+                    <span th:text="${q.option4}">
+                        UserDetails
+                    </span>
+
+                </label>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================
+         제출 영역
+    ================================== -->
+
+    <div class="submit-area">
+
+        <div class="submit-inner">
+
+
+            <div class="submit-info">
+
+                <i class="bi bi-info-circle me-1"></i>
+
+                답안을 확인한 후
+                <strong>시험 제출</strong>을 눌러주세요.
+
+            </div>
+
+
+            <button
+                type="button"
+                onclick="submitExam()"
+                class="submit-btn">
+
+                <i class="bi bi-send-fill me-2"></i>
+
+                시험 제출
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+</form>
+</div>
+
+<script th:inline="javascript"> 
+/* ===================================== 시험 정보 ====================================== */
+const enrollmentNo = /*[[${exam.enrollmentNo}]]*/ 0; const totalQuestions = /*[[${#lists.size(exam.questions)}]]*/ 10; /* ===================================== Timer ====================================== */ let remainingSeconds = 30 * 60; const timer = document.querySelector("#timer"); const timerBox = document.querySelector("#timerBox"); function updateTimer() { const minutes = Math.floor( remainingSeconds / 60 ); const seconds = remainingSeconds % 60; timer.textContent = String(minutes) .padStart(2, "0") + ":" + String(seconds) .padStart(2, "0"); /* 5분 이하 */ if (remainingSeconds <= 300) { timerBox.classList.add( "warning" ); } /* 시간 종료 */ if (remainingSeconds <= 0) { clearInterval(timerInterval); alert( "시험 시간이 종료되었습니다.\n자동으로 제출됩니다." ); submitExam(true); return; } remainingSeconds--; } updateTimer(); const timerInterval = setInterval( updateTimer, 1000 ); /* ===================================== 답변 진행률 ====================================== */ document .querySelectorAll( 'input[type="radio"]' ) .forEach( input => { input.addEventListener( "change", updateProgress ); } ); function updateProgress() { const answered = new Set( Array.from( document.querySelectorAll( 'input[type="radio"]:checked' ) ).map( input => input.name ) ).size; document.querySelector( "#answeredCount" ).textContent = answered; const percent = totalQuestions === 0 ? 0 : Math.round( answered / totalQuestions * 100 ); document.querySelector( "#progressBar" ).style.width = percent + "%"; } /* ===================================== 시험 제출 ====================================== */ function submitExam(autoSubmit = false) { if (!autoSubmit) { const unanswered = totalQuestions - new Set( Array.from( document.querySelectorAll( 'input[type="radio"]:checked' ) ).map( input => input.name ) ).size; if (unanswered > 0) { const confirmSubmit = confirm( "아직 풀지 않은 문제가 " + unanswered + "개 있습니다.\n\n" + "그래도 제출하시겠습니까?" ); if (!confirmSubmit) { return; } } else { if (!confirm( "모든 문제를 풀었습니다.\n\n시험을 제출하시겠습니까?" )) { return; } } } /* 제출 버튼 비활성화 */ const submitButton = document.querySelector( ".submit-btn" ); submitButton.disabled = true; submitButton.innerHTML = ` <span class="spinner-border spinner-border-sm me-2"> </span> 제출 중... `; /* Timer 정지 */ clearInterval(timerInterval); /* 서버 제출 */ fetch( "/exam/submit?enrollmentNo=" + enrollmentNo, { method: "POST" } ) .then( response => { if (!response.ok) { throw new Error( "시험 제출 실패" ); } return response.json(); } ) .then( score => { alert( "시험이 제출되었습니다.\n\n" + "점수 : " + score ); location.href = "/exam/wrong?enrollmentNo=" + enrollmentNo; } ) .catch( error => { console.error(error); alert( "시험 제출 중 오류가 발생했습니다." ); submitButton.disabled = false; submitButton.innerHTML = ` <i class="bi bi-send-fill me-2"></i> 시험 제출 `; } ); } </script>
+</body>
+</html>

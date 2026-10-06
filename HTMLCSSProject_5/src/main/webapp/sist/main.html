@@ -1,0 +1,2082 @@
+```html
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI LIFE CAMPUS | 쌍용강북교육센터</title>
+
+    <!-- Bootstrap 5.3.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet">
+
+    <!-- Pretendard -->
+    <link rel="stylesheet"
+          as="style"
+          crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+    <style>
+
+        /* =========================================================
+           기본
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Pretendard", sans-serif;
+            color: #172033;
+            background: #f7f9fc;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .container-custom {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+
+        /* =========================================================
+           Header
+        ========================================================= */
+
+        .main-header {
+            height: 76px;
+            background: rgba(255,255,255,.96);
+            border-bottom: 1px solid #e8ebf2;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(15px);
+        }
+
+        .header-inner {
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            color: #151c35;
+        }
+
+        .logo-symbol {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 21px;
+            background: linear-gradient(
+                    135deg,
+                    #5b5ff7,
+                    #8b5cf6,
+                    #06b6d4
+            );
+            box-shadow: 0 8px 20px rgba(91,95,247,.25);
+        }
+
+        .logo-text strong {
+            display: block;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -.5px;
+        }
+
+        .logo-text span {
+            display: block;
+            font-size: 11px;
+            color: #8991a5;
+            margin-top: 1px;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .main-nav a {
+            color: #384157;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .main-nav a:hover {
+            color: #5b5ff7;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-login {
+            color: #4b556b;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 14px;
+        }
+
+        .btn-signup {
+            background: #171d35;
+            color: white;
+            padding: 11px 17px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+        /* =========================================================
+           Hero
+        ========================================================= */
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            background:
+                    radial-gradient(
+                            circle at 75% 35%,
+                            rgba(111,91,255,.16),
+                            transparent 30%
+                    ),
+                    linear-gradient(
+                            135deg,
+                            #f7f8ff 0%,
+                            #ffffff 48%,
+                            #f2fbff 100%
+                    );
+            padding: 90px 0 85px;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 480px;
+            height: 480px;
+            border-radius: 50%;
+            background: rgba(99,102,241,.07);
+            right: -150px;
+            top: -180px;
+        }
+
+        .hero-inner {
+            position: relative;
+            display: flex;
+            align-items: center;
+            min-height: 480px;
+        }
+
+        .hero-content {
+            width: 58%;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 14px;
+            border-radius: 30px;
+            background: #eeefff;
+            color: #5b5ff7;
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 22px;
+        }
+
+        .hero-badge i {
+            font-size: 12px;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 5vw, 62px);
+            line-height: 1.12;
+            letter-spacing: -3px;
+            font-weight: 900;
+            margin-bottom: 22px;
+            color: #141a31;
+        }
+
+        .hero h1 .gradient {
+            background: linear-gradient(
+                    90deg,
+                    #5759e8,
+                    #8b5cf6,
+                    #06a9c8
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-description {
+            color: #687188;
+            font-size: 17px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary-custom {
+            border: none;
+            background: #171d35;
+            color: white;
+            padding: 15px 23px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .btn-primary-custom:hover {
+            background: #2b3150;
+            color: white;
+        }
+
+        .btn-outline-custom {
+            border: 1px solid #d8dce7;
+            background: white;
+            color: #30384d;
+            padding: 15px 23px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .btn-outline-custom:hover {
+            background: #f5f6fa;
+        }
+
+
+        /* =========================================================
+           Hero Visual
+        ========================================================= */
+
+        .hero-visual {
+            width: 42%;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .campus-card {
+            width: 420px;
+            min-height: 390px;
+            border-radius: 28px;
+            padding: 30px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            background:
+                    linear-gradient(
+                            145deg,
+                            #20294d,
+                            #272157 48%,
+                            #113b58
+                    );
+            box-shadow:
+                    0 30px 70px rgba(29,34,75,.23);
+        }
+
+        .campus-card::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            right: -90px;
+            top: -80px;
+            background: rgba(111,91,255,.28);
+        }
+
+        .campus-card::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            left: -110px;
+            bottom: -130px;
+            background: rgba(6,182,212,.20);
+        }
+
+        .campus-top {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .campus-label {
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: #b8c1e7;
+            font-weight: 700;
+        }
+
+        .campus-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,.12);
+            font-size: 21px;
+        }
+
+        .campus-card h2 {
+            position: relative;
+            z-index: 2;
+            margin-top: 55px;
+            font-size: 36px;
+            letter-spacing: -1.5px;
+            font-weight: 900;
+        }
+
+        .campus-card p {
+            position: relative;
+            z-index: 2;
+            color: #c8cee5;
+            line-height: 1.7;
+            margin-top: 10px;
+        }
+
+        .tech-flow {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 25px;
+        }
+
+        .tech-flow span {
+            padding: 7px 11px;
+            border-radius: 8px;
+            background: rgba(255,255,255,.10);
+            color: #e4e7f5;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================================
+           Quick Menu
+        ========================================================= */
+
+        .quick-menu {
+            background: white;
+            border-bottom: 1px solid #e9ecf2;
+        }
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .quick-item {
+            min-height: 112px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 13px;
+            border-right: 1px solid #edf0f5;
+            color: #394157;
+        }
+
+        .quick-item:first-child {
+            border-left: 1px solid #edf0f5;
+        }
+
+        .quick-item:hover {
+            background: #f8f9fd;
+            color: #5759e8;
+        }
+
+        .quick-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f1ff;
+            color: #5b5ff7;
+            font-size: 19px;
+        }
+
+        .quick-item strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .quick-item small {
+            display: block;
+            color: #9aa1b2;
+            margin-top: 3px;
+        }
+
+
+        /* =========================================================
+           Section
+        ========================================================= */
+
+        .section {
+            padding: 90px 0;
+        }
+
+        .section-header {
+            margin-bottom: 38px;
+        }
+
+        .section-label {
+            font-size: 12px;
+            color: #6568ed;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 9px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            margin: 0;
+        }
+
+        .section-description {
+            color: #7c8497;
+            margin-top: 9px;
+        }
+
+        .section-more {
+            float: right;
+            margin-top: -32px;
+            color: #737b8f;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        /* =========================================================
+           Course
+        ========================================================= */
+
+        .course-section {
+            background: #fff;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .course-card {
+            background: white;
+            border: 1px solid #e8ebf2;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: .25s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(31,41,55,.09);
+        }
+
+        .course-image {
+            height: 145px;
+            padding: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .course-image.java {
+            background: linear-gradient(135deg,#e9ecff,#dce9ff);
+        }
+
+        .course-image.spring {
+            background: linear-gradient(135deg,#e8f9ef,#d9f3e6);
+        }
+
+        .course-image.ai {
+            background: linear-gradient(135deg,#f0eaff,#e6ddff);
+        }
+
+        .course-image.cloud {
+            background: linear-gradient(135deg,#e4f8ff,#d7f0ff);
+        }
+
+        .course-image i {
+            font-size: 38px;
+            color: #3f4fc1;
+        }
+
+        .course-badge {
+            padding: 6px 9px;
+            background: white;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .course-body {
+            padding: 20px;
+        }
+
+        .course-category {
+            color: #737bea;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .course-title {
+            font-size: 17px;
+            font-weight: 800;
+            margin: 7px 0;
+            color: #20283d;
+        }
+
+        .course-info {
+            color: #8b93a5;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .course-footer {
+            margin-top: 16px;
+            padding-top: 13px;
+            border-top: 1px solid #edf0f4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-footer strong {
+            font-size: 13px;
+            color: #242b40;
+        }
+
+        .course-footer span {
+            font-size: 11px;
+            color: #8d94a5;
+        }
+
+
+        /* =========================================================
+           AI Learning
+        ========================================================= */
+
+        .ai-section {
+            background: #f5f6fb;
+        }
+
+        .ai-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.45fr;
+            gap: 30px;
+        }
+
+        .ai-intro {
+            padding: 40px;
+            border-radius: 20px;
+            color: white;
+            background:
+                    linear-gradient(
+                            145deg,
+                            #1e2443,
+                            #302261,
+                            #17425a
+                    );
+        }
+
+        .ai-intro .ai-symbol {
+            width: 55px;
+            height: 55px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,.12);
+            font-size: 25px;
+            margin-bottom: 30px;
+        }
+
+        .ai-intro h3 {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .ai-intro p {
+            color: #c7cce1;
+            line-height: 1.8;
+            margin-top: 13px;
+        }
+
+        .ai-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 15px;
+        }
+
+        .ai-feature {
+            background: white;
+            border: 1px solid #e6e9f0;
+            border-radius: 16px;
+            padding: 25px;
+            transition: .2s;
+        }
+
+        .ai-feature:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(31,41,55,.07);
+        }
+
+        .ai-feature-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f1ff;
+            color: #6265eb;
+            font-size: 20px;
+            margin-bottom: 18px;
+        }
+
+        .ai-feature h4 {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .ai-feature p {
+            margin: 7px 0 0;
+            color: #8991a3;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* =========================================================
+           Project
+        ========================================================= */
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 20px;
+        }
+
+        .project-card {
+            min-height: 240px;
+            border-radius: 18px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e7eaf0;
+            background: white;
+        }
+
+        .project-card .project-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f1ff;
+            color: #6265eb;
+            font-size: 22px;
+        }
+
+        .project-card h3 {
+            margin-top: 23px;
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .project-card p {
+            color: #858da0;
+            line-height: 1.7;
+            font-size: 13px;
+        }
+
+        .project-tech {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .project-tech span {
+            padding: 5px 8px;
+            border-radius: 5px;
+            background: #f4f5f8;
+            color: #6f778b;
+            font-size: 10px;
+        }
+
+
+        /* =========================================================
+           Employment
+        ========================================================= */
+
+        .employment-section {
+            background: #fff;
+        }
+
+        .employment-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .employment-card {
+            padding: 32px;
+            border: 1px solid #e7eaf0;
+            border-radius: 17px;
+            background: #fff;
+        }
+
+        .employment-card.highlight {
+            background: #f3f2ff;
+            border-color: #dedbff;
+        }
+
+        .employment-icon {
+            font-size: 25px;
+            color: #6366e8;
+        }
+
+        .employment-card h3 {
+            font-size: 19px;
+            margin-top: 20px;
+            font-weight: 900;
+        }
+
+        .employment-card p {
+            color: #858da0;
+            line-height: 1.7;
+            font-size: 13px;
+        }
+
+        .employment-link {
+            display: inline-block;
+            margin-top: 12px;
+            color: #5b5fe4;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+
+        /* =========================================================
+           CTA
+        ========================================================= */
+
+        .cta {
+            padding: 75px 0;
+            background:
+                    linear-gradient(
+                            135deg,
+                            #202644,
+                            #322460,
+                            #16465a
+                    );
+            color: white;
+        }
+
+        .cta-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cta h2 {
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .cta p {
+            color: #c7cce0;
+            margin: 8px 0 0;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 9px;
+        }
+
+        .cta-buttons a {
+            padding: 14px 20px;
+            border-radius: 9px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .cta-main {
+            background: white;
+            color: #222943;
+        }
+
+        .cta-sub {
+            border: 1px solid rgba(255,255,255,.25);
+            color: white;
+        }
+
+
+        /* =========================================================
+           Footer
+        ========================================================= */
+
+        footer {
+            background: #171b2b;
+            color: #9ba2b4;
+            padding: 45px 0;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .footer-info {
+            margin-top: 13px;
+            line-height: 1.8;
+            font-size: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #b8bdca;
+            font-size: 12px;
+        }
+
+        .copyright {
+            margin-top: 25px;
+            font-size: 11px;
+            color: #686f82;
+        }
+
+
+        /* =========================================================
+           Responsive
+        ========================================================= */
+
+        @media (max-width: 992px) {
+
+            .main-nav {
+                display: none;
+            }
+
+            .hero-content {
+                width: 100%;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            .course-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .ai-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .employment-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 768px) {
+
+            .header-actions .btn-login {
+                display: none;
+            }
+
+            .hero {
+                padding: 60px 0;
+            }
+
+            .hero h1 {
+                font-size: 39px;
+            }
+
+            .hero-description {
+                font-size: 15px;
+            }
+
+            .quick-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .quick-item {
+                border-bottom: 1px solid #edf0f5;
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-inner {
+                display: block;
+            }
+
+            .cta-buttons {
+                margin-top: 25px;
+            }
+
+            .footer-inner {
+                display: block;
+            }
+
+            .footer-links {
+                margin-top: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="main-header">
+
+    <div class="container-custom header-inner">
+
+        <a href="/" class="logo">
+
+            <div class="logo-symbol">
+                <i class="bi bi-stars"></i>
+            </div>
+
+            <div class="logo-text">
+
+                <strong>AI LIFE CAMPUS</strong>
+
+                <span>쌍용강북교육센터</span>
+
+            </div>
+
+        </a>
+
+
+        <nav class="main-nav">
+
+            <a href="/course/list">교육과정</a>
+
+            <a href="/edu/center">교육센터</a>
+
+            <a href="/ai">AI 학습</a>
+
+            <a href="/project">프로젝트</a>
+
+            <a href="/employment">취업지원</a>
+
+            <a href="/community">커뮤니티</a>
+
+        </nav>
+
+
+        <div class="header-actions">
+
+            <a href="/login"
+               class="btn-login">
+                로그인
+            </a>
+
+            <a href="/join"
+               class="btn-signup">
+                회원가입
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="container-custom hero-inner">
+
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+
+                <i class="bi bi-megaphone-fill"></i>
+
+                2026 AI 개발자 교육과정 모집
+
+            </div>
+
+
+            <h1>
+
+                AI 시대,<br>
+
+                <span class="gradient">
+                    개발자는 어떻게
+                </span>
+
+                준비해야 하는가?
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                AI를 단순히 사용하는 교육이 아니라<br>
+
+                Java부터 Spring Boot, AI/RAG, Docker, AWS까지<br>
+
+                <strong>실무 프로젝트로 완성하는 AI 개발자 교육</strong>
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a href="/course/list"
+                   class="btn-primary-custom">
+
+                    교육과정 보기
+
+                    <i class="bi bi-arrow-right ms-2"></i>
+
+                </a>
+
+
+                <a href="/consult"
+                   class="btn-outline-custom">
+
+                    교육상담
+
+                    <i class="bi bi-chat-dots ms-2"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- HERO VISUAL -->
+
+        <div class="hero-visual">
+
+            <div class="campus-card">
+
+                <div class="campus-top">
+
+                    <span class="campus-label">
+                        AI DEVELOPMENT CAMPUS
+                    </span>
+
+                    <div class="campus-icon">
+
+                        <i class="bi bi-cpu"></i>
+
+                    </div>
+
+                </div>
+
+
+                <h2>
+                    Build Your<br>
+                    AI Career
+                </h2>
+
+
+                <p>
+
+                    배우고 → 만들고 → 검증하고 → 취업한다
+
+                </p>
+
+
+                <div class="tech-flow">
+
+                    <span>JAVA</span>
+
+                    <span>SPRING</span>
+
+                    <span>AI</span>
+
+                    <span>RAG</span>
+
+                    <span>DOCKER</span>
+
+                    <span>AWS</span>
+
+                    <span>PROJECT</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     QUICK MENU
+========================================================= -->
+
+<section class="quick-menu">
+
+    <div class="container-custom quick-grid">
+
+
+        <a href="/course/list"
+           class="quick-item">
+
+            <div class="quick-icon">
+
+                <i class="bi bi-mortarboard-fill"></i>
+
+            </div>
+
+            <div>
+
+                <strong>교육과정</strong>
+
+                <small>실무 중심 과정</small>
+
+            </div>
+
+        </a>
+
+
+        <a href="/course/apply"
+           class="quick-item">
+
+            <div class="quick-icon">
+
+                <i class="bi bi-pencil-square"></i>
+
+            </div>
+
+            <div>
+
+                <strong>수강신청</strong>
+
+                <small>온라인 신청</small>
+
+            </div>
+
+        </a>
+
+
+        <a href="/ai"
+           class="quick-item">
+
+            <div class="quick-icon">
+
+                <i class="bi bi-stars"></i>
+
+            </div>
+
+            <div>
+
+                <strong>AI 학습</strong>
+
+                <small>AI 문제·오답·학습</small>
+
+            </div>
+
+        </a>
+
+
+        <a href="/project"
+           class="quick-item">
+
+            <div class="quick-icon">
+
+                <i class="bi bi-code-square"></i>
+
+            </div>
+
+            <div>
+
+                <strong>프로젝트</strong>
+
+                <small>실무 프로젝트</small>
+
+            </div>
+
+        </a>
+
+
+        <a href="/employment"
+           class="quick-item">
+
+            <div class="quick-icon">
+
+                <i class="bi bi-briefcase-fill"></i>
+
+            </div>
+
+            <div>
+
+                <strong>취업지원</strong>
+
+                <small>취업·면접·포트폴리오</small>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     COURSE
+========================================================= -->
+
+<section class="section course-section">
+
+    <div class="container-custom">
+
+
+        <div class="section-header">
+
+            <div class="section-label">
+                EDUCATION PROGRAM
+            </div>
+
+            <h2 class="section-title">
+                현재 모집중인 교육과정
+            </h2>
+
+            <p class="section-description">
+                현장에서 사용하는 기술을 단계별로 학습합니다.
+            </p>
+
+            <a href="/course/list"
+               class="section-more">
+
+                전체 과정 보기
+                <i class="bi bi-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+
+        <div class="course-grid">
+
+
+            <!-- JAVA -->
+
+            <div class="course-card">
+
+                <div class="course-image java">
+
+                    <i class="bi bi-cup-hot-fill"></i>
+
+                    <span class="course-badge">
+                        BACKEND
+                    </span>
+
+                </div>
+
+                <div class="course-body">
+
+                    <div class="course-category">
+                        JAVA · SPRING
+                    </div>
+
+                    <div class="course-title">
+                        Java & Spring Boot
+                        백엔드 개발자 과정
+                    </div>
+
+                    <div class="course-info">
+
+                        Java 객체지향부터
+                        Spring Boot REST API까지
+
+                    </div>
+
+                    <div class="course-footer">
+
+                        <strong>
+                            실무 프로젝트
+                        </strong>
+
+                        <span>
+                            모집중
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SPRING -->
+
+            <div class="course-card">
+
+                <div class="course-image spring">
+
+                    <i class="bi bi-diagram-3-fill"></i>
+
+                    <span class="course-badge">
+                        WEB
+                    </span>
+
+                </div>
+
+                <div class="course-body">
+
+                    <div class="course-category">
+                        SPRING BOOT
+                    </div>
+
+                    <div class="course-title">
+                        Spring Boot
+                        웹 서비스 개발
+                    </div>
+
+                    <div class="course-info">
+
+                        MyBatis · JPA · REST API
+                        데이터베이스 실무
+
+                    </div>
+
+                    <div class="course-footer">
+
+                        <strong>
+                            프로젝트 중심
+                        </strong>
+
+                        <span>
+                            모집중
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- AI -->
+
+            <div class="course-card">
+
+                <div class="course-image ai">
+
+                    <i class="bi bi-stars"></i>
+
+                    <span class="course-badge">
+                        AI
+                    </span>
+
+                </div>
+
+                <div class="course-body">
+
+                    <div class="course-category">
+                        GEN AI · RAG
+                    </div>
+
+                    <div class="course-title">
+                        생성형 AI & RAG
+                        개발 과정
+                    </div>
+
+                    <div class="course-info">
+
+                        LLM · Embedding · pgVector
+                        AI 서비스 구현
+
+                    </div>
+
+                    <div class="course-footer">
+
+                        <strong>
+                            AI 프로젝트
+                        </strong>
+
+                        <span>
+                            모집중
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CLOUD -->
+
+            <div class="course-card">
+
+                <div class="course-image cloud">
+
+                    <i class="bi bi-cloud-fill"></i>
+
+                    <span class="course-badge">
+                        CLOUD
+                    </span>
+
+                </div>
+
+                <div class="course-body">
+
+                    <div class="course-category">
+                        DOCKER · AWS
+                    </div>
+
+                    <div class="course-title">
+                        Docker & AWS
+                        DevOps 실무
+                    </div>
+
+                    <div class="course-info">
+
+                        Docker · Jenkins · GitHub
+                        EC2 · CI/CD
+
+                    </div>
+
+                    <div class="course-footer">
+
+                        <strong>
+                            배포 프로젝트
+                        </strong>
+
+                        <span>
+                            모집중
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     AI LEARNING
+========================================================= -->
+
+<section class="section ai-section">
+
+    <div class="container-custom">
+
+
+        <div class="section-header">
+
+            <div class="section-label">
+                AI LEARNING SYSTEM
+            </div>
+
+            <h2 class="section-title">
+                AI가 학습을 관리합니다
+            </h2>
+
+            <p class="section-description">
+                시험부터 오답분석, 다음 학습까지 하나의 흐름으로 관리합니다.
+            </p>
+
+        </div>
+
+
+        <div class="ai-layout">
+
+
+            <div class="ai-intro">
+
+                <div class="ai-symbol">
+
+                    <i class="bi bi-stars"></i>
+
+                </div>
+
+                <h3>
+                    AI Learning
+                </h3>
+
+                <p>
+
+                    학습자의 문제풀이 데이터를 분석하여
+                    부족한 영역을 찾고 다음 학습방법을 추천합니다.
+
+                </p>
+
+            </div>
+
+
+            <div class="ai-feature-grid">
+
+
+                <div class="ai-feature">
+
+                    <div class="ai-feature-icon">
+                        <i class="bi bi-magic"></i>
+                    </div>
+
+                    <h4>
+                        AI 문제 출제
+                    </h4>
+
+                    <p>
+                        강의와 학습주제를 기반으로
+                        AI가 맞춤형 문제를 생성합니다.
+                    </p>
+
+                </div>
+
+
+                <div class="ai-feature">
+
+                    <div class="ai-feature-icon">
+                        <i class="bi bi-file-earmark-text"></i>
+                    </div>
+
+                    <h4>
+                        AI 시험
+                    </h4>
+
+                    <p>
+                        객관식과 주관식 시험을 통해
+                        현재 학습 수준을 확인합니다.
+                    </p>
+
+                </div>
+
+
+                <div class="ai-feature">
+
+                    <div class="ai-feature-icon">
+                        <i class="bi bi-check2-circle"></i>
+                    </div>
+
+                    <h4>
+                        자동 채점
+                    </h4>
+
+                    <p>
+                        문제풀이 결과를 자동으로 채점하고
+                        학습 데이터를 저장합니다.
+                    </p>
+
+                </div>
+
+
+                <div class="ai-feature">
+
+                    <div class="ai-feature-icon">
+                        <i class="bi bi-journal-x"></i>
+                    </div>
+
+                    <h4>
+                        AI 오답노트
+                    </h4>
+
+                    <p>
+                        틀린 문제를 분석하여
+                        취약한 개념과 원인을 제공합니다.
+                    </p>
+
+                </div>
+
+
+                <div class="ai-feature">
+
+                    <div class="ai-feature-icon">
+                        <i class="bi bi-lightbulb"></i>
+                    </div>
+
+                    <h4>
+                        학습 추천
+                    </h4>
+
+                    <p>
+                        오답과 학습 데이터를 기반으로
+                        다음 학습방법을 추천합니다.
+                    </p>
+
+                </div>
+
+
+                <div class="ai-feature">
+
+                    <div class="ai-feature-icon">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+
+                    <h4>
+                        학습 분석
+                    </h4>
+
+                    <p>
+                        학습 성취도와 취약영역을
+                        한눈에 확인할 수 있습니다.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     PROJECT
+========================================================= -->
+
+<section class="section">
+
+    <div class="container-custom">
+
+
+        <div class="section-header">
+
+            <div class="section-label">
+                PROJECT
+            </div>
+
+            <h2 class="section-title">
+                배우는 것에서 끝나지 않습니다
+            </h2>
+
+            <p class="section-description">
+                실제 서비스를 직접 설계하고 구현합니다.
+            </p>
+
+        </div>
+
+
+        <div class="project-grid">
+
+
+            <div class="project-card">
+
+                <div class="project-icon">
+                    <i class="bi bi-egg-fried"></i>
+                </div>
+
+                <h3>
+                    AI RECIPE
+                </h3>
+
+                <p>
+                    냉장고 속 재료를 기반으로
+                    AI가 레시피를 추천하는 서비스
+                </p>
+
+                <div class="project-tech">
+
+                    <span>Spring Boot</span>
+                    <span>Spring AI</span>
+                    <span>Gemini</span>
+                    <span>pgVector</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="project-card">
+
+                <div class="project-icon">
+                    <i class="bi bi-airplane"></i>
+                </div>
+
+                <h3>
+                    AI TRAVEL
+                </h3>
+
+                <p>
+                    여행 목적과 조건을 분석하여
+                    AI가 여행 정보를 추천하는 서비스
+                </p>
+
+                <div class="project-tech">
+
+                    <span>REST API</span>
+                    <span>LLM</span>
+                    <span>RAG</span>
+                    <span>PostgreSQL</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="project-card">
+
+                <div class="project-icon">
+                    <i class="bi bi-bag-heart"></i>
+                </div>
+
+                <h3>
+                    AI SHOPPING
+                </h3>
+
+                <p>
+                    사용자의 관심상품과 데이터를 분석하여
+                    맞춤형 상품을 추천하는 서비스
+                </p>
+
+                <div class="project-tech">
+
+                    <span>AI</span>
+                    <span>Vector Search</span>
+                    <span>Spring Boot</span>
+                    <span>Vue3</span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     EMPLOYMENT
+========================================================= -->
+
+<section class="section employment-section">
+
+    <div class="container-custom">
+
+
+        <div class="section-header">
+
+            <div class="section-label">
+                CAREER SUPPORT
+            </div>
+
+            <h2 class="section-title">
+                취업까지 함께합니다
+            </h2>
+
+            <p class="section-description">
+                교육 → 프로젝트 → 취업 준비까지 연결합니다.
+            </p>
+
+        </div>
+
+
+        <div class="employment-grid">
+
+
+            <div class="employment-card highlight">
+
+                <div class="employment-icon">
+                    <i class="bi bi-folder-check"></i>
+                </div>
+
+                <h3>
+                    졸업작품 / 취업 포트폴리오
+                </h3>
+
+                <p>
+                    교육과정에서 배운 기술을 활용하여
+                    실제 서비스 형태의 프로젝트를 완성합니다.
+                </p>
+
+                <a href="/employment/portfolio"
+                   class="employment-link">
+
+                    자세히 보기
+                    <i class="bi bi-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+            <div class="employment-card">
+
+                <div class="employment-icon">
+                    <i class="bi bi-person-video3"></i>
+                </div>
+
+                <h3>
+                    면접 준비
+                </h3>
+
+                <p>
+                    기술면접, 프로젝트 설명,
+                    예상 질문과 답변을 준비합니다.
+                </p>
+
+                <a href="/employment/interview"
+                   class="employment-link">
+
+                    자세히 보기
+                    <i class="bi bi-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+            <div class="employment-card">
+
+                <div class="employment-icon">
+                    <i class="bi bi-bar-chart-line"></i>
+                </div>
+
+                <h3>
+                    취업 정보
+                </h3>
+
+                <p>
+                    개발자 채용정보와
+                    교육생 취업 데이터를 제공합니다.
+                </p>
+
+                <a href="/employment/info"
+                   class="employment-link">
+
+                    자세히 보기
+                    <i class="bi bi-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     CTA
+========================================================= -->
+
+<section class="cta">
+
+    <div class="container-custom cta-inner">
+
+        <div>
+
+            <h2>
+                AI 시대, 준비된 개발자가 되세요.
+            </h2>
+
+            <p>
+                AI 때문에 개발자가 사라지는 것이 아니라,
+                AI를 사용하는 개발자가 필요합니다.
+            </p>
+
+        </div>
+
+
+        <div class="cta-buttons">
+
+            <a href="/course/list"
+               class="cta-main">
+
+                교육과정 확인
+
+            </a>
+
+            <a href="/consult"
+               class="cta-sub">
+
+                교육상담
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <div class="container-custom">
+
+
+        <div class="footer-inner">
+
+
+            <div>
+
+                <div class="footer-logo">
+
+                    AI LIFE CAMPUS
+
+                </div>
+
+                <div class="footer-info">
+
+                    쌍용강북교육센터<br>
+
+                    AI · Java · Spring Boot · Cloud · DevOps<br>
+
+                    교육과정 및 취업지원
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="/center">
+                    교육센터
+                </a>
+
+                <a href="/course/list">
+                    교육과정
+                </a>
+
+                <a href="/privacy">
+                    개인정보처리방침
+                </a>
+
+                <a href="/terms">
+                    이용약관
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 AI LIFE CAMPUS. All Rights Reserved.
+
+        </div>
+
+
+    </div>
+
+</footer>
+
+
+
+<!-- Bootstrap JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+
+</html>
+```

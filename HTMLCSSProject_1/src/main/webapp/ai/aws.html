@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS 실전 체험 시뮬레이터 | AI LIFE</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,"Noto Sans KR",sans-serif;background:#07111f;color:#eef5ff}
+button{font:inherit;cursor:pointer}
+.hero{padding:70px 20px 45px;text-align:center;background:radial-gradient(circle at 50% 0,#16385d 0,#07111f 58%)}
+.badge{display:inline-block;padding:8px 14px;border:1px solid #31577f;border-radius:999px;color:#8fd3ff;background:#0b1d31;font-size:13px}
+h1{font-size:clamp(34px,6vw,66px);margin:18px 0 10px;letter-spacing:-3px}
+.hero p{color:#aabbd0;font-size:18px;margin:0 auto;max-width:760px;line-height:1.7}
+.container{max-width:1180px;margin:auto;padding:25px 20px 70px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:15px 0 30px}
+.btn{border:0;border-radius:12px;padding:13px 20px;font-weight:700}
+.primary{background:#ff9900;color:#111}
+.secondary{background:#15283e;color:#dcecff;border:1px solid #294766}
+.danger{background:#5b1c25;color:#ffd9dd;border:1px solid #8d3541}
+.flow{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;align-items:stretch}
+.node{position:relative;background:#0d1b2d;border:1px solid #243e5a;border-radius:16px;padding:18px 10px;text-align:center;min-height:130px;transition:.35s}
+.node .icon{font-size:32px}.node h3{margin:9px 0 5px;font-size:15px}.node small{color:#8196ad}
+.node.active{border-color:#ff9900;box-shadow:0 0 25px #ff990033;transform:translateY(-4px)}
+.node.done{border-color:#2bd576;background:#0b241b}
+.node.fail{border-color:#ff5968;background:#32141a}
+.arrow{position:absolute;right:-17px;top:50%;z-index:2;color:#6283a3;font-size:20px}
+.panel{margin-top:25px;display:grid;grid-template-columns:1.2fr .8fr;gap:20px}
+.card{background:#0c1929;border:1px solid #203952;border-radius:18px;padding:22px}
+.card h2{font-size:19px;margin:0 0 16px}
+.progress{height:12px;background:#162a40;border-radius:99px;overflow:hidden}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#ff9900,#42d6ff);transition:width .45s}
+.status{display:flex;justify-content:space-between;color:#a9bdd2;margin:10px 0 18px;font-size:14px}
+.log{height:285px;overflow:auto;background:#050b13;border-radius:12px;padding:15px;font-family:Consolas,monospace;font-size:13px;line-height:1.8}
+.log .ok{color:#55e39a}.log .warn{color:#ffd166}.log .err{color:#ff6675}.log .info{color:#7cc7ff}
+.mission{display:grid;gap:10px}
+.choice{width:100%;text-align:left;background:#102239;color:#dcecff;border:1px solid #294766;border-radius:12px;padding:13px}
+.choice:hover{border-color:#ff9900}
+.result{margin-top:15px;padding:16px;border-radius:12px;background:#0a2118;border:1px solid #248c59;color:#9ef0c3;display:none}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.metric{background:#0a1524;border:1px solid #1d344d;border-radius:12px;padding:14px}.metric b{display:block;font-size:22px;margin-top:5px}
+.cta{margin-top:30px;padding:35px;text-align:center;border-radius:20px;background:linear-gradient(135deg,#112b46,#101a29);border:1px solid #2a4d6d}
+.cta h2{font-size:28px;margin:0 0 10px}.cta p{color:#aabbd0}
+@media(max-width:900px){.flow{grid-template-columns:repeat(4,1fr)}.arrow{display:none}.panel{grid-template-columns:1fr}}
+@media(max-width:550px){.flow{grid-template-columns:repeat(2,1fr)}.metrics{grid-template-columns:1fr}h1{letter-spacing:-2px}}
+</style>
+</head>
+<body>
+
+<main class="container">
+  <div class="toolbar">
+    <button class="btn primary" id="deployBtn">🚀 AWS 배포 시작</button>
+    <button class="btn secondary" id="resetBtn">↻ 초기화</button>
+    <button class="btn danger" id="failureBtn">🚨 장애 발생시키기</button>
+  </div>
+
+  <section class="flow" id="flow">
+    <div class="node" data-i="0"><div class="icon">🐙</div><h3>GitHub</h3><small>Source Push</small><span class="arrow">→</span></div>
+    <div class="node" data-i="1"><div class="icon">🔧</div><h3>Jenkins</h3><small>CI / Build</small><span class="arrow">→</span></div>
+    <div class="node" data-i="2"><div class="icon">🐳</div><h3>Docker</h3><small>Image Build</small><span class="arrow">→</span></div>
+    <div class="node" data-i="3"><div class="icon">☁️</div><h3>AWS EC2</h3><small>Server Deploy</small><span class="arrow">→</span></div>
+    <div class="node" data-i="4"><div class="icon">🌐</div><h3>Nginx</h3><small>Reverse Proxy</small><span class="arrow">→</span></div>
+    <div class="node" data-i="5"><div class="icon">🍃</div><h3>Spring Boot</h3><small>Application</small><span class="arrow">→</span></div>
+    <div class="node" data-i="6"><div class="icon">❤️</div><h3>Health</h3><small>/actuator/health</small></div>
+  </section>
+
+  <section class="panel">
+    <div class="card">
+      <h2>📡 배포 콘솔</h2>
+      <div class="status"><span id="stage">READY</span><span id="percent">0%</span></div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <div class="log" id="log">
+        <div class="info">[SYSTEM] AWS 실전 체험 환경 준비 완료</div>
+        <div>[SYSTEM] "AWS 배포 시작" 버튼을 눌러주세요.</div>
+      </div>
+      <div class="metrics">
+        <div class="metric">SERVER<strong>EC2</strong><b id="server">OFF</b></div>
+        <div class="metric">CONTAINER<strong>Docker</strong><b id="container">OFF</b></div>
+        <div class="metric">SERVICE<strong>Spring Boot</strong><b id="service">OFF</b></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🎯 긴급 장애 대응 미션</h2>
+      <p style="color:#9fb1c5;line-height:1.6">서비스가 갑자기 DOWN 되었습니다. 어떤 조치를 취해야 할까요?</p>
+      <div class="mission">
+        <button class="choice" data-choice="restart">① Docker Container 재시작</button>
+        <button class="choice" data-choice="nginx">② Nginx 설정 삭제</button>
+        <button class="choice" data-choice="server">③ EC2 서버 종료</button>
+        <button class="choice" data-choice="github">④ GitHub Repository 삭제</button>
+      </div>
+      <div class="result" id="result"></div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2>Java만 배우고 끝내지 않습니다.</h2>
+    <p>Spring Boot로 서비스를 만들고, Docker로 묶고, Jenkins로 자동 배포하고, AWS에서 실제 서비스처럼 운영하는 경험까지.</p>
+    <button class="btn primary" onclick="alert('상담 신청 페이지로 연결하세요!')">🔥 AWS + AI 과정 상담 신청</button>
+  </section>
+</main>
+
+<script>
+const nodes=[...document.querySelectorAll('.node')];
+const logBox=document.getElementById('log');
+const bar=document.getElementById('bar');
+const stage=document.getElementById('stage');
+const percent=document.getElementById('percent');
+const server=document.getElementById('server');
+const container=document.getElementById('container');
+const service=document.getElementById('service');
+let running=false, timer=[];
+
+function log(msg,type=''){
+  const d=document.createElement('div');
+  d.className=type;
+  d.textContent=msg;
+  logBox.appendChild(d);
+  logBox.scrollTop=logBox.scrollHeight;
+}
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+function reset(){
+  timer.forEach(clearTimeout); timer=[];
+  running=false;
+  nodes.forEach(n=>n.className='node');
+  bar.style.width='0%'; stage.textContent='READY'; percent.textContent='0%';
+  server.textContent='OFF'; container.textContent='OFF'; service.textContent='OFF';
+  logBox.innerHTML='<div class="info">[SYSTEM] AWS 실전 체험 환경 준비 완료</div><div>[SYSTEM] "AWS 배포 시작" 버튼을 눌러주세요.</div>';
+}
+async function deploy(){
+  if(running)return;
+  running=true; resetStateOnly();
+  const jobs=[
+    ['GitHub','git add . && git commit && git push','SOURCE PUSH','10%'],
+    ['Jenkins','Webhook received → Pipeline START','BUILD SUCCESS','25%'],
+    ['Docker','docker build → image created','IMAGE READY','40%'],
+    ['AWS EC2','SSH → docker compose up -d','SERVER RUNNING','60%'],
+    ['Nginx','Reverse Proxy 80 → 8080','NGINX ONLINE','75%'],
+    ['Spring Boot','Application container started','SPRING ONLINE','90%'],
+    ['Health','GET /actuator/health → UP','DEPLOY SUCCESS','100%']
+  ];
+  for(let i=0;i<jobs.length;i++){
+    const [name,cmd,done,p]=jobs[i];
+    nodes[i].classList.add('active');
+    stage.textContent=name.toUpperCase();
+    percent.textContent=p; bar.style.width=p;
+    log(`[${name}] ${cmd}`,'info');
+    await wait(850);
+    nodes[i].classList.remove('active'); nodes[i].classList.add('done');
+    log(`[${name}] ✓ ${done}`,'ok');
+    if(i===3)server.textContent='ON';
+    if(i===2)container.textContent='ON';
+    if(i===5)service.textContent='ON';
+    await wait(250);
+  }
+  stage.textContent='🟢 ONLINE';
+  log('[AWS] 🎉 실제 배포 흐름 체험 완료!','ok');
+  running=false;
+}
+function resetStateOnly(){
+  nodes.forEach(n=>n.className='node');
+  bar.style.width='0%';stage.textContent='DEPLOYING';percent.textContent='0%';
+  server.textContent='OFF';container.textContent='OFF';service.textContent='OFF';
+  logBox.innerHTML='';
+}
+async function failure(){
+  if(running)return;
+  running=true;
+  nodes.forEach(n=>n.classList.remove('active'));
+  nodes[5].classList.add('fail'); nodes[6].classList.add('fail');
+  service.textContent='DOWN'; service.style.color='#ff6675';
+  stage.textContent='🚨 INCIDENT'; percent.textContent='ERROR';
+  log('[ALERT] Spring Boot Health Check FAILED','err');
+  log('[ALERT] HTTP 503 Service Unavailable','err');
+  await wait(500);
+  log('[INFO] 장애 대응 미션을 선택하세요.','warn');
+  running=false;
+}
+document.getElementById('deployBtn').onclick=deploy;
+document.getElementById('resetBtn').onclick=()=>{service.style.color='';reset()};
+document.getElementById('failureBtn').onclick=failure;
+document.querySelectorAll('.choice').forEach(btn=>{
+  btn.onclick=async()=>{
+    const result=document.getElementById('result');
+    const choice=btn.dataset.choice;
+    if(choice==='restart'){
+      result.style.display='block'; result.textContent='정답! Docker Container를 재시작하면 애플리케이션이 다시 올라옵니다.';
+      log('[RECOVERY] docker compose restart app','ok');
+      await wait(700);
+      nodes[5].classList.remove('fail');nodes[6].classList.remove('fail');
+      nodes[5].classList.add('done');nodes[6].classList.add('done');
+      service.textContent='ON';service.style.color='';
+      stage.textContent='🟢 RECOVERED';percent.textContent='100%';bar.style.width='100%';
+      log('[RECOVERY] ✓ Health Check : UP','ok');
+    }else{
+      result.style.display='block';result.textContent='서비스 복구에 도움이 되지 않는 선택입니다. Docker Container 재시작을 시도해 보세요.';
+      log('[RECOVERY] ✕ 올바른 복구 방법이 아닙니다.','err');
+    }
+  };
+});
+</script>
+</body>
+</html>

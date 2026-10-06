@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 맞춤 맛집 · 여행 추천</title>
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --navy:#071f4b;
+      --navy2:#0b3475;
+      --blue:#1f70e8;
+      --purple:#6557f5;
+      --cyan:#67d9ff;
+      --soft:#f4f8ff;
+      --line:#dce8fb;
+      --text:#16366b;
+      --muted:#7185a8;
+      --shadow:0 10px 30px rgba(36,83,145,.12);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:#f7faff;
+      color:var(--text);
+      font-family:Pretendard,"Noto Sans KR",sans-serif;
+    }
+    button,select{font-family:inherit}
+    .page{display:none}
+    .page.active{display:block}
+
+    /* 공통 상단 */
+    .hero{
+      min-height:300px;
+      position:relative;
+      overflow:hidden;
+      color:#fff;
+      background:
+        linear-gradient(90deg,rgba(4,31,77,.94),rgba(8,62,132,.72),rgba(3,23,59,.25)),
+        url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=85")
+        center/cover;
+    }
+    .travel .hero{
+      background:
+        linear-gradient(90deg,rgba(4,55,112,.88),rgba(11,112,180,.46),rgba(3,44,83,.25)),
+        url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=85")
+        center/cover;
+    }
+    .hero-inner{max-width:1450px;margin:auto;padding:38px 52px 30px;position:relative}
+    .hand{
+      font-size:28px;
+      font-weight:500;
+      font-style:italic;
+      letter-spacing:-1px;
+    }
+    .hero h1{
+      margin:2px 0 10px;
+      font-size:clamp(40px,5vw,68px);
+      line-height:1;
+      font-weight:900;
+      letter-spacing:-3px;
+      background:linear-gradient(90deg,#fff,#9be6ff,#c7b5ff);
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+    .hero p{font-size:19px;line-height:1.5;font-weight:600;margin:0;max-width:650px}
+    .hero-callout{
+      position:absolute;right:6%;top:42px;
+      width:340px;
+      border-left:2px solid rgba(255,255,255,.9);
+      padding-left:30px;
+    }
+    .hero-callout strong{font-size:28px;display:block;margin-bottom:5px}
+    .hero-callout span{font-size:16px;line-height:1.55}
+    .stack{
+      position:relative;
+      z-index:3;
+      max-width:1390px;
+      margin:-46px auto 0;
+      padding:0 15px;
+    }
+    .techbar{
+      background:rgba(255,255,255,.94);
+      border:1px solid #cfe0fb;
+      border-radius:22px;
+      padding:13px;
+      box-shadow:0 10px 28px rgba(30,83,155,.13);
+      display:flex;align-items:center;gap:12px;
+    }
+    .tech{
+      flex:1;
+      min-height:72px;
+      border-radius:17px;
+      background:linear-gradient(180deg,#fff,#f5f9ff);
+      border:1px solid #e2ecfb;
+      display:flex;align-items:center;gap:14px;
+      padding:10px 16px;
+    }
+    .tech .icon{
+      width:45px;height:45px;border-radius:50%;
+      display:grid;place-items:center;
+      font-size:27px;background:#eff6ff;color:#1680d9;
+    }
+    .tech b{display:block;font-size:17px;color:#123a78}
+    .tech small{display:block;color:#6780a9;margin-top:3px}
+    .arrow{font-size:24px;color:#2c67bc}
+
+    /* 앱 */
+    .app-shell{
+      max-width:1480px;
+      margin:14px auto 28px;
+      padding:0 22px;
+      display:grid;
+      grid-template-columns:185px minmax(0,1fr) 300px;
+      gap:14px;
+    }
+    .side{
+      background:linear-gradient(180deg,#09265b,#071d43);
+      border-radius:20px;
+      min-height:680px;
+      color:#fff;
+      padding:18px 10px;
+      display:flex;flex-direction:column;
+    }
+    .brand{
+      font-size:24px;font-weight:800;
+      padding:3px 10px 16px;
+      border-bottom:1px solid rgba(255,255,255,.12);
+    }
+    .brand i{color:#7cc9ff}
+    .side button{
+      border:0;background:transparent;color:#fff;
+      padding:12px 12px;border-radius:10px;
+      text-align:left;font-weight:600;font-size:15px;
+      margin-top:4px;
+    }
+    .side button:hover,.side button.active{background:#176ce4}
+    .side-note{
+      margin-top:auto;
+      padding:18px 10px 8px;
+      font-style:italic;
+      color:#d7e7ff;
+      font-size:15px;
+      line-height:1.65;
+    }
+
+    .main-panel{
+      background:#fff;
+      border:1px solid #e1ebfa;
+      border-radius:20px;
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+    .section-title{display:flex;gap:10px;align-items:center}
+    .spark{color:#6955ff;font-size:28px}
+    h2{font-size:30px;font-weight:900;margin:0;color:#0b3475}
+    .subtitle{color:#7186ab;margin:4px 0 18px}
+    .filters{
+      display:grid;
+      grid-template-columns:repeat(4,1fr) 160px;
+      gap:9px;
+      padding-bottom:14px;
+      border-bottom:1px solid #e6edf8;
+    }
+    .filter{
+      border:1px solid #dce7fa;border-radius:13px;
+      padding:9px 12px;background:#fbfdff;
+    }
+    .filter label{display:block;font-size:12px;color:#6b82a8;margin-bottom:3px}
+    .filter select{
+      border:0;outline:0;background:transparent;width:100%;
+      color:#173e78;font-weight:700;
+    }
+    .search-btn{
+      border:0;border-radius:13px;
+      color:#fff;font-weight:800;font-size:16px;
+      background:linear-gradient(135deg,#5c54ef,#327eea);
+      box-shadow:0 8px 18px rgba(72,84,224,.25);
+    }
+    .result-head{
+      display:flex;justify-content:space-between;align-items:center;
+      margin:17px 0 10px;
+    }
+    .result-head h3{font-size:18px;font-weight:800;margin:0}
+    .view-toggle button{
+      border:0;background:#eef5ff;color:#4171ac;
+      padding:7px 13px;border-radius:9px;
+      font-weight:700;
+    }
+    .view-toggle button.active{background:#2e7be9;color:#fff}
+    .restaurant-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+    }
+    .card-r{
+      border:1px solid #dce8f8;
+      border-radius:13px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow:0 5px 14px rgba(44,87,140,.07);
+      transition:.2s;
+    }
+    .card-r:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(44,87,140,.14)}
+    .photo{
+      height:112px;position:relative;
+      background-size:cover;background-position:center;
+    }
+    .recommend{
+      position:absolute;left:8px;top:8px;
+      background:#4d52ed;color:#fff;
+      padding:4px 8px;border-radius:7px;font-size:11px;font-weight:800;
+    }
+    .card-body{padding:10px}
+    .card-body h4{font-size:16px;font-weight:800;margin:0 0 3px}
+    .meta{display:flex;justify-content:space-between;font-size:12px;color:#7288a8}
+    .score{color:#f3a900;font-weight:800}
+    .tags{display:flex;gap:4px;flex-wrap:wrap;margin:8px 0}
+    .tag{background:#edf5ff;color:#4675ae;border-radius:99px;padding:3px 7px;font-size:10px}
+    .desc{font-size:11px;line-height:1.5;color:#6f84a6;margin:0}
+
+    .map-panel{
+      margin-top:12px;
+      min-height:250px;
+      border-radius:15px;
+      overflow:hidden;
+      position:relative;
+      background:
+        linear-gradient(135deg,rgba(238,247,241,.92),rgba(221,238,250,.92)),
+        repeating-linear-gradient(35deg,transparent 0 20px,rgba(100,140,180,.12) 21px 22px);
+      border:1px solid #d9e8f5;
+    }
+    .road{position:absolute;height:4px;background:#4380e9;border-radius:5px;transform-origin:left center}
+    .road.r1{width:70%;left:10%;top:38%;transform:rotate(13deg)}
+    .road.r2{width:48%;left:28%;top:63%;transform:rotate(-24deg)}
+    .road.r3{width:32%;left:53%;top:28%;transform:rotate(47deg)}
+    .pin{
+      position:absolute;width:30px;height:30px;border-radius:50% 50% 50% 0;
+      transform:rotate(-45deg);display:grid;place-items:center;
+      color:#fff;font-size:12px;font-weight:900;
+      box-shadow:0 4px 10px rgba(0,0,0,.18);
+    }
+    .pin span{transform:rotate(45deg)}
+    .p1{left:18%;top:25%;background:#285fe8}.p2{left:49%;top:52%;background:#6855ed}.p3{left:73%;top:35%;background:#f08a28}
+    .map-label{
+      position:absolute;right:15px;top:15px;
+      background:#fff;border-radius:10px;padding:9px 12px;
+      box-shadow:0 5px 15px rgba(0,0,0,.1);font-size:12px;
+    }
+
+    .info{
+      background:#fff;
+      border:1px solid #e1ebfa;
+      border-radius:20px;
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+    .info-title{font-size:20px;font-weight:900;color:#153c7c;margin-bottom:16px}
+    .info-item{display:flex;gap:13px;margin:18px 0}
+    .info-icon{
+      flex:0 0 46px;width:46px;height:46px;
+      border-radius:50%;background:#f1f6ff;
+      display:grid;place-items:center;color:#4d5bef;font-size:23px;
+    }
+    .info-item b{display:block;margin-bottom:4px}
+    .info-item p{font-size:12px;color:#7287a7;line-height:1.55;margin:0}
+    .scribble{margin-top:45px;text-align:center;color:#5b50ee;font-style:italic;font-size:19px;transform:rotate(-4deg)}
+
+    /* 여행 */
+    .travel .app-shell{grid-template-columns:175px minmax(0,1fr) 295px}
+    .travel-card{
+      border:1px solid #dbe7f7;border-radius:14px;
+      overflow:hidden;background:#fff;
+    }
+    .travel-main-img{
+      height:170px;
+      background:url("https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1000&q=85") center/cover;
+      position:relative;
+    }
+    .travel-main-img .overlay{
+      position:absolute;inset:0;
+      background:linear-gradient(0deg,rgba(4,30,66,.72),transparent 65%);
+      display:flex;align-items:flex-end;padding:20px;color:#fff;
+    }
+    .travel-main-img h3{font-size:25px;font-weight:900;margin:0}
+    .travel-filter{
+      display:grid;grid-template-columns:1fr 1fr 1fr 130px;
+      gap:8px;padding:12px;border-bottom:1px solid #e6edf8;
+    }
+    .course{
+      margin-top:14px;
+      display:grid;grid-template-columns:1.25fr .8fr;gap:12px;
+    }
+    .timeline{padding:15px}
+    .timeline h3{font-size:18px;font-weight:900;margin-bottom:12px}
+    .step{display:flex;gap:10px;margin:10px 0}
+    .dot{
+      width:25px;height:25px;border-radius:50%;
+      background:#e9f2ff;color:#2370db;
+      display:grid;place-items:center;font-size:11px;font-weight:800;
+    }
+    .step b{font-size:13px}.step p{font-size:11px;color:#788ca9;margin:2px 0 0}
+    .mini-map{
+      min-height:240px;
+      background:
+        linear-gradient(135deg,#e7f4eb,#d8ecf9),
+        repeating-linear-gradient(30deg,transparent 0 18px,#bad0e7 19px 20px);
+      position:relative;
+    }
+    .mini-map .road{background:#2772db}
+    .mini-map .p1{left:23%;top:29%}.mini-map .p2{left:57%;top:48%}.mini-map .p3{left:70%;top:69%}
+    .small-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:10px}
+    .small-card{border:1px solid #dbe7f7;border-radius:11px;overflow:hidden;background:#fff}
+    .small-card .pic{height:76px;background-size:cover;background-position:center}
+    .small-card div:last-child{padding:7px 8px;font-size:12px;font-weight:800}
+
+    .travel .side{min-height:650px}
+    .travel .info{min-height:650px}
+
+    /* 모바일 */
+    @media(max-width:1100px){
+      .hero-callout{display:none}
+      .app-shell{grid-template-columns:1fr}
+      .side{min-height:auto;display:block}
+      .side-note{display:none}
+      .side button{display:inline-block}
+      .info{min-height:auto}
+      .restaurant-grid{grid-template-columns:repeat(2,1fr)}
+      .travel .app-shell{grid-template-columns:1fr}
+    }
+    @media(max-width:700px){
+      .hero-inner{padding:28px 20px 70px}
+      .hand{font-size:20px}.hero h1{font-size:39px;letter-spacing:-2px}.hero p{font-size:15px}
+      .techbar{overflow:auto}.tech{min-width:220px}.arrow{display:none}
+      .app-shell{padding:0 10px}.main-panel,.info{padding:14px}
+      .filters{grid-template-columns:1fr 1fr}.search-btn{height:55px}
+      .restaurant-grid{grid-template-columns:1fr}
+      .travel-filter{grid-template-columns:1fr 1fr}
+      .course{grid-template-columns:1fr}
+      .small-cards{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 페이지 선택 -->
+  <div class="position-fixed top-0 end-0 p-3" style="z-index:100">
+    <div class="btn-group shadow">
+      <button class="btn btn-primary" onclick="showPage('restaurant')"><i class="bi bi-fork-knife"></i> AI 맛집</button>
+      <button class="btn btn-light" onclick="showPage('travel')"><i class="bi bi-map"></i> AI 여행</button>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       AI 맛집 추천
+  ====================================================== -->
+  <section id="restaurant" class="page active">
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="hand">AI가 찾아주는</div>
+        <h1>나만의 맞춤 맛집 추천</h1>
+        <p>Spring AI와 PostgreSQL + pgVector로<br>당신의 취향에 딱 맞는 맛집을 찾아드립니다.</p>
+        <div class="hero-callout">
+          <strong>오늘, 무엇을 먹을까?</strong>
+          <span>AI가 당신의 취향을 분석해<br>최고의 맛집을 추천합니다.</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="stack">
+      <div class="techbar">
+        <div class="tech"><div class="icon" style="color:#d52222"><i class="bi bi-database"></i></div><div><b>Oracle</b><small>맛집 데이터 저장</small></div></div>
+        <span class="arrow">→</span>
+        <div class="tech"><div class="icon" style="color:#36a866"><i class="bi bi-leaf"></i></div><div><b>Spring AI</b><small>AI 임베딩 & 검색</small></div></div>
+        <span class="arrow">→</span>
+        <div class="tech"><div class="icon"><i class="bi bi-database-fill"></i></div><div><b>PostgreSQL</b><small>데이터베이스 저장</small></div></div>
+        <span class="arrow">→</span>
+        <div class="tech"><div class="icon"><i class="bi bi-diagram-3"></i></div><div><b>pgVector</b><small>벡터 검색</small></div></div>
+        <span class="arrow">→</span>
+        <div class="tech"><div class="icon" style="color:#168f54"><i class="bi bi-leaf-fill"></i></div><div><b>Thymeleaf</b><small>웹 화면 구성</small></div></div>
+      </div>
+    </div>
+
+    <div class="app-shell">
+      <aside class="side">
+        <div class="brand"><i class="bi bi-egg-fried"></i> AI 맛집</div>
+        <button class="active"><i class="bi bi-house-fill me-2"></i>맛집 추천</button>
+        <button><i class="bi bi-geo-alt me-2"></i>지역별 맛집</button>
+        <button><i class="bi bi-compass me-2"></i>테마별 맛집</button>
+        <button><i class="bi bi-person me-2"></i>내 취향 관리</button>
+        <button><i class="bi bi-heart me-2"></i>즐겨찾기</button>
+        <div class="side-note">AI가 추천하는<br>당신만의<br>맛집 리스트!<br>🍽️</div>
+      </aside>
+
+      <main class="main-panel">
+        <div class="section-title"><span class="spark">✦</span><div><h2>AI 맞춤 맛집 추천</h2><div class="subtitle">당신의 취향을 분석하여 딱 맞는 맛집을 추천해드립니다.</div></div></div>
+
+        <div class="filters">
+          <div class="filter"><label>📍 지역</label><select id="rRegion"><option>서울 강남구</option><option>서울 마포구</option><option>서울 종로구</option><option>부산 해운대구</option></select></div>
+          <div class="filter"><label>🍴 음식 종류</label><select id="rType"><option>한식</option><option>양식</option><option>일식</option><option>중식</option><option>카페</option></select></div>
+          <div class="filter"><label>🔧 분위기</label><select id="rMood"><option>데이트, 조용한</option><option>가족모임</option><option>친구모임</option><option>혼밥</option></select></div>
+          <div class="filter"><label>💰 가격대</label><select><option>1만원 ~ 3만원</option><option>3만원 ~ 5만원</option><option>5만원 이상</option></select></div>
+          <button class="search-btn" onclick="recommendRestaurants()"><i class="bi bi-search"></i> 맛집 찾기</button>
+        </div>
+
+        <div class="result-head">
+          <h3>✦ AI 추천 맛집 <small id="recommendMessage" class="text-secondary fw-normal">당신의 취향과 가장 유사한 맛집이에요!</small></h3>
+          <div class="view-toggle">
+            <button class="active" onclick="toggleView('map',this)">✦ 지도 보기</button>
+            <button onclick="toggleView('list',this)">☷ 목록 보기</button>
+          </div>
+        </div>
+
+        <div id="restaurantView">
+          <div class="restaurant-grid" id="restaurantGrid">
+            <article class="card-r">
+              <div class="photo" style="background-image:url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=700&q=85')"><span class="recommend">추천</span></div>
+              <div class="card-body"><h4>강남화로집</h4><div class="meta"><span class="score">★ 4.8 <em>(1,243)</em></span><span>1.2km</span></div><div class="tags"><span class="tag">한식</span><span class="tag">고기</span><span class="tag">데이트</span></div><p class="desc">숯향 좋은 한우와 깔끔한 분위기로 강남 대표 한우 맛집입니다.</p></div>
+            </article>
+            <article class="card-r">
+              <div class="photo" style="background-image:url('https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=700&q=85')"><span class="recommend">추천</span></div>
+              <div class="card-body"><h4>스시하나</h4><div class="meta"><span class="score">★ 4.7 <em>(856)</em></span><span>2.1km</span></div><div class="tags"><span class="tag">일식</span><span class="tag">초밥</span><span class="tag">데이트</span></div><p class="desc">신선한 재료와 정통 스시를 맛볼 수 있는 곳입니다.</p></div>
+            </article>
+            <article class="card-r">
+              <div class="photo" style="background-image:url('https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=700&q=85')"><span class="recommend">추천</span></div>
+              <div class="card-body"><h4>파스타노아</h4><div class="meta"><span class="score">★ 4.6 <em>(742)</em></span><span>1.8km</span></div><div class="tags"><span class="tag">양식</span><span class="tag">파스타</span><span class="tag">분위기</span></div><p class="desc">부드러운 크림과 감각적인 분위기가 매력적인 레스토랑입니다.</p></div>
+            </article>
+            <article class="card-r">
+              <div class="photo" style="background-image:url('https://images.unsplash.com/photo-1557872943-16a5ac26437e?auto=format&fit=crop&w=700&q=85')"><span class="recommend">추천</span></div>
+              <div class="card-body"><h4>미소야</h4><div class="meta"><span class="score">★ 4.5 <em>(621)</em></span><span>2.4km</span></div><div class="tags"><span class="tag">일식</span><span class="tag">라멘</span><span class="tag">혼밥</span></div><p class="desc">깊은 국물 맛의 돈코츠 라멘이 인기인 일본식 라멘 전문점입니다.</p></div>
+            </article>
+            <article class="card-r">
+              <div class="photo" style="background-image:url('https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=700&q=85')"><span class="recommend">추천</span></div>
+              <div class="card-body"><h4>마포진짜순대국</h4><div class="meta"><span class="score">★ 4.4 <em>(530)</em></span><span>1.7km</span></div><div class="tags"><span class="tag">한식</span><span class="tag">순대국</span><span class="tag">해장</span></div><p class="desc">진한 국물 맛이 일품인 24시간 운영하는 순대국 맛집입니다.</p></div>
+            </article>
+            <article class="card-r">
+              <div class="photo" style="background-image:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=700&q=85')"><span class="recommend">추천</span></div>
+              <div class="card-body"><h4>카페 드 퍼플</h4><div class="meta"><span class="score">★ 4.3 <em>(418)</em></span><span>2.6km</span></div><div class="tags"><span class="tag">카페</span><span class="tag">디저트</span><span class="tag">분위기</span></div><p class="desc">예쁜 인테리어와 다양한 디저트로 인기 있는 감성 카페입니다.</p></div>
+            </article>
+          </div>
+
+          <div class="map-panel" id="mapPanel">
+            <div class="road r1"></div><div class="road r2"></div><div class="road r3"></div>
+            <div class="pin p1"><span>1</span></div><div class="pin p2"><span>2</span></div><div class="pin p3"><span>3</span></div>
+            <div class="map-label"><b>강남화로집</b><br>★ 4.8 · 1.2km</div>
+          </div>
+        </div>
+      </main>
+
+      <aside class="info">
+        <div class="info-title">🧠 AI가 추천하는 이유</div>
+        <div class="info-item"><div class="info-icon"><i class="bi bi-person-heart"></i></div><div><b>취향 분석!</b><p>사용자의 선호도, 리뷰, 방문 이력 등을 분석하여 맞춤 추천합니다.</p></div></div>
+        <div class="info-item"><div class="info-icon"><i class="bi bi-stars"></i></div><div><b>벡터 유사도 검색</b><p>pgVector를 활용한 유사한 맛집을 빠르게 찾아드립니다.</p></div></div>
+        <div class="info-item"><div class="info-icon"><i class="bi bi-database"></i></div><div><b>실시간 데이터</b><p>Oracle의 최신 맛집 정보를 실시간으로 반영합니다.</p></div></div>
+        <div class="info-item"><div class="info-icon"><i class="bi bi-person-check"></i></div><div><b>개인화 추천</b><p>더 정확하고 만족도 높은 맞춤형 맛집을 제공합니다.</p></div></div>
+        <div class="scribble">AI가 추천하는<br>지금, 꼭 가야할 맛집! 🍴</div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       AI 여행 코스
+  ====================================================== -->
+  <section id="travel" class="page travel">
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="hand">AI가 추천하는 나만의 특별한 여행 코스!</div>
+        <h1>지역 여행코스 생성 서비스</h1>
+        <p>Spring AI와 pgVector로 여행 데이터를 학습하고,<br>당신의 취향에 맞는 지역별 맞춤 여행 코스를 추천합니다.</p>
+        <div class="hero-callout">
+          <strong>지금, AI와 함께 떠나볼까요?</strong>
+          <span>취향과 여행 데이터를 분석해<br>나만의 여행 코스를 만들어드립니다.</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="stack">
+      <div class="techbar">
+        <div class="tech"><div class="icon" style="color:#36a866"><i class="bi bi-leaf"></i></div><div><b>Spring AI</b><small>AI 기반 여행코스 추천</small></div></div>
+        <span class="arrow">+</span>
+        <div class="tech"><div class="icon"><i class="bi bi-database-fill"></i></div><div><b>PostgreSQL</b><small>여행 데이터 저장</small></div></div>
+        <span class="arrow">+</span>
+        <div class="tech"><div class="icon"><i class="bi bi-diagram-3"></i></div><div><b>pgVector</b><small>벡터 검색</small></div></div>
+        <span class="arrow">+</span>
+        <div class="tech"><div class="icon" style="color:#168f54"><i class="bi bi-leaf-fill"></i></div><div><b>Thymeleaf</b><small>웹 화면 구성</small></div></div>
+        <span class="arrow">+</span>
+        <div class="tech"><div class="icon" style="color:#d52222"><i class="bi bi-database"></i></div><div><b>Oracle</b><small>기존 여행 데이터 연동</small></div></div>
+      </div>
+    </div>
+
+    <div class="app-shell">
+      <aside class="side">
+        <div class="brand"><i class="bi bi-mountains"></i> AI TRAVEL</div>
+        <button class="active"><i class="bi bi-compass me-2"></i>여행 코스 추천</button>
+        <button><i class="bi bi-geo-alt me-2"></i>지역별 여행지</button>
+        <button><i class="bi bi-calendar3 me-2"></i>내 여행 코스</button>
+        <button><i class="bi bi-person me-2"></i>MY 페이지</button>
+      </aside>
+
+      <main class="main-panel">
+        <div class="travel-card">
+          <div class="travel-main-img"><div class="overlay"><div><div style="font-size:15px">AI가 추천하는</div><h3>오늘의 여행 코스</h3><div style="font-size:12px">당신의 취향에 맞는 특별한 여행을 시작해보세요!</div></div></div></div>
+
+          <div class="travel-filter">
+            <div class="filter"><label>📍 지역 선택</label><select><option>부산</option><option>제주도</option><option>경주</option><option>강릉</option></select></div>
+            <div class="filter"><label>🍴 여행 테마</label><select><option>맛집 중심</option><option>자연 중심</option><option>문화·역사</option><option>힐링</option></select></div>
+            <div class="filter"><label>📅 여행 기간</label><select><option>1박 2일</option><option>당일치기</option><option>2박 3일</option><option>3박 4일</option></select></div>
+            <button class="search-btn" onclick="recommendTravel()"><i class="bi bi-stars"></i> 코스 추천</button>
+          </div>
+
+          <div class="p-3">
+            <h3 style="font-size:18px;font-weight:900;margin-bottom:10px">추천 여행 코스</h3>
+            <div class="course">
+              <div class="travel-card timeline">
+                <h3>부산 감성 여행 코스</h3>
+                <div class="step"><span class="dot">1</span><div><b>해운대 해수욕장</b><p>부산의 대표 해변에서 힐링하기</p></div></div>
+                <div class="step"><span class="dot">2</span><div><b>감천문화마을</b><p>알록달록한 마을을 산책하며 사진 여행</p></div></div>
+                <div class="step"><span class="dot">3</span><div><b>광안리 해변</b><p>바다를 보며 즐기는 감성 카페 투어</p></div></div>
+                <div class="step"><span class="dot">4</span><div><b>태종대</b><p>아름다운 해안 절경 감상</p></div></div>
+              </div>
+              <div class="travel-card mini-map">
+                <div class="road r1"></div><div class="road r2"></div>
+                <div class="pin p1"><span>1</span></div><div class="pin p2"><span>2</span></div><div class="pin p3"><span>3</span></div>
+              </div>
+            </div>
+
+            <div class="small-cards">
+              <div class="small-card"><div class="pic" style="background-image:url('https://images.unsplash.com/photo-1595341888016-a392ef81b7de?auto=format&fit=crop&w=500&q=80')"></div><div>제주도 힐링 여행 →</div></div>
+              <div class="small-card"><div class="pic" style="background-image:url('https://images.unsplash.com/photo-1548115184-bc6544d06a58?auto=format&fit=crop&w=500&q=80')"></div><div>경주 역사 문화 여행 →</div></div>
+              <div class="small-card"><div class="pic" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80')"></div><div>강릉 바다 여행 →</div></div>
+              <div class="small-card"><div class="pic" style="background-image:url('https://images.unsplash.com/photo-1538485399081-7c897d8f3c0c?auto=format&fit=crop&w=500&q=80')"></div><div>전주 한옥마을 여행 →</div></div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <aside class="info">
+        <div class="info-title">이런 점이 특별합니다!</div>
+        <div class="info-item"><div class="info-icon"><i class="bi bi-cpu"></i></div><div><b>AI 맞춤 추천</b><p>사용자의 취향과 선호도를 분석하여 지역별 여행 코스를 추천합니다.</p></div></div>
+        <div class="info-item"><div class="info-icon"><i class="bi bi-search-heart"></i></div><div><b>벡터 검색 기술</b><p>pgVector를 활용한 유사도 검색으로 더 정확한 추천이 가능합니다.</p></div></div>
+        <div class="info-item"><div class="info-icon"><i class="bi bi-database"></i></div><div><b>실시간 데이터 연동</b><p>Oracle에 저장된 기존 여행 데이터를 연동하여 다양한 정보를 제공합니다.</p></div></div>
+        <div class="info-item"><div class="info-icon"><i class="bi bi-phone"></i></div><div><b>반응형 웹</b><p>Thymeleaf 기반으로 PC, 모바일 어디서나 편리하게 이용할 수 있습니다.</p></div></div>
+        <div class="scribble">AI와 함께하는<br>더 스마트한 여행! ✈️</div>
+      </aside>
+    </div>
+  </section>
+
+<script>
+  function showPage(page){
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(page).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function toggleView(type, btn){
+    document.querySelectorAll('.view-toggle button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const grid = document.getElementById('restaurantGrid');
+    const map = document.getElementById('mapPanel');
+    if(type === 'map'){
+      grid.style.display = 'grid';
+      map.style.display = 'block';
+    }else{
+      grid.style.display = 'grid';
+      map.style.display = 'none';
+    }
+  }
+
+  function recommendRestaurants(){
+    const region = document.getElementById('rRegion').value;
+    const mood = document.getElementById('rMood').value;
+    document.getElementById('recommendMessage').textContent =
+      region + ' · ' + mood + ' 조건을 분석하여 유사도 높은 맛집을 찾았습니다.';
+    document.getElementById('restaurantGrid').animate(
+      [{opacity:.45,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],
+      {duration:450,easing:'ease-out'}
+    );
+  }
+
+  function recommendTravel(){
+    alert('AI 여행 코스 추천 요청을 보냈습니다. 실제 Spring AI 연동 시 이 버튼에서 /api/travel/recommend 를 호출하면 됩니다.');
+  }
+</script>
+</body>
+</html>
